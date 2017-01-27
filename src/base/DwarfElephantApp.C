@@ -4,6 +4,21 @@
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
 
+// Actions
+#include "RBSimpleConstruction.h"
+
+// Kernels
+#include "Conduction.h"
+#include "RBKernel.h"
+
+// Materials
+#include "SandStone.h"
+#include "Shale.h"
+#include "RBAssembly.h"
+
+//Outputs
+#include "RBOutput.h"
+
 template<>
 InputParameters validParams<DwarfElephantApp>()
 {
@@ -40,11 +55,25 @@ extern "C" void DwarfElephantApp__registerObjects(Factory & factory) { DwarfElep
 void
 DwarfElephantApp::registerObjects(Factory & factory)
 {
+//  // Register any custom objects you have built on the MOOSE Framework
+//  // Kernels
+  registerKernel(Conduction);
+  registerKernel(RBKernel);
+
+  // Materials
+  registerMaterial(SandStone);
+  registerMaterial(Shale);
+  registerMaterial(RBAssembly);
+
+  // Outputs
+  registerOutput(RBOutput);
 }
 
 // External entry point for dynamic syntax association
 extern "C" void DwarfElephantApp__associateSyntax(Syntax & syntax, ActionFactory & action_factory) { DwarfElephantApp::associateSyntax(syntax, action_factory); }
 void
-DwarfElephantApp::associateSyntax(Syntax & /*syntax*/, ActionFactory & /*action_factory*/)
+DwarfElephantApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
 {
+  registerAction(RBSimpleConstruction, "add_user_object");
+  syntax.registerActionSyntax("RBSimpleConstruction", "RBSimpleConstruction");
 }
