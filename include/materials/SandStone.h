@@ -1,36 +1,36 @@
-#ifndef SANDSTONE_H_
-#define SANDSTONE_H_
+/**
+ * SandStone inherits from the MOOSE class Material and overrides
+ * computeQpProperties.
+ * Within the Class SandStone the typical rock properties of a sandstone are
+ * stored.
+ */
 
-//---------------------------------INCLUDE---------------------------------
+///-------------------------------------------------------------------------
+#ifndef SANDSTONE_H
+#define SANDSTONE_H
+
+///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
 #include "Material.h"
 
-//-------------------------------------------------------------------------
+///-------------------------------------------------------------------------
+// Forward Declarations
 class SandStone;
 
-//-------------------------------------------------------------------------
+///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-
-//-------------------------------------------------------------------------
 InputParameters validParams<SandStone>();
 
-//-------------------------------------------------------------------------
-/**
- * SandStone inherits from the MOOSE class Material and overrides computeQpProperties.
- * Within the Class SandStone the typical rock properties of a sandstone are stored.
- */
-
-//-------------------------------------------------------------------------
+///-------------------------------------------------------------------------
 class SandStone : public Material
 {
 
-//---------------------------------PUBLIC----------------------------------
+//----------------------------------PUBLIC----------------------------------
 public:
   SandStone(const InputParameters & parameters);
 
-//-------------------------------PROTECTED---------------------------------
-//protected:
-
+//--------------------------------PROTECTED---------------------------------
+protected:
 /* Methods */
   virtual void computeQpProperties() override;
 
@@ -40,8 +40,7 @@ public:
 
   // RB parameters for the thermal conductivity
   MaterialProperty<RealVectorValue> & _rb_lambda;
-  MaterialProperty<Real> & _online_lambda;
 };
 
-//-------------------------------------------------------------------------
+///-------------------------------------------------------------------------
 #endif //SANDSTONE_H

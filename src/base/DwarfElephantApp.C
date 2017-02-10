@@ -4,17 +4,14 @@
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
 
-// Actions
-#include "RBSimpleConstruction.h"
-
 // Kernels
 #include "Conduction.h"
 #include "RBKernel.h"
+#include "RBDiffusion.h"
 
 // Materials
 #include "SandStone.h"
 #include "Shale.h"
-#include "RBAssembly.h"
 
 //Outputs
 #include "RBOutput.h"
@@ -59,11 +56,11 @@ DwarfElephantApp::registerObjects(Factory & factory)
 //  // Kernels
   registerKernel(Conduction);
   registerKernel(RBKernel);
+  registerKernel(RBDiffusion);
 
   // Materials
   registerMaterial(SandStone);
   registerMaterial(Shale);
-  registerMaterial(RBAssembly);
 
   // Outputs
   registerOutput(RBOutput);
@@ -72,8 +69,6 @@ DwarfElephantApp::registerObjects(Factory & factory)
 // External entry point for dynamic syntax association
 extern "C" void DwarfElephantApp__associateSyntax(Syntax & syntax, ActionFactory & action_factory) { DwarfElephantApp::associateSyntax(syntax, action_factory); }
 void
-DwarfElephantApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
+DwarfElephantApp::associateSyntax(Syntax & /*syntax*/, ActionFactory & /*action_factory*/)
 {
-  registerAction(RBSimpleConstruction, "add_user_object");
-  syntax.registerActionSyntax("RBSimpleConstruction", "RBSimpleConstruction");
 }

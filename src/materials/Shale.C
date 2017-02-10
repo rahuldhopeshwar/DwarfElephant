@@ -1,6 +1,8 @@
-/// The material file Shale saves the rock properties of a typical shale.
-
 /**
+ * Shale inherits from the MOOSE class  Material and overrides
+ * computeQpProperties.
+ * Within the class Shale the typical rock properties of a shale are stored.
+ *
  * Attention: For a general use of the RB objects please use the string
  * "RBParameterNumber" for the parameters you want to include in the
  * RB Method. You can define RB Parameters for several properties and
@@ -11,17 +13,16 @@
 /* List of rock properties and corresponding references:
  *
  * thermal conductivuty (lambda) -
- * http://www.minersoc.org/pages/Archive-CM/Volume_33/33-1-131.pdf
+ *   http://www.minersoc.org/pages/Archive-CM/Volume_33/33-1-131.pdf
  *
  */
 
-//---------------------------------INCLUDE---------------------------------
+///---------------------------------INCLUDES--------------------------------
+// MOOSE includes (DwarfElephant package)
 #include "Shale.h"
 
-//-------------------------------------------------------------------------
+///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-
-//----------------------------INPUT PARAMETERS-----------------------------
 InputParameters validParams<Shale>()
 {
   InputParameters params = validParams<Material>();
@@ -29,29 +30,25 @@ InputParameters validParams<Shale>()
    return params;
 }
 
-//-----------------------------READ PARAMETERS-----------------------------
+///-------------------------------CONSTRUCTOR-------------------------------
 Shale::Shale(const InputParameters & parameters) :
     Material(parameters),
 
-    /// Declare the material properties.  This returns references.
-
-    /// Thermal conductivity
+    // Thermal conductivity
     _lambda(declareProperty<Real>("conductivity")),
 
     //RB Parameters
-    _rb_lambda(declareProperty<RealVectorValue>("RBParameter0")),
-    _online_lambda(declareProperty<Real>("OnlineConductivity"))
+    _rb_lambda(declareProperty<RealVectorValue>("mu1"))
 {
 }
 
-//-------------------------------------------------------------------------
+///-------------------------------------------------------------------------
 void
 Shale::computeQpProperties()
 {
-  /// Thermal conductivity always in [W/(m K)]
+  // Thermal conductivity always in [W/(m K)]
   _lambda[_qp]= 1.05;
 
   // RB Parameters
   _rb_lambda[_qp]= {1.05, 1.55};
-  _online_lambda[_qp]=1.05;
 }

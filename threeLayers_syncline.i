@@ -14,24 +14,10 @@
   [./block1]
     type = Conduction
     variable = temperature
-    block = '7 8 9'
   [../]
 
-#  [./block2]
-#    type = Conduction
-#    variable = temperature
-#    block = 8
-#  [../]
-
-#  [./block3]
-#    type = Conduction
-#    variable = temperature
-#    block = 9
-#  [../]
-[]
-
 [Materials]
-  [./shale1]
+  [./shale_top]
     type = Shale
     block = 7
   [../]
@@ -41,20 +27,20 @@
     block = 8
   [../]
 
-  [./shale2]
+  [./shale_bottom]
     type = Shale
     block = 9
   [../]
 []
 
 [BCs]
-  [./bottom_shale1]
+  [./bottom]
     type = DirichletBC
     variable = temperature
     boundary = 'bottom'
     value = 31
   [../]
-  [./top_shale1]
+  [./top]
     type = DirichletBC
     variable = temperature
     boundary = 'top'
@@ -66,9 +52,11 @@
   type = Steady
   solve_type = PJFNK
 []
-      
+
 [Outputs]
   execute_on = timestep_end
+  file_base = threeLayers_syncline_shale_1.05_sand_2.5
   exodus = true
+  xda = true
 []
 
