@@ -107,51 +107,51 @@
 []
 
 [Outputs]
-  #exodus = true
-  #xda = true
-  #xdr = true
-  #execute_on = 'timestep_end'
+  exodus = true
+  xda = true
+  xdr = true
+  execute_on = 'timestep_end'
 
-  #[./RBOutput]
-  #  type = RBOutput
+  [./RBOutput]
+    type = RBOutput
 
-  #  parameters_filename = '/home/bl1/projects/DwarfElephant/threeLayers_parallel_RB.i'
+    parameters_filename = '/home/bl1/projects/DwarfElephant/threeLayers_parallel_RB.i'
 
-  #  offline_stage = true
-  #  online_stage = true
-  #  store_basis_functions = true
+    offline_stage = true
+    online_stage = true
+    store_basis_functions = true
 
-  #  online_N = 20
-  #  online_mu0 = 1.05
-  #[../]
+    online_N = 20
+    online_mu0 = 1.05
+  [../]
 
-  #[./F0]
-  #  type = XDR
-  #  show = loadVectorF0
-  #  execute_on = 'timestep_end'
-  #  file_base = loadVectorF0
-  #[../]
+  [./F0]
+    type = XDR
+    show = loadVectorF0
+    execute_on = 'timestep_end'
+    file_base = loadVectorF0
+  [../]
 
-  #[./A0]
-  #  type = XDR
-  #  show = stiffnessMatrixA0
-  #  execute_on = 'timestep_end'
-  #  file_base = stiffnessMatrixA0
-  #[../]
+  [./A0]
+    type = XDR
+    show = stiffnessMatrixA0
+    execute_on = 'timestep_end'
+    file_base = stiffnessMatrixA0
+  [../]
 
-  #[./A1]
-  #  type = XDR
-  #  show = stiffnessMatrixA1
-  #  execute_on = 'timestep_end'
-  #  file_base = stiffnessMatrixA1
-  #[../]
+  [./A1]
+    type = XDR
+    show = stiffnessMatrixA1
+    execute_on = 'timestep_end'
+    file_base = stiffnessMatrixA1
+  [../]
 
-  #[./A2]
-  #  type = XDR
-  #  show = stiffnessMatrixA2
-  #  execute_on = 'timestep_end'
-  #  file_base = stiffnessMatrixA2
-  #[../]
+  [./A2]
+    type = XDR
+    show = stiffnessMatrixA2
+    execute_on = 'timestep_end'
+    file_base = stiffnessMatrixA2
+  [../]
 []
 
 
