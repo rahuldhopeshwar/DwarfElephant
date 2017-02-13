@@ -52,6 +52,10 @@
     block = 0
   [../]
 
+  [KernelOutput]
+    variables = 'temperature loadVectorF0 stiffnessMatrixA0'
+  []
+
 #  [./RBSandstone]
 #    type = RBDiffusion
 #    variable = temperature
@@ -125,33 +129,33 @@
     online_mu0 = 1.05
   [../]
 
-  [./F0]
-    type = XDR
-    show = loadVectorF0
-    execute_on = 'timestep_end'
-    file_base = loadVectorF0
-  [../]
+ # [./F0]
+ #   type = XDR
+ #   show = loadVectorF0
+ #   execute_on = 'timestep_end'
+ #   file_base = loadVectorF0
+ # [../]
 
-  [./A0]
-    type = XDR
-    show = stiffnessMatrixA0
-    execute_on = 'timestep_end'
-    file_base = stiffnessMatrixA0
-  [../]
+ # [./A0]
+ #   type = XDR
+ #   show = stiffnessMatrixA0
+ #   execute_on = 'timestep_end'
+ #   file_base = stiffnessMatrixA0
+ # [../]
 
-  [./A1]
-    type = XDR
-    show = stiffnessMatrixA1
-    execute_on = 'timestep_end'
-    file_base = stiffnessMatrixA1
-  [../]
+ # [./A1]
+ #   type = XDR
+ #   show = stiffnessMatrixA1
+ #   execute_on = 'timestep_end'
+ #   file_base = stiffnessMatrixA1
+ # [../]
 
-  [./A2]
-    type = XDR
-    show = stiffnessMatrixA2
-    execute_on = 'timestep_end'
-    file_base = stiffnessMatrixA2
-  [../]
+ # [./A2]
+ #   type = XDR
+ #   show = stiffnessMatrixA2
+ #   execute_on = 'timestep_end'
+ #   file_base = stiffnessMatrixA2
+ # [../]
 []
 
 

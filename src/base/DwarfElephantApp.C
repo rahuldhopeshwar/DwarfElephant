@@ -1,8 +1,12 @@
 #include "DwarfElephantApp.h"
 #include "Moose.h"
 #include "AppFactory.h"
+#include "ActionFactory.h"
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
+
+// Actions
+#include "KernelOutputAction.h"
 
 // Kernels
 #include "Conduction.h"
@@ -69,6 +73,8 @@ DwarfElephantApp::registerObjects(Factory & factory)
 // External entry point for dynamic syntax association
 extern "C" void DwarfElephantApp__associateSyntax(Syntax & syntax, ActionFactory & action_factory) { DwarfElephantApp::associateSyntax(syntax, action_factory); }
 void
-DwarfElephantApp::associateSyntax(Syntax & /*syntax*/, ActionFactory & /*action_factory*/)
+DwarfElephantApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
 {
+    registerAction(KernelOutputAction, "add_kernel");
+    syntax.registerActionSyntax("KernelOutputAction", "KernelOutput");
 }
