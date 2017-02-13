@@ -1,0 +1,43 @@
+/**
+ * This Kernel implements the Diffusion problem by using the RB method.
+ * It is important to note that every PDE that will be used within the RB
+ * method has to inherit from RBKernel and not from Kernel.
+ * Furthermore, one should recall that the stiffness matrix and the load
+ * vector are constructed out of the parameter independent part of the
+ * PDE. Therefore, the functions computeQpResidual() and computeQpJacobian()
+ * should only contain this parameter independent part. Consequently, the
+ * RBDiffusion Kernel is used for a Conduction problem.
+ */
+
+///---------------------------------INCLUDES--------------------------------
+//MOOSE includes (DwarfElephant package)
+#include "RBDiffusion.h"
+
+///----------------------------INPUT PARAMETERS-----------------------------
+template<>
+InputParameters validParams<RBDiffusion>()
+{
+  InputParameters params = validParams<RBKernel>();
+  params.addClassDescription("Implements a Diffusion problem using \
+                             the RBKernel.");
+  return params;
+}
+
+///-------------------------------CONSTRUCTOR-------------------------------
+RBDiffusion::RBDiffusion(const InputParameters & parameters) :
+  RBKernel(parameters)
+{
+}
+
+///----------------------------------PDEs-----------------------------------
+Real
+RBDiffusion::computeQpResidual()
+{
+  return _grad_u[_qp] * _grad_test[_i][_qp];
+}
+
+Real
+RBDiffusion::computeQpJacobian()
+{
+  return _grad_phi[_j][_qp] * _grad_test[_i][_qp];
+}
