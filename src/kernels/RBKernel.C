@@ -59,7 +59,6 @@ RBKernel::computeJacobian()
     unsigned int rows = ke.m();
     unsigned int columns = ke.n();
     DenseVector<Number> actualRow(rows);
-    DenseVector<Number> nextRow(rows);
 
     for (unsigned int j=0; j<columns; j++)
     {
@@ -73,6 +72,7 @@ RBKernel::computeJacobian()
        var->sys().solution().add_vector(actualRow, var->dofIndices());
       }
     }
+
   }
 }
 

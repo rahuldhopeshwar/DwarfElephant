@@ -101,24 +101,26 @@ struct A0 : ElemAssembly
     /// Read the MOOSE produced stiffness matrix entries corresponding to the
     /// first layer in.
 
-    const std::string data_name = "stiffnessMatrixA0_0000";
-
-    // Reading mode: DECODE since we work with a binary file
-    XdrMODE mode = DECODE;
-
-    // Suffix
-    const std::string suffix = ".xdr";
-
-    // String streanm for making this file
-    std::ostringstream file_name;
+//    const std::string data_name = "stiffnessMatrixA0_0000";
 //
-    DenseMatrix<Number> jacobian_0;
+//    // Reading mode: DECODE since we work with a binary file
+//    XdrMODE mode = DECODE;
 //
-    file_name << data_name << suffix;
+//    // Suffix
+//    const std::string suffix = ".xdr";
 //
-    Xdr jacobian_0_in(file_name.str(), mode);
-//    jacobian_0_in >> jacobian_0;
-    jacobian_0_in.close();
+//    // String streanm for making this file
+//    std::ostringstream file_name;
+////
+//    DenseMatrix<Number> jacobian_0;
+////
+//    file_name << data_name << suffix;
+////
+//    Xdr jacobian_0_in(file_name.str(), mode);
+////    jacobian_0_in >> jacobian_0;
+//    jacobian_0_in.close();
+
+//    ExodusII_IO exodus_file
 
     const unsigned int u_var = 0;
     FEBase * elem_fe = libmesh_nullptr;

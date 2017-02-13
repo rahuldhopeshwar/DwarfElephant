@@ -1,23 +1,22 @@
 [Mesh]
-#  file = parallel.msh
-  type = GeneratedMesh
-  dim = 3
-  nx = 10
-  ny = 4
-  nz = 2
-  xmin = 0.0
-  xmax = 3000
-  ymin = 0.0
-  ymax = 700
-  zmin = 0.0
-  zmax = 1000
+  file = parallel.msh
+#  type = GeneratedMesh
+#  dim = 3
+#  nx = 10
+#  ny = 4
+#  nz = 2
+#  xmin = 0.0
+#  xmax = 3000
+#  ymin = 0.0
+#  ymax = 700
+#  zmin = 0.0
+#  zmax = 1000
 []
 
 [Variables]
   [./temperature]
     order = FIRST
     family = LAGRANGE
-
   [../]
 []
 
@@ -49,29 +48,33 @@
     variable = temperature
     diag_save_in = stiffnessMatrixA0
     save_in = loadVectorF0
-    block = 0
+    block = 7
   [../]
 
-  [KernelOutput]
-    variables = 'temperature loadVectorF0 stiffnessMatrixA0'
-  []
+  [./RBSandstone]
+    type = RBDiffusion
+    variable = temperature
+    diag_save_in = stiffnessMatrixA1
+    save_in = loadVectorF0
+    block = 8
+  [../]
 
-#  [./RBSandstone]
-#    type = RBDiffusion
-#    variable = temperature
-#    diag_save_in = stiffnessMatrixA1
-#    save_in = loadVectorF0
-#    block = 8
-#  [../]
-
-#  [./RBShaleBottom]
-#    type = RBDiffusion
-#    variable = temperature
-#    diag_save_in = stiffnessMatrixA2
-#    save_in = loadVectorF0
-#    block = 9
-#  [../]
+  [./RBShaleBottom]
+    type = RBDiffusion
+    variable = temperature
+    diag_save_in = stiffnessMatrixA2
+    save_in = loadVectorF0
+    block = 9
+  [../]
 []
+
+#[AuxKernels]
+#  [./test]
+#    type = KernelOutputAux
+#    variable = loadVectorF0
+#    console = true
+#  [../]
+#[]
 
 #[Materials]
 #  [./shale_top]
@@ -116,48 +119,54 @@
   xdr = true
   execute_on = 'timestep_end'
 
-  [./RBOutput]
-    type = RBOutput
-
-    parameters_filename = '/home/bl1/projects/DwarfElephant/threeLayers_parallel_RB.i'
-
-    offline_stage = true
-    online_stage = true
-    store_basis_functions = true
-
-    online_N = 20
-    online_mu0 = 1.05
+  [./KernelOutput]
+    type = KernelOutput
+    variable = loadVectorF0
   [../]
 
+ # [./RBOutput]
+ #   type = RBOutput
+
+ #   parameters_filename = '/home/bl1/projects/DwarfElephant/threeLayers_parallel_RB.i'
+
+ #   offline_stage = true
+ #   online_stage = true
+ #   store_basis_functions = true
+
+ #   online_N = 20
+ #   online_mu0 = 1.05
+
+    #variable = loadVectorF0
+ # [../]
+
  # [./F0]
- #   type = XDR
+ #   type = Exodus
  #   show = loadVectorF0
  #   execute_on = 'timestep_end'
  #   file_base = loadVectorF0
  # [../]
 
  # [./A0]
- #   type = XDR
+ #   type = Exodus
  #   show = stiffnessMatrixA0
  #   execute_on = 'timestep_end'
  #   file_base = stiffnessMatrixA0
  # [../]
 
  # [./A1]
- #   type = XDR
+ #   type = Exodus
  #   show = stiffnessMatrixA1
  #   execute_on = 'timestep_end'
  #   file_base = stiffnessMatrixA1
  # [../]
 
  # [./A2]
- #   type = XDR
+ #   type = Exodus
  #   show = stiffnessMatrixA2
  #   execute_on = 'timestep_end'
  #   file_base = stiffnessMatrixA2
  # [../]
 []
-
 
 # ====================== Parameters for the RB approximation ======================
 

@@ -63,6 +63,10 @@ protected:
    Real _online_mu0_parameters;
 
    MooseMesh * _mesh_ptr;
+//   THREAD_ID _tid;
+//   AuxiliarySystem * _aux_sys_ptr;
+//   unsigned int _n_aux_var;
+//   MooseVariable & _var;
 };
 
 #endif // RBOUTPUT

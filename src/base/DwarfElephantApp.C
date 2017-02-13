@@ -1,17 +1,20 @@
-#include "DwarfElephantApp.h"
+/// MOOSE includes
 #include "Moose.h"
 #include "AppFactory.h"
-#include "ActionFactory.h"
+//#include "ActionFactory.h"
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
 
-// Actions
-#include "KernelOutputAction.h"
+/// MOOSE includes (DwarfElephant package)
+#include "DwarfElephantApp.h"
 
 // Kernels
 #include "Conduction.h"
 #include "RBKernel.h"
 #include "RBDiffusion.h"
+
+// AuxKernels
+#include "KernelOutputAux.h"
 
 // Materials
 #include "SandStone.h"
@@ -19,6 +22,7 @@
 
 //Outputs
 #include "RBOutput.h"
+#include "KernelOutput.h"
 
 template<>
 InputParameters validParams<DwarfElephantApp>()
@@ -57,10 +61,13 @@ void
 DwarfElephantApp::registerObjects(Factory & factory)
 {
 //  // Register any custom objects you have built on the MOOSE Framework
-//  // Kernels
+  // Kernels
   registerKernel(Conduction);
   registerKernel(RBKernel);
   registerKernel(RBDiffusion);
+
+  // AuxKernels
+  registerAux(KernelOutputAux);
 
   // Materials
   registerMaterial(SandStone);
@@ -68,13 +75,14 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // Outputs
   registerOutput(RBOutput);
+  registerOutput(KernelOutput);
 }
 
 // External entry point for dynamic syntax association
 extern "C" void DwarfElephantApp__associateSyntax(Syntax & syntax, ActionFactory & action_factory) { DwarfElephantApp::associateSyntax(syntax, action_factory); }
 void
-DwarfElephantApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
+DwarfElephantApp::associateSyntax(Syntax & /*syntax*/, ActionFactory & /*action_factory*/)
 {
-    registerAction(KernelOutputAction, "add_kernel");
-    syntax.registerActionSyntax("KernelOutputAction", "KernelOutput");
+//    registerAction(KernelOutputAction, "add_postprocessor");
+//    syntax.registerActionSyntax("KernelOutputAction", "KernelOutput");
 }

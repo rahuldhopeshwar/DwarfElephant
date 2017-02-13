@@ -38,7 +38,12 @@ protected:
   /* Methods */
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
-};
+
+//  std::ofstream _file_output;
+//  _file_output.open("test_file.txt");
+
+  friend class RBOutput;
+  };
 
 ///-------------------------------------------------------------------------
 #endif //RBKERNEL_H

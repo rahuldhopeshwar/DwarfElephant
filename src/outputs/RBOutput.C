@@ -35,6 +35,9 @@ InputParameters validParams<RBOutput>()
   params.addRequiredParam<std::string>("parameters_filename","Path to the \
                                         input file. Required for the libMesh\
                                         functions");
+//  params.addRequiredParam<NonlinearVariableName>("variable", "The name of \
+                                                  the variable that this \
+                                                  class should output.");
 
   //params.set<MultiMooseEnum>("execute_on", /*quiet_mode=*/true).push_back("initial timestep_begin linear nonlinear failed");
   params.set<MultiMooseEnum>("execute_system_information_on") = "initial timestep_end";
@@ -57,11 +60,14 @@ RBOutput::RBOutput(const InputParameters & parameters) :
     _online_N(getParam<unsigned int>("online_N")),
     _online_mu0_parameters(getParam<Real>("online_mu0")),
     _mesh_ptr(&_problem_ptr->mesh())
-//    _non_sys_ptr(&_problem_ptr->getNonlinearSystem()),
+//    _tid(parameters.get<THREAD_ID>("_tid")),
+////    _non_sys_ptr(&_problem_ptr->getNonlinearSystem()),
 //    _aux_sys_ptr(&_problem_ptr->getAuxiliarySystem()),
+//    _n_aux_var(_aux_sys_ptr->nVariables()),
+////    _var(_aux_sys_ptr->getVariable(_tid, parameters.get<NonlinearVariableName>("variable")))
+//    _var(_aux_sys_ptr->getVariable(_tid, 1))
 //    _kernel_warehouse(_non_sys_ptr->getKernelWarehouse()),
 //    _no_time_kernels_ref(_non_sys_ptr->getNonTimeKernelWarehouse()),
-//    _tid(parameters.isParamValid("_tid") ? parameters.get<THREAD_ID>("_tid") : 0),
 //    _assembly_ptr(&_problem_ptr->assembly(_tid)),
 //    _test(getParam<unsigned int>("test")),
 //    _ptr(_problem_ptr->couplingMatrix()),
@@ -147,6 +153,29 @@ RBOutput::output(const ExecFlagType & type)
 {
   if (type==EXEC_TIMESTEP_END)
   {
-    performRBSystem();
+//    std::ofstream _file_output;
+//    _file_output.open("test3.txt");
+//
+//    const NumericVector< Number > * _residual_current = _aux_sys_ptr->currentSolution();
+//    NumericVector< Number > & _residual = _aux_sys_ptr->solution();
+//    NumericVector< Number > & _residual_old = _aux_sys_ptr->solutionOld();
+//    NumericVector< Number > & _residual_older = _aux_sys_ptr->solutionOlder();
+//
+//    _file_output << _residual_current << std::endl;
+////    _file_output << std::endl;
+//    _file_output << _residual << std::endl;
+////    _file_output << std::endl;
+//    _file_output << _residual_old << std::endl;
+////    _file_output << std::endl;
+//    _file_output << _residual_older << std::endl;
+//    _file_output.close();
+//
+//    _console << std::endl;
+//    _console << _n_aux_var << std::endl;
+//    _console << std::endl;
+//    _console << _residual << std::endl;
+//    _console << std::endl;
+
+//    performRBSystem();
   }
 }
