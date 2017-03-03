@@ -21,6 +21,9 @@
 #define RBSTRUCTURESP1_3THETAEQUALMUCOMPLIANT_H
 
 ///---------------------------------INCLUDES--------------------------------
+#include <iostream>
+#include <fstream>
+
 // libMesh includes
 #include "libmesh/sparse_matrix.h"
 #include "libmesh/numeric_vector.h"
@@ -32,6 +35,8 @@
 #include "libmesh/elem_assembly.h"
 #include "libmesh/quadrature_gauss.h"
 #include "libmesh/getpot.h"
+#include "libmesh/mesh_base.h"
+#include "libmesh/parallel_object.h"
 
 #include "libmesh/exodusII_io.h"
 #include "libmesh/xdr_cxx.h"
@@ -39,6 +44,11 @@
 // libMesh includes (RB package)
 #include "libmesh/rb_theta.h"
 #include "libmesh/rb_assembly_expansion.h"
+
+#include "RBKernel.h"
+#include "InputParameters.h"
+#include "FEProblemBase.h"
+#include "MooseApp.h"
 
 // Bring in bits from the libMesh namespace.
 // Just the bits we're using, since this is a header.
@@ -54,6 +64,10 @@ using libMesh::RBThetaExpansion;
 using libMesh::Real;
 using libMesh::RealGradient;
 using libMesh::FEBase;
+using libMesh::MeshBase;
+using libMesh::ParallelObject;
+
+class RBKernel;
 
 ///------------------------------------RB-----------------------------------
 
@@ -95,36 +109,12 @@ struct ThetaA2 : RBTheta
 
 struct A0 : ElemAssembly
 {
+  // Assemble the Laplacian operator
   virtual void interior_assembly(FEMContext & c)
   {
-
-    /// Read the MOOSE produced stiffness matrix entries corresponding to the
-    /// first layer in.
-
-//    const std::string data_name = "stiffnessMatrixA0_0000";
-//
-//    // Reading mode: DECODE since we work with a binary file
-//    XdrMODE mode = DECODE;
-//
-//    // Suffix
-//    const std::string suffix = ".xdr";
-//
-//    // String streanm for making this file
-//    std::ostringstream file_name;
-////
-//    DenseMatrix<Number> jacobian_0;
-////
-//    file_name << data_name << suffix;
-////
-//    Xdr jacobian_0_in(file_name.str(), mode);
-////    jacobian_0_in >> jacobian_0;
-//    jacobian_0_in.close();
-
-//    ExodusII_IO exodus_file
-
     const unsigned int u_var = 0;
-    FEBase * elem_fe = libmesh_nullptr;
 
+    FEBase * elem_fe = libmesh_nullptr;
     c.get_element_fe(u_var, elem_fe);
 
     const std::vector<Real> & JxW = elem_fe->get_JxW();
@@ -142,17 +132,18 @@ struct A0 : ElemAssembly
     for (unsigned int qp=0; qp != n_qpoints; qp++)
       for (unsigned int i=0; i != n_u_dofs; i++)
         for (unsigned int j=0; j != n_u_dofs; j++)
-          c.get_elem_jacobian()(i,j) += JxW[qp]*dphi[j][qp]*dphi[i][qp];
+          c.get_elem_jacobian()(i,j) += JxW[qp] * dphi[j][qp]*dphi[i][qp];
   }
 };
 
 struct A1 : ElemAssembly
 {
+  // Assemble the Laplacian operator
   virtual void interior_assembly(FEMContext & c)
   {
     const unsigned int u_var = 0;
-    FEBase * elem_fe = libmesh_nullptr;
 
+    FEBase * elem_fe = libmesh_nullptr;
     c.get_element_fe(u_var, elem_fe);
 
     const std::vector<Real> & JxW = elem_fe->get_JxW();
@@ -170,17 +161,18 @@ struct A1 : ElemAssembly
     for (unsigned int qp=0; qp != n_qpoints; qp++)
       for (unsigned int i=0; i != n_u_dofs; i++)
         for (unsigned int j=0; j != n_u_dofs; j++)
-          c.get_elem_jacobian()(i,j) += JxW[qp]*dphi[j][qp]*dphi[i][qp];
+          c.get_elem_jacobian()(i,j) += JxW[qp] * dphi[j][qp]*dphi[i][qp];
   }
 };
 
 struct A2 : ElemAssembly
 {
+  // Assemble the Laplacian operator
   virtual void interior_assembly(FEMContext & c)
   {
     const unsigned int u_var = 0;
-    FEBase * elem_fe = libmesh_nullptr;
 
+    FEBase * elem_fe = libmesh_nullptr;
     c.get_element_fe(u_var, elem_fe);
 
     const std::vector<Real> & JxW = elem_fe->get_JxW();
@@ -198,10 +190,9 @@ struct A2 : ElemAssembly
     for (unsigned int qp=0; qp != n_qpoints; qp++)
       for (unsigned int i=0; i != n_u_dofs; i++)
         for (unsigned int j=0; j != n_u_dofs; j++)
-          c.get_elem_jacobian()(i,j) += JxW[qp]*dphi[j][qp]*dphi[i][qp];
+          c.get_elem_jacobian()(i,j) += JxW[qp] * dphi[j][qp]*dphi[i][qp];
   }
 };
-
 ///------------------------------------F------------------------------------
 /**
  * Assembles the load vector by calling the corresponding RBKernel
@@ -210,10 +201,10 @@ struct A2 : ElemAssembly
  */
 
 struct F0 : ElemAssembly
-  {
+{
+  // Source term, 1 throughout the domain
   virtual void interior_assembly(FEMContext & c)
   {
-
     const unsigned int u_var = 0;
 
     FEBase * elem_fe = libmesh_nullptr;
@@ -230,12 +221,8 @@ struct F0 : ElemAssembly
     unsigned int n_qpoints = c.get_element_qrule().n_points();
 
     for (unsigned int qp=0; qp != n_qpoints; qp++)
-    {
       for (unsigned int i=0; i != n_u_dofs; i++)
-      {
         c.get_elem_residual()(i) += JxW[qp] * (1.*phi[i][qp]);
-      }
-    }
   }
 };
 
@@ -247,6 +234,7 @@ struct F0 : ElemAssembly
 
 struct O0 : ElemAssembly
 {
+  // Source term, 1 throughout the domain
   virtual void interior_assembly(FEMContext & c)
   {
     const unsigned int u_var = 0;
@@ -267,11 +255,8 @@ struct O0 : ElemAssembly
     for (unsigned int qp=0; qp != n_qpoints; qp++)
       for (unsigned int i=0; i != n_u_dofs; i++)
         c.get_elem_residual()(i) += JxW[qp] * (1.*phi[i][qp]);
-
   }
-
 };
-
 ///----------------------------RBTHETAEXPANSION-----------------------------
 /**
  * Attaches the stiffness matrix and the theta object to a structure of the

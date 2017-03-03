@@ -13,16 +13,16 @@
 #include "RBKernel.h"
 #include "RBDiffusion.h"
 
-// AuxKernels
-#include "KernelOutputAux.h"
-
 // Materials
 #include "SandStone.h"
 #include "Shale.h"
+#include "ThetaObject.h"
 
-//Outputs
+// UserObjects
+#include "DwarfElephantRBSystem.h"
+
+// Outputs
 #include "RBOutput.h"
-#include "KernelOutput.h"
 
 template<>
 InputParameters validParams<DwarfElephantApp>()
@@ -66,16 +66,17 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerKernel(RBKernel);
   registerKernel(RBDiffusion);
 
-  // AuxKernels
-  registerAux(KernelOutputAux);
-
   // Materials
   registerMaterial(SandStone);
   registerMaterial(Shale);
+  registerMaterial(ThetaObject);
+
+  // UserObjects
+  registerUserObject(DwarfElephantRBSystem);
 
   // Outputs
   registerOutput(RBOutput);
-  registerOutput(KernelOutput);
+
 }
 
 // External entry point for dynamic syntax association
@@ -83,6 +84,6 @@ extern "C" void DwarfElephantApp__associateSyntax(Syntax & syntax, ActionFactory
 void
 DwarfElephantApp::associateSyntax(Syntax & /*syntax*/, ActionFactory & /*action_factory*/)
 {
-//    registerAction(KernelOutputAction, "add_postprocessor");
-//    syntax.registerActionSyntax("KernelOutputAction", "KernelOutput");
+//    registerAction(ReadDataFromMooseOutputAction, "add_output");
+//    syntax.registerActionSyntax("ReadDataFromMooseOutputAction", "ReadDataFromMooseOutput");
 }

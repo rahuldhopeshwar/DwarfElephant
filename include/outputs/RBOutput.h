@@ -18,7 +18,7 @@
 #include "FileMesh.h"
 
 // MOOSE includes (DwarfElephant package)
-#include "RBSimpleClasses.h"
+#include "DwarfElephantRBClasses.h"
 
 // Forward declarations
 namespace libMesh
@@ -27,8 +27,8 @@ namespace libMesh
 
   class RBConstruction;
   class RBEvaluation;
-
-  class RBClasses;
+//
+//  class RBClasses;
   }
 
 class MooseMesh;
@@ -39,34 +39,38 @@ InputParameters validParams<RBOutput>();
 
 class RBOutput :
   public AdvancedOutput<FileOutput>
-
 {
 public:
-
   RBOutput(const InputParameters & parameters);
 
-  virtual void output(const ExecFlagType & type);
+  virtual void output(const ExecFlagType & type) override;
 
-  virtual void performRBSystem();
+  void performRBSystemOld();
+
+  void prepareDataStructuresRB();
+
 //  virtual void RBOffline();
 //  virtual void RBOnline();
 
 protected:
+  std::string parameters_filename;
 
-   std::string parameters_filename;
+  bool _offline_stage;
+  bool _online_stage;
+  bool _store_basis_functions;
 
-   bool _offline_stage;
-   bool _online_stage;
-   bool _store_basis_functions;
+  unsigned int _online_N;
 
-   unsigned int _online_N;
-   Real _online_mu0_parameters;
+  Real _online_mu;
 
-   MooseMesh * _mesh_ptr;
-//   THREAD_ID _tid;
-//   AuxiliarySystem * _aux_sys_ptr;
-//   unsigned int _n_aux_var;
-//   MooseVariable & _var;
+  bool _skip_matrix_assembly;
+  bool _skip_vector_assembly;
+
+  MooseMesh * _mesh_ptr;
+
+  std::string _system_name;
+
+  System * _system;
 };
 
 #endif // RBOUTPUT

@@ -30,6 +30,7 @@ public:
   RBKernel(const InputParameters & parameters);
 
  /* Methods */
+  virtual void computeResidual() override;
   virtual void computeJacobian() override;
 
 //--------------------------------PROTECTED---------------------------------

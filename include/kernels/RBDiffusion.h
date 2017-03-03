@@ -39,7 +39,6 @@ protected:
   /* Methods */
   virtual Real computeQpResidual() override;
   virtual Real computeQpJacobian() override;
-
 };
 
 ///-------------------------------------------------------------------------

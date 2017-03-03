@@ -40,6 +40,28 @@ RBKernel::RBKernel(const InputParameters & parameters) :
 
 ///-------------------------------------------------------------------------
 void
+RBKernel::computeResidual()
+{
+  DenseVector<Number> & re = _assembly.residualBlock(_var.number());
+  _local_re.resize(re.size());
+  _local_re.zero();
+
+  precalculateResidual();
+  for (_i = 0; _i < _test.size(); _i++)
+    for (_qp = 0; _qp < _qrule->n_points(); _qp++)
+      _local_re(_i) += _JxW[_qp] * _coord[_qp] * computeQpResidual();
+
+  re += _local_re;
+
+  if (_has_save_in)
+  {
+    Threads::spin_mutex::scoped_lock lock(Threads::spin_mtx);
+    for (const auto & var : _save_in)
+      var->sys().solution().add_vector(_local_re, var->dofIndices());
+  }
+}
+
+void
 RBKernel::computeJacobian()
 {
   DenseMatrix<Number> & ke = _assembly.jacobianBlock(_var.number(), _var.number());
@@ -70,9 +92,8 @@ RBKernel::computeJacobian()
           actualRow(i) = _local_ke(i,j);
         }
        var->sys().solution().add_vector(actualRow, var->dofIndices());
-      }
-    }
-
+       }
+     }
   }
 }
 

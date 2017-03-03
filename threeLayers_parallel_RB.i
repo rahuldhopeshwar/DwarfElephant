@@ -1,16 +1,5 @@
 [Mesh]
   file = parallel.msh
-#  type = GeneratedMesh
-#  dim = 3
-#  nx = 10
-#  ny = 4
-#  nz = 2
-#  xmin = 0.0
-#  xmax = 3000
-#  ymin = 0.0
-#  ymax = 700
-#  zmin = 0.0
-#  zmax = 1000
 []
 
 [Variables]
@@ -20,61 +9,53 @@
   [../]
 []
 
-[AuxVariables]
-  [./loadVectorF0]
-    order = FIRST
-    family = LAGRANGE
-  [../]
+#[AuxVariables]
+#  [./loadVectorF0]
+#   order = FIRST
+#    family = LAGRANGE
+#  [../]
 
-  [./stiffnessMatrixA0]
-    order = FIRST
-    family = LAGRANGE
-  [../]
+#  [./stiffnessMatrixA0]
+#    order = FIRST
+#    family = LAGRANGE
+#  [../]
 
-  [./stiffnessMatrixA1]
-    order = FIRST
-    family = LAGRANGE
-  [../]
+#  [./stiffnessMatrixA1]
+#    order = FIRST
+#    family = LAGRANGE
+#  [../]
 
-  [./stiffnessMatrixA2]
-    order = FIRST
-    family = LAGRANGE
-  [../]
-[]
+#  [./stiffnessMatrixA2]
+#    order = FIRST
+#    family = LAGRANGE
+# [../]
+#[]
 
 [Kernels]
-  [./RBShaleTop]
-    type = RBDiffusion
+  [./RBConduction]
+    type = Diffusion
     variable = temperature
-    diag_save_in = stiffnessMatrixA0
-    save_in = loadVectorF0
-    block = 7
+ #   diag_save_in = stiffnessMatrixA0
+ #   save_in = loadVectorF0
+   # block = 7
   [../]
 
-  [./RBSandstone]
-    type = RBDiffusion
-    variable = temperature
-    diag_save_in = stiffnessMatrixA1
-    save_in = loadVectorF0
-    block = 8
-  [../]
+ # [./RBSandstone]
+ #   type = RBDiffusion
+ #   variable = temperature
+ #   diag_save_in = stiffnessMatrixA1
+ #   save_in = loadVectorF0
+ #   block = 8
+ # [../]
 
-  [./RBShaleBottom]
-    type = RBDiffusion
-    variable = temperature
-    diag_save_in = stiffnessMatrixA2
-    save_in = loadVectorF0
-    block = 9
-  [../]
-[]
-
-#[AuxKernels]
-#  [./test]
-#    type = KernelOutputAux
-#    variable = loadVectorF0
-#    console = true
-#  [../]
-#[]
+ # [./RBShaleBottom]
+ #   type = RBDiffusion
+ #   variable = temperature
+ #   diag_save_in = stiffnessMatrixA2
+ #   save_in = loadVectorF0
+ #   block = 9
+ # [../]
+ []
 
 #[Materials]
 #  [./shale_top]
@@ -113,59 +94,32 @@
   solve_type = 'PJFNK'
 []
 
+[UserObjects]
+  [./prepareData_block7]
+    type = DwarfElephantRBSystem
+    system = nl0
+
+    parameters_filename = 'threeLayers_parallel_RB.i'
+
+    offline_stage = true
+    online_stage = true
+    store_basis_functions = true
+
+    online_N = 20
+    online_mu = '1.05 2.5 1.5'
+
+    file_name = large_model
+
+    #block = 7
+  [../]
+[]
+
 [Outputs]
   exodus = true
   xda = true
   xdr = true
   execute_on = 'timestep_end'
-
-  [./KernelOutput]
-    type = KernelOutput
-    variable = loadVectorF0
-  [../]
-
- # [./RBOutput]
- #   type = RBOutput
-
- #   parameters_filename = '/home/bl1/projects/DwarfElephant/threeLayers_parallel_RB.i'
-
- #   offline_stage = true
- #   online_stage = true
- #   store_basis_functions = true
-
- #   online_N = 20
- #   online_mu0 = 1.05
-
-    #variable = loadVectorF0
- # [../]
-
- # [./F0]
- #   type = Exodus
- #   show = loadVectorF0
- #   execute_on = 'timestep_end'
- #   file_base = loadVectorF0
- # [../]
-
- # [./A0]
- #   type = Exodus
- #   show = stiffnessMatrixA0
- #   execute_on = 'timestep_end'
- #   file_base = stiffnessMatrixA0
- # [../]
-
- # [./A1]
- #   type = Exodus
- #   show = stiffnessMatrixA1
- #   execute_on = 'timestep_end'
- #   file_base = stiffnessMatrixA1
- # [../]
-
- # [./A2]
- #   type = Exodus
- #   show = stiffnessMatrixA2
- #   execute_on = 'timestep_end'
- #   file_base = stiffnessMatrixA2
- # [../]
+  #print_perf_log = true
 []
 
 # ====================== Parameters for the RB approximation ======================
@@ -183,7 +137,7 @@ mu_1 = '2.2 2.8'
 mu_2 = '0.95 1.15'
 
 # Define the number of training sets for the Greedy-algorithm
-n_training_samples = 100
+n_training_samples = 10
 
 # Optionally:
 # Determine whether the training points are generated randomly or deterministically
@@ -191,4 +145,6 @@ deterministic_training = false
 
 # Determine whether relative or absolute error bounds are used in the Greedy-algorithm
 use_relative_bound_in_greedy = false
+
+quiet_mode = false
 
