@@ -88,7 +88,9 @@ public:
 
     // Set the Dirichet boundary IDs
     // and the Dirichlet boundary variable numbers
+//    dirichlet_bc->b.insert(0);
     dirichlet_bc->b.insert(1);
+//    dirichlet_bc->b.insert(2);
     dirichlet_bc->b.insert(3);
     dirichlet_bc->variables.push_back(u_var);
 
