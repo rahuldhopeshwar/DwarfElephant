@@ -49,7 +49,7 @@ public:
     set_rb_theta_expansion(_rb_theta_expansion);
   }
 
-  virtual Real get_stability_lower_bound(){ return 0.05; };
+  virtual Real get_stability_lower_bound() { return 1.;}
 
   RBP1_3ThetaEqualMuThetaCompliantExpansion _rb_theta_expansion;
 };

@@ -19,6 +19,7 @@
 #include "ThetaObject.h"
 
 // UserObjects
+#include "DwarfElephantPrepareRBSystem.h"
 #include "DwarfElephantRBSystem.h"
 
 // Outputs
@@ -72,6 +73,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerMaterial(ThetaObject);
 
   // UserObjects
+  registerUserObject(DwarfElephantPrepareRBSystem);
   registerUserObject(DwarfElephantRBSystem);
 
   // Outputs
