@@ -93,13 +93,13 @@ struct ThetaA1 : RBTheta
   }
 };
 
-struct ThetaA2 : RBTheta
-{
-  virtual Number evaluate (RBParameters & _mu)
-  {
-    return _mu.get_value("mu_2");
-  }
-};
+//struct ThetaA2 : RBTheta
+//{
+//  virtual Number evaluate (RBParameters & _mu)
+//  {
+//    return _mu.get_value("mu_2");
+//  }
+//};
 
 ///------------------------------------A------------------------------------
 /**
@@ -165,34 +165,34 @@ struct A1 : ElemAssembly
   }
 };
 
-struct A2 : ElemAssembly
-{
-  // Assemble the Laplacian operator
-  virtual void interior_assembly(FEMContext & c)
-  {
-    const unsigned int u_var = 0;
-
-    FEBase * elem_fe = libmesh_nullptr;
-    c.get_element_fe(u_var, elem_fe);
-
-    const std::vector<Real> & JxW = elem_fe->get_JxW();
-
-    // The velocity shape function gradients at interior
-    // quadrature points.
-    const std::vector<std::vector<RealGradient> > & dphi = elem_fe->get_dphi();
-
-    // The number of local degrees of freedom in each variable
-    const unsigned int n_u_dofs = c.get_dof_indices(u_var).size();
-
-    // Now we will build the affine operator
-    unsigned int n_qpoints = c.get_element_qrule().n_points();
-
-    for (unsigned int qp=0; qp != n_qpoints; qp++)
-      for (unsigned int i=0; i != n_u_dofs; i++)
-        for (unsigned int j=0; j != n_u_dofs; j++)
-          c.get_elem_jacobian()(i,j) += JxW[qp] * dphi[j][qp]*dphi[i][qp];
-  }
-};
+//struct A2 : ElemAssembly
+//{
+//  // Assemble the Laplacian operator
+//  virtual void interior_assembly(FEMContext & c)
+//  {
+//    const unsigned int u_var = 0;
+//
+//    FEBase * elem_fe = libmesh_nullptr;
+//    c.get_element_fe(u_var, elem_fe);
+//
+//    const std::vector<Real> & JxW = elem_fe->get_JxW();
+//
+//    // The velocity shape function gradients at interior
+//    // quadrature points.
+//    const std::vector<std::vector<RealGradient> > & dphi = elem_fe->get_dphi();
+//
+//    // The number of local degrees of freedom in each variable
+//    const unsigned int n_u_dofs = c.get_dof_indices(u_var).size();
+//
+//    // Now we will build the affine operator
+//    unsigned int n_qpoints = c.get_element_qrule().n_points();
+//
+//    for (unsigned int qp=0; qp != n_qpoints; qp++)
+//      for (unsigned int i=0; i != n_u_dofs; i++)
+//        for (unsigned int j=0; j != n_u_dofs; j++)
+//          c.get_elem_jacobian()(i,j) += JxW[qp] * dphi[j][qp]*dphi[i][qp];
+//  }
+//};
 ///------------------------------------F------------------------------------
 /**
  * Assembles the load vector by calling the corresponding RBKernel
@@ -271,14 +271,14 @@ struct RBP1_3ThetaEqualMuThetaCompliantExpansion : RBThetaExpansion
     // Setting up the RBThetaExpansion object
     attach_A_theta(&_theta_a_0);
     attach_A_theta(&_theta_a_1);
-    attach_A_theta(&_theta_a_2);
+//    attach_A_theta(&_theta_a_2);
     attach_F_theta(&_rb_theta);
     attach_output_theta(&_rb_theta);
   }
   // Member Variables
   ThetaA0 _theta_a_0;
   ThetaA1 _theta_a_1;
-  ThetaA2 _theta_a_2;
+//  ThetaA2 _theta_a_2;
   RBTheta _rb_theta;         // Default RBTheta object, simply returns one.
 };
 
@@ -294,7 +294,7 @@ struct RBP1_3ThetaEqualMuAssemblyCompliantExpansion : RBAssemblyExpansion
   {
     attach_A_assembly(&A0_assembly);
     attach_A_assembly(&A1_assembly);
-    attach_A_assembly(&A2_assembly);
+//    attach_A_assembly(&A2_assembly);
     attach_F_assembly(&F0_assembly);
     attach_output_assembly(&O0_assembly);
   }
@@ -302,7 +302,7 @@ struct RBP1_3ThetaEqualMuAssemblyCompliantExpansion : RBAssemblyExpansion
   // Member Variables
   A0 A0_assembly;
   A1 A1_assembly;
-  A2 A2_assembly;
+//  A2 A2_assembly;
   F0 F0_assembly;
   O0 O0_assembly;
 };

@@ -65,8 +65,8 @@ public:
   DwarfElephantRBConstruction (EquationSystems & es,
                         const std::string & name_in,
                         const unsigned int number_in)
-    : Parent(es, name_in, number_in),
-      dirichlet_bc(UniquePtr<DirichletBoundary>())
+    : Parent(es, name_in, number_in)//,
+//      dirichlet_bc(UniquePtr<DirichletBoundary>())
   {}
 
   // Destructor
@@ -84,44 +84,44 @@ public:
     u_var = this->add_variable ("u", libMesh::FIRST);
 
     // Generate a DirichletBoundary object
-    dirichlet_bc = build_zero_dirichlet_boundary_object();
+//    dirichlet_bc = build_zero_dirichlet_boundary_object();
 
     // Set the Dirichet boundary IDs
     // and the Dirichlet boundary variable numbers
 //    dirichlet_bc->b.insert(0);
-    dirichlet_bc->b.insert(1);
+//    dirichlet_bc->b.insert(1);
 //    dirichlet_bc->b.insert(2);
-    dirichlet_bc->b.insert(3);
-    dirichlet_bc->variables.push_back(u_var);
+//    dirichlet_bc->b.insert(3);
+//    dirichlet_bc->variables.push_back(u_var);
 
     // Attach dirichlet_bc (must do this _before_ Parent::init_data)
-    get_dof_map().add_dirichlet_boundary(*dirichlet_bc);
+//    get_dof_map().add_dirichlet_boundary(*dirichlet_bc);
 
     Parent::init_data();
 
     // Set the rb_assembly_expansion for this Construction object.
     // The theta expansion comes from the RBEvaluation object.
-    set_rb_assembly_expansion(_rb_assembly_expansion);
+//    set_rb_assembly_expansion(_rb_assembly_expansion);
 
     // We need to define an inner product matrix for this problem
-    set_inner_product_assembly(_rb_assembly_expansion.A0_assembly);
+//    set_inner_product_assembly(_rb_assembly_expansion.A0_assembly);
   }
 
   /**
    * Pre-request all relevant element data.
    */
-  virtual void init_context(FEMContext & c)
-  {
-    // For efficiency, we should prerequest all
-    // the data we will need to build the
-    // linear system before doing an element loop.
-    FEBase * elem_fe = libmesh_nullptr;
-    c.get_element_fe(u_var, elem_fe);
-
-    elem_fe->get_JxW();
-    elem_fe->get_phi();
-    elem_fe->get_dphi();
-  }
+//  virtual void init_context(FEMContext & c)
+//  {
+//    // For efficiency, we should prerequest all
+//    // the data we will need to build the
+//    // linear system before doing an element loop.
+//    FEBase * elem_fe = libmesh_nullptr;
+//    c.get_element_fe(u_var, elem_fe);
+//
+//    elem_fe->get_JxW();
+//    elem_fe->get_phi();
+//    elem_fe->get_dphi();
+//  }
 
   /**
    * Variable number for u.
@@ -133,12 +133,12 @@ public:
    * i.e. the objects that define how to assemble the set of parameter-independent
    * operators in the affine expansion of the PDE.
    */
-  RBP1_3ThetaEqualMuAssemblyCompliantExpansion _rb_assembly_expansion;
+//  RBP1_3ThetaEqualMuAssemblyCompliantExpansion _rb_assembly_expansion;
 
   /**
    * The object that defines which degrees of freedom are on a Dirichlet boundary.
    */
-  UniquePtr<DirichletBoundary> dirichlet_bc;
+//  UniquePtr<DirichletBoundary> dirichlet_bc;
 };
 
 ///-------------------------------------------------------------------------

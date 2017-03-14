@@ -7,6 +7,7 @@
 #include "libmesh/equation_systems.h"
 #include "libmesh/sparse_matrix.h"
 #include "libmesh/petsc_matrix.h"
+#include "libmesh/petsc_vector.h"
 #include "libmesh/getpot.h"
 
 // MOOSE includes
@@ -16,6 +17,7 @@
 
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBClasses.h"
+#include "DwarfElephantRBClassesAssemble.h"
 
 
 ///-------------------------------------------------------------------------
@@ -25,6 +27,7 @@ namespace libMesh
   class EquationSystems;
   template <typename T> class SparseMatrix;
   template <typename T> class PetscMatrix;
+  template <typename T> class PetscVector;
 }
 
 class MooseMesh;
@@ -42,8 +45,8 @@ class DwarfElephantRBSystem :
     void performRBSystem();
     void offlineStage();
     void onlineStage();
-    void prepareRBTraining(const bool _resize_rb_eval_data = true);
-    void transferAffineOperators();
+    void transferAffineOperators(bool _skip_matrix_assembly_in_rb_system, bool _skip_vector_assembly_in_rb_system);
+    virtual Real trainReducedBasis(const bool _resize_rb_eval_data = true);
 
     virtual void initialize() override;
     virtual void execute() override;
@@ -52,8 +55,8 @@ class DwarfElephantRBSystem :
 
   protected:
     bool _use_displaced;
-    bool _skip_matrix_assembly;
-    bool _skip_vector_assembly;
+    bool _skip_matrix_assembly_in_rb_system;
+    bool _skip_vector_assembly_in_rb_system;
     bool _offline_stage;
     bool _online_stage;
     bool _F_equal_to_output;
@@ -75,7 +78,12 @@ class DwarfElephantRBSystem :
     TransientNonlinearImplicitSystem & _sys;
 
     MooseMesh * _mesh_ptr;
-    DwarfElephantRBConstruction * _rb_con_ptr;
+    DwarfElephantRBConstructionAssemble * _rb_con_ptr;
+//    DwarfElephantRBConstruction * _rb_con_ptr;
+
+    AuxiliarySystem & _aux_sys;
+
+
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBSYSTEM_H
