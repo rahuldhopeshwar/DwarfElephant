@@ -46,7 +46,6 @@ class DwarfElephantRBSystem :
     void offlineStage();
     void onlineStage();
     void transferAffineOperators(bool _skip_matrix_assembly_in_rb_system, bool _skip_vector_assembly_in_rb_system);
-    virtual Real trainReducedBasis(const bool _resize_rb_eval_data = true);
 
     virtual void initialize() override;
     virtual void execute() override;
@@ -78,11 +77,13 @@ class DwarfElephantRBSystem :
     TransientNonlinearImplicitSystem & _sys;
 
     MooseMesh * _mesh_ptr;
-    DwarfElephantRBConstructionAssemble * _rb_con_ptr;
-//    DwarfElephantRBConstruction * _rb_con_ptr;
+    DwarfElephantRBConstruction * _rb_con_ptr;
+
+    NonlinearSystemBase & _non_sys;
+    NumericVector<Number> * _residual;
 
     AuxiliarySystem & _aux_sys;
-
+    const MaterialProperty<Real> &_lambda;
 
 };
 ///-------------------------------------------------------------------------

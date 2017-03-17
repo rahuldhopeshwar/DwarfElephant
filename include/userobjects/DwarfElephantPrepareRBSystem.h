@@ -11,7 +11,6 @@
 // MOOSE includes
 #include "NodalUserObject.h"
 #include "DisplacedProblem.h"
-#include "MooseMesh.h"
 #include "Assembly.h"
 
 ///-------------------------------------------------------------------------
@@ -23,8 +22,8 @@ namespace libMesh
   template <typename T> class PetscMatrix;
 }
 
-class MooseMesh;
 class Assembly;
+class DisplacedProblem;
 class DwarfElephantPrepareRBSystem;
 
 template<>
@@ -43,22 +42,14 @@ class DwarfElephantPrepareRBSystem :
 
 
   protected:
-    bool _use_displaced;
-
-    std::string _system_name;
-
-    const std::set<SubdomainID> & _block_ids;
-
-    EquationSystems & _es;
-    TransientNonlinearImplicitSystem & _sys;
     DofMap & _dof_map;
+    bool _use_displaced;
+    EquationSystems & _es;
 
-    MooseMesh * _mesh_ptr;
+//    UniquePtr<SparseMatrix <Number> > _Aq_qa;
+    SparseMatrix <Number> * _Aq_qa;
 
-    std::map<SubdomainID, UniquePtr< NumericVector<Number> > > _Fq_a;
-//    std::map<SubdomainID, UniquePtr< SparseMatrix<Number> > > _Aq_a;
-    std::map<SubdomainID, SparseMatrix<Number> * > _Aq_a;
-    UniquePtr<SparseMatrix<Number>> _A_test;
+    TransientNonlinearImplicitSystem & _sys;
 
 };
 ///-------------------------------------------------------------------------

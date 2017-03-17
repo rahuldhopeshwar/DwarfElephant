@@ -10,6 +10,9 @@
   ymax = 700
   zmin = 0.0
   zmax = 1000
+
+  block_id = '0 1'
+  block_name = 'shale sandstone'
 []
 
 [MeshModifiers]
@@ -21,53 +24,68 @@
 []
 
 [Variables]
+active = 'temperature'
   [./temperature]
-    order = FIRST
-    family = LAGRANGE
+  [../]
+
+  [./A0_matrix]
+  [../]
+
+  [./A1_matrix]
   [../]
 []
 
-#[AuxVariables]
-#  [./loadVectorF0]
-#    order = FIRST
-#    family = LAGRANGE
-#  [../]
+[AuxVariables]
+active = 'A1'
+  [./A0]
+  [../]
 
-#  [./stiffnessMatrixA0]
-#    order = FIRST
-#    family = LAGRANGE
-#  [../]
-
-#  [./stiffnessMatrixA1]
-#    order = FIRST
-#    family = LAGRANGE
-#  [../]
-# []
+  [./A1]
+  [../]
+[]
 
 [Kernels]
+active = 'RBConduction_block0 RBConduction_block1'
   [./RBConduction_block0]
-    type = Diffusion
+    type = RBDiffusion
     variable = temperature
-   # diag_save_in = stiffnessMatrixA0
-   # save_in = loadVectorF0
+   # diag_save_in = A0
     block = 0
+    test_input = 32
   [../]
 
   [./RBConduction_block1]
-    type = Diffusion
+    type = RBDiffusion
     variable = temperature
-   # diag_save_in = stiffnessMatrixA1
-   # save_in = loadVectorF0
+    diag_save_in = A1
     block = 1
+    test_input = 32
+  [../]
+
+  [./RB0]
+    type = RBKernel
+    variable = A0_matrix
+  [../]
+
+  [./RB1]
+    type = RBKernel
+    variable = A1_matrix
   [../]
  []
 
-#[Materials]
-#  [./shale_top]
-#    type = ThetaObject
-#    mu = '0.95 1.15'
-#  [../]
-#[]
+[Materials]
+active = 'shale sandstone'
+
+  [./shale]
+    type = Shale
+    block = 0
+  [../]
+
+  [./sandstone]
+    type = SandStone
+    block = 1
+  [../]
+[]
 
 [BCs]
   [./bottom]
@@ -87,12 +105,26 @@
 [Executioner]
   type = Steady
   solve_type = 'PJFNK'
+
+  petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_rest'
+  petsc_options_value = 'hypre  boomeramg   101'
 []
 
 [UserObjects]
+active = 'performRBSystem'
+
   [./prepareData_block0]
+    type = DwarfElephantPrepareRBSystem
+    block = shale
+  [../]
+
+  [./prepareData_block1]
+    type = DwarfElephantPrepareRBSystem
+    block = sandstone
+  [../]
+
+ [./performRBSystem]
     type = DwarfElephantRBSystem
-    system = nl0
 
     parameters_filename = 'smallRBTest.i'
 
@@ -103,36 +135,16 @@
     online_N = 20
     online_mu = '1.05 2.5 1.5'
 
-   # block = 0
+    block = 1
 
-    file_name = block0
+    execute_on = 'initial'
   [../]
-
-  #[./prepareData_block1]
-  #  type = DwarfElephantRBSystem
-  #  system = nl0
-
-  #  parameters_filename = 'smallRBTest.i'
-
-  #  offline_stage = true
-  #  online_stage = true
-  #  store_basis_functions = true
-
-  #  online_N = 20
-  #  online_mu = '1.05 2.5 1.5'
-
-  #  block = 1
-
-  #  file_name = block1
-  #[../]
 []
 
 [Outputs]
   exodus = true
-  xda = true
-  xdr = true
   execute_on = 'timestep_end'
-  #print_perf_log = true
+  print_perf_log = true
 []
 
 # ====================== Parameters for the RB approximation ======================

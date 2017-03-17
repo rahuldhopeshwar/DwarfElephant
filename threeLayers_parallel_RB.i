@@ -1,5 +1,7 @@
 [Mesh]
   file = parallel.msh
+  block_id = '7 8 9'
+  block_name = 'shale_top sandstone shale_bottom'
 []
 
 [Variables]
@@ -9,70 +11,30 @@
   [../]
 []
 
-#[AuxVariables]
-#  [./loadVectorF0]
-#   order = FIRST
-#    family = LAGRANGE
-#  [../]
-
-#  [./stiffnessMatrixA0]
-#    order = FIRST
-#    family = LAGRANGE
-#  [../]
-
-#  [./stiffnessMatrixA1]
-#    order = FIRST
-#    family = LAGRANGE
-#  [../]
-
-#  [./stiffnessMatrixA2]
-#    order = FIRST
-#    family = LAGRANGE
-# [../]
-#[]
-
 [Kernels]
   [./RBConduction]
     type = Diffusion
     variable = temperature
- #   diag_save_in = stiffnessMatrixA0
- #   save_in = loadVectorF0
-   # block = 7
   [../]
-
- # [./RBSandstone]
- #   type = RBDiffusion
- #   variable = temperature
- #   diag_save_in = stiffnessMatrixA1
- #   save_in = loadVectorF0
- #   block = 8
- # [../]
-
- # [./RBShaleBottom]
- #   type = RBDiffusion
- #   variable = temperature
- #   diag_save_in = stiffnessMatrixA2
- #   save_in = loadVectorF0
- #   block = 9
- # [../]
  []
 
-#[Materials]
-#  [./shale_top]
-#    type = Shale
-#    block = 7
-#  [../]
+[Materials]
+active = ''
+  [./shale_top]
+    type = Shale
+    block = 7
+  [../]
 
-#  [./sandstone]
-#    type = SandStone
-#    block = 8
-#  [../]
+  [./sandstone]
+    type = SandStone
+    block = 8
+  [../]
 
-#  [./shale_bottom]
-#    type = Shale
-#    block = 9
-#  [../]
-#[]
+  [./shale_bottom]
+    type = Shale
+    block = 9
+  [../]
+[]
 
 [BCs]
   [./bottom]
@@ -95,11 +57,27 @@
 []
 
 [UserObjects]
-  [./prepareData_block7]
-    type = DwarfElephantRBSystem
-    system = nl0
+active = 'performRBSystem'
 
-    parameters_filename = 'threeLayers_parallel_RB.i'
+  [./prepareData_block7]
+    type = DwarfElephantPrepareRBSystem
+    block = 7
+  [../]
+
+  [./prepareData_block8]
+    type = DwarfElephantPrepareRBSystem
+    block = 8
+  [../]
+
+  [./prepareData_block9]
+    type = DwarfElephantPrepareRBSystem
+    block = 9
+  [../]
+
+  [./performRBSystem]
+    type = DwarfElephantRBSystem
+
+    parameters_filename = 'threeLayer_parallel_RB.i'
 
     offline_stage = true
     online_stage = true
@@ -107,17 +85,11 @@
 
     online_N = 20
     online_mu = '1.05 2.5 1.5'
-
-    file_name = large_model
-
-    #block = 7
   [../]
 []
 
 [Outputs]
   exodus = true
-  xda = true
-  xdr = true
   execute_on = 'timestep_end'
   #print_perf_log = true
 []
@@ -147,4 +119,3 @@ deterministic_training = false
 use_relative_bound_in_greedy = false
 
 quiet_mode = false
-

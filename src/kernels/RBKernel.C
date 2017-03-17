@@ -25,20 +25,32 @@ template<>
 InputParameters validParams<RBKernel>()
 {
   InputParameters params = validParams<Kernel>();
-  params.addClassDescription("Overwrites the function computeJacobian. This\
-                              is required because for the RB method the \
-                              entire stiffness matrix needs to be saved and\
-                              not only the diagonal entries.");
+
+  params.addClassDescription("Overwrites the function computeJacobian. This is required because for the RB method the entire stiffness matrix needs to be saved and not only the diagonal entries.");
+  params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
+  params.addParam<std::string>("system","nl0","The name of the system that should be read in.");
+
   return params;
 }
 
 ///-------------------------------CONSTRUCTOR-------------------------------
 RBKernel::RBKernel(const InputParameters & parameters) :
-    Kernel(parameters)
+    Kernel(parameters),
+    _system_name(getParam<std::string>("system")),
+    _use_displaced(getParam<bool>("use_displaced")),
+    _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
+    _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name))
+
 {
 }
 
 ///-------------------------------------------------------------------------
+void
+RBKernel::timestepSetup()
+{
+   _rb_con = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
+}
+
 void
 RBKernel::computeResidual()
 {
@@ -78,25 +90,30 @@ RBKernel::computeJacobian()
 
   if (_has_diag_save_in)
   {
-    unsigned int rows = ke.m();
-    unsigned int columns = ke.n();
-    DenseVector<Number> actualRow(rows);
-
-    for (unsigned int j=0; j<columns; j++)
-    {
+//    unsigned int rows = ke.m();
+//    unsigned int columns = ke.n();
+//    DenseVector<Number> actualRow(rows);
+//
+//    for (unsigned int j=0; j<columns; j++)
+//    {
       Threads::spin_mutex::scoped_lock lock(Threads::spin_mtx);
       for (const auto & var : _diag_save_in)
       {
-        for (unsigned int i=0; i<rows; i++)
-        {
-          actualRow(i) = _local_ke(i,j);
-        }
-       var->sys().solution().add_vector(actualRow, var->dofIndices());
+        _jacobian = _rb_con->get_Aq(0);
+        _jacobian -> add_matrix(_local_ke, var->dofIndices());
+        _jacobian->close();
+        _console << *_jacobian << std::endl;
+//        _rb_con->get_Aq(0)->add_matrix(_local_ke, var->dofIndices());
+//        for (unsigned int i=0; i<rows; i++)
+//        {
+//          actualRow(i) = _local_ke(i,j);
+//        }
+//       var->sys().solution().add_vector(actualRow, var->dofIndices());
+
        }
-     }
+//     }
   }
 }
-
 ///----------------------------------PDEs-----------------------------------
 // For the PDEs zero is implemented, since this Kernel shall be used for any
 // RB problem. The problem specific PDEs are implemented in separate Kernels.

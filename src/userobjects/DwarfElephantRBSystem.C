@@ -39,103 +39,10 @@ DwarfElephantRBSystem::DwarfElephantRBSystem(const InputParameters & params):
   _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
   _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
   _mesh_ptr(&_fe_problem.mesh()),
-  _aux_sys(_fe_problem.getAuxiliarySystem())
+  _non_sys(_fe_problem.getNonlinearSystemBase()),
+  _aux_sys(_fe_problem.getAuxiliarySystem()),
+  _lambda(getMaterialProperty<Real>("conductivity"))
 {
-}
-
-Real
-DwarfElephantRBSystem::trainReducedBasis(const bool _resize_rb_eval_data)
-{
-  LOG_SCOPE("trainReducedBasis", "DwarfElephantRBSystem");
-
-  int count = 0;
-
-  // initialize rb_eval's parameters
-  _rb_con_ptr->get_rb_evaluation().initialize_parameters(*_rb_con_ptr);
-
-  // possibly resize data structures according to Nmax
-  if(_resize_rb_eval_data)
-    {
-      _rb_con_ptr->get_rb_evaluation().resize_data_structures(_rb_con_ptr->get_Nmax());
-    }
-
-  // Clear the Greedy param list
-  for(unsigned int i=0; i<_rb_con_ptr->get_rb_evaluation().greedy_param_list.size(); i++)
-    {
-      _rb_con_ptr->get_rb_evaluation().greedy_param_list[i].clear();
-    }
-  _rb_con_ptr->get_rb_evaluation().greedy_param_list.clear();
-
-  Real training_greedy_error;
-
-
-  // If we are continuing from a previous training run,
-  // we might already be at the max number of basis functions.
-  // If so, we can just return.
-  if(_rb_con_ptr->get_rb_evaluation().get_n_basis_functions() >= _rb_con_ptr->get_Nmax())
-    {
-      libMesh::out << "Maximum number of basis functions reached: Nmax = "
-                   << _rb_con_ptr->get_Nmax() << std::endl;
-      return 0.;
-    }
-
-
-//  // Compute the dual norms of the outputs if we haven't already done so
-//  compute_output_dual_innerprods();
-//
-//  // Compute the Fq Riesz representor dual norms if we haven't already done so
-//  compute_Fq_representor_innerprods();
-//
-//  libMesh::out << std::endl << "---- Performing Greedy basis enrichment ----" << std::endl;
-//  Real initial_greedy_error = 0.;
-//  bool initial_greedy_error_initialized = false;
-//  while(true)
-//    {
-//      libMesh::out << std::endl << "---- Basis dimension: "
-//                   << get_rb_evaluation().get_n_basis_functions() << " ----" << std::endl;
-//
-//      if( count > 0 || (count==0 && use_empty_rb_solve_in_greedy) )
-//        {
-//          libMesh::out << "Performing RB solves on training set" << std::endl;
-//          training_greedy_error = compute_max_error_bound();
-//
-//          libMesh::out << "Maximum error bound is " << training_greedy_error << std::endl << std::endl;
-//
-//          // record the initial error
-//          if (!initial_greedy_error_initialized)
-//            {
-//              initial_greedy_error = training_greedy_error;
-//              initial_greedy_error_initialized = true;
-//            }
-//
-//          // Break out of training phase if we have reached Nmax
-//          // or if the training_tolerance is satisfied.
-//          if (greedy_termination_test(training_greedy_error, initial_greedy_error, count))
-//            break;
-//        }
-//
-//      libMesh::out << "Performing truth solve at parameter:" << std::endl;
-//      print_parameters();
-//
-//      // Update the list of Greedily selected parameters
-//      this->update_greedy_param_list();
-//
-//      // Perform an Offline truth solve for the current parameter
-//      truth_solve(-1);
-//
-//      // Add orthogonal part of the snapshot to the RB space
-//      libMesh::out << "Enriching the RB space" << std::endl;
-//      enrich_RB_space();
-//
-//      update_system();
-//
-//      // Increment counter
-//      count++;
-//    }
-//  this->update_greedy_param_list();
-//
-//  return training_greedy_error;
-return 0;
 }
 
 void
@@ -146,7 +53,12 @@ DwarfElephantRBSystem::transferAffineOperators(bool _skip_matrix_assembly_in_rb_
   {
     // Transfer the data for the F vectors.
     for(unsigned int _q=0; _q<_qf; _q++)
-      _rb_con_ptr->get_Fq(_q)->operator=(*_sys.rhs);
+    {
+      _residual = &_sys.get_vector(2);
+
+//      _non_sys.computeResidual(*_residual, Moose::KT_NONTIME);
+    }
+//      _rb_con_ptr->get_Fq(_q)->operator=(*_sys.rhs);
 //      _rb_con_ptr->get_Fq(_q)->operator=(_sys.get_vector("Re_non_time"));
 
     // Transfer the data for the output vectors.
@@ -160,58 +72,20 @@ DwarfElephantRBSystem::transferAffineOperators(bool _skip_matrix_assembly_in_rb_
       mooseError("Currently, the code handles the compliant case, only.");
   }
 
-  // Transfer the A matrices.
+  // Initialize the transfer for the A matrices.
   if (_skip_matrix_assembly_in_rb_system)
   {
-    for (unsigned int _q = 0; _q < _qa; _q++)
+
+      for (unsigned int _q = 0; _q < _qa; _q++)
     {
-      SparseMatrix<Number> * _Aq_qa =_rb_con_ptr->get_Aq(_q);
-//      NumericVector<Number> & _zeros = _sys.get_vector(3);
+      SparseMatrix<Number> * _Aq_qa = _rb_con_ptr->get_Aq(_q);
 
       // Eliminates error message for the initialization of new non-zero entries
       // For the future: change SparseMatrix pattern (increases efficency)
-      PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_Aq_qa);
-//      PetscVector<Number> * _petsc_vector = dynamic_cast<PetscVector<Number>* > (&_zeros);
+//      PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_Aq_qa);
 
-      MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
-//      MatDiagonalSet(_petsc_matrix->mat(), _petsc_vector->vec(), ADD_VALUES);
+//      MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
 
-      // loop over all nodes
-      for (unsigned int i=0; i != _sys.n_dofs(); i++)
-      {
-        // retrieve block IDs per node i
-        const Node & _node_ref_i = _mesh_ptr->nodeRef(i);
-        const std::set<SubdomainID> & _node_block_ids_i = _mesh_ptr->getNodeBlockIds(_node_ref_i);
-
-        // loop over all block IDs for node i
-        for (std::set<SubdomainID>::const_iterator _it_i = _node_block_ids_i.begin();
-             _it_i != _node_block_ids_i.end(); ++_it_i)
-        {
-          // continue if node i contains the block
-          if(*_node_block_ids_i.find(*_it_i) == _q)
-          {
-            // loop over all nodes
-            for (unsigned int j=0; j != _sys.n_dofs(); j++)
-            {
-              // retrieve block IDs per node j
-              const Node & _node_ref_j = _mesh_ptr->nodeRef(j);
-              const std::set<SubdomainID> & _node_block_ids_j = _mesh_ptr->getNodeBlockIds(_node_ref_j);
-
-              // loop over all block IDs for node j
-              for (std::set<SubdomainID>::const_iterator _it_j = _node_block_ids_j.begin();
-               _it_j != _node_block_ids_j.end(); ++_it_j)
-              {
-                // transfer the data if node j contains the block also
-                if(*_node_block_ids_i.find(*_it_j) == _q)
-                {
-                  _Aq_qa->set(i, j, _sys.matrix->operator()(i,j));
-                }
-              }
-            }
-          }
-        }
-      }
-      // close the matrix (calls the Sparse assemble routines)
       _Aq_qa->close();
     }
 
@@ -295,7 +169,7 @@ DwarfElephantRBSystem::initialize()
   GetPot infile (_parameters_filename);
 
   // Add a new equation system for the RB construction.
-  _rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionAssemble> ("RBSystem");
+  _rb_con_ptr = &_es.add_system<DwarfElephantRBConstruction> ("RBSystem");
 //  _rb_con_ptr = &_es.add_system<DwarfElephantRBConstruction> ("RBSystem");
 
   // Intialization of the added equation system
@@ -327,13 +201,19 @@ DwarfElephantRBSystem::initialize()
 
     _rb_con_ptr->initialize_rb_construction(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
 
-    transferAffineOperators(_skip_matrix_assembly_in_rb_system,_skip_vector_assembly_in_rb_system);
+//    transferAffineOperators(_skip_matrix_assembly_in_rb_system,_skip_vector_assembly_in_rb_system);
   }
 }
 
 void
 DwarfElephantRBSystem::execute()
 {
+//  const std::set<SubdomainID> & _node_block_ids = _mesh_ptr->getNodeBlockIds(*_current_node);
+//
+//  for (std::set<SubdomainID>::const_iterator _it = _node_block_ids.begin();
+//       _it != _node_block_ids.end(); _it++)
+//    _active_nodes[*_it].insert(_current_node->id());
+
 }
 
 void
@@ -341,12 +221,16 @@ DwarfElephantRBSystem::threadJoin(const UserObject & y)
 {
 }
 
+
 void
 DwarfElephantRBSystem::finalize()
 {
- _console << std::endl;
- performRBSystem();
- NumericVector<Number> & _test = _sys.get_vector(3);
- _rb_con_ptr->get_Aq(1)->get_diagonal(_test);
- _console << _test << std::endl;
+// _console << _rbkernel << std::endl;
+ const std::string _info = _es.get_info();
+ _console << _info << std::endl;
+ unsigned int _n = _sys.variable(0).n_components();
+ _console << _n << std::endl;
+// NumericVector<Number> & _soln = _aux_sys.solution();
+// _console << _soln << std::endl;
+// performRBSystem();
 }

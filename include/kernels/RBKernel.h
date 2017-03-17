@@ -10,11 +10,27 @@
 #define RBKERNEL_H
 
 ///---------------------------------INCLUDES--------------------------------
+//libMesh includes
+#include "libmesh/equation_systems.h"
+#include "libmesh/sparse_matrix.h"
+
 // MOOSE includes
 #include "Kernel.h"
+#include "DisplacedProblem.h"
+
+// MOOSE includes (DwarfElephant package)
+#include "DwarfElephantRBClasses.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
+namespace libMesh
+{
+  class EquationSystems;
+  template <typename T> class SparseMatrix;
+}
+
+class DwarfElephantRBConstruction;
+class DisplacedProblem;
 class RBKernel;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
@@ -32,6 +48,7 @@ public:
  /* Methods */
   virtual void computeResidual() override;
   virtual void computeJacobian() override;
+  virtual void timestepSetup() override;
 
 //--------------------------------PROTECTED---------------------------------
 protected:
@@ -40,10 +57,16 @@ protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
 
-//  std::ofstream _file_output;
-//  _file_output.open("test_file.txt");
+  std::string _system_name;
 
-  friend class RBOutput;
+  bool _use_displaced;
+
+  EquationSystems & _es;
+  TransientNonlinearImplicitSystem & _sys;
+  DwarfElephantRBConstruction * _rb_con;
+
+  std::vector <SparseMatrix<Number> * > _Aq_qa;
+  SparseMatrix<Number> * _jacobian;
   };
 
 ///-------------------------------------------------------------------------

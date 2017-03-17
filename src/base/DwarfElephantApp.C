@@ -8,6 +8,9 @@
 /// MOOSE includes (DwarfElephant package)
 #include "DwarfElephantApp.h"
 
+// Base
+#include "DwarfElephantRBProblem.h"
+
 // Kernels
 #include "Conduction.h"
 #include "RBKernel.h"
@@ -21,6 +24,9 @@
 // UserObjects
 #include "DwarfElephantPrepareRBSystem.h"
 #include "DwarfElephantRBSystem.h"
+
+// Executioners
+#include "DwarfElephantExecutioner.h"
 
 // Outputs
 #include "RBOutput.h"
@@ -61,7 +67,9 @@ extern "C" void DwarfElephantApp__registerObjects(Factory & factory) { DwarfElep
 void
 DwarfElephantApp::registerObjects(Factory & factory)
 {
-//  // Register any custom objects you have built on the MOOSE Framework
+  // Base
+  registerProblem(DwarfElephantRBProblem);
+
   // Kernels
   registerKernel(Conduction);
   registerKernel(RBKernel);
@@ -75,6 +83,9 @@ DwarfElephantApp::registerObjects(Factory & factory)
   // UserObjects
   registerUserObject(DwarfElephantPrepareRBSystem);
   registerUserObject(DwarfElephantRBSystem);
+
+  // Executioners
+  registerExecutioner(DwarfElephantExecutioner);
 
   // Outputs
   registerOutput(RBOutput);
