@@ -28,7 +28,6 @@ InputParameters validParams<RBKernel>()
 
   params.addClassDescription("Overwrites the function computeJacobian. This is required because for the RB method the stiffness matrix needs to be saved in its subdomain contributions.");
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
-//  params.addParam<std::string>("system","nl0","The name of the system that should be read in.");
 
   return params;
 }
@@ -36,11 +35,9 @@ InputParameters validParams<RBKernel>()
 ///-------------------------------CONSTRUCTOR-------------------------------
 RBKernel::RBKernel(const InputParameters & parameters) :
     Kernel(parameters),
-  //  _system_name(getParam<std::string>("system")),
     _use_displaced(getParam<bool>("use_displaced")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _block_ids(this->blockIDs())
-  //  _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name))
 
 {
 }
@@ -49,21 +46,20 @@ RBKernel::RBKernel(const InputParameters & parameters) :
 void
 RBKernel::initialSetup()
 {
-  //_console << _block_ids.size();
- // if (2>1)
- // {
- //   mooseError("For the RB method the stiffness matrix has to be saved separatly for each subdomain. Therefore each RBKernel and each inheriting Kernel needs to be defined individually for each block. You defined the Kernel for more than one block, please change your specifications in the Input file.");
-  //}
+  if (_block_ids.size()>1)
+  {
+      mooseError("For the RB method the stiffness matrix has to be saved separatly for each subdomain. Therefore each RBKernel and each inheriting Kernel needs to be defined individually for each block. You defined the Kernel for more than one block, please change your specifications in the Input file.");
+  }
 }
 void
 RBKernel::timestepSetup()
 {
   // Get a pointer to the RB system.
   _rb_con_ptr = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
-  
+
   // Retrieve the stiffness matrix for the corresponding subdomain
   _jacobian_subdomain = _rb_con_ptr->get_Aq(*_block_ids.begin());
-  
+
   // Eliminates error message for the initialization of new non-zero entries
   // For the future: change SparseMatrix pattern (increases efficency)
   PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_jacobian_subdomain);

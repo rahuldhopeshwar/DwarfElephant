@@ -1,12 +1,15 @@
 /// MOOSE includes
 #include "Moose.h"
 #include "AppFactory.h"
-//#include "ActionFactory.h"
+#include "ActionFactory.h"
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
 
 /// MOOSE includes (DwarfElephant package)
 #include "DwarfElephantApp.h"
+
+// Actions
+#include "DwarfElephantInitializeRBSystemAction.h"
 
 // Base
 #include "DwarfElephantRBProblem.h"
@@ -95,8 +98,8 @@ DwarfElephantApp::registerObjects(Factory & factory)
 // External entry point for dynamic syntax association
 extern "C" void DwarfElephantApp__associateSyntax(Syntax & syntax, ActionFactory & action_factory) { DwarfElephantApp::associateSyntax(syntax, action_factory); }
 void
-DwarfElephantApp::associateSyntax(Syntax & /*syntax*/, ActionFactory & /*action_factory*/)
+DwarfElephantApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
 {
-//    registerAction(ReadDataFromMooseOutputAction, "add_output");
-//    syntax.registerActionSyntax("ReadDataFromMooseOutputAction", "ReadDataFromMooseOutput");
+    registerAction(DwarfElephantInitializeRBSystemAction, "add_kernel");
+    syntax.registerActionSyntax("DwarfElephantInitializeRBSystemAction", "InitializeRBSystem");
 }
