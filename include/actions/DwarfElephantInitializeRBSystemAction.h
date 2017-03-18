@@ -36,11 +36,11 @@ class DwarfElephantInitializeRBSystemAction;
 template<>
 InputParameters validParams<DwarfElephantInitializeRBSystemAction>();
 
-class DwarfElephantRBSystem :
+class DwarfElephantInitializeRBSystemAction :
   public Action
 {
   public:
-    DwarfElephantRBSystem(InputParameters params);
+    DwarfElephantInitializeRBSystemAction(InputParameters params);
 
     void initializeRBSystem();
 

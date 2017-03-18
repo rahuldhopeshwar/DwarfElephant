@@ -15,23 +15,20 @@ InputParameters validParams<DwarfElephantInitializeRBSystemAction>()
   return params;
 }
 
-DwarfElephantRBSystem::DwarfElephantRBSystem(InputParameters params):
+DwarfElephantInitializeRBSystemAction::DwarfElephantInitializeRBSystemAction(InputParameters params):
   Action(params),
   _use_displaced(getParam<bool>("use_displaced")),
   _skip_matrix_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
   _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
   _parameters_filename(getParam<std::string>("parameters_filename")),
-  _es(_use_displaced ? *_problem->getDisplacedProblem()->es() : _problem->es()),
-  _mesh_ptr(_problem.mesh())
+  _es(_use_displaced ? _problem->getDisplacedProblem()->es() : _problem->es()),
+  _mesh_ptr(&_problem->mesh())
 {
 }
 
 void
 DwarfElephantInitializeRBSystemAction::initializeRBSystem()
 {
-  // Define the parameter file for the libMesh functions.
-  GetPot infile (_parameters_filename);
-
   // Add a new equation system for the RB construction.
   _rb_con_ptr = &_es.add_system<DwarfElephantRBConstruction> ("RBSystem");
 
@@ -45,21 +42,6 @@ DwarfElephantInitializeRBSystemAction::initializeRBSystem()
   // Pass a pointer of the RBEvaluation object to the
   // RBConstruction object
   _rb_con_ptr->set_rb_evaluation(_rb_eval);
-
-  if (_offline_stage)
-  {
-    // Get and process the necessary input parameters for the
-    // offline stage
-    _rb_con_ptr->process_parameters_file(_parameters_filename);
-
-    // Print the system informations for the RBConstruction system.
-    _rb_con_ptr->print_info();
-
-    // Initialize the RB construction. Note, we skip the matrix and vector
-    // assembly, since this is already done by MOOSE.
-
-    _rb_con_ptr->initialize_rb_construction(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
-  }
 }
 
 void
