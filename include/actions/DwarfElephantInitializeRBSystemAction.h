@@ -48,6 +48,7 @@ class DwarfElephantInitializeRBSystemAction :
 
   protected:
     bool _use_displaced;
+    bool _offline_stage;
     bool _skip_matrix_assembly_in_rb_system;
     bool _skip_vector_assembly_in_rb_system;
 

@@ -186,22 +186,22 @@ DwarfElephantRBSystem::initialize()
   _qf = _rb_con_ptr->get_rb_theta_expansion().get_n_F_terms();
   _ql = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(0);
 
- // if (_offline_stage)
- // {
- //   // Get and process the necessary input parameters for the
- //   // offline stage
- //   _rb_con_ptr->process_parameters_file(_parameters_filename);
+  if (_offline_stage)
+  {
+    // Get and process the necessary input parameters for the
+    // offline stage
+    _rb_con_ptr->process_parameters_file(_parameters_filename);
 
- //   // Print the system informations for the RBConstruction system.
- //   _rb_con_ptr->print_info();
+    // Print the system informations for the RBConstruction system.
+    _rb_con_ptr->print_info();
 
- //   // Initialize the RB construction. Note, we skip the matrix and vector
- //   // assembly, since this is already done by MOOSE.
+    // Initialize the RB construction. Note, we skip the matrix and vector
+    // assembly, since this is already done by MOOSE.
 
- // _rb_con_ptr->initialize_rb_construction(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
+  _rb_con_ptr->initialize_rb_construction(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
 
-//    transferAffineOperators(_skip_matrix_assembly_in_rb_system,_skip_vector_assembly_in_rb_system);
- // }
+    transferAffineOperators(_skip_matrix_assembly_in_rb_system,_skip_vector_assembly_in_rb_system);
+  }
 }
 
 void
