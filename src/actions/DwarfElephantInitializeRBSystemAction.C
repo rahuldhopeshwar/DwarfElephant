@@ -22,7 +22,7 @@ DwarfElephantRBSystem::DwarfElephantRBSystem(InputParameters params):
   _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
   _parameters_filename(getParam<std::string>("parameters_filename")),
   _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
-  _mesh_ptr(&_fe_problem.mesh()),
+  _mesh_ptr(&_fe_problem.mesh())
 {
 }
 
