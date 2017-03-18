@@ -51,16 +51,14 @@ active = 'RBConduction_block0 RBConduction_block1'
     variable = temperature
    # diag_save_in = A0
     block = 0
-    test_input = 32
   [../]
 
   [./RBConduction_block1]
     type = RBDiffusion
     variable = temperature
-    diag_save_in = A1
+   # diag_save_in = A1
     block = 1
-    test_input = 32
-  [../]
+ [../]
 
   [./RB0]
     type = RBKernel
@@ -134,8 +132,6 @@ active = 'performRBSystem'
 
     online_N = 20
     online_mu = '1.05 2.5 1.5'
-
-    block = 1
 
     execute_on = 'initial'
   [../]

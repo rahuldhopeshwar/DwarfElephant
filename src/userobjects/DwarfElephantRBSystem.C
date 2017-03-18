@@ -40,8 +40,7 @@ DwarfElephantRBSystem::DwarfElephantRBSystem(const InputParameters & params):
   _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
   _mesh_ptr(&_fe_problem.mesh()),
   _non_sys(_fe_problem.getNonlinearSystemBase()),
-  _aux_sys(_fe_problem.getAuxiliarySystem()),
-  _lambda(getMaterialProperty<Real>("conductivity"))
+  _aux_sys(_fe_problem.getAuxiliarySystem())
 {
 }
 
@@ -208,12 +207,6 @@ DwarfElephantRBSystem::initialize()
 void
 DwarfElephantRBSystem::execute()
 {
-//  const std::set<SubdomainID> & _node_block_ids = _mesh_ptr->getNodeBlockIds(*_current_node);
-//
-//  for (std::set<SubdomainID>::const_iterator _it = _node_block_ids.begin();
-//       _it != _node_block_ids.end(); _it++)
-//    _active_nodes[*_it].insert(_current_node->id());
-
 }
 
 void
@@ -225,12 +218,6 @@ DwarfElephantRBSystem::threadJoin(const UserObject & y)
 void
 DwarfElephantRBSystem::finalize()
 {
-// _console << _rbkernel << std::endl;
- const std::string _info = _es.get_info();
- _console << _info << std::endl;
- unsigned int _n = _sys.variable(0).n_components();
- _console << _n << std::endl;
-// NumericVector<Number> & _soln = _aux_sys.solution();
-// _console << _soln << std::endl;
+// _console << std::endl;
 // performRBSystem();
 }

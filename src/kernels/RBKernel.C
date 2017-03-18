@@ -2,12 +2,13 @@
  * This Kernel is required to use the RB method as it is provided by the
  * RB libMesh package. The RBKernel inherits from the Kernel class. It
  * overwrites the function computeJacobian because for the RB method the
- * whole stiffness matrix is needed and not only the diagonal entries.
+ * stiffness matrix is needed separated in its subdomain contributions.
  */
 
 ///---------------------------------INCLUDES--------------------------------
-//MOOSE includes (DwarfElephant package)
-#include "RBKernel.h"
+// libMesh includes
+#include "libmesh/threads.h"
+#include "libmesh/quadrature.h"
 
 ////MOOSE includes
 #include "Assembly.h"
@@ -16,9 +17,8 @@
 #include "SubProblem.h"
 #include "SystemBase.h"
 
-// libMesh includes
-#include "libmesh/threads.h"
-#include "libmesh/quadrature.h"
+//MOOSE includes (DwarfElephant package)
+#include "RBKernel.h"
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
@@ -26,9 +26,9 @@ InputParameters validParams<RBKernel>()
 {
   InputParameters params = validParams<Kernel>();
 
-  params.addClassDescription("Overwrites the function computeJacobian. This is required because for the RB method the entire stiffness matrix needs to be saved and not only the diagonal entries.");
+  params.addClassDescription("Overwrites the function computeJacobian. This is required because for the RB method the stiffness matrix needs to be saved in its subdomain contributions.");
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
-  params.addParam<std::string>("system","nl0","The name of the system that should be read in.");
+//  params.addParam<std::string>("system","nl0","The name of the system that should be read in.");
 
   return params;
 }
@@ -36,41 +36,38 @@ InputParameters validParams<RBKernel>()
 ///-------------------------------CONSTRUCTOR-------------------------------
 RBKernel::RBKernel(const InputParameters & parameters) :
     Kernel(parameters),
-    _system_name(getParam<std::string>("system")),
+  //  _system_name(getParam<std::string>("system")),
     _use_displaced(getParam<bool>("use_displaced")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
-    _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name))
+    _block_ids(this->blockIDs())
+  //  _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name))
 
 {
 }
 
 ///-------------------------------------------------------------------------
 void
+RBKernel::initialSetup()
+{
+  //_console << _block_ids.size();
+ // if (2>1)
+ // {
+ //   mooseError("For the RB method the stiffness matrix has to be saved separatly for each subdomain. Therefore each RBKernel and each inheriting Kernel needs to be defined individually for each block. You defined the Kernel for more than one block, please change your specifications in the Input file.");
+  //}
+}
+void
 RBKernel::timestepSetup()
 {
-   _rb_con = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
-}
-
-void
-RBKernel::computeResidual()
-{
-  DenseVector<Number> & re = _assembly.residualBlock(_var.number());
-  _local_re.resize(re.size());
-  _local_re.zero();
-
-  precalculateResidual();
-  for (_i = 0; _i < _test.size(); _i++)
-    for (_qp = 0; _qp < _qrule->n_points(); _qp++)
-      _local_re(_i) += _JxW[_qp] * _coord[_qp] * computeQpResidual();
-
-  re += _local_re;
-
-  if (_has_save_in)
-  {
-    Threads::spin_mutex::scoped_lock lock(Threads::spin_mtx);
-    for (const auto & var : _save_in)
-      var->sys().solution().add_vector(_local_re, var->dofIndices());
-  }
+  // Get a pointer to the RB system.
+  _rb_con_ptr = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
+  
+  // Retrieve the stiffness matrix for the corresponding subdomain
+  _jacobian_subdomain = _rb_con_ptr->get_Aq(*_block_ids.begin());
+  
+  // Eliminates error message for the initialization of new non-zero entries
+  // For the future: change SparseMatrix pattern (increases efficency)
+  PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_jacobian_subdomain);
+  MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
 }
 
 void
@@ -88,30 +85,20 @@ RBKernel::computeJacobian()
 
   ke += _local_ke;
 
-  if (_has_diag_save_in)
-  {
-//    unsigned int rows = ke.m();
-//    unsigned int columns = ke.n();
-//    DenseVector<Number> actualRow(rows);
-//
-//    for (unsigned int j=0; j<columns; j++)
-//    {
-      Threads::spin_mutex::scoped_lock lock(Threads::spin_mtx);
-      for (const auto & var : _diag_save_in)
-      {
-        _jacobian = _rb_con->get_Aq(0);
-        _jacobian -> add_matrix(_local_ke, var->dofIndices());
-        _jacobian->close();
-        _console << *_jacobian << std::endl;
-//        _rb_con->get_Aq(0)->add_matrix(_local_ke, var->dofIndices());
-//        for (unsigned int i=0; i<rows; i++)
-//        {
-//          actualRow(i) = _local_ke(i,j);
-//        }
-//       var->sys().solution().add_vector(actualRow, var->dofIndices());
+  // Add the calcualted matrices to the Aq matrices from the RB system.
+  _jacobian_subdomain -> add_matrix(_local_ke, _var.dofIndices());
+  _jacobian_subdomain ->close();
 
-       }
-//     }
+ if (_has_diag_save_in)
+  {
+    unsigned int rows = ke.m();
+    DenseVector<Number> diag(rows);
+    for (unsigned int i=0; i<rows; i++)
+      diag(i) = _local_ke(i,i);
+
+    Threads::spin_mutex::scoped_lock lock(Threads::spin_mtx);
+    for (const auto & var : _diag_save_in)
+      var->sys().solution().add_vector(diag, var->dofIndices());
   }
 }
 ///----------------------------------PDEs-----------------------------------

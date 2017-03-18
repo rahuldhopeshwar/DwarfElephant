@@ -83,7 +83,6 @@ class DwarfElephantRBSystem :
     NumericVector<Number> * _residual;
 
     AuxiliarySystem & _aux_sys;
-    const MaterialProperty<Real> &_lambda;
 
 };
 ///-------------------------------------------------------------------------

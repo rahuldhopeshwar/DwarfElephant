@@ -2,7 +2,7 @@
  * This Kernel is required to use the RB method as it is provided by the
  * RB libMesh package. The RBKernel inherits from the Kernel class. It
  * overwrites the function computeJacobian because for the RB method the
- * whole stiffness matrix is needed and not only the diagonal entries.
+ * stiffness matrix is needed separated in its subdomain contributions.
  */
 
 ///-------------------------------------------------------------------------
@@ -13,6 +13,7 @@
 //libMesh includes
 #include "libmesh/equation_systems.h"
 #include "libmesh/sparse_matrix.h"
+#include "libmesh/petsc_matrix.h"
 
 // MOOSE includes
 #include "Kernel.h"
@@ -27,6 +28,7 @@ namespace libMesh
 {
   class EquationSystems;
   template <typename T> class SparseMatrix;
+  template <typename T> class PetscMatrix;
 }
 
 class DwarfElephantRBConstruction;
@@ -46,8 +48,8 @@ public:
   RBKernel(const InputParameters & parameters);
 
  /* Methods */
-  virtual void computeResidual() override;
   virtual void computeJacobian() override;
+  virtual void initialSetup() override;
   virtual void timestepSetup() override;
 
 //--------------------------------PROTECTED---------------------------------
@@ -56,17 +58,17 @@ protected:
   /* Methods */
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
-
-  std::string _system_name;
-
+  
+  
+  /*Attributes*/
   bool _use_displaced;
 
   EquationSystems & _es;
-  TransientNonlinearImplicitSystem & _sys;
-  DwarfElephantRBConstruction * _rb_con;
+  DwarfElephantRBConstruction * _rb_con_ptr;
+  
+  const std::set<SubdomainID> & _block_ids;
 
-  std::vector <SparseMatrix<Number> * > _Aq_qa;
-  SparseMatrix<Number> * _jacobian;
+  SparseMatrix<Number> * _jacobian_subdomain;
   };
 
 ///-------------------------------------------------------------------------
