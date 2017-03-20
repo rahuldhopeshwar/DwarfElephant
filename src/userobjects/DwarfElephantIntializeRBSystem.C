@@ -5,7 +5,7 @@
 template<>
 InputParameters validParams<DwarfElephantInitializeRBSystem>()
 {
-  InputParameters params = validParams<NodalUserObject>();
+  InputParameters params = validParams<GeneralUserObject>();
 
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
   params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
@@ -23,7 +23,7 @@ InputParameters validParams<DwarfElephantInitializeRBSystem>()
 }
 
 DwarfElephantInitializeRBSystem::DwarfElephantInitializeRBSystem(const InputParameters & params):
-  NodalUserObject(params),
+  GeneralUserObject(params),
   _use_displaced(getParam<bool>("use_displaced")),
   _skip_matrix_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
   _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
@@ -38,81 +38,8 @@ DwarfElephantInitializeRBSystem::DwarfElephantInitializeRBSystem(const InputPara
   _block_ids(this->blockIDs()),
   _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
   _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
-  _mesh_ptr(&_fe_problem.mesh()),
-  _non_sys(_fe_problem.getNonlinearSystemBase()),
-  _aux_sys(_fe_problem.getAuxiliarySystem())
+  _mesh_ptr(&_fe_problem.mesh())
 {
-}
-
-void
-DwarfElephantInitializeRBSystem::transferAffineOperators(bool _skip_matrix_assembly_in_rb_system, bool _skip_vector_assembly_in_rb_system)
-{
-  // Transfer the vectors
-  if (_skip_vector_assembly_in_rb_system)
-  {
-    // Transfer the data for the F vectors.
-    for(unsigned int _q=0; _q<_qf; _q++)
-    {
-      _residual = &_sys.get_vector(2);
-
-//      _non_sys.computeResidual(*_residual, Moose::KT_NONTIME);
-    }
-//      _rb_con_ptr->get_Fq(_q)->operator=(*_sys.rhs);
-//      _rb_con_ptr->get_Fq(_q)->operator=(_sys.get_vector("Re_non_time"));
-
-    // Transfer the data for the output vectors.
-    if (_F_equal_to_output)
-    {
-      for(unsigned int _q=0; _q<_ql; _q++)
-        _rb_con_ptr->get_output_vector(0,_q)->operator=(*_sys.rhs);
-//        _rb_con_ptr->get_output_vector(0,_q)->operator=(_sys.get_vector("Re_non_time"));
-    }
-    else if (!_F_equal_to_output)
-      mooseError("Currently, the code handles the compliant case, only.");
-  }
-
-  // Initialize the transfer for the A matrices.
-  if (_skip_matrix_assembly_in_rb_system)
-  {
-
-      for (unsigned int _q = 0; _q < _qa; _q++)
-    {
-      SparseMatrix<Number> * _Aq_qa = _rb_con_ptr->get_Aq(_q);
-
-      // Eliminates error message for the initialization of new non-zero entries
-      // For the future: change SparseMatrix pattern (increases efficency)
-//      PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_Aq_qa);
-
-//      MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
-
-      _Aq_qa->close();
-    }
-
-    // Transfer the inner product matrix
-    _rb_con_ptr->get_inner_product_matrix()->close();
-    _rb_con_ptr->get_inner_product_matrix()->add(1,*_sys.matrix);
-  }
-}
-
-void
-DwarfElephantInitializeRBSystem::offlineStage()
-{
-  // This method performs the offline stage of the RB problem.
-
-  // Computation of the reduced basis space.
-//  trainReducedBasis();
-  _rb_con_ptr->train_reduced_basis();
-//
-//  // Wrtite the offline data to file (xdr format).
-//  _rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files();
-//
-//  // If desired, store the basis functions (xdr format).
-//  if (_store_basis_functions)
-//  {
-//    _rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_rb_con_ptr);
-//  }
-//
-//  _rb_con_ptr->print_basis_function_orthogonality();
 }
 
 void
@@ -198,9 +125,7 @@ DwarfElephantInitializeRBSystem::initialize()
     // Initialize the RB construction. Note, we skip the matrix and vector
     // assembly, since this is already done by MOOSE.
 
-  _rb_con_ptr->initialize_rb_construction(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
-
-    //transferAffineOperators(_skip_matrix_assembly_in_rb_system,_skip_vector_assembly_in_rb_system);
+    _rb_con_ptr->initialize_rb_construction(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
   }
 }
 
@@ -209,15 +134,13 @@ DwarfElephantInitializeRBSystem::execute()
 {
 }
 
-void
-DwarfElephantInitializeRBSystem::threadJoin(const UserObject & y)
-{
-}
+//void
+//DwarfElephantInitializeRBSystem::threadJoin(const UserObject & y)
+//{
+//}
 
 
 void
 DwarfElephantInitializeRBSystem::finalize()
 {
-// _console << std::endl;
-// performRBSystem();
 }

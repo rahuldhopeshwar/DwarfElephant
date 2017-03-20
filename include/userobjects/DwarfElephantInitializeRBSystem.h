@@ -11,7 +11,7 @@
 #include "libmesh/getpot.h"
 
 // MOOSE includes
-#include "NodalUserObject.h"
+#include "GeneralUserObject.h"
 #include "DisplacedProblem.h"
 #include "MooseMesh.h"
 
@@ -37,7 +37,7 @@ template<>
 InputParameters validParams<DwarfElephantInitializeRBSystem>();
 
 class DwarfElephantInitializeRBSystem :
-  public NodalUserObject // Code does not work for GeneralUserObject
+  public GeneralUserObject // Code does not work for GeneralUserObject
 {
   public:
     DwarfElephantInitializeRBSystem(const InputParameters & params);
@@ -49,7 +49,7 @@ class DwarfElephantInitializeRBSystem :
 
     virtual void initialize() override;
     virtual void execute() override;
-    virtual void threadJoin(const UserObject & y);
+//    virtual void threadJoin(const UserObject & y);
     virtual void finalize() override;
 
   protected:
@@ -62,9 +62,6 @@ class DwarfElephantInitializeRBSystem :
     bool _store_basis_functions;
 
     unsigned int _online_N;
-    unsigned int _qa;
-    unsigned int _qf;
-    unsigned int _ql;
 
     Real _online_mu;
 
@@ -78,11 +75,6 @@ class DwarfElephantInitializeRBSystem :
 
     MooseMesh * _mesh_ptr;
     DwarfElephantRBConstruction * _rb_con_ptr;
-
-    NonlinearSystemBase & _non_sys;
-    NumericVector<Number> * _residual;
-
-    AuxiliarySystem & _aux_sys;
 
 };
 ///-------------------------------------------------------------------------
