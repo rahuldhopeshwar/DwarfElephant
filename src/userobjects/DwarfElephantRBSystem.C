@@ -200,7 +200,7 @@ DwarfElephantRBSystem::initialize()
 
   _rb_con_ptr->initialize_rb_construction(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
 
-    transferAffineOperators(_skip_matrix_assembly_in_rb_system,_skip_vector_assembly_in_rb_system);
+    //transferAffineOperators(_skip_matrix_assembly_in_rb_system,_skip_vector_assembly_in_rb_system);
   }
 }
 
