@@ -43,7 +43,6 @@ class DwarfElephantOfflineStage :
     DwarfElephantOfflineStage(const InputParameters & params);
 
     void offlineStage();
-    void transferAffineOperators(bool _skip_matrix_assembly_in_rb_system, bool _skip_vector_assembly_in_rb_system);
 
     virtual void initialize() override;
     virtual void execute() override;
@@ -52,19 +51,12 @@ class DwarfElephantOfflineStage :
 
   protected:
     bool _use_displaced;
-    bool _skip_matrix_assembly_in_rb_system;
-    bool _skip_vector_assembly_in_rb_system;
-    bool _F_equal_to_output;
     bool _store_basis_functions;
 
     std::string _parameters_filename;
     std::string _system_name;
 
     const std::set<SubdomainID> & _block_ids;
-
-    unsigned int _qa;
-    unsigned int _qf;
-    unsigned int _ql;
 
     EquationSystems & _es;
     TransientNonlinearImplicitSystem & _sys;
