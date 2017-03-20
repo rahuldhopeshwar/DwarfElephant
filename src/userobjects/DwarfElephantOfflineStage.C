@@ -39,36 +39,36 @@ DwarfElephantOfflineStage::transferAffineOperators(bool _skip_matrix_assembly_in
 
   _qa = _rb_con_ptr->get_rb_theta_expansion().get_n_A_terms();
   _qf = _rb_con_ptr->get_rb_theta_expansion().get_n_F_terms();
-  _ql = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(0);
+  //_ql = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(0);
 
   // Transfer the vectors
   if (_skip_vector_assembly_in_rb_system)
   {
     // Transfer the data for the F vectors.
     for(unsigned int _q=0; _q<_qf; _q++)
-     _rb_con_ptr->get_Fq(_q)->operator=(_sys.get_vector("Re_non_time"));
+      _rb_con_ptr->get_Fq(_q)->operator=(_sys.get_vector("Re_non_time"));
 //      _rb_con_ptr->get_Fq(_q)->operator=(*_sys.rhs);
 //      _rb_con_ptr->get_Fq(_q)->operator=(_sys.get_vector("Re_non_time"));
 
     // Transfer the data for the output vectors.
-    if (_F_equal_to_output)
-    {
-      for(unsigned int _q=0; _q<_ql; _q++)
-        _rb_con_ptr->get_output_vector(0,_q)->operator=(_sys.get_vector("Re_non_time"));
+   // if (_F_equal_to_output)
+  //  {
+  //    for(unsigned int _q=0; _q<_ql; _q++)
+        //_rb_con_ptr->get_output_vector(0,_q)->operator=(_sys.get_vector("Re_non_time"));
 //        _rb_con_ptr->get_output_vector(0,_q)->operator=(*_sys.rhs);
-    }
-    else if (!_F_equal_to_output)
-      mooseError("Currently, the code handles the compliant case, only.");
   }
+  //  else if (!_F_equal_to_output)
+  //    mooseError("Currently, the code handles the compliant case, only.");
+ // }
 
-  if (_skip_matrix_assembly_in_rb_system)
-  {
+  //if (_skip_matrix_assembly_in_rb_system)
+ // {
     // The stiffness matrices are transfered in the RBKernel class.
 
     // Transfer the inner product matrix
-    _rb_con_ptr->get_inner_product_matrix()->close();
-    _rb_con_ptr->get_inner_product_matrix()->add(1,*_sys.matrix);
-  }
+   // _rb_con_ptr->get_inner_product_matrix()->close();
+  //  _rb_con_ptr->get_inner_product_matrix()->add(1,*_sys.matrix);
+ // }
 }
 
 void
