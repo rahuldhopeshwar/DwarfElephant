@@ -46,6 +46,7 @@ RBKernel::RBKernel(const InputParameters & parameters) :
 void
 RBKernel::initialSetup()
 {
+  _console << *_block_ids.begin() << std::endl;
   if (_block_ids.size()>1)
   {
       mooseError("For the RB method the stiffness matrix has to be saved separatly for each subdomain. Therefore each RBKernel and each inheriting Kernel needs to be defined individually for each block. You defined the Kernel for more than one block, please change your specifications in the Input file.");

@@ -35,6 +35,7 @@ DwarfElephantOfflineStage::offlineStage()
   // This method performs the offline stage of the RB problem.
 
   // Computation of the reduced basis space.
+    _rb_con_ptr = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
 //  trainReducedBasis();
 //
 //  // Write the offline data to file (xdr format).
