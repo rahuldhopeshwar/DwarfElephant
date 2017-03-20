@@ -27,21 +27,6 @@
 active = 'temperature'
   [./temperature]
   [../]
-
-  [./A0_matrix]
-  [../]
-
-  [./A1_matrix]
-  [../]
-[]
-
-[AuxVariables]
-active = 'A1'
-  [./A0]
-  [../]
-
-  [./A1]
-  [../]
 []
 
 [Kernels]
@@ -49,30 +34,18 @@ active = 'RBConduction_block0 RBConduction_block1'
   [./RBConduction_block0]
     type = RBDiffusion
     variable = temperature
-   # diag_save_in = A0
     block = 0
   [../]
 
   [./RBConduction_block1]
     type = RBDiffusion
     variable = temperature
-   # diag_save_in = A1
     block = 1
- [../]
-
-  [./RB0]
-    type = RBKernel
-    variable = A0_matrix
-  [../]
-
-  [./RB1]
-    type = RBKernel
-    variable = A1_matrix
   [../]
  []
 
 [Materials]
-active = 'shale sandstone'
+active = ''
 
   [./shale]
     type = Shale
@@ -109,7 +82,7 @@ active = 'shale sandstone'
 []
 
 [UserObjects]
-active = 'performRBSystem'
+active = 'initializeRBSystem'
 
   [./prepareData_block0]
     type = DwarfElephantPrepareRBSystem
@@ -121,8 +94,8 @@ active = 'performRBSystem'
     block = sandstone
   [../]
 
- [./performRBSystem]
-    type = DwarfElephantRBSystem
+ [./initializeRBSystem]
+    type = DwarfElephantInitializeRBSystem
 
     parameters_filename = 'smallRBTest.i'
 

@@ -66,5 +66,5 @@ DwarfElephantInitializeRBSystemAction::initializeRBSystem()
 void
 DwarfElephantInitializeRBSystemAction::act()
 {
-    initializeRBSystem();
+    //initializeRBSystem();
 }
