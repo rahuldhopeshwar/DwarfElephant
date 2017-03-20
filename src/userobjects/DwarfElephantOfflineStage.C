@@ -68,6 +68,5 @@ DwarfElephantOfflineStage::threadJoin(const UserObject & y)
 void
 DwarfElephantOfflineStage::finalize()
 {
-    transferAffineOperators(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
     offlineStage();
 }
