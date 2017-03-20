@@ -62,6 +62,10 @@ class DwarfElephantOfflineStage :
 
     const std::set<SubdomainID> & _block_ids;
 
+    unsigned int _qa;
+    unsigned int _qf;
+    unsigned int _ql;
+
     EquationSystems & _es;
     TransientNonlinearImplicitSystem & _sys;
 

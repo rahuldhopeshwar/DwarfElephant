@@ -35,6 +35,10 @@ DwarfElephantOfflineStage::DwarfElephantOfflineStage(const InputParameters & par
 void
 DwarfElephantOfflineStage::transferAffineOperators(bool _skip_matrix_assembly_in_rb_system, bool _skip_vector_assembly_in_rb_system)
 {
+  _qa = _rb_con_ptr->get_rb_theta_expansion().get_n_A_terms();
+  _qf = _rb_con_ptr->get_rb_theta_expansion().get_n_F_terms();
+  _ql = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(0);
+
   // Transfer the vectors
   if (_skip_vector_assembly_in_rb_system)
   {
