@@ -92,14 +92,15 @@ DwarfElephantOfflineStage::execute()
 void
 DwarfElephantOfflineStage::threadJoin(const UserObject & y)
 {
+    _rb_con_ptr = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
+    _rb_con_ptr->update();
+    _rb_con_ptr->get_Aq(0);
+
 }
 
 
 void
 DwarfElephantOfflineStage::finalize()
 {
-    _rb_con_ptr = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
-    _rb_con_ptr->update();
-//    _rb_con_ptr->get_Fq(0);
     offlineStage();
 }

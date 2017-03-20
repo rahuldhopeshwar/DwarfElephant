@@ -56,10 +56,10 @@ void
 RBKernel::timestepSetup()
 {
   // Get a pointer to the RB system.
-  //_rb_con_ptr = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
+  _rb_con_ptr = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
 
   // Retrieve the stiffness matrix for the corresponding subdomain
-  //_jacobian_subdomain = _rb_con_ptr->get_Aq(*_block_ids.begin());
+  _jacobian_subdomain = _rb_con_ptr->get_Aq(*_block_ids.begin());
 
   // Eliminates error message for the initialization of new non-zero entries
   // For the future: change SparseMatrix pattern (increases efficency)
