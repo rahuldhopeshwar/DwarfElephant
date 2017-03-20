@@ -43,6 +43,7 @@ class DwarfElephantOfflineStage :
     DwarfElephantOfflineStage(const InputParameters & params);
 
     void offlineStage();
+    void transferAffineOperators(bool _skip_matrix_assembly_in_rb_system, bool _skip_vector_assembly_in_rb_system);
 
     virtual void initialize() override;
     virtual void execute() override;

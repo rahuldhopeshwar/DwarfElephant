@@ -30,12 +30,41 @@ DwarfElephantOfflineStage::DwarfElephantOfflineStage(const InputParameters & par
 }
 
 void
+DwarfElephantOfflineStage::transferAffineOperators(bool _skip_matrix_assembly_in_rb_system, bool _skip_vector_assembly_in_rb_system)
+{
+  // Transfer the vectors
+//  if (_skip_vector_assembly_in_rb_system)
+//  {
+//    // Transfer the data for the F vectors.
+//    for(unsigned int _q=0; _q<_qf; _q++)
+//      _rb_con_ptr->get_Fq(_q)->operator=(_sys.get_vector("Re_non_time"));
+//
+//    // Transfer the data for the output vectors.
+//    if (_F_equal_to_output)
+//    {
+//      for(unsigned int _q=0; _q<_ql; _q++)
+//        _rb_con_ptr->get_output_vector(0,_q)->operator=(_sys.get_vector("Re_non_time"));
+//    }
+//    else if (!_F_equal_to_output)
+//      mooseError("Currently, the code handles the compliant case, only.");
+//  }
+//
+//  if (_skip_matrix_assembly_in_rb_system)
+//  {
+//    // The stiffness matrices are transfered in the RBKernel class.
+//
+//    // Transfer the inner product matrix
+//    _rb_con_ptr->get_inner_product_matrix()->close();
+//    _rb_con_ptr->get_inner_product_matrix()->add(1,*_sys.matrix);
+//  }
+}
+
+void
 DwarfElephantOfflineStage::offlineStage()
 {
   // This method performs the offline stage of the RB problem.
 
   // Computation of the reduced basis space.
-    _rb_con_ptr = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
 //  trainReducedBasis();
 //
 //  // Write the offline data to file (xdr format).
@@ -69,5 +98,7 @@ DwarfElephantOfflineStage::threadJoin(const UserObject & y)
 void
 DwarfElephantOfflineStage::finalize()
 {
+    _rb_con_ptr = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
+    _rb_con_ptr->get_Fq(0);
     offlineStage();
 }

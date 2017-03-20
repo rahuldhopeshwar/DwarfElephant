@@ -42,7 +42,6 @@ class DwarfElephantInitializeRBSystem :
   public:
     DwarfElephantInitializeRBSystem(const InputParameters & params);
 
-    void transferAffineOperators(bool _skip_matrix_assembly_in_rb_system, bool _skip_vector_assembly_in_rb_system);
     void performRBSystem();
     void onlineStage();
 
@@ -61,9 +60,6 @@ class DwarfElephantInitializeRBSystem :
     bool _store_basis_functions;
 
     unsigned int _online_N;
-    unsigned int _qa;
-    unsigned int _qf;
-    unsigned int _ql;
 
     Real _online_mu;
 
