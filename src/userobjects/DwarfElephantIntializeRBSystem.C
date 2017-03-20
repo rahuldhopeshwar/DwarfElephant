@@ -69,10 +69,10 @@ DwarfElephantInitializeRBSystem::transferAffineOperators(bool _skip_matrix_assem
     _rb_con_ptr->get_inner_product_matrix()->close();
     _rb_con_ptr->get_inner_product_matrix()->add(1,*_sys.matrix);
   }
- 
- NumericVector<Number> * _rs;
- _rs = _sys.rhs;
- _console << *_rs << std::endl;
+
+// NumericVector<Number> * _rs;
+// _rs = _sys.rhs;
+// _console << *_rs << std::endl;
 }
 
 void
@@ -159,6 +159,7 @@ DwarfElephantInitializeRBSystem::initialize()
     // assembly, since this is already done by MOOSE.
 
     _rb_con_ptr->initialize_rb_construction(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
+    transferAffineOperators(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
   }
 }
 
