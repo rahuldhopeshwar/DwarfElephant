@@ -35,6 +35,8 @@ DwarfElephantOfflineStage::DwarfElephantOfflineStage(const InputParameters & par
 void
 DwarfElephantOfflineStage::transferAffineOperators(bool _skip_matrix_assembly_in_rb_system, bool _skip_vector_assembly_in_rb_system)
 {
+  _rb_con_ptr = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
+
   _qa = _rb_con_ptr->get_rb_theta_expansion().get_n_A_terms();
   _qf = _rb_con_ptr->get_rb_theta_expansion().get_n_F_terms();
   _ql = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(0);
@@ -97,7 +99,6 @@ DwarfElephantOfflineStage::initialize()
 void
 DwarfElephantOfflineStage::execute()
 {
-    offlineStage();
 }
 
 void
@@ -109,4 +110,6 @@ DwarfElephantOfflineStage::threadJoin(const UserObject & y)
 void
 DwarfElephantOfflineStage::finalize()
 {
+    transferAffineOperators(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
+    offlineStage();
 }

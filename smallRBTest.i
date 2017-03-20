@@ -119,7 +119,7 @@ active = 'initializeRBSystem offlineStage'
 [Outputs]
   exodus = true
   execute_on = 'timestep_end'
-  print_perf_log = true
+  #print_perf_log = true
 []
 
 # ====================== Parameters for the RB approximation ======================

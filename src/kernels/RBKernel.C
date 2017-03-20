@@ -56,14 +56,15 @@ RBKernel::timestepSetup()
 {
   // Get a pointer to the RB system.
   _rb_con_ptr = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
+  _rb_con_ptr->n_vectors();
 
   // Retrieve the stiffness matrix for the corresponding subdomain
-  _jacobian_subdomain = _rb_con_ptr->get_Aq(*_block_ids.begin());
+//  _jacobian_subdomain = _rb_con_ptr->get_Aq(*_block_ids.begin());
 
   // Eliminates error message for the initialization of new non-zero entries
   // For the future: change SparseMatrix pattern (increases efficency)
-  PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_jacobian_subdomain);
-  MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
+//  PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_jacobian_subdomain);
+//  MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
 }
 
 void
@@ -82,8 +83,8 @@ RBKernel::computeJacobian()
   ke += _local_ke;
 
   // Add the calcualted matrices to the Aq matrices from the RB system.
-  _jacobian_subdomain -> add_matrix(_local_ke, _var.dofIndices());
-  _jacobian_subdomain ->close();
+//  _jacobian_subdomain -> add_matrix(_local_ke, _var.dofIndices());
+//  _jacobian_subdomain ->close();
 
  if (_has_diag_save_in)
   {
