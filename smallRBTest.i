@@ -82,7 +82,7 @@ active = ''
 []
 
 [UserObjects]
-active = 'initializeRBSystem'
+active = 'initializeRBSystem offlineStage'
 
   [./prepareData_block0]
     type = DwarfElephantPrepareRBSystem
@@ -108,6 +108,12 @@ active = 'initializeRBSystem'
 
     execute_on = 'initial'
   [../]
+
+ [./offlineStage]
+   type = DwarfElephantOfflineStage
+   store_basis_functions = true
+   execute_on = 'timestep_begin'
+ [../]
 []
 
 [Outputs]

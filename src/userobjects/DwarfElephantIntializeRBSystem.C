@@ -35,7 +35,6 @@ DwarfElephantInitializeRBSystem::DwarfElephantInitializeRBSystem(const InputPara
   _online_mu(getParam<Real>("online_mu")),
   _parameters_filename(getParam<std::string>("parameters_filename")),
   _system_name(getParam<std::string>("system")),
-  _block_ids(this->blockIDs()),
   _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
   _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
   _mesh_ptr(&_fe_problem.mesh())
@@ -68,7 +67,7 @@ DwarfElephantInitializeRBSystem::performRBSystem()
 
   if(_offline_stage && _online_stage)
   {
-    offlineStage();
+    //offlineStage();
     onlineStage();
   }
 //  else if(!_offline_stage && _online_stage)

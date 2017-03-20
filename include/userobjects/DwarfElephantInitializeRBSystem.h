@@ -43,9 +43,7 @@ class DwarfElephantInitializeRBSystem :
     DwarfElephantInitializeRBSystem(const InputParameters & params);
 
     void performRBSystem();
-    void offlineStage();
     void onlineStage();
-    void transferAffineOperators(bool _skip_matrix_assembly_in_rb_system, bool _skip_vector_assembly_in_rb_system);
 
     virtual void initialize() override;
     virtual void execute() override;
@@ -67,8 +65,6 @@ class DwarfElephantInitializeRBSystem :
 
     std::string _parameters_filename;
     std::string _system_name;
-
-    const std::set<SubdomainID> & _block_ids;
 
     EquationSystems & _es;
     TransientNonlinearImplicitSystem & _sys;
