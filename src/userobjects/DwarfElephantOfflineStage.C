@@ -101,12 +101,12 @@ DwarfElephantOfflineStage::execute()
 }
 
 void
-DwarfElephantInitializeRBSystem::threadJoin(const UserObject & y)
+DwarfElephantOfflineStage::threadJoin(const UserObject & y)
 {
 }
 
 
 void
-DwarfElephantInitializeRBSystem::finalize()
+DwarfElephantOfflineStage::finalize()
 {
 }

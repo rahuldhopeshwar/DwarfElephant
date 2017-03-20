@@ -27,6 +27,7 @@
 // UserObjects
 #include "DwarfElephantPrepareRBSystem.h"
 #include "DwarfElephantInitializeRBSystem.h"
+#include "DwarfElephantOfflineStage.h"
 
 // Executioners
 #include "DwarfElephantExecutioner.h"
@@ -86,6 +87,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   // UserObjects
   registerUserObject(DwarfElephantPrepareRBSystem);
   registerUserObject(DwarfElephantInitializeRBSystem);
+  registerUserObject(DwarfElephantOfflineStage);
 
   // Executioners
   registerExecutioner(DwarfElephantExecutioner);
