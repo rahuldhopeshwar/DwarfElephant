@@ -42,7 +42,7 @@ class DwarfElephantPrepareRBSystem :
 
 
   protected:
-    DofMap & _dof_map;
+//    DofMap & _dof_map;
     bool _use_displaced;
     EquationSystems & _es;
 

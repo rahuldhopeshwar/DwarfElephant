@@ -23,6 +23,11 @@
   [../]
 []
 
+[AuxVariables]
+  [./test]
+  [../]
+[]
+
 [Variables]
 active = 'temperature'
   [./temperature]
@@ -34,7 +39,8 @@ active = 'RBConduction_block0 RBConduction_block1'
   [./RBConduction_block0]
     type = RBDiffusion
     variable = temperature
-    block = 0  
+    diag_save_in = test
+    block = 0
   [../]
 
   [./RBConduction_block1]

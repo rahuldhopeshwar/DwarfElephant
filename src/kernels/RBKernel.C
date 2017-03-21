@@ -59,7 +59,7 @@ RBKernel::timestepSetup()
   _rb_con_ptr = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
 
   // Retrieve the stiffness matrix for the corresponding subdomain
-  _jacobian_subdomain = _rb_con_ptr->get_Aq(*_block_ids.begin());
+//  _jacobian_subdomain = _rb_con_ptr->get_Aq(*_block_ids.begin());
 
   // Eliminates error message for the initialization of new non-zero entries
   // For the future: change SparseMatrix pattern (increases efficency)
@@ -82,12 +82,20 @@ RBKernel::computeJacobian()
 
   ke += _local_ke;
 
+  // Eliminates error message for the initialization of new non-zero entries
+  // For the future: change SparseMatrix pattern (increases efficency)
+  //PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_jacobian_subdomain);
+  //MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
+
   // Add the calcualted matrices to the Aq matrices from the RB system.
   //_jacobian_subdomain -> add_matrix(_local_ke, _var.dofIndices());
   //_jacobian_subdomain ->close();
 
  if (_has_diag_save_in)
   {
+    // Retrieve the stiffness matrix for the corresponding subdomain
+    _jacobian_subdomain = _rb_con_ptr->get_Aq(*_block_ids.begin());
+
     unsigned int rows = ke.m();
     DenseVector<Number> diag(rows);
     for (unsigned int i=0; i<rows; i++)
