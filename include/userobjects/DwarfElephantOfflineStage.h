@@ -53,6 +53,9 @@ class DwarfElephantOfflineStage :
   protected:
     bool _use_displaced;
     bool _store_basis_functions;
+    bool _skip_matrix_assembly_in_rb_system;
+    bool _skip_vector_assembly_in_rb_system;
+    bool _compliant;
 
     std::string _parameters_filename;
     std::string _system_name;
@@ -61,9 +64,9 @@ class DwarfElephantOfflineStage :
 
     EquationSystems & _es;
     TransientNonlinearImplicitSystem & _sys;
+    const DwarfElephantInitializeRBSystem & _initialize_rb_system;
 
     MooseMesh * _mesh_ptr;
-    DwarfElephantRBConstruction * _rb_con_ptr;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTINITIALIZERBSYSTEM_H

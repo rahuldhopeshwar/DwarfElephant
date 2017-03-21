@@ -17,7 +17,6 @@
 
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBClasses.h"
-#include "DwarfElephantRBClassesAssemble.h"
 
 
 ///-------------------------------------------------------------------------
@@ -31,24 +30,28 @@ namespace libMesh
 }
 
 class MooseMesh;
+class DwarfElephantRBConstruction;
 class DwarfElephantInitializeRBSystem;
 
 template<>
 InputParameters validParams<DwarfElephantInitializeRBSystem>();
 
 class DwarfElephantInitializeRBSystem :
-  public GeneralUserObject // Code does not work for GeneralUserObject
+  public GeneralUserObject
 {
   public:
     DwarfElephantInitializeRBSystem(const InputParameters & params);
 
-    void performRBSystem();
     void onlineStage();
 
     virtual void initialize() override;
     virtual void execute() override;
-//    virtual void threadJoin(const UserObject & y);
     virtual void finalize() override;
+
+    DwarfElephantRBConstruction * _rb_con_ptr;
+    std::vector<SparseMatrix<Number> *> _jacobian_subdomain;
+    std::vector<NumericVector<Number> *> _residuals;
+    std::vector<NumericVector<Number> *> _outputs;
 
   protected:
     bool _use_displaced;
@@ -60,6 +63,9 @@ class DwarfElephantInitializeRBSystem :
     bool _store_basis_functions;
 
     unsigned int _online_N;
+    unsigned int _qa;
+    unsigned int _qf;
+    unsigned int _ql;
 
     Real _online_mu;
 
@@ -70,8 +76,6 @@ class DwarfElephantInitializeRBSystem :
     TransientNonlinearImplicitSystem & _sys;
 
     MooseMesh * _mesh_ptr;
-    DwarfElephantRBConstruction * _rb_con_ptr;
-
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTINITIALIZERBSYSTEM_H

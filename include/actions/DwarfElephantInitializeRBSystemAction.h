@@ -1,64 +1,53 @@
-///-------------------------------------------------------------------------
 #ifndef DWARFELEPHANTINITIALIZERBSYSTEMACTION_H
-#define DWARFELEPHANTINITIALIERBSYSTEMACTION_H
+#define DWARFELEPHANTINITIALIZERBSYSTEMACTION_H
 
-///---------------------------------INCLUDES--------------------------------
 //libMesh includes
 #include "libmesh/equation_systems.h"
-#include "libmesh/sparse_matrix.h"
-#include "libmesh/petsc_matrix.h"
-#include "libmesh/petsc_vector.h"
-#include "libmesh/getpot.h"
 
-// MOOSE includes
 #include "Action.h"
-#include "DisplacedProblem.h"
 #include "MooseMesh.h"
+#include "Factory.h"
+#include "Parser.h"
+#include "FEProblem.h"
+#include "DisplacedProblem.h"
 
-// MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBClasses.h"
-#include "DwarfElephantRBClassesAssemble.h"
 
-
-///-------------------------------------------------------------------------
 // Forward Declarations
 namespace libMesh
 {
   class EquationSystems;
-  template <typename T> class SparseMatrix;
-  template <typename T> class PetscMatrix;
-  template <typename T> class PetscVector;
 }
 
 class MooseMesh;
-class DwarfElephantInitializeRBSystemAction;
+class DisplacedProblem;
+
+class DwarfElephantInitializeRBSystemAction : public Action
+{
+public:
+  DwarfElephantInitializeRBSystemAction(InputParameters params);
+
+  virtual void act() override;
+
+  void initializeParameters();
+  void initializeRBSystem();
+
+protected:
+  bool _use_displaced;
+  bool _skip_matrix_assembly_in_rb_system;
+  bool _skip_vector_assembly_in_rb_system;
+  bool _offline_stage;
+
+  std::string _parameters_filename;
+  std::string _system_name;
+
+  EquationSystems * _es_ptr;
+  TransientNonlinearImplicitSystem * _sys;
+  MooseMesh * _mesh_ptr;
+  DwarfElephantRBConstruction * _rb_con_ptr;
+};
 
 template<>
 InputParameters validParams<DwarfElephantInitializeRBSystemAction>();
 
-class DwarfElephantInitializeRBSystemAction :
-  public Action
-{
-  public:
-    DwarfElephantInitializeRBSystemAction(InputParameters params);
-
-    void initializeRBSystem();
-
-    virtual void act() override;
-
-  protected:
-    bool _use_displaced;
-    bool _offline_stage;
-    bool _skip_matrix_assembly_in_rb_system;
-    bool _skip_vector_assembly_in_rb_system;
-
-    std::string _parameters_filename;
-
-    EquationSystems & _es;
-
-    MooseMesh * _mesh_ptr;
-    DwarfElephantRBConstruction * _rb_con_ptr;
-
-};
-///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTINITIALIZERBSYSTEMACTION_H
+#endif //DWARFELEPHANTINITIALIZERBSYSTEMACTION_H

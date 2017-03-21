@@ -28,6 +28,7 @@ InputParameters validParams<RBKernel>()
 
   params.addClassDescription("Overwrites the function computeJacobian. This is required because for the RB method the stiffness matrix needs to be saved in its subdomain contributions.");
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
+  params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system");
 
   return params;
 }
@@ -37,7 +38,8 @@ RBKernel::RBKernel(const InputParameters & parameters) :
     Kernel(parameters),
     _use_displaced(getParam<bool>("use_displaced")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
-    _block_ids(this->blockIDs())
+    _block_ids(this->blockIDs()),
+    _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystem>("initial_rb_userobject"))
 
 {
 }
@@ -50,21 +52,6 @@ RBKernel::initialSetup()
   {
       mooseError("For the RB method the stiffness matrix has to be saved separatly for each subdomain. Therefore each RBKernel and each inheriting Kernel needs to be defined individually for each block. You defined the Kernel for more than one block, please change your specifications in the Input file.");
   }
-}
-
-void
-RBKernel::timestepSetup()
-{
-  // Get a pointer to the RB system.
-  _rb_con_ptr = &_es.get_system<DwarfElephantRBConstruction>("RBSystem");
-
-  // Retrieve the stiffness matrix for the corresponding subdomain
-//  _jacobian_subdomain = _rb_con_ptr->get_Aq(*_block_ids.begin());
-
-  // Eliminates error message for the initialization of new non-zero entries
-  // For the future: change SparseMatrix pattern (increases efficency)
-  //PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_jacobian_subdomain);
-  //MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
 }
 
 void
@@ -82,20 +69,12 @@ RBKernel::computeJacobian()
 
   ke += _local_ke;
 
-  // Eliminates error message for the initialization of new non-zero entries
-  // For the future: change SparseMatrix pattern (increases efficency)
-  //PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_jacobian_subdomain);
-  //MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
-
   // Add the calcualted matrices to the Aq matrices from the RB system.
-  //_jacobian_subdomain -> add_matrix(_local_ke, _var.dofIndices());
-  //_jacobian_subdomain ->close();
+  _initialize_rb_system._jacobian_subdomain[*_block_ids.begin()] -> add_matrix(_local_ke, _var.dofIndices());
+  _initialize_rb_system._jacobian_subdomain[*_block_ids.begin()] -> close();
 
  if (_has_diag_save_in)
   {
-    // Retrieve the stiffness matrix for the corresponding subdomain
-    _jacobian_subdomain = _rb_con_ptr->get_Aq(*_block_ids.begin());
-
     unsigned int rows = ke.m();
     DenseVector<Number> diag(rows);
     for (unsigned int i=0; i<rows; i++)

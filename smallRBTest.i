@@ -28,6 +28,11 @@
   [../]
 []
 
+#[InitializeRBSystem]
+#  parameters_filename = 'smallRBTest.i'
+#  execute_on = initial
+#[]
+
 [Variables]
 active = 'temperature'
   [./temperature]
@@ -39,13 +44,14 @@ active = 'RBConduction_block0 RBConduction_block1'
   [./RBConduction_block0]
     type = RBDiffusion
     variable = temperature
-    diag_save_in = test
+    initial_rb_userobject = initializeRBSystem
     block = 0
   [../]
 
   [./RBConduction_block1]
     type = RBDiffusion
     variable = temperature
+    initial_rb_userobject = initializeRBSystem
     block = 1
   [../]
  []
@@ -90,17 +96,7 @@ active = ''
 [UserObjects]
 active = 'initializeRBSystem'
 
-  [./prepareData_block0]
-    type = DwarfElephantPrepareRBSystem
-    block = shale
-  [../]
-
-  [./prepareData_block1]
-    type = DwarfElephantPrepareRBSystem
-    block = sandstone
-  [../]
-
- [./initializeRBSystem]
+  [./initializeRBSystem]
     type = DwarfElephantInitializeRBSystem
 
     parameters_filename = 'smallRBTest.i'
@@ -112,14 +108,15 @@ active = 'initializeRBSystem'
     online_N = 20
     online_mu = '1.05 2.5 1.5'
 
-    execute_on = 'initial'
+    execute_on = 'initial timestep_end'
   [../]
 
- [./offlineStage]
-   type = DwarfElephantOfflineStage
-   store_basis_functions = true
-   execute_on = 'timestep_end'
- [../]
+  [./offlineStage]
+    type = DwarfElephantOfflineStage
+    store_basis_functions = true
+    execute_on = 'inital timestep_end'
+    initial_rb_userobject = initializeRBSystem
+  [../]
 []
 
 [Outputs]

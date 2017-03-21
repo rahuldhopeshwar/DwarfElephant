@@ -6,7 +6,6 @@ template<>
 InputParameters validParams<DwarfElephantInitializeRBSystem>()
 {
   InputParameters params = validParams<GeneralUserObject>();
-
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
   params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
   params.addParam<bool>("online_stage", true, "Determines whether the Online stage will be calculated or not.");
@@ -55,39 +54,6 @@ DwarfElephantInitializeRBSystem::onlineStage()
 }
 
 void
-DwarfElephantInitializeRBSystem::performRBSystem()
-{
-  // Build the RBEvaluation object.
-  // Required for both the Offline and Online stage.
-  DwarfElephantRBEvaluation _rb_eval(_mesh_ptr->comm());
-
-  // Pass a pointer of the RBEvaluation object to the
-  // RBConstruction object
-  _rb_con_ptr->set_rb_evaluation(_rb_eval);
-
-  if(_offline_stage && _online_stage)
-  {
-    //offlineStage();
-    onlineStage();
-  }
-//  else if(!_offline_stage && _online_stage)
-//  {
-//    onlineStage();
-//  }
-//
-//  else if(_offline_stage && !_online_stage)
-//  {
-//    offlineStage();
-//  }
-//  else if(!_offline_stage && !_online_stage)
-//  {
-//    _console << "Both the offline and online stage are set to false, \
-//                 meaning the RBSystem does nothing."
-//  }
-}
-
-
-void
 DwarfElephantInitializeRBSystem::initialize()
 {
   // Define the parameter file for the libMesh functions.
@@ -119,6 +85,38 @@ DwarfElephantInitializeRBSystem::initialize()
 
     // Initialize the RB construction. Note, we skip the matrix and vector
     // assembly, since this is already done by MOOSE.
+    _rb_con_ptr->initialize_rb_construction(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
+
+    _qa = _rb_con_ptr->get_rb_theta_expansion().get_n_A_terms();
+    _qf = _rb_con_ptr->get_rb_theta_expansion().get_n_F_terms();
+    _ql = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(0);
+
+    // Save the A's, F's and output vectors from the RBConstruction class in pointers.
+    // This additional saving of the pointers is required because otherwise segmentation
+    // faults arise in the RBKernel and the DwarfElephantOfflineStage class.
+    _jacobian_subdomain.resize(_qa);
+    _residuals.resize(_qf);
+    _outputs.resize(_ql);
+
+    for (unsigned int _q=0; _q < _qa; _q++)
+    {
+      _jacobian_subdomain[_q] = _rb_con_ptr->get_Aq(_q);
+
+      // Eliminates error message for the initialization of new non-zero entries
+      // For the future: change SparseMatrix pattern (increases efficency)
+      PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_jacobian_subdomain[_q]);
+      MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
+    }
+
+    for (unsigned int _q=0; _q < _ql; _q++)
+    {
+      _residuals[_q] = _rb_con_ptr->get_Fq(_q);
+    }
+
+    for (unsigned int _q=0; _q < _ql; _q++)
+    {
+      _outputs[_q] = _rb_con_ptr->get_output_vector(0,_q);
+    }
   }
 }
 
@@ -126,12 +124,6 @@ void
 DwarfElephantInitializeRBSystem::execute()
 {
 }
-
-//void
-//DwarfElephantInitializeRBSystem::threadJoin(const UserObject & y)
-//{
-//}
-
 
 void
 DwarfElephantInitializeRBSystem::finalize()

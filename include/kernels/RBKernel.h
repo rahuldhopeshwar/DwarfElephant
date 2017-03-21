@@ -21,6 +21,7 @@
 
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBClasses.h"
+#include "DwarfElephantInitializeRBSystem.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
@@ -31,7 +32,7 @@ namespace libMesh
   template <typename T> class PetscMatrix;
 }
 
-class DwarfElephantRBConstruction;
+class DwarfElephantInitializeRBSystem;
 class DisplacedProblem;
 class RBKernel;
 
@@ -50,7 +51,7 @@ public:
  /* Methods */
   virtual void computeJacobian() override;
   virtual void initialSetup() override;
-  virtual void timestepSetup() override;
+
 
 //--------------------------------PROTECTED---------------------------------
 protected:
@@ -58,18 +59,17 @@ protected:
   /* Methods */
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
-  
-  
+
+
   /*Attributes*/
   bool _use_displaced;
 
   EquationSystems & _es;
-  DwarfElephantRBConstruction * _rb_con_ptr;
-  
+
   const std::set<SubdomainID> & _block_ids;
 
-  SparseMatrix<Number> * _jacobian_subdomain;
-  };
+  const DwarfElephantInitializeRBSystem & _initialize_rb_system;
+};
 
 ///-------------------------------------------------------------------------
 #endif //RBKERNEL_H
