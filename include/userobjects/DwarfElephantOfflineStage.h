@@ -11,7 +11,7 @@
 #include "libmesh/getpot.h"
 
 // MOOSE includes
-#include "NodalUserObject.h"
+#include "GeneralUserObject.h"
 #include "DisplacedProblem.h"
 #include "MooseMesh.h"
 
@@ -37,17 +37,17 @@ template<>
 InputParameters validParams<DwarfElephantOfflineStage>();
 
 class DwarfElephantOfflineStage :
-  public NodalUserObject // Code does not work for GeneralUserObject
+  public GeneralUserObject
 {
   public:
     DwarfElephantOfflineStage(const InputParameters & params);
 
+    void setInnerProductMatrix();
     void offlineStage();
     void transferAffineOperators(bool _skip_matrix_assembly_in_rb_system, bool _skip_vector_assembly_in_rb_system);
 
     virtual void initialize() override;
     virtual void execute() override;
-    virtual void threadJoin(const UserObject & y);
     virtual void finalize() override;
 
   protected:
@@ -60,13 +60,12 @@ class DwarfElephantOfflineStage :
     std::string _parameters_filename;
     std::string _system_name;
 
-    const std::set<SubdomainID> & _block_ids;
-
     EquationSystems & _es;
     TransientNonlinearImplicitSystem & _sys;
     const DwarfElephantInitializeRBSystem & _initialize_rb_system;
 
     MooseMesh * _mesh_ptr;
+    const std::set<SubdomainID> & _subdomain_ids;
 };
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTINITIALIZERBSYSTEM_H
+#endif // DWARFELEPHANTOFFLINESTAGE_H

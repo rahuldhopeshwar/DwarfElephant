@@ -52,6 +52,51 @@ RBKernel::initialSetup()
   {
       mooseError("For the RB method the stiffness matrix has to be saved separatly for each subdomain. Therefore each RBKernel and each inheriting Kernel needs to be defined individually for each block. You defined the Kernel for more than one block, please change your specifications in the Input file.");
   }
+
+  if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
+    mooseError("The initialization of the RB system has to be executed on 'initial'. "
+               "You defined a wrong state in your 'execute_on' line in the Inputfile. "
+               "Please, correct your settings.");
+}
+
+void
+RBKernel::computeResidual()
+{
+  DenseVector<Number> & re = _assembly.residualBlock(_var.number());
+  _local_re.resize(re.size());
+  _local_re.zero();
+
+  precalculateResidual();
+  for (_i = 0; _i < _test.size(); _i++)
+    for (_qp = 0; _qp < _qrule->n_points(); _qp++)
+      _local_re(_i) += _JxW[_qp] * _coord[_qp] * computeQpResidual();
+
+  re += _local_re;
+
+  if (_initialize_rb_system._qf == 1)
+  {
+    _initialize_rb_system._residuals[0] -> add_vector(_local_re, _var.dofIndices());
+    _initialize_rb_system._residuals[0] ->close();
+  }
+
+  else if (_initialize_rb_system._qf != 1)
+    mooseError ("Currently, the implementation handles only one F term.");
+
+  if (_initialize_rb_system._compliant && _initialize_rb_system._ql == 1)
+  {
+    _initialize_rb_system._outputs[0] -> operator=(*_initialize_rb_system._residuals[0]);
+    _initialize_rb_system._outputs[0] -> close();
+  }
+
+  else if (!_initialize_rb_system._compliant || _initialize_rb_system._ql !=1)
+    mooseError ("Currently, the implementation handles only one output term and only the compliant case.");
+
+  if (_has_save_in)
+  {
+    Threads::spin_mutex::scoped_lock lock(Threads::spin_mtx);
+    for (const auto & var : _save_in)
+      var->sys().solution().add_vector(_local_re, var->dofIndices());
+  }
 }
 
 void
@@ -69,9 +114,8 @@ RBKernel::computeJacobian()
 
   ke += _local_ke;
 
-  // Add the calcualted matrices to the Aq matrices from the RB system.
+  // Add the calculated matrices to the Aq matrices from the RB system.
   _initialize_rb_system._jacobian_subdomain[*_block_ids.begin()] -> add_matrix(_local_ke, _var.dofIndices());
-  _initialize_rb_system._jacobian_subdomain[*_block_ids.begin()] -> close();
 
  if (_has_diag_save_in)
   {

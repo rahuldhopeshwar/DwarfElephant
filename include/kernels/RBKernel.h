@@ -50,6 +50,7 @@ public:
 
  /* Methods */
   virtual void computeJacobian() override;
+  virtual void computeResidual() override;
   virtual void initialSetup() override;
 
 

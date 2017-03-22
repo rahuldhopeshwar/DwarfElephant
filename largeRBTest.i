@@ -3,41 +3,31 @@
 []
 
 [Variables]
+active = 'temperature'
   [./temperature]
   [../]
 []
 
-[AuxVariables]
-active = 'A0'
-  [./A0]
-  [../]
-
-  [./A1]
-  [../]
-
-  [./A2]
-  [../]
-[]
-
 [Kernels]
+active = 'RBConduction_block0 RBConduction_block1 RBConduction_block2'
   [./RBConduction_block0]
     type = RBDiffusion
     variable = temperature
-    diag_save_in = A0
+    initial_rb_userobject = initializeRBSystem
     block = 0
   [../]
 
   [./RBConduction_block1]
     type = RBDiffusion
     variable = temperature
-   # diag_save_in = A1
+    initial_rb_userobject = initializeRBSystem
     block = 1
   [../]
 
   [./RBConduction_block2]
     type = RBDiffusion
     variable = temperature
-   # diag_save_in = A2
+    initial_rb_userobject = initializeRBSystem
     block = 2
   [../]
  []
@@ -45,7 +35,7 @@ active = 'A0'
 [Materials]
 active = ''
 
-  [./shale]
+  [./shale_top]
     type = Shale
     block = 0
   [../]
@@ -53,6 +43,11 @@ active = ''
   [./sandstone]
     type = SandStone
     block = 1
+  [../]
+
+  [./shale_bottom]
+    type = Shale
+    block = 2
   [../]
 []
 
@@ -80,15 +75,10 @@ active = ''
 []
 
 [UserObjects]
-active = 'performRBSystem'
+active = 'initializeRBSystem performRBSystem'
 
- [./prepareData_block0]
-   type = DwarfElephantPrepareRBSystem
-   block = 0
- [../]
-
- [./performRBSystem]
-    type = DwarfElephantRBSystem
+  [./initializeRBSystem]
+    type = DwarfElephantInitializeRBSystem
 
     parameters_filename = 'largeRBTest.i'
 
@@ -99,13 +89,30 @@ active = 'performRBSystem'
     online_N = 20
     online_mu = '1.05 2.5 1.5'
 
+    execute_on = 'initial'
+  [../]
+
+  [./performRBSystem]
+    type = DwarfElephantOfflineStage
+
+    parameters_filename = 'largeRBTest.i'
+
+    offline_stage = true
+    online_stage = true
+    store_basis_functions = true
+
+    online_N = 20
+    online_mu = '1.05 2.5 1.5'
+
+    execute_on = 'timestep_end'
+    initial_rb_userobject = initializeRBSystem
   [../]
 []
 
 [Outputs]
   exodus = true
   execute_on = 'timestep_end'
-  print_perf_log = true
+  #print_perf_log = true
 []
 
 # ====================== Parameters for the RB approximation ======================
@@ -133,4 +140,3 @@ deterministic_training = false
 use_relative_bound_in_greedy = false
 
 quiet_mode =  false
-

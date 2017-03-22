@@ -23,19 +23,15 @@
   [../]
 []
 
-[AuxVariables]
-  [./test]
-  [../]
-[]
-
-#[InitializeRBSystem]
-#  parameters_filename = 'smallRBTest.i'
-#  execute_on = initial
-#[]
-
 [Variables]
 active = 'temperature'
   [./temperature]
+  [../]
+[]
+
+[AuxVariables]
+active = 'RB_temperature'
+  [./RB_temperature]
   [../]
 []
 
@@ -94,10 +90,12 @@ active = ''
 []
 
 [UserObjects]
-active = 'initializeRBSystem'
+active = 'initializeRBSystem performRBSystem'
 
   [./initializeRBSystem]
     type = DwarfElephantInitializeRBSystem
+
+    variable = RB_temperature
 
     parameters_filename = 'smallRBTest.i'
 
@@ -108,13 +106,22 @@ active = 'initializeRBSystem'
     online_N = 20
     online_mu = '1.05 2.5 1.5'
 
-    execute_on = 'initial timestep_end'
+    execute_on = 'initial'
   [../]
 
-  [./offlineStage]
+  [./performRBSystem]
     type = DwarfElephantOfflineStage
+
+    parameters_filename = 'smallRBTest.i'
+
+    offline_stage = true
+    online_stage = true
     store_basis_functions = true
-    execute_on = 'inital timestep_end'
+
+    online_N = 20
+    online_mu = '1.05 2.5 1.5'
+
+    execute_on = 'timestep_end'
     initial_rb_userobject = initializeRBSystem
   [../]
 []

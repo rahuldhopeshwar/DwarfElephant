@@ -43,39 +43,52 @@ class DwarfElephantInitializeRBSystem :
     DwarfElephantInitializeRBSystem(const InputParameters & params);
 
     void onlineStage();
+    void initializeOfflineStage();
 
     virtual void initialize() override;
     virtual void execute() override;
     virtual void finalize() override;
-
-    DwarfElephantRBConstruction * _rb_con_ptr;
-    std::vector<SparseMatrix<Number> *> _jacobian_subdomain;
-    std::vector<NumericVector<Number> *> _residuals;
-    std::vector<NumericVector<Number> *> _outputs;
 
   protected:
     bool _use_displaced;
     bool _skip_matrix_assembly_in_rb_system;
     bool _skip_vector_assembly_in_rb_system;
     bool _offline_stage;
-    bool _online_stage;
-    bool _F_equal_to_output;
-    bool _store_basis_functions;
+//    bool _online_stage;
+    bool _compliant;
+//    bool _store_basis_functions;
 
-    unsigned int _online_N;
+//    unsigned int _online_N;
     unsigned int _qa;
     unsigned int _qf;
     unsigned int _ql;
 
-    Real _online_mu;
+//    Real _online_mu;
 
     std::string _parameters_filename;
-    std::string _system_name;
+//    std::string _system_name;
 
     EquationSystems & _es;
-    TransientNonlinearImplicitSystem & _sys;
+//    TransientNonlinearImplicitSystem & _sys;
 
     MooseMesh * _mesh_ptr;
+
+    DwarfElephantRBConstruction * _rb_con_ptr;
+
+    std::vector<SparseMatrix<Number> *> _jacobian_subdomain;
+    std::vector<NumericVector<Number> *> _residuals;
+    std::vector<NumericVector<Number> *> _outputs;
+
+    const std::vector<ExecFlagType> & _exec_flags;
+
+    MooseVariable * _variable;
+//    Variable * _variable_lib;
+
+    AuxVariableName _variable_name;
+//    std::string _variable_name_lib;
+
+    friend class RBKernel;
+    friend class DwarfElephantOfflineStage;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTINITIALIZERBSYSTEM_H
