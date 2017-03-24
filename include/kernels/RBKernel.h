@@ -13,11 +13,11 @@
 //libMesh includes
 #include "libmesh/equation_systems.h"
 #include "libmesh/sparse_matrix.h"
-#include "libmesh/petsc_matrix.h"
 
 // MOOSE includes
 #include "Kernel.h"
 #include "DisplacedProblem.h"
+#include "NonlinearSystemBase.h"
 
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBClasses.h"
@@ -29,9 +29,9 @@ namespace libMesh
 {
   class EquationSystems;
   template <typename T> class SparseMatrix;
-  template <typename T> class PetscMatrix;
 }
 
+class NonlinearSystemBase;
 class DwarfElephantInitializeRBSystem;
 class DisplacedProblem;
 class RBKernel;

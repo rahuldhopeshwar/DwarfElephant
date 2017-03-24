@@ -42,7 +42,6 @@ class DwarfElephantInitializeRBSystem :
   public:
     DwarfElephantInitializeRBSystem(const InputParameters & params);
 
-    void onlineStage();
     void initializeOfflineStage();
 
     virtual void initialize() override;
@@ -54,30 +53,22 @@ class DwarfElephantInitializeRBSystem :
     bool _skip_matrix_assembly_in_rb_system;
     bool _skip_vector_assembly_in_rb_system;
     bool _offline_stage;
-//    bool _online_stage;
     bool _compliant;
-//    bool _store_basis_functions;
 
-//    unsigned int _online_N;
     unsigned int _qa;
     unsigned int _qf;
     unsigned int _ql;
 
-//    Real _online_mu;
-
     std::string _parameters_filename;
-//    std::string _system_name;
 
     EquationSystems & _es;
-//    TransientNonlinearImplicitSystem & _sys;
-
     MooseMesh * _mesh_ptr;
-
     DwarfElephantRBConstruction * _rb_con_ptr;
 
-    std::vector<SparseMatrix<Number> *> _jacobian_subdomain;
-    std::vector<NumericVector<Number> *> _residuals;
-    std::vector<NumericVector<Number> *> _outputs;
+    SparseMatrix <Number> * _inner_product_matrix;
+    std::vector<SparseMatrix <Number> *> _jacobian_subdomain;
+    std::vector<NumericVector <Number> *> _residuals;
+    std::vector<NumericVector <Number> *> _outputs;
 
     const std::vector<ExecFlagType> & _exec_flags;
 

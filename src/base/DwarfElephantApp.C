@@ -22,12 +22,11 @@
 // Materials
 #include "SandStone.h"
 #include "Shale.h"
-#include "ThetaObject.h"
 
 // UserObjects
-#include "DwarfElephantPrepareRBSystem.h"
 #include "DwarfElephantInitializeRBSystem.h"
 #include "DwarfElephantOfflineStage.h"
+#include "DwarfElephantOnlineStage.h"
 
 // Executioners
 #include "DwarfElephantExecutioner.h"
@@ -82,12 +81,11 @@ DwarfElephantApp::registerObjects(Factory & factory)
   // Materials
   registerMaterial(SandStone);
   registerMaterial(Shale);
-  registerMaterial(ThetaObject);
 
   // UserObjects
-  registerUserObject(DwarfElephantPrepareRBSystem);
   registerUserObject(DwarfElephantInitializeRBSystem);
   registerUserObject(DwarfElephantOfflineStage);
+  registerUserObject(DwarfElephantOnlineStage);
 
   // Executioners
   registerExecutioner(DwarfElephantExecutioner);

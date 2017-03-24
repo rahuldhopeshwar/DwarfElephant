@@ -1,12 +1,25 @@
 [Mesh]
-  file = parallel_test.msh
+  # Note: It is important that the subdomains ids start with zero.
+  #       Additionally, it is necessary that the boundaries are defined like this:
+  #       back = 0, bottom = 1, right = 2, top = 3, left = 4, front = 5.
+  #       Otherwise the RB method will not work properly.
+
+  file = parallel_model.msh
+  block_ids = '0 1 2'
+  block_names = 'shale_top sandstone shale_bottom'
 []
 
 [Variables]
-active = 'temperature'
+active = 'temperature '
   [./temperature]
   [../]
 []
+
+[AuxVariables]
+  [./RB_temperature]
+  [../]
+[]
+
 
 [Kernels]
 active = 'RBConduction_block0 RBConduction_block1 RBConduction_block2'
@@ -47,7 +60,7 @@ active = ''
 
   [./shale_bottom]
     type = Shale
-    block = 2
+    block = 1
   [../]
 []
 
@@ -80,7 +93,9 @@ active = 'initializeRBSystem performRBSystem'
   [./initializeRBSystem]
     type = DwarfElephantInitializeRBSystem
 
-    parameters_filename = 'largeRBTest.i'
+    variable = RB_temperature
+
+    parameters_filename = largeRBTest.i
 
     offline_stage = true
     online_stage = true
@@ -89,13 +104,14 @@ active = 'initializeRBSystem performRBSystem'
     online_N = 20
     online_mu = '1.05 2.5 1.5'
 
-    execute_on = 'initial'
+    execute_on = initial
   [../]
 
   [./performRBSystem]
     type = DwarfElephantOfflineStage
 
-    parameters_filename = 'largeRBTest.i'
+    parameters_filename = largeRBTest.i
+    residual_name = Re_non_time
 
     offline_stage = true
     online_stage = true
@@ -103,8 +119,9 @@ active = 'initializeRBSystem performRBSystem'
 
     online_N = 20
     online_mu = '1.05 2.5 1.5'
+    variable = RB_temperature
 
-    execute_on = 'timestep_end'
+    execute_on = timestep_end
     initial_rb_userobject = initializeRBSystem
   [../]
 []

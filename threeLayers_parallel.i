@@ -52,6 +52,9 @@
 [Executioner]
   type = Steady
   solve_type = PJFNK
+
+  petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_rest'
+  petsc_options_value = 'hypre  boomeramg   101'
 []
 
 [Outputs]

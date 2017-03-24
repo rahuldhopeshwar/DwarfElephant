@@ -30,7 +30,6 @@ active = 'temperature'
 []
 
 [AuxVariables]
-active = 'RB_temperature'
   [./RB_temperature]
   [../]
 []
@@ -97,7 +96,7 @@ active = 'initializeRBSystem performRBSystem'
 
     variable = RB_temperature
 
-    parameters_filename = 'smallRBTest.i'
+    parameters_filename = smallRBTest.i
 
     offline_stage = true
     online_stage = true
@@ -106,13 +105,14 @@ active = 'initializeRBSystem performRBSystem'
     online_N = 20
     online_mu = '1.05 2.5 1.5'
 
-    execute_on = 'initial'
+    execute_on = initial
   [../]
 
   [./performRBSystem]
     type = DwarfElephantOfflineStage
 
-    parameters_filename = 'smallRBTest.i'
+    parameters_filename = smallRBTest.i
+    residual_name = Re_non_time
 
     offline_stage = true
     online_stage = true
@@ -121,7 +121,7 @@ active = 'initializeRBSystem performRBSystem'
     online_N = 20
     online_mu = '1.05 2.5 1.5'
 
-    execute_on = 'timestep_end'
+    execute_on = timestep_end
     initial_rb_userobject = initializeRBSystem
   [../]
 []
@@ -129,7 +129,7 @@ active = 'initializeRBSystem performRBSystem'
 [Outputs]
   exodus = true
   execute_on = 'timestep_end'
-  #print_perf_log = true
+  print_perf_log = true
 []
 
 # ====================== Parameters for the RB approximation ======================

@@ -73,23 +73,23 @@ RBKernel::computeResidual()
 
   re += _local_re;
 
-  if (_initialize_rb_system._qf == 1)
-  {
-    _initialize_rb_system._residuals[0] -> add_vector(_local_re, _var.dofIndices());
-    _initialize_rb_system._residuals[0] ->close();
-  }
-
-  else if (_initialize_rb_system._qf != 1)
-    mooseError ("Currently, the implementation handles only one F term.");
-
-  if (_initialize_rb_system._compliant && _initialize_rb_system._ql == 1)
-  {
-    _initialize_rb_system._outputs[0] -> operator=(*_initialize_rb_system._residuals[0]);
-    _initialize_rb_system._outputs[0] -> close();
-  }
-
-  else if (!_initialize_rb_system._compliant || _initialize_rb_system._ql !=1)
-    mooseError ("Currently, the implementation handles only one output term and only the compliant case.");
+//  if (_initialize_rb_system._qf == 1)
+//  {
+//    _initialize_rb_system._residuals[0] -> add_vector(_local_re, _var.dofIndices());
+//    _initialize_rb_system._residuals[0] ->close();
+//  }
+//
+//  else if (_initialize_rb_system._qf != 1)
+//    mooseError ("Currently, the implementation handles only one F term.");
+//
+//  if (_initialize_rb_system._compliant && _initialize_rb_system._ql == 1)
+//  {
+//    _initialize_rb_system._outputs[0] -> operator=(*_initialize_rb_system._residuals[0]);
+//    _initialize_rb_system._outputs[0] -> close();
+//  }
+//
+//  else if (!_initialize_rb_system._compliant || _initialize_rb_system._ql !=1)
+//    mooseError ("Currently, the implementation handles only one output term and only the compliant case.");
 
   if (_has_save_in)
   {
@@ -114,8 +114,15 @@ RBKernel::computeJacobian()
 
   ke += _local_ke;
 
-  // Add the calculated matrices to the Aq matrices from the RB system.
-  _initialize_rb_system._jacobian_subdomain[*_block_ids.begin()] -> add_matrix(_local_ke, _var.dofIndices());
+  if(_initialize_rb_system._offline_stage)
+  {
+    // Add the calculated matrices to the Aq matrices from the RB system.
+    if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
+    {
+      _initialize_rb_system._jacobian_subdomain[*_block_ids.begin()] -> add_matrix(_local_ke, _var.dofIndices());
+      _initialize_rb_system._inner_product_matrix -> add_matrix(_local_ke, _var.dofIndices());
+    }
+  }
 
  if (_has_diag_save_in)
   {
