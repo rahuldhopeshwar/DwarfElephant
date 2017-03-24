@@ -31,6 +31,9 @@ active = 'temperature'
 [AuxVariables]
   [./RB_temperature]
   [../]
+  
+  [./A0]
+  [../]
 []
 
 [Kernels]
@@ -79,13 +82,13 @@ active = ''
 [BCs]
 active = 'bottom top'
   [./bottom]
-    type = DirichletBC
+    type = RBDirichletBC
     variable = temperature
     boundary = 'bottom'
     value = 31
   [../]
   [./top]
-    type = DirichletBC
+    type = RBDirichletBC
     variable = temperature
     boundary = 'top'
     value = 10

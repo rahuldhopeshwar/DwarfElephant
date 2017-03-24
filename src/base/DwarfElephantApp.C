@@ -14,6 +14,10 @@
 // Base
 #include "DwarfElephantRBProblem.h"
 
+//BCs
+#include "RBNodalBC.h"
+#include "RBDirichletBC.h"
+
 // Kernels
 #include "Conduction.h"
 #include "RBKernel.h"
@@ -72,6 +76,10 @@ DwarfElephantApp::registerObjects(Factory & factory)
 {
   // Base
   registerProblem(DwarfElephantRBProblem);
+  
+  // BCs
+  registerBoundaryCondition(RBNodalBC);
+  registerBoundaryCondition(RBDirichletBC);
 
   // Kernels
   registerKernel(Conduction);
