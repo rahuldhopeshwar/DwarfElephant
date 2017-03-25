@@ -6,13 +6,18 @@ template<>
 InputParameters validParams<RBNodalBC>()
 {
   InputParameters params = validParams<NodalBC>();
+  
+  params += validParams<BlockRestrictable>();
+  params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system");
 
   return params;
 }
 
 
 RBNodalBC::RBNodalBC(const InputParameters & parameters) :
-    NodalBC(parameters)
+    NodalBC(parameters),
+    BlockRestrictable(parameters),
+    _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystem>("initial_rb_userobject"))
 {
 }
 
@@ -31,6 +36,25 @@ RBNodalBC::computeJacobian()
 
     // Cache the user's computeQpJacobian() value for later use.
     _fe_problem.assembly(0).cacheJacobianContribution(cached_row, cached_row, cached_val);
+    
+    if(_initialize_rb_system._offline_stage)
+    {
+      if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
+      {
+        const std::set<SubdomainID> & _node_block_ids = _mesh.getNodeBlockIds(*_current_node);
+	
+	for(std::set<SubdomainID>::const_iterator it = _node_block_ids.begin();
+            it != _node_block_ids.end(); it++)
+	{
+	  //for(unsigned _q = 0; _q < _initialize_rb_system._qa; _q++)
+	    //if (*it == _q)
+              _initialize_rb_system._jacobian_subdomain[*it] -> set(cached_row, cached_row, cached_val);
+        }
+	
+	_initialize_rb_system._inner_product_matrix -> set(cached_row, cached_row, cached_val);
+      }
+    }
+  
 
     if (_has_diag_save_in)
     {

@@ -2,15 +2,22 @@
 #define RBNODALBC_H
 
 #include "NodalBC.h"
+#include "MooseMesh.h"
+#include "BlockRestrictable.h"
+
+#include "DwarfElephantInitializeRBSystem.h"
 
 // Forward declarations
+class MooseMesh;
+class DwarfElephantInitializeRBSystem;
 class RBNodalBC;
 
 template<>
 InputParameters validParams<RBNodalBC>();
 
 class RBNodalBC :
-  public NodalBC
+  public NodalBC,
+  public BlockRestrictable
 {
 public:
   RBNodalBC(const InputParameters & parameters);
@@ -20,6 +27,8 @@ public:
 protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
+  
+  const DwarfElephantInitializeRBSystem & _initialize_rb_system;
 };
 
 #endif /* RBNODALBC_H */

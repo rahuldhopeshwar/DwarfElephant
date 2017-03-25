@@ -86,12 +86,16 @@ active = 'bottom top'
     variable = temperature
     boundary = 'bottom'
     value = 31
+    initial_rb_userobject = initializeRBSystem
+    block = 0
   [../]
   [./top]
     type = RBDirichletBC
     variable = temperature
     boundary = 'top'
     value = 10
+    initial_rb_userobject = initializeRBSystem
+    block = 2
   [../]
 []
 

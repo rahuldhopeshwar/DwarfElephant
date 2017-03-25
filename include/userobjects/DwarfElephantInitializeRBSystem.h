@@ -79,6 +79,7 @@ class DwarfElephantInitializeRBSystem :
 //    std::string _variable_name_lib;
 
     friend class RBKernel;
+    friend class RBNodalBC;
     friend class DwarfElephantOfflineStage;
 };
 ///-------------------------------------------------------------------------

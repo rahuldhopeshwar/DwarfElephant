@@ -79,13 +79,13 @@ DwarfElephantOfflineStage::transferAffineVectors()
   // Transfer the vectors
   // Transfer the data for the F vectors.
   for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
-    _initialize_rb_system._residuals[_q]->operator=(_sys.get_vector(_residual_name));
+    _initialize_rb_system._residuals[_q]->operator=(_sys.get_vector("RHS Vector"));
 
   // Transfer the data for the output vectors.
   if (_compliant)
   {
     for(unsigned int _q=0; _q<_initialize_rb_system._ql; _q++)
-      _initialize_rb_system._outputs[_q]->operator=(_sys.get_vector(_residual_name));
+      _initialize_rb_system._outputs[_q]->operator=(_sys.get_vector("RHS Vector"));
   }
   else if (!_compliant)
     mooseError("Currently, the code handles the compliant case, only.");
@@ -174,12 +174,12 @@ DwarfElephantOfflineStage::execute()
       _console << "Output " << std::to_string(_q) << ": value = " << _rb_eval.RB_outputs[_q]
       << ", error bound = " << _rb_eval.RB_output_error_bounds[_q] << std::endl;
 
-//    _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
-//    _console << *_initialize_rb_system._rb_con_ptr->solution << std::endl;
+    _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
+    _console << *_initialize_rb_system._rb_con_ptr->solution << std::endl;
 //    _fe_problem.getNonlinearSystemBase().computeJacobian(*_initialize_rb_system._jacobian_subdomain[0]);
 //    _initialize_rb_system._jacobian_subdomain[0]->close();
-    _initialize_rb_system._jacobian_subdomain[0]->get_diagonal(_sys.get_vector(7));
-    _console << _sys.get_vector(7) << std::endl;
+    //_initialize_rb_system._jacobian_subdomain[0]->get_diagonal(_sys.get_vector(7));
+  //  _console << _sys.get_vector(7) << std::endl;
 //      _console << *_sys.rhs << std::endl;
 //      _console << *_sys.solution << std::endl;
   }
