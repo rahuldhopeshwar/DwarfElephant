@@ -1,5 +1,5 @@
 #ifndef CACHESTIFFNESSMATRIX_H
-#define CACHESTIFNESSMATRIX_H
+#define CACHESTIFFNESSMATRIX_H
 
 #include "Function.h"
 

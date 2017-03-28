@@ -38,9 +38,9 @@ DwarfElephantInitializeRBSystem::DwarfElephantInitializeRBSystem(const InputPara
 void
 DwarfElephantInitializeRBSystem::cacheStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value)
 {
-  _cached_jacobian_subdomain_contribution_rows.insert(i,i);
-  _cached_jacobian_subdomain_contribution_cols.insert(j,j);
-  _cached_jacobian_subdomain_contribution_vals.insert(value);
+  //_cached_jacobian_subdomain_contribution_rows.insert(i,i);
+  //_cached_jacobian_subdomain_contribution_cols.insert(j,j);
+  //_cached_jacobian_subdomain_contribution_vals.insert(value);
 }
 
 void

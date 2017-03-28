@@ -32,6 +32,7 @@ protected:
   virtual Real computeQpOffDiagJacobian(unsigned int jvar);
 
   const DwarfElephantInitializeRBSystem & _initialize_rb_system;
+  Function & _cache_stiffness_matrix;
 };
 
 #endif /* RBNODALBC_H */

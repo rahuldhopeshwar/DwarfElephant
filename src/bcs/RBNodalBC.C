@@ -17,7 +17,7 @@ InputParameters validParams<RBNodalBC>()
 RBNodalBC::RBNodalBC(const InputParameters & parameters) :
     NodalBC(parameters),
     _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystem>("initial_rb_userobject")),
-    _cache_stiffness_matrix(getFunction<CacheStiffnessMatrix>("cache_stiffness_matrix"))
+    _cache_stiffness_matrix(getFunction("cache_stiffness_matrix"))
 {
 }
 
