@@ -1,9 +1,12 @@
 [Mesh]
   type = GeneratedMesh
   dim = 3
-  nx = 10
-  ny = 6
-  nz = 2
+   nx = 1
+  ny = 2
+  nz = 1
+#  nx = 10
+#  ny = 6
+#  nz = 2
   xmin = 0.0
   xmax = 3000
   ymin = 0.0
@@ -11,11 +14,12 @@
   zmin = 0.0
   zmax = 1000
 
-  block_id = '0 1 2'
-  block_name = 'shale_bottom sandstone shale_top'
+#  block_id = '0 1 2'
+#  block_name = 'shale_bottom sandstone shale_top'
 []
 
 [MeshModifiers]
+active = ''
   [./subdomains]
     type = AssignElementSubdomainID
     subdomain_ids = '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2'
@@ -31,13 +35,13 @@ active = 'temperature'
 [AuxVariables]
   [./RB_temperature]
   [../]
-  
+
   [./A0]
   [../]
 []
 
 [Kernels]
-active = 'RBConduction_block0 RBConduction_block1 RBConduction_block2'
+active = 'RBConduction_block0' # RBConduction_block1 RBConduction_block2'
   [./RBConduction_block0]
     type = RBDiffusion
     variable = temperature
@@ -87,7 +91,7 @@ active = 'bottom top'
     boundary = 'bottom'
     value = 31
     initial_rb_userobject = initializeRBSystem
-    block = 0
+    cache_stiffness_matrix = cacheStiffnessMatrix
   [../]
   [./top]
     type = RBDirichletBC
@@ -95,7 +99,7 @@ active = 'bottom top'
     boundary = 'top'
     value = 10
     initial_rb_userobject = initializeRBSystem
-    block = 2
+    cache_stiffness_matrix = cacheStiffnessMatrix
   [../]
 []
 
@@ -105,6 +109,12 @@ active = 'bottom top'
 
   petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_rest'
   petsc_options_value = 'hypre  boomeramg   101'
+[]
+
+[Functions]
+  [./cacheStiffnessMatrix]
+    type = CacheStiffnessMatrix
+  [../]
 []
 
 [UserObjects]
@@ -120,6 +130,14 @@ active = 'initializeRBSystem performRBSystem'
     execute_on = initial
   [../]
 
+  [./stiffnessMatrix]
+    type = DwarfElephantOnlineStage
+    boundary = 'top bottom'
+    variable = temperature
+    execute_on = timestep_end
+    initial_rb_userobject = initializeRBSystem
+  [../]
+
   [./performRBSystem]
     type = DwarfElephantOfflineStage
 
@@ -131,7 +149,7 @@ active = 'initializeRBSystem performRBSystem'
     store_basis_functions = true
 
     online_N = 1
-    online_mu = '1.05 2.5 1.5'
+    online_mu = '1.05' # 2.5 1.5'
     variable = RB_temperature
 
     execute_on = timestep_end
@@ -152,12 +170,12 @@ Nmax = 20
 
 # Name of the parameters
 # Please name them mu_0, mu_1, ..., mu_n for the re-usability
-parameter_names = 'mu_0 mu_1 mu_2'
+parameter_names = 'mu_0' # mu_1 mu_2'
 
 # Define the minimum and maximum value of the Theta object
 mu_0 = '0.95 1.15'
-mu_1 = '2.2 2.8'
-mu_2 = '0.95 1.15'
+#mu_1 = '2.2 2.8'
+#mu_2 = '0.95 1.15'
 
 # Define the number of training sets for the Greedy-algorithm
 n_training_samples = 10

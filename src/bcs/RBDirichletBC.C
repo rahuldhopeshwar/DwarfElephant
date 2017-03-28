@@ -19,4 +19,3 @@ RBDirichletBC::computeQpResidual()
 {
   return _u[_qp] - _value;
 }
-

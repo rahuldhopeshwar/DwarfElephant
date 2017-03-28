@@ -32,6 +32,9 @@
 #include "DwarfElephantOfflineStage.h"
 #include "DwarfElephantOnlineStage.h"
 
+// Functions
+#include "CacheStiffnessMatrix.h"
+
 // Executioners
 #include "DwarfElephantExecutioner.h"
 
@@ -76,7 +79,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
 {
   // Base
   registerProblem(DwarfElephantRBProblem);
-  
+
   // BCs
   registerBoundaryCondition(RBNodalBC);
   registerBoundaryCondition(RBDirichletBC);
@@ -94,6 +97,9 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerUserObject(DwarfElephantInitializeRBSystem);
   registerUserObject(DwarfElephantOfflineStage);
   registerUserObject(DwarfElephantOnlineStage);
+
+  // Functions
+  registerFunction(CacheStiffnessMatrix);
 
   // Executioners
   registerExecutioner(DwarfElephantExecutioner);

@@ -10,7 +10,7 @@
 []
 
 [Variables]
-active = 'temperature '
+active = 'temperature'
   [./temperature]
   [../]
 []
@@ -18,8 +18,10 @@ active = 'temperature '
 [AuxVariables]
   [./RB_temperature]
   [../]
-[]
 
+  [./A0]
+  [../]
+[]
 
 [Kernels]
 active = 'RBConduction_block0 RBConduction_block1 RBConduction_block2'
@@ -50,7 +52,7 @@ active = ''
 
   [./shale_top]
     type = Shale
-    block = 0
+    block = 2
   [../]
 
   [./sandstone]
@@ -60,22 +62,25 @@ active = ''
 
   [./shale_bottom]
     type = Shale
-    block = 1
+    block = 0
   [../]
 []
 
 [BCs]
+active = 'bottom top'
   [./bottom]
-    type = DirichletBC
+    type = RBDirichletBC
     variable = temperature
     boundary = 'bottom'
     value = 31
+    initial_rb_userobject = initializeRBSystem
   [../]
   [./top]
-    type = DirichletBC
+    type = RBDirichletBC
     variable = temperature
     boundary = 'top'
     value = 10
+    initial_rb_userobject = initializeRBSystem
   [../]
 []
 
@@ -88,23 +93,24 @@ active = ''
 []
 
 [UserObjects]
-active = 'initializeRBSystem performRBSystem'
+active = 'initializeRBSystem stiffnessMatrix performRBSystem'
 
   [./initializeRBSystem]
     type = DwarfElephantInitializeRBSystem
-
     variable = RB_temperature
-
     parameters_filename = largeRBTest.i
-
     offline_stage = true
     online_stage = true
     store_basis_functions = true
-
-    online_N = 20
-    online_mu = '1.05 2.5 1.5'
-
     execute_on = initial
+  [../]
+
+  [./stiffnessMatrix]
+    type = DwarfElephantOnlineStage
+    boundary = 'top bottom'
+    variable = temperature
+    execute_on = timestep_end
+    initial_rb_userobject = initializeRBSystem
   [../]
 
   [./performRBSystem]
@@ -117,8 +123,8 @@ active = 'initializeRBSystem performRBSystem'
     online_stage = true
     store_basis_functions = true
 
-    online_N = 20
-    online_mu = '1.05 2.5 1.5'
+    online_N = 1
+    online_mu = '1.05' # 2.5 1.5'
     variable = RB_temperature
 
     execute_on = timestep_end
@@ -129,7 +135,7 @@ active = 'initializeRBSystem performRBSystem'
 [Outputs]
   exodus = true
   execute_on = 'timestep_end'
-  #print_perf_log = true
+#  print_perf_log = true
 []
 
 # ====================== Parameters for the RB approximation ======================
@@ -139,12 +145,12 @@ Nmax = 20
 
 # Name of the parameters
 # Please name them mu_0, mu_1, ..., mu_n for the re-usability
-parameter_names = 'mu_0 mu_1 mu_2'
+parameter_names = 'mu_0' # mu_1 mu_2'
 
 # Define the minimum and maximum value of the Theta object
 mu_0 = '0.95 1.15'
-mu_1 = '2.2 2.8'
-mu_2 = '0.95 1.15'
+#mu_1 = '2.2 2.8'
+#mu_2 = '0.95 1.15'
 
 # Define the number of training sets for the Greedy-algorithm
 n_training_samples = 10

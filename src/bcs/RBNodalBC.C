@@ -6,9 +6,9 @@ template<>
 InputParameters validParams<RBNodalBC>()
 {
   InputParameters params = validParams<NodalBC>();
-  
-  params += validParams<BlockRestrictable>();
+
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system");
+  params.addRequiredParam<FunctionName>("cache_stiffness_matrix", "");
 
   return params;
 }
@@ -16,10 +16,16 @@ InputParameters validParams<RBNodalBC>()
 
 RBNodalBC::RBNodalBC(const InputParameters & parameters) :
     NodalBC(parameters),
-    BlockRestrictable(parameters),
-    _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystem>("initial_rb_userobject"))
+    _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystem>("initial_rb_userobject")),
+    _cache_stiffness_matrix(getFunction<CacheStiffnessMatrix>("cache_stiffness_matrix"))
 {
 }
+
+//void
+//RBNodalBC::jacobianSetup()
+//{
+//
+//}
 
 void
 RBNodalBC::computeJacobian()
@@ -36,25 +42,34 @@ RBNodalBC::computeJacobian()
 
     // Cache the user's computeQpJacobian() value for later use.
     _fe_problem.assembly(0).cacheJacobianContribution(cached_row, cached_row, cached_val);
-    
-    if(_initialize_rb_system._offline_stage)
-    {
-      if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
-      {
-        const std::set<SubdomainID> & _node_block_ids = _mesh.getNodeBlockIds(*_current_node);
-	
-	for(std::set<SubdomainID>::const_iterator it = _node_block_ids.begin();
-            it != _node_block_ids.end(); it++)
-	{
-	  //for(unsigned _q = 0; _q < _initialize_rb_system._qa; _q++)
-	    //if (*it == _q)
-              _initialize_rb_system._jacobian_subdomain[*it] -> set(cached_row, cached_row, cached_val);
-        }
-	
-	_initialize_rb_system._inner_product_matrix -> set(cached_row, cached_row, cached_val);
-      }
-    }
-  
+//    _initialize_rb_system->cacheStiffnessMatrixContribution(1, 1, 1);
+
+//    if(_initialize_rb_system._offline_stage)
+//    {
+//      if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
+//      {
+//        const std::vector<BoundaryName> & _boundary_names = boundaryNames();
+//
+//        for(unsigned int _i = 0; _i != _boundary_names.size(); _i++)
+//        {
+//          if (_boundary_names[_i] == "bottom")
+//            _initialize_rb_system._inner_product_matrix -> set(cached_row, cached_row, cached_val);
+//          else if (_boundary_names[_i] == "top")
+//            _initialize_rb_system._inner_product_matrix -> set(cached_row, cached_row, cached_val);
+//
+//          else
+//          {
+//            const std::set<SubdomainID> & _node_block_ids = _mesh.getNodeBlockIds(*_current_node);
+//
+//	        for(std::set<SubdomainID>::const_iterator it = _node_block_ids.begin();
+//                it != _node_block_ids.end(); it++)
+//                 _initialize_rb_system._inner_product_matrix -> set(cached_row, cached_row, cached_val);
+//          }
+//        }
+//	    _initialize_rb_system._inner_product_matrix-> set(cached_row, cached_row, cached_val);
+//	    }
+//      }
+
 
     if (_has_diag_save_in)
     {
@@ -65,11 +80,36 @@ RBNodalBC::computeJacobian()
   }
 }
 
+void
+RBNodalBC::computeOffDiagJacobian(unsigned int jvar)
+{
+  if (jvar == _var.number())
+  {
+    computeJacobian();
+  }
 
+  else
+  {
+    _qp = 0;
+    Real cached_val = computeQpOffDiagJacobian(jvar);
+    dof_id_type cached_row = _var.nodalDofIndex();
+    // Note: this only works for Lagrange variables...
+    dof_id_type cached_col = _current_node->dof_number(_sys.number(), jvar, 0);
+
+    // Cache the user's computeQpJacobian() value for later use.
+    _fe_problem.assembly(0).cacheJacobianContribution(cached_row, cached_col, cached_val);
+  }
+}
 Real
 RBNodalBC::computeQpJacobian()
 {
   return 1.;
+}
+
+Real
+RBNodalBC::computeQpOffDiagJacobian(unsigned int /*jvar*/)
+{
+  return 0.;
 }
 
 Real

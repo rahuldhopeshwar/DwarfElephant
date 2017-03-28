@@ -116,10 +116,10 @@ RBKernel::computeJacobian()
 
   if(_initialize_rb_system._offline_stage)
   {
-    // Add the calculated matrices to the Aq matrices from the RB system.
+//    // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
     {
-      _initialize_rb_system._jacobian_subdomain[*_block_ids.begin()] -> add_matrix(_local_ke, _var.dofIndices());
+//      _initialize_rb_system._jacobian_subdomain[*_block_ids.begin()] -> add_matrix(_local_ke, _var.dofIndices());
       _initialize_rb_system._inner_product_matrix -> add_matrix(_local_ke, _var.dofIndices());
     }
   }

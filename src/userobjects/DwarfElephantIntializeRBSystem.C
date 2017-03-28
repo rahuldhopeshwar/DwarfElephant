@@ -34,6 +34,15 @@ DwarfElephantInitializeRBSystem::DwarfElephantInitializeRBSystem(const InputPara
   _variable = &_fe_problem.getVariable(_tid,_variable_name);
 }
 
+
+void
+DwarfElephantInitializeRBSystem::cacheStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value)
+{
+  _cached_jacobian_subdomain_contribution_rows.insert(i,i);
+  _cached_jacobian_subdomain_contribution_cols.insert(j,j);
+  _cached_jacobian_subdomain_contribution_vals.insert(value);
+}
+
 void
 DwarfElephantInitializeRBSystem::initializeOfflineStage()
 {
@@ -56,6 +65,8 @@ DwarfElephantInitializeRBSystem::initializeOfflineStage()
    _outputs.resize(_ql);
 
    _inner_product_matrix = _rb_con_ptr->get_inner_product_matrix();
+   PetscMatrix<Number> * _petsc_inner_matrix = dynamic_cast<PetscMatrix<Number>* > (_inner_product_matrix);
+   MatSetOption(_petsc_inner_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
 
    for (unsigned int _q=0; _q < _qa; _q++)
    {
@@ -108,6 +119,10 @@ DwarfElephantInitializeRBSystem::initialize()
     {
       initializeOfflineStage();
     }
+
+    _cached_jacobian_subdomain_contribution_rows.resize(_mesh_ptr->nNodes());
+    _cached_jacobian_subdomain_contribution_cols.resize(_mesh_ptr->nNodes());
+    _cached_jacobian_subdomain_contribution_vals.resize(_mesh_ptr->nNodes());
   }
 }
 

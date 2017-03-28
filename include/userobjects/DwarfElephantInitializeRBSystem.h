@@ -43,6 +43,7 @@ class DwarfElephantInitializeRBSystem :
     DwarfElephantInitializeRBSystem(const InputParameters & params);
 
     void initializeOfflineStage();
+    void cacheStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value);
 
     virtual void initialize() override;
     virtual void execute() override;
@@ -70,6 +71,10 @@ class DwarfElephantInitializeRBSystem :
     std::vector<NumericVector <Number> *> _residuals;
     std::vector<NumericVector <Number> *> _outputs;
 
+    std::vector <numeric_index_type> _cached_jacobian_subdomain_contribution_rows;
+    std::vector <numeric_index_type> _cached_jacobian_subdomain_contribution_cols;
+    std::vector <Real> _cached_jacobian_subdomain_contribution_vals;
+
     const std::vector<ExecFlagType> & _exec_flags;
 
     MooseVariable * _variable;
@@ -81,6 +86,7 @@ class DwarfElephantInitializeRBSystem :
     friend class RBKernel;
     friend class RBNodalBC;
     friend class DwarfElephantOfflineStage;
+    friend class DwarfElephantOnlineStage;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTINITIALIZERBSYSTEM_H
