@@ -24,6 +24,7 @@
 namespace libMesh
 {
   class EquationSystems;
+  class RBConstruction;
   template <typename T> class SparseMatrix;
   template <typename T> class PetscMatrix;
   template <typename T> class PetscVector;
@@ -43,7 +44,7 @@ class DwarfElephantInitializeRBSystem :
     DwarfElephantInitializeRBSystem(const InputParameters & params);
 
     void initializeOfflineStage();
-    void cacheStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value);
+    void initVariable();
 
     virtual void initialize() override;
     virtual void execute() override;
@@ -76,12 +77,6 @@ class DwarfElephantInitializeRBSystem :
     std::vector <Real> _cached_jacobian_subdomain_contribution_vals;
 
     const std::vector<ExecFlagType> & _exec_flags;
-
-    MooseVariable * _variable;
-//    Variable * _variable_lib;
-
-    AuxVariableName _variable_name;
-//    std::string _variable_name_lib;
 
     friend class RBKernel;
     friend class RBNodalBC;

@@ -19,6 +19,8 @@ protected:
 
   /// The value for this BC
   const Real & _value;
+
+  const DwarfElephantInitializeRBSystem & _initialize_rb_system;
 };
 
 #endif /* RBDIRICHLETBC_H */

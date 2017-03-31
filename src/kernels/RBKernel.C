@@ -29,6 +29,7 @@ InputParameters validParams<RBKernel>()
   params.addClassDescription("Overwrites the function computeJacobian. This is required because for the RB method the stiffness matrix needs to be saved in its subdomain contributions.");
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system");
+  params.addRequiredParam<unsigned int>("subdomain", "The active subdomain");
 
   return params;
 }
@@ -39,6 +40,7 @@ RBKernel::RBKernel(const InputParameters & parameters) :
     _use_displaced(getParam<bool>("use_displaced")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _block_ids(this->blockIDs()),
+    _block(getParam<unsigned int>("subdomain")),
     _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystem>("initial_rb_userobject"))
 
 {
@@ -73,11 +75,11 @@ RBKernel::computeResidual()
 
   re += _local_re;
 
-//  if (_initialize_rb_system._qf == 1)
-//  {
+// if (_initialize_rb_system._qf == 1)
+// {
 //    _initialize_rb_system._residuals[0] -> add_vector(_local_re, _var.dofIndices());
 //    _initialize_rb_system._residuals[0] ->close();
-//  }
+// }
 //
 //  else if (_initialize_rb_system._qf != 1)
 //    mooseError ("Currently, the implementation handles only one F term.");
@@ -116,11 +118,11 @@ RBKernel::computeJacobian()
 
   if(_initialize_rb_system._offline_stage)
   {
-//    // Add the calculated matrices to the Aq matrices from the RB system.
+    // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
     {
-//      _initialize_rb_system._jacobian_subdomain[*_block_ids.begin()] -> add_matrix(_local_ke, _var.dofIndices());
-      _initialize_rb_system._inner_product_matrix -> add_matrix(_local_ke, _var.dofIndices());
+        _initialize_rb_system._jacobian_subdomain[*_block_ids.begin()] -> add_matrix(_local_ke, _var.dofIndices());
+////      _initialize_rb_system._inner_product_matrix -> add_matrix(_local_ke, _var.dofIndices());
     }
   }
 

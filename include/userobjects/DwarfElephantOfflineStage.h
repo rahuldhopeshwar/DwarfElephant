@@ -18,6 +18,7 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBClasses.h"
 #include "DwarfElephantInitializeRBSystem.h"
+#include "CacheStiffnessMatrix.h"
 
 
 ///-------------------------------------------------------------------------
@@ -51,7 +52,6 @@ class DwarfElephantOfflineStage :
     virtual void initialize() override;
     virtual void execute() override;
     virtual void finalize() override;
-    virtual void residualSetup() override;
 
   protected:
     bool _use_displaced;
@@ -68,6 +68,8 @@ class DwarfElephantOfflineStage :
     TransientNonlinearImplicitSystem & _sys;
     const DwarfElephantInitializeRBSystem & _initialize_rb_system;
 
+    Function * _function;
+    CacheStiffnessMatrix * _cache_stiffness_matrix;
     MooseMesh * _mesh_ptr;
     const std::set<SubdomainID> & _subdomain_ids;
 
@@ -77,12 +79,6 @@ class DwarfElephantOfflineStage :
     RBParameters _rb_online_mu;
 
     MooseObjectWarehouse <NodalBC> _nodal_bcs;
-
-    AuxVariableName _variable_name;
-//    std::string _variable_name_lib;
-
-    MooseVariable * _variable;
-//    Variable * _variable_lib;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTOFFLINESTAGE_H

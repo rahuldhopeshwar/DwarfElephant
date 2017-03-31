@@ -17,6 +17,8 @@
 //BCs
 #include "RBNodalBC.h"
 #include "RBDirichletBC.h"
+#include "RBPresetNodalBC.h"
+#include "RBPresetBC.h"
 
 // Kernels
 #include "Conduction.h"
@@ -83,6 +85,8 @@ DwarfElephantApp::registerObjects(Factory & factory)
   // BCs
   registerBoundaryCondition(RBNodalBC);
   registerBoundaryCondition(RBDirichletBC);
+  registerBoundaryCondition(RBPresetNodalBC);
+  registerBoundaryCondition(RBPresetBC);
 
   // Kernels
   registerKernel(Conduction);

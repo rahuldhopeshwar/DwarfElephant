@@ -1,6 +1,8 @@
 #ifndef RBNODALBC_H
 #define RBNODALBC_H
 
+#include "libmesh/equation_systems.h"
+
 #include "NodalBC.h"
 #include "MooseMesh.h"
 #include "NonlinearSystemBase.h"
@@ -9,8 +11,18 @@
 #include "CacheStiffnessMatrix.h"
 
 // Forward declarations
+// libMesh includes
+namespace libMesh
+{
+  class EquationSystems;
+}
+
+// MOOSE includes
 class MooseMesh;
 class NonlinearSystemBase;
+class CacheStiffnessMatrix;
+
+// MOOSE includes (DwarfElephant package)
 class DwarfElephantInitializeRBSystem;
 class RBNodalBC;
 
@@ -23,16 +35,17 @@ class RBNodalBC :
 public:
   RBNodalBC(const InputParameters & parameters);
 
+  virtual void computeResidual(NumericVector<Number> & residual) override;
   virtual void computeJacobian() override;
-  virtual void computeOffDiagJacobian(unsigned int jvar) override;
 
 protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
-  virtual Real computeQpOffDiagJacobian(unsigned int jvar);
 
   const DwarfElephantInitializeRBSystem & _initialize_rb_system;
-  Function & _cache_stiffness_matrix;
+
+  Function * _function;
+  CacheStiffnessMatrix * _cache_stiffness_matrix;
 };
 
 #endif /* RBNODALBC_H */

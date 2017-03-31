@@ -22,6 +22,8 @@ class DwarfElephantExecutioner :
 {
   public:
     DwarfElephantExecutioner(const InputParameters & params);
+
+    void execute() override;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTEXECUTIONER_H

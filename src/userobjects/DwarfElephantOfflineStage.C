@@ -18,7 +18,7 @@ InputParameters validParams<DwarfElephantOfflineStage>()
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
     params.addRequiredParam<unsigned int>("online_N","The number of basis functions that is used in the Reduced Basis solve during the Online Stage.");
     params.addRequiredParam<std::vector<Real>>("online_mu", "Current values of the different layers for which the RB Method is solved.");
-    params.addRequiredParam<AuxVariableName>("variable","Name of the variable for which the RB method will be performed.");
+    params.addRequiredParam<FunctionName>("cache_stiffness_matrix", "");
 
     return params;
 }
@@ -36,30 +36,37 @@ DwarfElephantOfflineStage::DwarfElephantOfflineStage(const InputParameters & par
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
     _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystem>("initial_rb_userobject")),
+    _function(&getFunction("cache_stiffness_matrix")),
     _mesh_ptr(&_fe_problem.mesh()),
     _subdomain_ids(_mesh_ptr->meshSubdomains()),
     _online_N(getParam<unsigned int>("online_N")),
     _online_mu_parameters(getParam<std::vector<Real>>("online_mu")),
-    _nodal_bcs(false),
-    _variable_name(params.get<AuxVariableName>("variable")),
-    _variable(&_fe_problem.getVariable(_tid, _variable_name))
+    _nodal_bcs(false)
 {
-//  _variable = &_fe_problem.getVariable(_tid, _variable_name);
+  _cache_stiffness_matrix = dynamic_cast<CacheStiffnessMatrix *>(_function);
 }
 
 void
 DwarfElephantOfflineStage::setInnerProductMatrix()
 {
-
+  if (_initialize_rb_system._qa > 1)
+  {
     for(std::set<SubdomainID>::const_iterator it = _subdomain_ids.begin();
             it != _subdomain_ids.end(); it++)
     {
-        _initialize_rb_system._rb_con_ptr->get_Aq(*it)->close();
+      _cache_stiffness_matrix->setCachedSubdomainStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[*it], *it);
+      _initialize_rb_system._jacobian_subdomain[*it] ->close();
     }
+   }
+
+   else if (_initialize_rb_system._qa==1)
+   {
+     _initialize_rb_system._jacobian_subdomain[_initialize_rb_system._qa-1] -> close();
+     _initialize_rb_system._jacobian_subdomain[_initialize_rb_system._qa-1]->add(1, *_sys.matrix);
+   }
+
     _initialize_rb_system._inner_product_matrix -> close();
-//  _initialize_rb_system._inner_product_matrix -> add (1, *_sys.matrix);
-//  _initialize_rb_system._jacobian_subdomain[0] -> add (1, *_sys.matrix);
-//  _initialize_rb_system._jacobian_subdomain[0] -> add (1, *_initialize_rb_system._inner_product_matrix);
+    _initialize_rb_system._inner_product_matrix->add(1, *_sys.matrix);
 }
 
 void
@@ -69,16 +76,19 @@ DwarfElephantOfflineStage::transferAffineVectors()
     // Transfer the data for the F vectors.
     for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
     {
-//    _initialize_rb_system._residuals[_q]->operator=(*_sys.rhs);
+//        _initialize_rb_system._residuals[_q]->operator=(*_Fq_total);
         _initialize_rb_system._residuals[_q]->operator=(_sys.get_vector(_residual_name));
+        _cache_stiffness_matrix->setCachedResidual(*_initialize_rb_system._residuals[_q]);
     }
     // Transfer the data for the output vectors.
     if (_compliant)
     {
         for(unsigned int _q=0; _q<_initialize_rb_system._ql; _q++)
         {
-//      _initialize_rb_system._outputs[_q]->operator=(*_sys.rhs);
-            _initialize_rb_system._outputs[_q]->operator=(_sys.get_vector(_residual_name));
+//        _initialize_rb_system._residuals[_q]->operator=(*_Fq_total);
+//      _initialize_rb_system._residuals[_q]->operator=(*_sys.rhs);
+        _initialize_rb_system._outputs[_q]->operator=(_sys.get_vector(_residual_name));
+        _cache_stiffness_matrix->setCachedResidual(*_initialize_rb_system._outputs[_q]);
         }
     }
     else if (!_compliant)
@@ -138,73 +148,46 @@ DwarfElephantOfflineStage::execute()
 
     if(_skip_matrix_assembly_in_rb_system)
         setInnerProductMatrix();
+//
+//   _initialize_rb_system._inner_product_matrix->close();
+//   _initialize_rb_system._jacobian_subdomain[0]->close();
+//   _initialize_rb_system._jacobian_subdomain[1]->close();
+//   _initialize_rb_system._jacobian_subdomain[2]->close();
 
     _console << std::endl;
-//  offlineStage();
+    offlineStage();
     _console << std::endl;
 
     if(_online_stage)
     {
-//    _rb_eval.legacy_read_offline_data_from_files();
-//    setOnlineParameters();
-//    _rb_eval.set_parameters(_rb_online_mu);
-//
-//    _console << "---- Online Stage ----" << std::endl;
-//    _rb_eval.print_parameters();
-//
-//    _rb_eval.rb_solve(_online_N);
-//
-//    for (unsigned int _q = 0; _q != _initialize_rb_system._ql; _q++)
-//      _console << "Output " << std::to_string(_q) << ": value = " << _rb_eval.RB_outputs[_q]
-//      << ", error bound = " << _rb_eval.RB_output_error_bounds[_q] << std::endl;
+    #if defined(LIBMESH_HAVE_CAPNPROTO)
+    RBDataDeserialization::RBEvaluationDeserialization _rb_eval_reader(_rb_eval);
+    #else
+    _rb_eval.legacy_read_offline_data_from_files();
+    #endif
 
-//    _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
-//    _console << *_initialize_rb_system._rb_con_ptr->solution << std::endl;
-//    _initialize_rb_system._inner_product_matrix->get_diagonal(_sys.get_vector(7));
-//    _sys.matrix->get_diagonal(_sys.get_vector(7));
-//    _console << _sys.get_vector(7) << std::endl;
-//    _console << *_initialize_rb_system._inner_product_matrix << std::endl;
-//    _sys.matrix->get_diagonal(_sys.get_vector(8));
-//    _console << _sys.get_vector(8).compare(_sys.get_vector(7), 0) << std::endl;
-//
-//    _initialize_rb_system._inner_product_matrix->print_matlab("Kernel+BCs");
-//    _sys.matrix->print_matlab("System_Matrix");
-//    _console << _sys.get_vector(7) << std::endl;
-//      _console << *_sys.rhs << std::endl;
-//      _console << *_sys.solution << std::endl;
+    setOnlineParameters();
+    _rb_eval.set_parameters(_rb_online_mu);
 
-//    ConstBndNodeRange & _bnd_nodes = *_mesh_ptr->getBoundaryNodeRange();
-//    std::map<std::string, std::set<unsigned int>> _bc_involved_vars;
-//    std::vector<std::pair<MooseVariable *, MooseVariable *>> & _coupling_entries;
-//
-//    for (const auto & _bnode : _bnd_nodes)
-//    {
-//      BoundaryID _boundary_id = _bnode -> _bnd_id;
-//      Node * _node = _bnode -> _node;
-//
-//      if (_nodal_bcs.hasActiveBoundaryObjects(_boundary_id) && _node->processor_id() == processor_id())
-//      {
-//        _fe_problem.reinitNodeFace(_node, _boundary_id, 0);
-//
-//        const auto & _bcs = _nodal_bcs.getActiveBoundaryObjects(_boundary_id);
-//        for (const auto & _bc : _bcs)
-//        {
-//          std::set<unsigned int> & _var_set = _bc_involved_vars[_bc->name()];
-//
-//          for
-//        }
-//      }
-//    }
+    _console << "---- Online Stage ----" << std::endl;
+    _rb_eval.print_parameters();
+
+    _rb_eval.rb_solve(_online_N);
+
+    for (unsigned int _q = 0; _q != _initialize_rb_system._ql; _q++)
+      _console << "Output " << std::to_string(_q) << ": value = " << _rb_eval.RB_outputs[_q]
+      << ", error bound = " << _rb_eval.RB_output_error_bounds[_q] << std::endl;
+
+    _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
+    _initialize_rb_system._rb_con_ptr->load_rb_solution();
+    ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("RB_sol.e", _es);
+    _initialize_rb_system._rb_con_ptr->load_basis_function(0);
+    ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
     }
-}
-
-void
-DwarfElephantOfflineStage::residualSetup()
-{
-//  _fe_problem.assembly(0).setCachedJacobianContributions(*_initialize_rb_system._inner_product_matrix);
 }
 
 void
 DwarfElephantOfflineStage::finalize()
 {
+  _console << *_initialize_rb_system._jacobian_subdomain[0] << std::endl;
 }

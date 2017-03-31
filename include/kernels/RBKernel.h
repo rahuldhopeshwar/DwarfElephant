@@ -68,6 +68,7 @@ protected:
   EquationSystems & _es;
 
   const std::set<SubdomainID> & _block_ids;
+  unsigned int _block;
 
   const DwarfElephantInitializeRBSystem & _initialize_rb_system;
 };

@@ -12,7 +12,6 @@ InputParameters validParams<DwarfElephantInitializeRBSystem>()
   params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
   params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
   params.addRequiredParam<std::string>("parameters_filename","Path to the input file. Required for the libMesh functions");
-  params.addRequiredParam<AuxVariableName>("variable","Name of the variable for which the RB method will be performed.");
 
   return params;
 }
@@ -27,20 +26,15 @@ DwarfElephantInitializeRBSystem::DwarfElephantInitializeRBSystem(const InputPara
   _parameters_filename(getParam<std::string>("parameters_filename")),
   _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
   _mesh_ptr(&_fe_problem.mesh()),
-  _exec_flags(this->execFlags()),
-  _variable_name(params.get<AuxVariableName>("variable"))
-//  _variable_name_lib(getParam<std::string>("variable"))
+  _exec_flags(this->execFlags())
 {
-  _variable = &_fe_problem.getVariable(_tid,_variable_name);
 }
 
 
 void
-DwarfElephantInitializeRBSystem::cacheStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value)
+DwarfElephantInitializeRBSystem::initVariable()
 {
-  //_cached_jacobian_subdomain_contribution_rows.insert(i,i);
-  //_cached_jacobian_subdomain_contribution_cols.insert(j,j);
-  //_cached_jacobian_subdomain_contribution_vals.insert(value);
+//  unsigned int var_num = _rb_con_ptr->add_variable("RB_temperature", libMesh::FIRST , 0);
 }
 
 void
@@ -67,6 +61,7 @@ DwarfElephantInitializeRBSystem::initializeOfflineStage()
    _inner_product_matrix = _rb_con_ptr->get_inner_product_matrix();
    PetscMatrix<Number> * _petsc_inner_matrix = dynamic_cast<PetscMatrix<Number>* > (_inner_product_matrix);
    MatSetOption(_petsc_inner_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
+//   _inner_product_matrix->close();
 
    for (unsigned int _q=0; _q < _qa; _q++)
    {
@@ -75,7 +70,8 @@ DwarfElephantInitializeRBSystem::initializeOfflineStage()
      // Eliminates error message for the initialization of new non-zero entries
      // For the future: change SparseMatrix pattern (increases efficency)
      PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_jacobian_subdomain[_q]);
-      MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
+     MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
+//     _jacobian_subdomain[_q]->close();
     }
 
     for (unsigned int _q=0; _q < _ql; _q++)
@@ -97,8 +93,7 @@ DwarfElephantInitializeRBSystem::initialize()
     // Add a new equation system for the RB construction.
     _rb_con_ptr = &_es.add_system<DwarfElephantRBConstruction> ("RBSystem");
 
-//    _rb_con_ptr->add_variable ("u", libMesh::FIRST);
-
+    initVariable();
     // Intialization of the added equation system
     _rb_con_ptr->init();
 
@@ -119,10 +114,6 @@ DwarfElephantInitializeRBSystem::initialize()
     {
       initializeOfflineStage();
     }
-
-    _cached_jacobian_subdomain_contribution_rows.resize(_mesh_ptr->nNodes());
-    _cached_jacobian_subdomain_contribution_cols.resize(_mesh_ptr->nNodes());
-    _cached_jacobian_subdomain_contribution_vals.resize(_mesh_ptr->nNodes());
   }
 }
 
