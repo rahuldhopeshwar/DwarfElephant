@@ -189,5 +189,8 @@ DwarfElephantOfflineStage::execute()
 void
 DwarfElephantOfflineStage::finalize()
 {
-  _console << *_initialize_rb_system._jacobian_subdomain[0] << std::endl;
+  _console << *_initialize_rb_system._rb_con_ptr->get_Aq(2);
+  _initialize_rb_system._jacobian_subdomain[0]->print_matlab("A0");
+  _initialize_rb_system._jacobian_subdomain[1]->print_matlab("A1");
+  _initialize_rb_system._jacobian_subdomain[2]->print_matlab("A2");
 }

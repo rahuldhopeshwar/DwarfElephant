@@ -72,12 +72,14 @@ CacheStiffnessMatrix::setCachedStiffnessMatrixContributions(SparseMatrix<Number>
 
 void
 CacheStiffnessMatrix::setCachedSubdomainStiffnessMatrixContributions(SparseMatrix<Number> & _jacobian, unsigned int subdomain)
-{
+{ 
   _jacobian.close();
   _jacobian.zero_rows(_cached_jacobian_subdomain_contribution_rows[subdomain]);
 
   for (unsigned int i = 0; i < _cached_jacobian_subdomain_contribution_vals[subdomain].size(); ++i)
+  {
     _jacobian.set(_cached_jacobian_subdomain_contribution_rows[subdomain][i],
                   _cached_jacobian_subdomain_contribution_cols[subdomain][i],
                   _cached_jacobian_subdomain_contribution_vals[subdomain][i]);
+  }
 }
