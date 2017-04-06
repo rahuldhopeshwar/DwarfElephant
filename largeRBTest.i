@@ -62,7 +62,7 @@ active = ''
 [BCs]
 active = 'bottom top'
   [./bottom]
-    type = RBDirichletBC
+    type = RBPresetBC
     variable = 'temperature'
     boundary = 'bottom'
     value = 31
@@ -71,7 +71,7 @@ active = 'bottom top'
   [../]
 
   [./top]
-    type = RBDirichletBC
+    type = RBPresetBC
     variable = 'temperature'
     boundary = 'top'
     value = 10
@@ -115,7 +115,7 @@ active = 'initializeRBSystem performRBSystem'
     store_basis_functions = true
 
     online_N = 1
-    online_mu = '1.05 2.5 1.5'
+    online_mu = '1.05' #' 2.5' # 1.5'
 
     skip_matrix_assembly_in_rb_system = true
     skip_vector_assembly_in_rb_system = true
@@ -139,21 +139,23 @@ Nmax = 20
 
 # Name of the parameters
 # Please name them mu_0, mu_1, ..., mu_n for the re-usability
-parameter_names = 'mu_0 mu_1 mu_2'
+parameter_names = 'mu_0' #' mu_1'
 
 # Define the minimum and maximum value of the Theta object
-mu_0 = '0.95 1.15'
-mu_1 = '2.2 2.8'
-mu_2 = '0.95 1.15'
+mu_0 = '0.95 2.95'
+#mu_1 = '2.2 4.2'
 
 # Define the number of training sets for the Greedy-algorithm
-n_training_samples = 10
+n_training_samples = 100
 
 # Optionally:
 # Determine whether the training points are generated randomly or deterministically
-deterministic_training = false
+deterministic_training = true
 
 # Determine whether relative or absolute error bounds are used in the Greedy-algorithm
-use_relative_bound_in_greedy = false
+use_relative_bound_in_greedy = true
+
+rel_training_tolerance = 1.e-3
 
 quiet_mode =  false
+#normalize_rb_bound_in_greedy = true

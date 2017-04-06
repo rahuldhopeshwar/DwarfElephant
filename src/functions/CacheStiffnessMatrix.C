@@ -19,19 +19,21 @@ CacheStiffnessMatrix::value(Real /*t*/, const Point & p)
 }
 
 void
-CacheStiffnessMatrix::cacheResidual(numeric_index_type i, Real value)
+CacheStiffnessMatrix::cacheSubdomainResidual(numeric_index_type i, Real value, unsigned int subdomain)
 {
-  _cached_residual_contribution_rows.push_back(i);
-  _cached_residual_contribution_vals.push_back(value);
+  _cached_residual_subdomain_contribution_rows[subdomain].push_back(i);
+  _cached_residual_subdomain_contribution_vals[subdomain].push_back(value);
 }
 
 void
-CacheStiffnessMatrix::setCachedResidual(NumericVector<Number> & _residual)
+CacheStiffnessMatrix::setCachedSubdomainResidual(NumericVector<Number> & _residual, unsigned int subdomain)
 {
-  for (unsigned int i = 0; i < _cached_residual_contribution_vals.size(); ++i)
-    _residual.set(_cached_residual_contribution_rows[i], _cached_residual_contribution_vals[i]*-1);
-
   _residual.close();
+
+  for (unsigned int i = 0; i < _cached_residual_subdomain_contribution_vals[subdomain].size(); ++i)
+    _residual.set(_cached_residual_subdomain_contribution_rows[subdomain][i], _cached_residual_subdomain_contribution_vals[subdomain][i]*-1);
+
+//  _residual.close();
 }
 
 void
@@ -43,11 +45,18 @@ CacheStiffnessMatrix::cacheStiffnessMatrixContribution(numeric_index_type i, num
 }
 
 void
-CacheStiffnessMatrix::resizeSubdomainCaches(unsigned int subdomains)
+CacheStiffnessMatrix::resizeSubdomainMatrixCaches(unsigned int subdomains)
 {
   _cached_jacobian_subdomain_contribution_rows.resize(subdomains);
   _cached_jacobian_subdomain_contribution_cols.resize(subdomains);
   _cached_jacobian_subdomain_contribution_vals.resize(subdomains);
+}
+
+void
+CacheStiffnessMatrix::resizeSubdomainVectorCaches(unsigned int subdomains)
+{
+  _cached_residual_subdomain_contribution_rows.resize(subdomains);
+  _cached_residual_subdomain_contribution_vals.resize(subdomains);
 }
 
 void
@@ -64,7 +73,7 @@ CacheStiffnessMatrix::setCachedStiffnessMatrixContributions(SparseMatrix<Number>
   _jacobian.close();
   _jacobian.zero_rows(_cached_jacobian_contribution_rows);
 
-  for (unsigned int i = 0; i < _cached_jacobian_subdomain_contribution_vals.size(); ++i)
+  for (unsigned int i = 0; i < _cached_jacobian_contribution_vals.size(); ++i)
     _jacobian.set(_cached_jacobian_contribution_rows[i],
                   _cached_jacobian_contribution_cols[i],
                   _cached_jacobian_contribution_vals[i]);
@@ -72,7 +81,7 @@ CacheStiffnessMatrix::setCachedStiffnessMatrixContributions(SparseMatrix<Number>
 
 void
 CacheStiffnessMatrix::setCachedSubdomainStiffnessMatrixContributions(SparseMatrix<Number> & _jacobian, unsigned int subdomain)
-{ 
+{
   _jacobian.close();
   _jacobian.zero_rows(_cached_jacobian_subdomain_contribution_rows[subdomain]);
 

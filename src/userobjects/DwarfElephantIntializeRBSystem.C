@@ -74,9 +74,8 @@ DwarfElephantInitializeRBSystem::initializeOfflineStage()
 //     _jacobian_subdomain[_q]->close();
     }
 
-    for (unsigned int _q=0; _q < _ql; _q++)
+    for (unsigned int _q=0; _q < _qf; _q++)
       _residuals[_q] = _rb_con_ptr->get_Fq(_q);
-
 
     for (unsigned int _q=0; _q < _ql; _q++)
       _outputs[_q] = _rb_con_ptr->get_output_vector(0,_q);

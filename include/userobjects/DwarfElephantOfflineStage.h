@@ -48,6 +48,9 @@ class DwarfElephantOfflineStage :
     void offlineStage();
     void setOnlineParameters();
     void transferAffineVectors();
+    Real trainReducedBasis(const bool resize_rb_eval_data=true);
+    Real truthSolve(int plot_solution);
+    void truthAssembly();
 
     virtual void initialize() override;
     virtual void execute() override;
@@ -71,8 +74,10 @@ class DwarfElephantOfflineStage :
     Function * _function;
     CacheStiffnessMatrix * _cache_stiffness_matrix;
     MooseMesh * _mesh_ptr;
+
     const std::set<SubdomainID> & _subdomain_ids;
 
+    Real _mu_bar;
     unsigned int _online_N;
     std::vector<Real> _online_mu_parameters;
 
