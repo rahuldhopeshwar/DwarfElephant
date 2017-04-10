@@ -34,15 +34,20 @@ class MooseMesh;
 class DwarfElephantRBConstruction;
 class DwarfElephantInitializeRBSystem;
 
+///----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantInitializeRBSystem>();
 
+///-------------------------------------------------------------------------
 class DwarfElephantInitializeRBSystem :
   public GeneralUserObject
 {
+
+//----------------------------------PUBLIC----------------------------------
   public:
     DwarfElephantInitializeRBSystem(const InputParameters & params);
 
+    /* Methods */
     void initializeOfflineStage();
     void initVariable();
 
@@ -50,7 +55,10 @@ class DwarfElephantInitializeRBSystem :
     virtual void execute() override;
     virtual void finalize() override;
 
+//--------------------------------PROTECTED---------------------------------
   protected:
+
+    /* Attributes */
     bool _use_displaced;
     bool _skip_matrix_assembly_in_rb_system;
     bool _skip_vector_assembly_in_rb_system;
@@ -77,6 +85,8 @@ class DwarfElephantInitializeRBSystem :
     std::vector <Real> _cached_jacobian_subdomain_contribution_vals;
 
     const std::vector<ExecFlagType> & _exec_flags;
+
+    DwarfElephantRBEvaluation  _rb_eval;
 
     friend class RBKernel;
     friend class RBNodalBC;

@@ -26,7 +26,8 @@ DwarfElephantInitializeRBSystem::DwarfElephantInitializeRBSystem(const InputPara
   _parameters_filename(getParam<std::string>("parameters_filename")),
   _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
   _mesh_ptr(&_fe_problem.mesh()),
-  _exec_flags(this->execFlags())
+  _exec_flags(this->execFlags()),
+  _rb_eval(_mesh_ptr->comm())
 {
 }
 
@@ -95,10 +96,6 @@ DwarfElephantInitializeRBSystem::initialize()
     initVariable();
     // Intialization of the added equation system
     _rb_con_ptr->init();
-
-    // Build the RBEvaluation object
-    // Required for both the Offline and Online stage.
-    DwarfElephantRBEvaluation  _rb_eval(_mesh_ptr->comm());
 
     // Pass a pointer of the RBEvaluation object to the
     // RBConstruction object

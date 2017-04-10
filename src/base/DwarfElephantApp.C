@@ -9,7 +9,7 @@
 #include "DwarfElephantApp.h"
 
 // Actions
-#include "DwarfElephantInitializeRBSystemAction.h"
+#include "DwarfElephantOnlineStageAction.h"
 
 // Base
 #include "DwarfElephantRBProblem.h"
@@ -30,12 +30,12 @@
 #include "Shale.h"
 
 // UserObjects
-#include "DwarfElephantInitializeRBSystem.h"
+#include "DwarfElephantOnlineStageAction.h"
 #include "DwarfElephantOfflineStage.h"
 #include "DwarfElephantOnlineStage.h"
 
 // Functions
-#include "CacheStiffnessMatrix.h"
+#include "CacheBoundaries.h"
 
 // Executioners
 #include "DwarfElephantExecutioner.h"
@@ -103,7 +103,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerUserObject(DwarfElephantOnlineStage);
 
   // Functions
-  registerFunction(CacheStiffnessMatrix);
+  registerFunction(CacheBoundaries);
 
   // Executioners
   registerExecutioner(DwarfElephantExecutioner);
@@ -118,6 +118,6 @@ extern "C" void DwarfElephantApp__associateSyntax(Syntax & syntax, ActionFactory
 void
 DwarfElephantApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
 {
-    registerAction(DwarfElephantInitializeRBSystemAction, "add_kernel");
-    syntax.registerActionSyntax("DwarfElephantInitializeRBSystemAction", "InitializeRBSystem");
+    registerAction(DwarfElephantOnlineStageAction, "add_kernel");
+    syntax.registerActionSyntax("DwarfElephantOnlineStageAction", "OnlineStage");
 }

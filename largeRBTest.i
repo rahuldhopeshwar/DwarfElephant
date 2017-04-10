@@ -62,7 +62,7 @@ active = ''
 [BCs]
 active = 'bottom top'
   [./bottom]
-    type = RBPresetBC
+    type = RBDirichletBC
     variable = 'temperature'
     boundary = 'bottom'
     value = 31
@@ -71,7 +71,7 @@ active = 'bottom top'
   [../]
 
   [./top]
-    type = RBPresetBC
+    type = RBDirichletBC
     variable = 'temperature'
     boundary = 'top'
     value = 10
@@ -103,19 +103,24 @@ active = 'initializeRBSystem performRBSystem'
     skip_matrix_assembly_in_rb_system = true
     skip_vector_assembly_in_rb_system = true
     offline_stage = true
+    online_stage = true
+    store_basis_functions = true
     execute_on = initial
   [../]
 
   [./performRBSystem]
     type = DwarfElephantOfflineStage
 
+    parameters_filename = largeRBTest.i
     residual_name = Re_non_time
 
+    offline_stage = true
     online_stage = true
     store_basis_functions = true
 
-    online_N = 1
-    online_mu = '1.05' #' 2.5' # 1.5'
+    mu_bar = 1
+    online_N = 2
+    online_mu = '1.05 2.5 1.05'
 
     skip_matrix_assembly_in_rb_system = true
     skip_vector_assembly_in_rb_system = true
@@ -127,7 +132,7 @@ active = 'initializeRBSystem performRBSystem'
 []
 
 [Outputs]
-  exodus = true
+  exodus = false
   execute_on = 'timestep_end'
 #  print_perf_log = true
 []
@@ -139,23 +144,25 @@ Nmax = 20
 
 # Name of the parameters
 # Please name them mu_0, mu_1, ..., mu_n for the re-usability
-parameter_names = 'mu_0' #' mu_1'
+parameter_names = 'mu_0 mu_1 mu_2'
 
 # Define the minimum and maximum value of the Theta object
-mu_0 = '0.95 2.95'
-#mu_1 = '2.2 4.2'
+mu_0 = '0.95 1.15'
+mu_1 = '2.2 2.8'
+mu_2 = '0.95 1.15'
 
 # Define the number of training sets for the Greedy-algorithm
 n_training_samples = 100
 
 # Optionally:
 # Determine whether the training points are generated randomly or deterministically
-deterministic_training = true
+deterministic_training = false
 
 # Determine whether relative or absolute error bounds are used in the Greedy-algorithm
 use_relative_bound_in_greedy = true
 
-rel_training_tolerance = 1.e-3
-
+rel_training_tolerance = 1e-4
 quiet_mode =  false
+#evaluate_RB_error_bound = false
+
 #normalize_rb_bound_in_greedy = true

@@ -1,28 +1,39 @@
+/**
+ * This BC is required to use the RB method as it is provided by the
+ * RB libMesh package. The RBNodalBC inherits from the NodalBC class. It
+ * overwrites the function computeJacobian because for the RB method the
+ * stiffness matrix is needed separated in its subdomain contributions. In
+ * addition it overwrites the function computeResidual.
+ */
+
+///---------------------------------INCLUDES--------------------------------
 #include "RBNodalBC.h"
 #include "MooseVariable.h"
 #include "Assembly.h"
 
+///----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<RBNodalBC>()
 {
   InputParameters params = validParams<NodalBC>();
 
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
-  params.addRequiredParam<FunctionName>("cache_stiffness_matrix", "");
+  params.addRequiredParam<FunctionName>("cache_boundaries", "");
 
   return params;
 }
 
-
+///-------------------------------CONSTRUCTOR-------------------------------
 RBNodalBC::RBNodalBC(const InputParameters & parameters) :
     NodalBC(parameters),
     _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystem>("initial_rb_userobject")),
-    _function(&getFunction("cache_stiffness_matrix"))
+    _function(&getFunction("cache_boundaries"))
 {
 
-    _cache_stiffness_matrix = dynamic_cast<CacheStiffnessMatrix *>(_function);
+    _cache_boundaries = dynamic_cast<CacheBoundaries *>(_function);
 }
 
+///-------------------------------------------------------------------------
 void
 RBNodalBC::computeResidual(NumericVector<Number> & residual)
 {
@@ -33,34 +44,27 @@ RBNodalBC::computeResidual(NumericVector<Number> & residual)
     Real res = computeQpResidual();
     residual.set(dof_idx, res);
 
-//    if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
-//    {
-//      _initialize_rb_system._residuals[0]->set(dof_idx, -res);
-//      _initialize_rb_system._outputs[0]->set(dof_idx, -res);
-////      _cache_stiffness_matrix->cacheResidual(dof_idx, res);
-//    }
-
     if(_initialize_rb_system._offline_stage)
     {
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
       {
 
        const std::vector<BoundaryName> & _boundary_names = boundaryNames();
-       _cache_stiffness_matrix->resizeSubdomainVectorCaches(_initialize_rb_system._qf);
+       _cache_boundaries->resizeSubdomainVectorCaches(_initialize_rb_system._qf);
 
         for(unsigned int _i = 0; _i != _boundary_names.size(); _i++)
         {
           if (_boundary_names[_i] == "bottom")
           {
-//            _cache_stiffness_matrix->cacheSubdomainResidualContribution(cached_row, res, 0);
-            _initialize_rb_system._residuals[0]->set(dof_idx,-res);
-            _initialize_rb_system._outputs[0]->set(dof_idx,-res);
+            _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, 0);
+//            _initialize_rb_system._residuals[0]->set(dof_idx,res);
+//            _initialize_rb_system._outputs[0]->set(dof_idx,res);
           }
           else if (_boundary_names[_i] == "top")
           {
-//            _cache_stiffness_matrix->cacheSubdomainResidualContribution(cached_row, res, _initialize_rb_system._qf-1);
-            _initialize_rb_system._residuals[_initialize_rb_system._qf-1]->set(dof_idx,-res);
-            _initialize_rb_system._outputs[_initialize_rb_system._ql-1]->set(dof_idx,-res);
+            _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, _initialize_rb_system._qf-1);
+//            _initialize_rb_system._residuals[_initialize_rb_system._qf-1]->set(dof_idx,res);
+//            _initialize_rb_system._outputs[_initialize_rb_system._ql-1]->set(dof_idx,res);
           }
         }
       }
@@ -95,33 +99,21 @@ RBNodalBC::computeJacobian()
     {
       if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
       {
-       _cache_stiffness_matrix -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
+       _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
 
        const std::vector<BoundaryName> & _boundary_names = boundaryNames();
-       _cache_stiffness_matrix->resizeSubdomainMatrixCaches(_initialize_rb_system._qa);
+       _cache_boundaries->resizeSubdomainMatrixCaches(_initialize_rb_system._qa);
 
         for(unsigned int _i = 0; _i != _boundary_names.size(); _i++)
         {
           if (_boundary_names[_i] == "bottom")
           {
-            _cache_stiffness_matrix->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, 0);
+            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, 0);
           }
           else if (_boundary_names[_i] == "top")
           {
-            _cache_stiffness_matrix->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _initialize_rb_system._qa-1);
+            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _initialize_rb_system._qa-1);
           }
-//
-//          else
-//          {
-//            const std::set<SubdomainID> & _node_block_ids = _mesh.getNodeBlockIds(*_current_node);
-//
-//	        for(std::set<SubdomainID>::const_iterator it = _node_block_ids.begin();
-//                it != _node_block_ids.end(); it++)
-//            {
-//                 _initialize_rb_system._jacobian_subdomain[*it] ->close();
-//                 _initialize_rb_system._jacobian_subdomain[*it] -> zero_rows(cached_rows, cached_val);
-//            }
-//          }
        }
       }
     }
