@@ -12,6 +12,7 @@ InputParameters validParams<DwarfElephantInitializeRBSystem>()
   params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
   params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
   params.addRequiredParam<std::string>("parameters_filename","Path to the input file. Required for the libMesh functions");
+  params.addRequiredParam<FunctionName>("cache_boundaries", "");
 
   return params;
 }
@@ -27,15 +28,9 @@ DwarfElephantInitializeRBSystem::DwarfElephantInitializeRBSystem(const InputPara
   _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
   _mesh_ptr(&_fe_problem.mesh()),
   _exec_flags(this->execFlags()),
-  _rb_eval(_mesh_ptr->comm())
+  _function(&getFunction("cache_boundaries"))
 {
-}
-
-
-void
-DwarfElephantInitializeRBSystem::initVariable()
-{
-//  unsigned int var_num = _rb_con_ptr->add_variable("RB_temperature", libMesh::FIRST , 0);
+   _cache_boundaries = dynamic_cast<CacheBoundaries *>(_function);
 }
 
 void
@@ -57,7 +52,7 @@ DwarfElephantInitializeRBSystem::initializeOfflineStage()
    // to be set again in the RBKernel.
    _jacobian_subdomain.resize(_qa);
    _residuals.resize(_qf);
-   _outputs.resize(_ql);
+   _outputs.resize(_qf);
 
    _inner_product_matrix = _rb_con_ptr->get_inner_product_matrix();
    PetscMatrix<Number> * _petsc_inner_matrix = dynamic_cast<PetscMatrix<Number>* > (_inner_product_matrix);
@@ -78,9 +73,10 @@ DwarfElephantInitializeRBSystem::initializeOfflineStage()
     for (unsigned int _q=0; _q < _qf; _q++)
       _residuals[_q] = _rb_con_ptr->get_Fq(_q);
 
-    for (unsigned int _q=0; _q < _ql; _q++)
-      _outputs[_q] = _rb_con_ptr->get_output_vector(0,_q);
+    for (unsigned int _q=0; _q < _qf; _q++)
+      _outputs[_q] = _rb_con_ptr->get_output_vector(_q, 0);
 }
+
 
 void
 DwarfElephantInitializeRBSystem::initialize()
@@ -92,10 +88,12 @@ DwarfElephantInitializeRBSystem::initialize()
 
     // Add a new equation system for the RB construction.
     _rb_con_ptr = &_es.add_system<DwarfElephantRBConstruction> ("RBSystem");
+//    _rb_con_ptr = &_es.add_system<SimpleRBConstruction> ("RBSystem");
 
-    initVariable();
     // Intialization of the added equation system
     _rb_con_ptr->init();
+
+    DwarfElephantRBEvaluation  _rb_eval(_mesh_ptr->comm(), _cache_boundaries);
 
     // Pass a pointer of the RBEvaluation object to the
     // RBConstruction object

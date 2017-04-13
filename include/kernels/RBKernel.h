@@ -21,7 +21,7 @@
 #include "NonlinearSystemBase.h"
 
 // MOOSE includes (DwarfElephant package)
-#include "DwarfElephantRBClasses.h"
+//#include "DwarfElephantRBClasses.h"
 #include "DwarfElephantInitializeRBSystem.h"
 
 ///-------------------------------------------------------------------------
@@ -69,7 +69,6 @@ protected:
   EquationSystems & _es;
 
   const std::set<SubdomainID> & _block_ids;
-  unsigned int _block;
 
   const DwarfElephantInitializeRBSystem & _initialize_rb_system;
 };

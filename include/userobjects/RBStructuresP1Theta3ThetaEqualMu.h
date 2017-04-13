@@ -56,7 +56,16 @@ struct ThetaA2 : RBTheta
 {
   virtual Number evaluate (const RBParameters & _mu)
   {
-    return _mu.get_value("mu_2");
+//    return _mu.get_value("mu_2");
+    return 0.5;
+  }
+};
+
+struct ThetaO0 : RBTheta
+{
+  virtual Number evaluate (const RBParameters &)
+  {
+    return 0;
 //    return 0.5;
   }
 };
@@ -83,16 +92,18 @@ struct RBP1Theta3ThetaEqualMuExpansion : RBThetaExpansion
 //    attach_F_theta(&_rb_theta);
 //    attach_output_theta(&_rb_theta);
 
-    std::vector <RBTheta *> _thetas = {&_rb_theta, &_rb_theta, &_rb_theta};
-    attach_output_theta(_thetas);
-//    attach_output_theta(&_theta_a_0);
-//    attach_output_theta(&_theta_a_1);
-//    attach_output_theta(&_theta_a_2);
+//    std::vector <RBTheta *> _thetas = {&_theta_a_0, &_theta_a_1, &_theta_a_2};
+//    std::vector <RBTheta *> _thetas = {&_rb_theta};
+//    attach_output_theta(_thetas);
+    attach_output_theta(&_theta_o_0);
+    attach_output_theta(&_theta_o_0);
+    attach_output_theta(&_theta_o_0);
   }
   // Member Variables
   ThetaA0 _theta_a_0;
   ThetaA1 _theta_a_1;
   ThetaA2 _theta_a_2;
+  ThetaO0 _theta_o_0;
   RBTheta _rb_theta;         // Default RBTheta object, simply returns one.
 };
 

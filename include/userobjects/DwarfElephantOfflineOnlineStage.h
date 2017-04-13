@@ -1,10 +1,10 @@
 /**
- * This UserObject implements the Offline stage of the RB method.
+ * This UserObject implements the Offline an Online stage of the RB method.
  */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTOFFLINESTAGE_H
-#define DWARFELEPHANTOFFLINESTAGE_H
+#ifndef DWARFELEPHANTOFFLINEONLINESTAGE_H
+#define DWARFELEPHANTOFFLINEONLINESTAGE_H
 
 ///---------------------------------INCLUDES--------------------------------
 //libMesh includes
@@ -21,6 +21,7 @@
 
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBClasses.h"
+//#include "RBclasses.h"
 #include "DwarfElephantInitializeRBSystem.h"
 #include "CacheBoundaries.h"
 
@@ -36,20 +37,20 @@ namespace libMesh
 class MooseMesh;
 class NonlinearSystemBase;
 class Assembly;
-class DwarfElephantOfflineStage;
+class DwarfElephantOfflineOnlineStage;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<DwarfElephantOfflineStage>();
+InputParameters validParams<DwarfElephantOfflineOnlineStage>();
 
 ///-------------------------------------------------------------------------
-class DwarfElephantOfflineStage :
+class DwarfElephantOfflineOnlineStage :
   public GeneralUserObject
 {
 
 //----------------------------------PUBLIC----------------------------------
   public:
-    DwarfElephantOfflineStage(const InputParameters & params);
+    DwarfElephantOfflineOnlineStage(const InputParameters & params);
 
 
     /* Methods */
@@ -57,6 +58,7 @@ class DwarfElephantOfflineStage :
     void offlineStage();
     void setOnlineParameters();
     void transferAffineVectors();
+//    void trainReducedBasis();
 
     virtual void initialize() override;
     virtual void execute() override;
@@ -71,6 +73,7 @@ class DwarfElephantOfflineStage :
     bool _skip_matrix_assembly_in_rb_system;
     bool _skip_vector_assembly_in_rb_system;
     bool _compliant;
+    bool _offline_stage;
     bool _online_stage;
 
     std::string _system_name;
@@ -92,4 +95,4 @@ class DwarfElephantOfflineStage :
     RBParameters _rb_online_mu;
 };
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTOFFLINESTAGE_H
+#endif // DWARFELEPHANTOFFLINEONLINESTAGE_H

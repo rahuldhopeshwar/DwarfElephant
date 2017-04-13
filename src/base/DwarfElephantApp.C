@@ -1,15 +1,12 @@
 /// MOOSE includes
 #include "Moose.h"
 #include "AppFactory.h"
-#include "ActionFactory.h"
+//#include "ActionFactory.h"
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
 
 /// MOOSE includes (DwarfElephant package)
 #include "DwarfElephantApp.h"
-
-// Actions
-#include "DwarfElephantOnlineStageAction.h"
 
 // Base
 #include "DwarfElephantRBProblem.h"
@@ -30,9 +27,8 @@
 #include "Shale.h"
 
 // UserObjects
-#include "DwarfElephantOnlineStageAction.h"
-#include "DwarfElephantOfflineStage.h"
-#include "DwarfElephantOnlineStage.h"
+#include "DwarfElephantInitializeRBSystem.h"
+#include "DwarfElephantOfflineOnlineStage.h"
 
 // Functions
 #include "CacheBoundaries.h"
@@ -40,8 +36,6 @@
 // Executioners
 #include "DwarfElephantExecutioner.h"
 
-// Outputs
-#include "RBOutput.h"
 
 template<>
 InputParameters validParams<DwarfElephantApp>()
@@ -99,8 +93,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // UserObjects
   registerUserObject(DwarfElephantInitializeRBSystem);
-  registerUserObject(DwarfElephantOfflineStage);
-  registerUserObject(DwarfElephantOnlineStage);
+  registerUserObject(DwarfElephantOfflineOnlineStage);
 
   // Functions
   registerFunction(CacheBoundaries);
@@ -108,16 +101,13 @@ DwarfElephantApp::registerObjects(Factory & factory)
   // Executioners
   registerExecutioner(DwarfElephantExecutioner);
 
-  // Outputs
-  registerOutput(RBOutput);
-
 }
 
 // External entry point for dynamic syntax association
 extern "C" void DwarfElephantApp__associateSyntax(Syntax & syntax, ActionFactory & action_factory) { DwarfElephantApp::associateSyntax(syntax, action_factory); }
 void
-DwarfElephantApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
+DwarfElephantApp::associateSyntax(Syntax & /*syntax*/, ActionFactory & /*action_factory*/)
 {
-    registerAction(DwarfElephantOnlineStageAction, "add_kernel");
-    syntax.registerActionSyntax("DwarfElephantOnlineStageAction", "OnlineStage");
+//    registerAction(DwarfElephantOnlineStageAction, "add_kernel");
+//    syntax.registerActionSyntax("DwarfElephantOnlineStageAction", "OnlineStage");
 }

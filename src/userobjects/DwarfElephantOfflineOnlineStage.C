@@ -1,14 +1,14 @@
 /**
- * This UserObject implements the Offline stage of the RB method.
+ * This UserObject implements the Offline and Online stage of the RB method.
  */
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes (DwarfElephant package)
-#include "DwarfElephantOfflineStage.h"
+#include "DwarfElephantOfflineOnlineStage.h"
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<DwarfElephantOfflineStage>()
+InputParameters validParams<DwarfElephantOfflineOnlineStage>()
 {
     InputParameters params = validParams<GeneralUserObject>();
 
@@ -17,6 +17,7 @@ InputParameters validParams<DwarfElephantOfflineStage>()
     params.addParam<bool>("compliant", true, "Determines whether F is equal to the output vector or not.");
     params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
     params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
+    params.addParam<bool>("offline_stage", false, "Determines whether the Offline stage will be calculated or not.");
     params.addParam<bool>("online_stage", false, "Determines whether the Online stage will be calculated or not.");
     params.addParam<std::string>("system","nl0","The name of the system that should be read in.");
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
@@ -29,13 +30,14 @@ InputParameters validParams<DwarfElephantOfflineStage>()
 }
 
 ///-------------------------------CONSTRUCTOR-------------------------------
-DwarfElephantOfflineStage::DwarfElephantOfflineStage(const InputParameters & params):
+DwarfElephantOfflineOnlineStage::DwarfElephantOfflineOnlineStage(const InputParameters & params):
     GeneralUserObject(params),
     _use_displaced(getParam<bool>("use_displaced")),
     _store_basis_functions(getParam<bool>("store_basis_functions")),
     _skip_matrix_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
     _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
     _compliant(getParam<bool>("compliant")),
+    _offline_stage(getParam<bool>("offline_stage")),
     _online_stage(getParam<bool>("online_stage")),
     _system_name(getParam<std::string>("system")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
@@ -52,7 +54,7 @@ DwarfElephantOfflineStage::DwarfElephantOfflineStage(const InputParameters & par
 }
 
 void
-DwarfElephantOfflineStage::setAffineMatrices()
+DwarfElephantOfflineOnlineStage::setAffineMatrices()
 {
 //  if (_initialize_rb_system._qa > 1)
 ////  {
@@ -61,6 +63,7 @@ DwarfElephantOfflineStage::setAffineMatrices()
             it != _subdomain_ids.end(); it++)
     {
       _cache_boundaries->setCachedSubdomainStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[*it], *it);
+//      _cache_boundaries->setCachedSubdomainInnerMatrixContributions(*_initialize_rb_system._inner_product_matrix, *it);
       _initialize_rb_system._jacobian_subdomain[*it] ->close();
 //      _initialize_rb_system._inner_product_matrix->add(1., *_initialize_rb_system._jacobian_subdomain[*it]);
     }
@@ -78,7 +81,7 @@ DwarfElephantOfflineStage::setAffineMatrices()
 }
 
 void
-DwarfElephantOfflineStage::transferAffineVectors()
+DwarfElephantOfflineOnlineStage::transferAffineVectors()
 {
     // Transfer the vectors
     // Transfer the data for the F vectors.
@@ -102,7 +105,7 @@ DwarfElephantOfflineStage::transferAffineVectors()
 }
 
 void
-DwarfElephantOfflineStage::offlineStage()
+DwarfElephantOfflineOnlineStage::offlineStage()
 {
     _initialize_rb_system._rb_con_ptr->train_reduced_basis();
 
@@ -124,7 +127,7 @@ DwarfElephantOfflineStage::offlineStage()
 }
 
 void
-DwarfElephantOfflineStage::setOnlineParameters()
+DwarfElephantOfflineOnlineStage::setOnlineParameters()
 {
     for (unsigned int  _q = 0; _q != _online_mu_parameters.size(); _q++)
     {
@@ -134,33 +137,37 @@ DwarfElephantOfflineStage::setOnlineParameters()
 }
 
 void
-DwarfElephantOfflineStage::initialize()
+DwarfElephantOfflineOnlineStage::initialize()
 {
 }
 
 void
-DwarfElephantOfflineStage::execute()
+DwarfElephantOfflineOnlineStage::execute()
 {
     // Build the RBEvaluation object
     // Required for both the Offline and Online stage.
-    DwarfElephantRBEvaluation  _rb_eval(_mesh_ptr->comm());
+    DwarfElephantRBEvaluation  _rb_eval(_mesh_ptr->comm(), _cache_boundaries);
+//    SimpleRBEvaluation  _rb_eval(_mesh_ptr->comm());
 
     // Pass a pointer of the RBEvaluation object to the
     // RBConstruction object
     _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
 
-    // Transfer the affine vectors to the RB system.
-    if(_skip_vector_assembly_in_rb_system)
+    if (_offline_stage)
+    {
+      // Transfer the affine vectors to the RB system.
+      if(_skip_vector_assembly_in_rb_system)
         transferAffineVectors();
 
-    // Transfer the affine matrices to the RB system.
-    if(_skip_matrix_assembly_in_rb_system)
+      // Transfer the affine matrices to the RB system.
+      if(_skip_matrix_assembly_in_rb_system)
         setAffineMatrices();
 
-    // Perform the offline stage.
-    _console << std::endl;
-    offlineStage();
-    _console << std::endl;
+      // Perform the offline stage.
+      _console << std::endl;
+      offlineStage();
+      _console << std::endl;
+    }
 
     if(_online_stage)
     {
@@ -180,9 +187,9 @@ DwarfElephantOfflineStage::execute()
       _online_N = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
       _rb_eval.rb_solve(_online_N);
 
-//      for (unsigned int _q = 0; _q != _initialize_rb_system._ql; _q++)
-//        _console << "Output " << std::to_string(_q) << ": value = " << _rb_eval.RB_outputs[_q]
-//        << ", error bound = " << _rb_eval.RB_output_error_bounds[_q] << std::endl;
+      for (unsigned int _q = 0; _q != _initialize_rb_system._ql; _q++)
+        _console << "Output " << std::to_string(_q) << ": value = " << _rb_eval.RB_outputs[_q]
+        << ", error bound = " << _rb_eval.RB_output_error_bounds[_q] << std::endl;
 
       _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
       _initialize_rb_system._rb_con_ptr->load_rb_solution();
@@ -193,6 +200,6 @@ DwarfElephantOfflineStage::execute()
 }
 
 void
-DwarfElephantOfflineStage::finalize()
+DwarfElephantOfflineOnlineStage::finalize()
 {
 }

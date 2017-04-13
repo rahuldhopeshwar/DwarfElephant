@@ -30,7 +30,6 @@ InputParameters validParams<RBKernel>()
   params.addClassDescription("Overwrites the function computeJacobian. This is required because for the RB method the stiffness matrix needs to be saved in its subdomain contributions.");
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system");
-  params.addRequiredParam<unsigned int>("subdomain", "The active subdomain");
 
   return params;
 }
@@ -41,7 +40,6 @@ RBKernel::RBKernel(const InputParameters & parameters) :
     _use_displaced(getParam<bool>("use_displaced")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _block_ids(this->blockIDs()),
-    _block(getParam<unsigned int>("subdomain")),
     _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystem>("initial_rb_userobject"))
 
 {
