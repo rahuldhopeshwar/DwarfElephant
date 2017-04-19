@@ -100,31 +100,3 @@ CacheBoundaries::setCachedSubdomainStiffnessMatrixContributions(SparseMatrix<Num
                   _cached_jacobian_subdomain_contribution_vals[subdomain][i]);
   }
 }
-
-void
-CacheBoundaries::setCachedSubdomainInnerMatrixContributions(SparseMatrix<Number> & _jacobian, unsigned int subdomain)
-{
-  _jacobian.close();
-
-  for (unsigned int i = 0; i < _cached_jacobian_subdomain_contribution_vals[subdomain].size(); ++i)
-  {
-   Number _entry = _jacobian(_cached_jacobian_subdomain_contribution_rows[subdomain][i],_cached_jacobian_subdomain_contribution_cols[subdomain][i]);
-   _entry -= _cached_jacobian_subdomain_contribution_vals[subdomain][i];
-   _jacobian.set(_cached_jacobian_subdomain_contribution_rows[subdomain][i],
-                  _cached_jacobian_subdomain_contribution_cols[subdomain][i],
-                  _entry);
-   _console << _entry << std::endl;
-  }
-}
-
-void
-CacheBoundaries::resetBoundariesSubdomainStiffnessMatrix(SparseMatrix<Number> & _jacobian, unsigned int subdomain)
-{
-//  _jacobian.close();
-   for (unsigned int i = 0; i < _cached_jacobian_subdomain_contribution_vals[subdomain].size(); ++i)
-  {
-    _jacobian.set(_cached_jacobian_subdomain_contribution_rows[subdomain][i],
-                  _cached_jacobian_subdomain_contribution_cols[subdomain][i],
-                  _cached_jacobian_subdomain_contribution_vals[subdomain][i]);
-  }
-}

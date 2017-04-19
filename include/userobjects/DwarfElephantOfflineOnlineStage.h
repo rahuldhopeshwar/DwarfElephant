@@ -1,5 +1,5 @@
 /**
- * This UserObject implements the Offline an Online stage of the RB method.
+ * This UserObject implements the Offline and Online stage of the RB method.
  */
 
 ///-------------------------------------------------------------------------
@@ -21,7 +21,6 @@
 
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBClasses.h"
-//#include "RBclasses.h"
 #include "DwarfElephantInitializeRBSystem.h"
 #include "CacheBoundaries.h"
 
@@ -58,7 +57,6 @@ class DwarfElephantOfflineOnlineStage :
     void offlineStage();
     void setOnlineParameters();
     void transferAffineVectors();
-//    void trainReducedBasis();
 
     virtual void initialize() override;
     virtual void execute() override;
@@ -77,6 +75,7 @@ class DwarfElephantOfflineOnlineStage :
     bool _online_stage;
 
     std::string _system_name;
+    std::string _exodus_file_name;
 
     EquationSystems & _es;
     TransientNonlinearImplicitSystem & _sys;

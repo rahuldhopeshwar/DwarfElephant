@@ -18,7 +18,6 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBClasses.h"
 #include "CacheBoundaries.h"
-//#include "RBclasses.h"
 
 
 ///-------------------------------------------------------------------------
@@ -34,7 +33,6 @@ namespace libMesh
 
 class MooseMesh;
 class DwarfElephantRBConstruction;
-//class SimpleRBConstruction;
 class DwarfElephantInitializeRBSystem;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
@@ -52,6 +50,7 @@ class DwarfElephantInitializeRBSystem :
 
     /* Methods */
     void initializeOfflineStage();
+    void initVariable();
 
     virtual void initialize() override;
     virtual void execute() override;
@@ -76,18 +75,21 @@ class DwarfElephantInitializeRBSystem :
     EquationSystems & _es;
     MooseMesh * _mesh_ptr;
     DwarfElephantRBConstruction * _rb_con_ptr;
-//    SimpleRBConstruction * _rb_con_ptr;
 
     SparseMatrix <Number> * _inner_product_matrix;
     std::vector<SparseMatrix <Number> *> _jacobian_subdomain;
     std::vector<NumericVector <Number> *> _residuals;
     std::vector<NumericVector <Number> *> _outputs;
 
+    std::vector <numeric_index_type> _cached_jacobian_subdomain_contribution_rows;
+    std::vector <numeric_index_type> _cached_jacobian_subdomain_contribution_cols;
+    std::vector <Real> _cached_jacobian_subdomain_contribution_vals;
+
     const std::vector<ExecFlagType> & _exec_flags;
 
-    Function * _function;
-    CacheBoundaries * _cache_boundaries;
-//    SimpleRBEvaluation _rb_eval;
+//    Function * _function;
+//    CacheBoundaries * _cache_boundaries;
+
 
     friend class RBKernel;
     friend class RBNodalBC;

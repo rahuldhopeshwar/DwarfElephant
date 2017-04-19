@@ -1,7 +1,7 @@
 /// MOOSE includes
 #include "Moose.h"
 #include "AppFactory.h"
-//#include "ActionFactory.h"
+#include "ActionFactory.h"
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
 
@@ -35,7 +35,6 @@
 
 // Executioners
 #include "DwarfElephantExecutioner.h"
-
 
 template<>
 InputParameters validParams<DwarfElephantApp>()
@@ -108,6 +107,4 @@ extern "C" void DwarfElephantApp__associateSyntax(Syntax & syntax, ActionFactory
 void
 DwarfElephantApp::associateSyntax(Syntax & /*syntax*/, ActionFactory & /*action_factory*/)
 {
-//    registerAction(DwarfElephantOnlineStageAction, "add_kernel");
-//    syntax.registerActionSyntax("DwarfElephantOnlineStageAction", "OnlineStage");
 }

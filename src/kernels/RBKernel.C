@@ -80,12 +80,13 @@ RBKernel::computeResidual()
     if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
     {
 ////        _initialize_rb_system._residuals[*_block_ids.begin()];
-        _initialize_rb_system._residuals[*_block_ids.begin()] -> add_vector(_local_re, _var.dofIndices());
+//        _initialize_rb_system._residuals[*_block_ids.begin()] -> add_vector(_local_re, _var.dofIndices());
+        _initialize_rb_system._residuals[0] -> add_vector(_local_re, _var.dofIndices());
     }
       if (_initialize_rb_system._compliant)
       {
 ////        _initialize_rb_system._outputs[*_block_ids.begin()];
-        _initialize_rb_system._outputs[*_block_ids.begin()] -> add_vector(_local_re, _var.dofIndices());
+//        _initialize_rb_system._outputs[0] -> add_vector(_local_re, _var.dofIndices());
       }
 //
 //      else if (!_initialize_rb_system._compliant)
@@ -121,7 +122,7 @@ RBKernel::computeJacobian()
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
     {
         _initialize_rb_system._jacobian_subdomain[*_block_ids.begin()] -> add_matrix(_local_ke, _var.dofIndices());
-        _initialize_rb_system._inner_product_matrix -> add_matrix(_local_ke, _var.dofIndices());
+//        _initialize_rb_system._inner_product_matrix -> add_matrix(_local_ke, _var.dofIndices());
     }
   }
 
