@@ -31,8 +31,8 @@ active = 'subdomains'
 []
 
 [Kernels]
-#active = 'RBConduction_block0 RBConduction_block1 RBConduction_block2'
-active = 'Conduction'
+active = 'RBConduction_block0 RBConduction_block1 RBConduction_block2'
+#active = 'Conduction'
   [./RBConduction_block0]
     type = RBDiffusion
     variable = temperature
@@ -61,8 +61,8 @@ active = 'Conduction'
 []
 
 [Materials]
-#active = ' '
-active = 'shale_top sandstone shale_bottom'
+active = ' '
+#active = 'shale_top sandstone shale_bottom'
   [./shale_top]
     type = Shale
     block = 0
@@ -80,13 +80,13 @@ active = 'shale_top sandstone shale_bottom'
 []
 
 [BCs]
-#active = 'RBtop RBbottom'
-active = 'top bottom'
+active = 'RBtop RBbottom'
+#active = 'top bottom'
   [./RBtop]
     type = RBDirichletBC
     variable = temperature
     boundary = 'top'
-    value = 10
+    value = 10.00
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
   [../]
@@ -94,7 +94,7 @@ active = 'top bottom'
     type = RBDirichletBC
     variable = temperature
     boundary = 'bottom'
-    value = 31
+    value = 31.00
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
   [../]
@@ -103,13 +103,13 @@ active = 'top bottom'
     type = DirichletBC
     variable = temperature
     boundary = 'top'
-    value = 10
+    value = 10.00
   [../]
   [./bottom]
     type = DirichletBC
     variable = temperature
     boundary = 'bottom'
-    value = 31
+    value = 31.00
   [../]
 []
 
@@ -124,16 +124,16 @@ active = 'top bottom'
 []
 
 [Functions]
-#active = 'cacheBoundaries'
-active = ' '
+active = 'cacheBoundaries'
+#active = ' '
   [./cacheBoundaries]
     type = CacheBoundaries
   [../]
 []
 
 [UserObjects]
-#active = 'initializeRBSystem performRBSystem'
-active = ' '
+active = 'initializeRBSystem performRBSystem'
+#active = ' '
 
   [./initializeRBSystem]
     type = DwarfElephantInitializeRBSystem
