@@ -66,6 +66,7 @@ protected:
 
   Function * _function;
   CacheBoundaries * _cache_boundaries;
+//  bool _use_displaced;
 };
 
 #endif /* RBNODALBC_H */

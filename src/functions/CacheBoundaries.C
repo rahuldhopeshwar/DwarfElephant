@@ -41,7 +41,11 @@ CacheBoundaries::setCachedSubdomainResidual(NumericVector<Number> & _residual, u
   for (unsigned int i = 0; i < _cached_residual_subdomain_contribution_vals[subdomain].size(); ++i)
     _residual.set(_cached_residual_subdomain_contribution_rows[subdomain][i], _cached_residual_subdomain_contribution_vals[subdomain][i]);
 
-//  _residual.close();
+  std::filebuf fb;
+  std::string name = "residual" + std::to_string(subdomain) + ".txt";
+  fb.open (name,std::ios::out);
+  std::ostream os(&fb);
+  _residual.print(os);
 }
 
 void

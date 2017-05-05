@@ -79,14 +79,11 @@ RBKernel::computeResidual()
     // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
     {
-////        _initialize_rb_system._residuals[*_block_ids.begin()];
-//        _initialize_rb_system._residuals[*_block_ids.begin()] -> add_vector(_local_re, _var.dofIndices());
-        _initialize_rb_system._residuals[0] -> add_vector(_local_re, _var.dofIndices());
+        _initialize_rb_system._residuals[*_block_ids.begin()] -> add_vector(_local_re, _var.dofIndices());
     }
       if (_initialize_rb_system._compliant)
       {
-////        _initialize_rb_system._outputs[*_block_ids.begin()];
-//        _initialize_rb_system._outputs[0] -> add_vector(_local_re, _var.dofIndices());
+//        _initialize_rb_system._outputs[*_block_ids.begin()] -> add_vector(_local_re, _var.dofIndices());
       }
 //
 //      else if (!_initialize_rb_system._compliant)

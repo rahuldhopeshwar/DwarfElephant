@@ -10,7 +10,7 @@
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
-#include "Kernel.h"
+#include "Diffusion.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
@@ -21,7 +21,7 @@ template<>
 InputParameters validParams<Conduction>();
 
 ///-------------------------------------------------------------------------
-class Conduction : public Kernel
+class Conduction : public Diffusion
 {
 //----------------------------------PUBLIC----------------------------------
 public:

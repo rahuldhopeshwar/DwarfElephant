@@ -19,6 +19,7 @@
 
 // Kernels
 #include "Conduction.h"
+#include "Darcy.h"
 #include "RBKernel.h"
 #include "RBDiffusion.h"
 
@@ -83,6 +84,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // Kernels
   registerKernel(Conduction);
+  registerKernel(Darcy);
   registerKernel(RBKernel);
   registerKernel(RBDiffusion);
 

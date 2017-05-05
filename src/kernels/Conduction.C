@@ -12,7 +12,7 @@
 template<>
 InputParameters validParams<Conduction>()
 {
-  InputParameters params = validParams<Kernel>();
+  InputParameters params = validParams<Diffusion>();
   params.addClassDescription("The class implements a thermal conduction \
                               problem.");
   return params;
@@ -20,9 +20,9 @@ InputParameters validParams<Conduction>()
 
 ///-------------------------------CONSTRUCTOR-------------------------------
 Conduction::Conduction(const InputParameters & parameters) :
-  Kernel(parameters),
+  Diffusion(parameters),
   // gets the thermal conductivity directly from the corresponding material file
-  _lambda(getMaterialProperty<Real>("conductivity"))
+  _lambda(getMaterialProperty<Real>("thermal_conductivity"))
 {
 }
 
@@ -31,11 +31,11 @@ Conduction::Conduction(const InputParameters & parameters) :
 Real
 Conduction::computeQpResidual()
 {
-  return _lambda[_qp]*_grad_u[_qp] * _grad_test[_i][_qp];
+  return _lambda[_qp] * Diffusion::computeQpResidual();
 }
 
 Real
 Conduction::computeQpJacobian()
 {
-  return _lambda[_qp]*_grad_phi[_j][_qp] * _grad_test[_i][_qp];
+  return _lambda[_qp] * Diffusion::computeQpJacobian();
 }

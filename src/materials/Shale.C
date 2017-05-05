@@ -12,9 +12,12 @@
 
 /* List of rock properties and corresponding references:
  *
- * thermal conductivuty (lambda) -
+ * thermal conductivity (lambda) -
  *   http://www.minersoc.org/pages/Archive-CM/Volume_33/33-1-131.pdf
  *
+ * permeability - http://www.geomore.com/porosity-and-permeability-2/
+ *
+ * viscosity - https://en.wikipedia.org/wiki/Brine
  */
 
 ///---------------------------------INCLUDES--------------------------------
@@ -33,12 +36,11 @@ InputParameters validParams<Shale>()
 ///-------------------------------CONSTRUCTOR-------------------------------
 Shale::Shale(const InputParameters & parameters) :
     Material(parameters),
-
-    // Thermal conductivity
-    _lambda(declareProperty<Real>("conductivity")),
-
-    //RB Parameters
-    _rb_lambda(declareProperty<RealVectorValue>("mu1"))
+    _thermal_conductivity(declareProperty<Real>("thermal_conductivity")),
+    _permeability(declareProperty<Real>("permeability")),
+    _dynamic_viscosity(declareProperty<Real>("dynamic_viscosity")),
+    _fluid_density(declareProperty<Real>("fluid_density")),
+    _gravity(declareProperty<RealVectorValue>("gravity"))
 {
 }
 
@@ -46,9 +48,9 @@ Shale::Shale(const InputParameters & parameters) :
 void
 Shale::computeQpProperties()
 {
-  // Thermal conductivity always in [W/(m K)]
-  _lambda[_qp]= 1.05;
-
-  // RB Parameters
-  _rb_lambda[_qp]= {1.05, 1.55};
+  _thermal_conductivity[_qp] = 1.05;                 // [W/(m K)]
+  _permeability[_qp] = 1.e-6;                        // [m²]
+  _dynamic_viscosity[_qp] =  0.001145;               // [kg/(m s)];
+  _fluid_density[_qp] = 1;                        // [g/m³];
+  _gravity[_qp] = RealVectorValue(0, -9.81, 0);       // [m/s²]
 }

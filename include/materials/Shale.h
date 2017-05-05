@@ -35,11 +35,11 @@ protected:
   virtual void computeQpProperties() override;
 
   /* Attributes */
-  // The thermal conductivity (lambda)
-  MaterialProperty<Real> & _lambda;
-
-  // RB parameters for the thermal conductivity
-  MaterialProperty<RealVectorValue> & _rb_lambda;
+  MaterialProperty<Real> & _thermal_conductivity;
+  MaterialProperty<Real> & _permeability;
+  MaterialProperty<Real> & _dynamic_viscosity;
+  MaterialProperty<Real> & _fluid_density;
+  MaterialProperty<RealVectorValue> & _gravity;
 };
 
 ///-------------------------------------------------------------------------

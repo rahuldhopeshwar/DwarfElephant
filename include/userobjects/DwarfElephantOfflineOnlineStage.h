@@ -20,7 +20,8 @@
 #include "Assembly.h"
 
 // MOOSE includes (DwarfElephant package)
-#include "DwarfElephantRBClasses.h"
+#include "DwarfElephantRBClassesSteadyState.h"
+#include "DwarfElephantRBClassesTransient.h"
 #include "DwarfElephantInitializeRBSystem.h"
 #include "CacheBoundaries.h"
 

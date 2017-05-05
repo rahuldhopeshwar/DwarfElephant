@@ -16,7 +16,8 @@
 #include "MooseMesh.h"
 
 // MOOSE includes (DwarfElephant package)
-#include "DwarfElephantRBClasses.h"
+#include "DwarfElephantRBClassesSteadyState.h"
+#include "DwarfElephantRBClassesTransient.h"
 #include "CacheBoundaries.h"
 
 
@@ -71,10 +72,11 @@ class DwarfElephantInitializeRBSystem :
     unsigned int _ql;
 
     std::string _parameters_filename;
+    std::string _rb_variable_name;
 
     EquationSystems & _es;
     MooseMesh * _mesh_ptr;
-    DwarfElephantRBConstruction * _rb_con_ptr;
+    DwarfElephantRBConstructionSteadyState * _rb_con_ptr;
 
     SparseMatrix <Number> * _inner_product_matrix;
     std::vector<SparseMatrix <Number> *> _jacobian_subdomain;
@@ -86,10 +88,6 @@ class DwarfElephantInitializeRBSystem :
     std::vector <Real> _cached_jacobian_subdomain_contribution_vals;
 
     const std::vector<ExecFlagType> & _exec_flags;
-
-//    Function * _function;
-//    CacheBoundaries * _cache_boundaries;
-
 
     friend class RBKernel;
     friend class RBNodalBC;
