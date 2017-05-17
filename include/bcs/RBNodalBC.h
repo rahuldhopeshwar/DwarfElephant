@@ -62,11 +62,11 @@ protected:
   virtual Real computeQpJacobian();
 
   /* Attributes */
+  bool _mesh_modified;
   const DwarfElephantInitializeRBSystem & _initialize_rb_system;
 
   Function * _function;
   CacheBoundaries * _cache_boundaries;
-//  bool _use_displaced;
 };
 
 #endif /* RBNODALBC_H */

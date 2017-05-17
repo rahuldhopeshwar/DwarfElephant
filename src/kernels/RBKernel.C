@@ -30,6 +30,10 @@ InputParameters validParams<RBKernel>()
   params.addClassDescription("Overwrites the function computeJacobian. This is required because for the RB method the stiffness matrix needs to be saved in its subdomain contributions.");
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system");
+  params.addParam<unsigned int>("ID_Aq", 0, "ID of the current stiffness matrix");
+  params.addParam<unsigned int>("ID_Fq", 0, "ID of the current stiffness matrix");
+  params.addParam<bool>("matrix_separation_according_to_subdomains", true, "Tells whether the stiffness matrix is separated according to the subdomain_ids");
+  params.addParam<bool>("vector_separation_according_to_subdomains", true, "Tells whether the load vector is separated according to the subdomain_ids");
 
   return params;
 }
@@ -38,6 +42,10 @@ InputParameters validParams<RBKernel>()
 RBKernel::RBKernel(const InputParameters & parameters) :
     Kernel(parameters),
     _use_displaced(getParam<bool>("use_displaced")),
+    _matrix_separation_according_to_subdomains(getParam<bool>("matrix_separation_according_to_subdomains")),
+    _vector_separation_according_to_subdomains(getParam<bool>("vector_separation_according_to_subdomains")),
+    _ID_Aq(getParam<unsigned int>("ID_Aq")),
+    _ID_Fq(getParam<unsigned int>("ID_Fq")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _block_ids(this->blockIDs()),
     _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystem>("initial_rb_userobject"))
@@ -49,6 +57,7 @@ RBKernel::RBKernel(const InputParameters & parameters) :
 void
 RBKernel::initialSetup()
 {
+  // Error messages
   if (_block_ids.size()>1)
   {
       mooseError("For the RB method the stiffness matrix has to be saved separatly for each subdomain. Therefore each RBKernel and each inheriting Kernel needs to be defined individually for each block. You defined the Kernel for more than one block, please change your specifications in the Input file.");
@@ -58,6 +67,14 @@ RBKernel::initialSetup()
     mooseError("The initialization of the RB system has to be executed on 'initial'. "
                "You defined a wrong state in your 'execute_on' line in the Inputfile. "
                "Please, correct your settings.");
+
+  // Defining the IDs of the stiffness matrix and load vectors in case of subdomain separation
+  if(_matrix_separation_according_to_subdomains)
+    _ID_Aq = *_block_ids.begin();
+
+  if(_vector_separation_according_to_subdomains)
+    _ID_Fq = *_block_ids.begin();
+
 }
 
 void
@@ -79,7 +96,7 @@ RBKernel::computeResidual()
     // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
     {
-        _initialize_rb_system._residuals[*_block_ids.begin()] -> add_vector(_local_re, _var.dofIndices());
+        _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
     }
       if (_initialize_rb_system._compliant)
       {
@@ -118,8 +135,7 @@ RBKernel::computeJacobian()
     // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
     {
-        _initialize_rb_system._jacobian_subdomain[*_block_ids.begin()] -> add_matrix(_local_ke, _var.dofIndices());
-//        _initialize_rb_system._inner_product_matrix -> add_matrix(_local_ke, _var.dofIndices());
+        _initialize_rb_system._jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
     }
   }
 

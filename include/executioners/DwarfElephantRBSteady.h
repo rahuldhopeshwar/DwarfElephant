@@ -1,29 +1,25 @@
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTEXECUTIONER_H
-#define DWARFELEPHANTEXECUTIONER_H
+#ifndef DWARFELEPHANTRBSTEADY_H
+#define DWARFELEPHANTRBSTEADY_H
 
 ///---------------------------------INCLUDES--------------------------------
-
 // MOOSE includes
 #include "Steady.h"
-#include "BlockRestrictable.h"
-
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
-class DwarfElephantExecutioner;
+class DwarfElephantRBSteady;
 
 template<>
-InputParameters validParams<DwarfElephantExecutioner>();
+InputParameters validParams<DwarfElephantRBSteady>();
 
-class DwarfElephantExecutioner :
-  public Steady,
-  public BlockRestrictable
+class DwarfElephantRBSteady :
+  public Steady
 {
   public:
-    DwarfElephantExecutioner(const InputParameters & params);
+    DwarfElephantRBSteady(const InputParameters & params);
 
     void execute() override;
 };
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTEXECUTIONER_H
+#endif // DWARFELEPHANTRBSTEADY_H

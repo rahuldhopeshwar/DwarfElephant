@@ -49,8 +49,8 @@ void
 Shale::computeQpProperties()
 {
   _thermal_conductivity[_qp] = 1.05;                 // [W/(m K)]
-  _permeability[_qp] = 1.e-6;                        // [m²]
-  _dynamic_viscosity[_qp] =  0.001145;               // [kg/(m s)];
-  _fluid_density[_qp] = 1;                        // [g/m³];
+  _permeability[_qp] = 1.e-9;                        // [m²]
+  _dynamic_viscosity[_qp] =  0.001145;               // [Pa s];
+  _fluid_density[_qp] = 1000;                        // [kg/m³];
   _gravity[_qp] = RealVectorValue(0, -9.81, 0);       // [m/s²]
 }

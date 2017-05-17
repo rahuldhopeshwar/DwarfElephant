@@ -11,8 +11,9 @@ InputParameters validParams<DwarfElephantInitializeRBSystem>()
   params.addParam<bool>("compliant", true, "Determines whether F is equal to the output vector or not.");
   params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
   params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
+  params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
   params.addRequiredParam<std::string>("parameters_filename","Path to the input file. Required for the libMesh functions");
-  params.addRequiredParam<std::string>("rb_variable","Name of the variable for the RB method.");
+  params.addRequiredParam<FunctionName>("cache_boundaries", "");
 
   return params;
 }
@@ -24,20 +25,17 @@ DwarfElephantInitializeRBSystem::DwarfElephantInitializeRBSystem(const InputPara
   _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
   _offline_stage(getParam<bool>("offline_stage")),
   _compliant(getParam<bool>("compliant")),
+  _system_name(getParam<std::string>("system")),
   _parameters_filename(getParam<std::string>("parameters_filename")),
-  _rb_variable_name(getParam<std::string>("rb_variable")),
   _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
   _mesh_ptr(&_fe_problem.mesh()),
-  _exec_flags(this->execFlags())
+  _sys(&_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
+  _exec_flags(this->execFlags()),
+  _function(&getFunction("cache_boundaries"))
 {
+  _cache_boundaries = dynamic_cast<CacheBoundaries *>(_function);
 }
 
-
-void
-DwarfElephantInitializeRBSystem::initVariable()
-{
-//  unsigned int var_num = _rb_con_ptr->add_variable(_rb_variable_name, libMesh::FIRST);
-}
 
 void
 DwarfElephantInitializeRBSystem::initializeOfflineStage()
@@ -94,11 +92,10 @@ DwarfElephantInitializeRBSystem::initialize()
     // Add a new equation system for the RB construction.
     _rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionSteadyState> ("RBSystem");
 
-    initVariable();
     // Intialization of the added equation system
     _rb_con_ptr->init();
 
-     DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm()); //, _cache_boundaries, _fe_problem);
+     DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm(), _fe_problem);
     // Pass a pointer of the RBEvaluation object to the
     // RBConstruction object
     _rb_con_ptr->set_rb_evaluation(_rb_eval);
@@ -106,7 +103,6 @@ DwarfElephantInitializeRBSystem::initialize()
     _qa = _rb_con_ptr->get_rb_theta_expansion().get_n_A_terms();
     _qf = _rb_con_ptr->get_rb_theta_expansion().get_n_F_terms();
     _ql = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(0);
-
 
     if (_offline_stage)
     {

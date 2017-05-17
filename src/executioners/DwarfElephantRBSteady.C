@@ -1,25 +1,22 @@
  ///-------------------------------------------------------------------------
 // MOOSE includes (DwarfElephant package)
-#include "DwarfElephantExecutioner.h"
+#include "DwarfElephantRBSteady.h"
 
 template<>
-InputParameters validParams<DwarfElephantExecutioner>()
+InputParameters validParams<DwarfElephantRBSteady>()
 {
   InputParameters params = validParams<Steady>();
-
-  params += validParams<BlockRestrictable>();
 
   return params;
 }
 
-DwarfElephantExecutioner::DwarfElephantExecutioner(const InputParameters & params):
-  Steady(params),
-  BlockRestrictable(params)
+DwarfElephantRBSteady::DwarfElephantRBSteady(const InputParameters & params):
+  Steady(params)
 {
 }
 
 void
-DwarfElephantExecutioner::execute()
+DwarfElephantRBSteady::execute()
 {
   if (_app.isRecovering())
     return;
@@ -47,14 +44,14 @@ DwarfElephantExecutioner::execute()
     // Update warehouse active objects
     _problem.updateActiveObjects();
 
-//    _problem.solve();
+    _problem.solve();
     postSolve();
 
-    if (!lastSolveConverged())
-    {
-      _console << "Aborting as solve did not converge\n";
-      break;
-    }
+//    if (!lastSolveConverged())
+//    {
+//      _console << "Aborting as solve did not converge\n";
+//      break;
+//    }
 
     _problem.onTimestepEnd();
     _problem.execute(EXEC_TIMESTEP_END);

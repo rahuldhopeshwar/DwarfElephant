@@ -35,7 +35,8 @@
 #include "CacheBoundaries.h"
 
 // Executioners
-#include "DwarfElephantExecutioner.h"
+#include "DwarfElephantRBSteady.h"
+#include "DwarfElephantRBTransient.h"
 
 template<>
 InputParameters validParams<DwarfElephantApp>()
@@ -100,7 +101,8 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerFunction(CacheBoundaries);
 
   // Executioners
-  registerExecutioner(DwarfElephantExecutioner);
+  registerExecutioner(DwarfElephantRBSteady);
+  registerExecutioner(DwarfElephantRBTransient);
 
 }
 

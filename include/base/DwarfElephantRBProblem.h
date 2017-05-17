@@ -5,22 +5,35 @@
 ///---------------------------------INCLUDES--------------------------------
 
 // MOOSE includes
-#include "FEProblem.h"
-#include "BlockRestrictable.h"
+#include "FEProblemBase.h"
+#include "DwarfElephantSystem.h"
 
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
 class DwarfElephantRBProblem;
+class NonlinearSystem;
 
 template<>
 InputParameters validParams<DwarfElephantRBProblem>();
 
 class DwarfElephantRBProblem :
-  public FEProblem
+  public FEProblemBase
 {
   public:
     DwarfElephantRBProblem(const InputParameters & params);
+
+    virtual ~DwarfElephantRBProblem();
+
+    virtual void solve () override;
+
+    virtual void setInputParametersFEProblem(InputParameters & parameters) override;
+
+    NonlinearSystem & getNonlinearSystem() override { return *_nl_sys; }
+
+  protected:
+    NonlinearSystem * _nl_sys;
+
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBPROBLEM_H

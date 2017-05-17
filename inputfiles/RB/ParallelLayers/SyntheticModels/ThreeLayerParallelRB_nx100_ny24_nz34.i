@@ -113,8 +113,12 @@ active = 'RBtop RBbottom'
   [../]
 []
 
+[Problem]
+  type = DwarfElephantRBProblem
+[]
+
 [Executioner]
-  type = Steady
+  type = DwarfElephantRBSteady
   solve_type = 'PJFNK'
   #solve_type = 'Newton'
 
@@ -159,9 +163,6 @@ active = 'initializeRBSystem performRBSystem'
     mu_bar = 1
     online_mu = '1.05 2.5 1.05'
 
-    skip_matrix_assembly_in_rb_system = true
-    skip_vector_assembly_in_rb_system = true
-
     execute_on = 'timestep_end'
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
@@ -169,11 +170,14 @@ active = 'initializeRBSystem performRBSystem'
 []
 
 [Outputs]
-  print_perf_log = true
-  exodus = true
-  xda = false
-  xdr = false
+  print_perf_log = false
+  exodus = false
   execute_on = 'timestep_end'
+
+  [./console]
+    type = Console
+    outlier_variable_norms = false
+  [../]
 []
 
 

@@ -65,6 +65,11 @@ protected:
 
   /*Attributes*/
   bool _use_displaced;
+  bool _matrix_separation_according_to_subdomains;
+  bool _vector_separation_according_to_subdomains;
+
+  unsigned int _ID_Aq;
+  unsigned int _ID_Fq;
 
   EquationSystems & _es;
 

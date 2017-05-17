@@ -16,8 +16,10 @@
 #include "MooseMesh.h"
 
 // MOOSE includes (DwarfElephant package)
+#include "DwarfElephantSystem.h"
 #include "DwarfElephantRBClassesSteadyState.h"
-#include "DwarfElephantRBClassesTransient.h"
+//#include "DwarfElephantRBConstructionSteadyState.h"
+//#include "DwarfElephantRBClassesTransient.h"
 #include "CacheBoundaries.h"
 
 
@@ -26,14 +28,15 @@
 namespace libMesh
 {
   class EquationSystems;
-  class RBConstruction;
+//  class RBConstruction;
   template <typename T> class SparseMatrix;
   template <typename T> class PetscMatrix;
   template <typename T> class PetscVector;
 }
 
 class MooseMesh;
-class DwarfElephantRBConstruction;
+class DwarfElephantSystem;
+class DwarfElephantRBConstructionSteadyState;
 class DwarfElephantInitializeRBSystem;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
@@ -51,7 +54,6 @@ class DwarfElephantInitializeRBSystem :
 
     /* Methods */
     void initializeOfflineStage();
-    void initVariable();
 
     virtual void initialize() override;
     virtual void execute() override;
@@ -71,11 +73,12 @@ class DwarfElephantInitializeRBSystem :
     unsigned int _qf;
     unsigned int _ql;
 
+    std::string _system_name;
     std::string _parameters_filename;
-    std::string _rb_variable_name;
 
     EquationSystems & _es;
     MooseMesh * _mesh_ptr;
+    TransientNonlinearImplicitSystem * _sys;
     DwarfElephantRBConstructionSteadyState * _rb_con_ptr;
 
     SparseMatrix <Number> * _inner_product_matrix;
@@ -83,15 +86,16 @@ class DwarfElephantInitializeRBSystem :
     std::vector<NumericVector <Number> *> _residuals;
     std::vector<NumericVector <Number> *> _outputs;
 
-    std::vector <numeric_index_type> _cached_jacobian_subdomain_contribution_rows;
-    std::vector <numeric_index_type> _cached_jacobian_subdomain_contribution_cols;
-    std::vector <Real> _cached_jacobian_subdomain_contribution_vals;
-
     const std::vector<ExecFlagType> & _exec_flags;
+
+    Function * _function;
+    CacheBoundaries * _cache_boundaries;
+
 
     friend class RBKernel;
     friend class RBNodalBC;
     friend class DwarfElephantOfflineOnlineStage;
+    friend class DwarfElephantRBConstructionSteadyState;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTINITIALIZERBSYSTEM_H

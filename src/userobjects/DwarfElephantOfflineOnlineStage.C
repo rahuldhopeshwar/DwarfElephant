@@ -19,11 +19,10 @@ InputParameters validParams<DwarfElephantOfflineOnlineStage>()
     params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
     params.addParam<bool>("offline_stage", false, "Determines whether the Offline stage will be calculated or not.");
     params.addParam<bool>("online_stage", false, "Determines whether the Online stage will be calculated or not.");
-    params.addParam<std::string>("system","nl0","The name of the system that should be read in.");
+    params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
     params.addRequiredParam<std::string>("exodus_file_name","The name of the Exodus output file.");
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
     params.addParam<Real>("mu_bar", 1., "Value for mu-bar");
-//    params.addRequiredParam<unsigned int>("online_N","The number of basis functions that is used in the Reduced Basis solve during the Online Stage.");
     params.addRequiredParam<std::vector<Real>>("online_mu", "Current values of the different layers for which the RB Method is solved.");
     params.addRequiredParam<FunctionName>("cache_boundaries", "");
 
@@ -99,8 +98,7 @@ DwarfElephantOfflineOnlineStage::transferAffineVectors()
 void
 DwarfElephantOfflineOnlineStage::offlineStage()
 {
-    Real _training_error = _initialize_rb_system._rb_con_ptr->train_reduced_basis();
-    _console << "Greedy training error: " << _training_error << std::endl;
+    _initialize_rb_system._rb_con_ptr->train_reduced_basis();
     #if defined(LIBMESH_HAVE_CAPNPROTO)
       RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
       _rb_eval_writer.write_to_file("rb_eval.bin");
@@ -138,8 +136,7 @@ DwarfElephantOfflineOnlineStage::execute()
 {
     // Build the RBEvaluation object
     // Required for both the Offline and Online stage.
-    DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm()); //, _cache_boundaries, _fe_problem);
-
+    DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm() , _fe_problem);
     // Pass a pointer of the RBEvaluation object to the
     // RBConstruction object
     _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
@@ -176,7 +173,8 @@ DwarfElephantOfflineOnlineStage::execute()
       _rb_eval.print_parameters();
 
       _online_N = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
-      Real _error_bound = _rb_eval.rb_solve(_online_N);
+      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().evaluate_RB_error_bound = false;
+      _rb_eval.rb_solve(_online_N);
 
       for (unsigned int _q = 0; _q != _initialize_rb_system._ql; _q++)
         _console << "Output " << std::to_string(_q) << ": value = " << _rb_eval.RB_outputs[_q]
@@ -185,7 +183,7 @@ DwarfElephantOfflineOnlineStage::execute()
       _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
       _initialize_rb_system._rb_con_ptr->load_rb_solution();
       ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems(_exodus_file_name+".e", _es);
-      _console << "RB abs error bound: " << _error_bound;
+
 //      _initialize_rb_system._rb_con_ptr->load_basis_function(0);
 //      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
     }

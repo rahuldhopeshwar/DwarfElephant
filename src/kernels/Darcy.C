@@ -34,7 +34,7 @@ Darcy::Darcy(const InputParameters & parameters) :
 Real
 Darcy::computeQpResidual()
 {
-  return (_permeability[_qp]/_dynamic_viscosity[_qp]) * Diffusion::computeQpResidual() - ((_fluid_density[_qp] * _gravity[_qp]) * _grad_test[_i][_qp]);
+  return (_permeability[_qp]/_dynamic_viscosity[_qp]) * (Diffusion::computeQpResidual() - ((_fluid_density[_qp] * _gravity[_qp]) * _grad_test[_i][_qp]));
 }
 
 Real
