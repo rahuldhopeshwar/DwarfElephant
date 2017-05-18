@@ -82,13 +82,14 @@ DwarfElephantOfflineOnlineStage::transferAffineVectors()
     // Transfer the data for the output vectors.
     if (_compliant)
     {
-        for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
+        for(unsigned int _q=0; _q<_initialize_rb_system._ql; _q++)
         {
-          _initialize_rb_system._outputs[0]->close();
+          _initialize_rb_system._outputs[_q]->close();
 //          _cache_boundaries->setCachedSubdomainResidual(*_initialize_rb_system._outputs[_q], _q);
-         _initialize_rb_system._outputs[0]->add(*_initialize_rb_system._residuals[_q]);
-//         *_initialize_rb_system._outputs[_q] /= 0.025925926;
-//         _console << *_initialize_rb_system._outputs[0];
+         _initialize_rb_system._outputs[_q]->add(*_initialize_rb_system._residuals[_q]);
+//         *_initialize_rb_system._outputs[_q] /= _mesh_ptr->nElem();
+//         _initialize_rb_system._outputs[_q]->close();
+//         *_initialize_rb_system._outputs[_q] /= 6;
         }
     }
     else if (!_compliant)
