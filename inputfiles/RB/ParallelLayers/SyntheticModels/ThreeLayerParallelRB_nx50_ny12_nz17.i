@@ -1,5 +1,5 @@
 [Mesh]
- # file = meshs/simple_3layer_model.e
+  #file = meshs/simple_3layer_model.e
   type = GeneratedMesh
   dim = 3
   nx = 50
@@ -47,6 +47,12 @@ active = 'RBConduction_block0 RBConduction_block1 RBConduction_block2'
     variable = temperature
     block = 0
     initial_rb_userobject = initializeRBSystem
+    max_x = 1 #0.5
+    min_x = 0 #0.3
+    max_y = 0.2333333333333333 #0.04
+    min_y = 0 #0.02
+    max_z = 0.3333333333333333 #0.08
+    min_z = 0 #0.06
   [../]
 
   [./RBConduction_block1]
@@ -54,6 +60,12 @@ active = 'RBConduction_block0 RBConduction_block1 RBConduction_block2'
     variable = temperature
     block = 1
     initial_rb_userobject = initializeRBSystem
+    max_x = 1 #0.5
+    min_x = 0 #0.3
+    max_y = 0.2333333333333333 #0.04
+    min_y = 0 #0.02
+    max_z = 0.3333333333333333 #0.08
+    min_z = 0 #0.06
   [../]
 
   [./RBConduction_block2]
@@ -61,6 +73,12 @@ active = 'RBConduction_block0 RBConduction_block1 RBConduction_block2'
     variable = temperature
     block = 2
     initial_rb_userobject = initializeRBSystem
+    max_x = 1 #0.5
+    min_x = 0 #0.3
+    max_y = 0.2333333333333333 #0.04
+    min_y = 0 #0.02
+    max_z = 0.3333333333333333 #0.08
+    min_z = 0 #0.06
   [../]
 
   [./Conduction]
@@ -101,12 +119,19 @@ active = ' '
 [ICs]
 active = ' '
 #active = 'ICs_pressure'
+#active = 'ICs_temperature'
   [./ICs_pressure]
     variable = pressure
     #type = FunctionIC
     type = ConstantIC
     #function = initial_pressure_gradient
     value = 101325
+  [../]
+
+  [./ICs_temperature]
+    variable = temperature
+    type = ConstantIC
+    value = 10.00
   [../]
 []
 
@@ -116,7 +141,8 @@ active = 'RBtop RBbottom'
   [./RBtop]
     type = RBDirichletBC
     variable = temperature
-    boundary = 3 # top: MOOSE
+    #boundary = 3 # top: MOOSE
+    boundary = top # top: MOOSE
     #boundary = 1 # top: MeshIt
     value = 10.00
     initial_rb_userobject = initializeRBSystem
@@ -126,7 +152,8 @@ active = 'RBtop RBbottom'
   [./RBbottom]
     type = RBDirichletBC
     variable = temperature
-    boundary = 1 # bottom: MOOSE
+    #boundary = 1 # bottom: MOOSE
+    boundary = bottom # bottom: MOOSE
     #boundary = 2 # bottom: MeshIt
     value = 31.00
     initial_rb_userobject = initializeRBSystem
@@ -171,7 +198,6 @@ active = 'RBtop RBbottom'
 
 [Problem]
   type = DwarfElephantRBProblem
-  solve = true
 []
 
 [Executioner]
@@ -184,11 +210,14 @@ active = 'RBtop RBbottom'
   #dt = 3
   #dt = 1
 
-  solve_type = 'PJFNK'
-  #solve_type = 'Newton'
+  #solve_type = 'PJFNK'
+  solve_type = 'Newton'
 
- petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_rest'
- petsc_options_value = 'hypre  boomeramg   101'
+  l_tol = 1.e-8
+  nl_rel_tol = 1.e-8
+
+ #petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_rest'
+ #petsc_options_value = 'hypre  boomeramg   101'
 
 []
 
@@ -271,7 +300,6 @@ mu_2 = '0.01000 10.15000'
 
 # Define the number of training sets for the Greedy-algorithm
 n_training_samples = 100
-#training_tolerance = 1.e-10
 
 # Optionally:
 # Determine whether the training points are generated randomly or deterministically
@@ -280,7 +308,8 @@ deterministic_training = false
 # Determine whether relative or absolute error bounds are used in the Greedy-algorithm
 use_relative_bound_in_greedy = false
 
-rel_training_tolerance = 1.e-5
+rel_training_tolerance = 6.e-3
+
 #quiet_mode =  false
 
 #normalize_rb_bound_in_greedy = true

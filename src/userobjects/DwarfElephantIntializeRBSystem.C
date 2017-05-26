@@ -94,6 +94,7 @@ DwarfElephantInitializeRBSystem::initialize()
 
     // Intialization of the added equation system
     _rb_con_ptr->init();
+    _es.update();
 
      DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm(), _fe_problem);
     // Pass a pointer of the RBEvaluation object to the

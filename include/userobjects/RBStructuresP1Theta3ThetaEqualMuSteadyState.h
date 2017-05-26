@@ -20,6 +20,7 @@
 #include "libmesh/rb_theta.h"
 #include "libmesh/rb_assembly_expansion.h"
 
+#include "RBStructuresA00ThetaIsConstantP1.h"
 #include "RBStructuresA0ThetaEqualMuP1.h"
 #include "RBStructuresA1ThetaEqualMuP1.h"
 #include "RBStructuresA2ThetaEqualMuP1.h"

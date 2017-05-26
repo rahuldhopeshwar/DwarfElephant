@@ -34,12 +34,28 @@ CacheBoundaries::cacheSubdomainResidual(numeric_index_type i, Real value, unsign
 }
 
 void
+CacheBoundaries::cacheResidual(numeric_index_type i, Real value)
+{
+  _cached_residual_contribution_rows.push_back(i);
+  _cached_residual_contribution_vals.push_back(value);
+}
+
+void
 CacheBoundaries::setCachedSubdomainResidual(NumericVector<Number> & _residual, unsigned int subdomain)
 {
   _residual.close();
 
   for (unsigned int i = 0; i < _cached_residual_subdomain_contribution_vals[subdomain].size(); ++i)
     _residual.set(_cached_residual_subdomain_contribution_rows[subdomain][i], _cached_residual_subdomain_contribution_vals[subdomain][i]);
+}
+
+void
+CacheBoundaries::setCachedResidual(NumericVector<Number> & _residual)
+{
+  _residual.close();
+
+  for (unsigned int i = 0; i < _cached_residual_contribution_vals.size(); ++i)
+    _residual.set(_cached_residual_contribution_rows[i], _cached_residual_contribution_vals[i]); // / 0.07778);
 }
 
 void

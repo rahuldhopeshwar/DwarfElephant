@@ -34,6 +34,12 @@ InputParameters validParams<RBKernel>()
   params.addParam<unsigned int>("ID_Fq", 0, "ID of the current stiffness matrix");
   params.addParam<bool>("matrix_separation_according_to_subdomains", true, "Tells whether the stiffness matrix is separated according to the subdomain_ids");
   params.addParam<bool>("vector_separation_according_to_subdomains", true, "Tells whether the load vector is separated according to the subdomain_ids");
+  params.addRequiredParam<Real>("max_x","Maximum extension of the volume of interest in x-direction.");
+  params.addRequiredParam<Real>("min_x","Minimum extension of the volume of interest in x-direction.");
+  params.addRequiredParam<Real>("max_y","Maximum extension of the volume of interest in y-direction.");
+  params.addRequiredParam<Real>("min_y","Minimum extension of the volume of interest in y-direction.");
+  params.addRequiredParam<Real>("max_z","Maximum extension of the volume of interest in z-direction.");
+  params.addRequiredParam<Real>("min_z","Minimum extension of the volume of interest in z-direction.");
 
   return params;
 }
@@ -46,6 +52,12 @@ RBKernel::RBKernel(const InputParameters & parameters) :
     _vector_separation_according_to_subdomains(getParam<bool>("vector_separation_according_to_subdomains")),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
     _ID_Fq(getParam<unsigned int>("ID_Fq")),
+    _max_x(getParam<Real>("max_x")),
+    _min_x(getParam<Real>("min_x")),
+    _max_y(getParam<Real>("max_y")),
+    _min_y(getParam<Real>("min_y")),
+    _max_z(getParam<Real>("max_z")),
+    _min_z(getParam<Real>("min_z")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _block_ids(this->blockIDs()),
     _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystem>("initial_rb_userobject"))
@@ -75,6 +87,7 @@ RBKernel::initialSetup()
   if(_vector_separation_according_to_subdomains)
     _ID_Fq = *_block_ids.begin();
 
+  _output_volume = (_max_x - _min_x) * (_max_y - _min_y) * (_max_z - _min_z);
 }
 
 void
@@ -84,27 +97,31 @@ RBKernel::computeResidual()
   _local_re.resize(re.size());
   _local_re.zero();
 
+  _local_out.resize(re.size());
+  _local_out.zero();
+
   precalculateResidual();
   for (_i = 0; _i < _test.size(); _i++)
+  {
     for (_qp = 0; _qp < _qrule->n_points(); _qp++)
+    {
       _local_re(_i) += _JxW[_qp] * _coord[_qp] * computeQpResidual();
+      _local_out(_i) += _JxW[_qp] * _coord[_qp] * computeQpResidual() / _output_volume;
+    }
+  }
 
   re += _local_re;
 
   if(_initialize_rb_system._offline_stage)
   {
+//     Real _output_volume = (_max_x - _min_x) * (_max_y - _min_y) * (_max_z - _min_z);
+//    _fe_problem.mesh();
     // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
     {
         _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
+        _initialize_rb_system._outputs[0] -> add_vector(_local_out, _var.dofIndices());
     }
-      if (_initialize_rb_system._compliant)
-      {
-//        _initialize_rb_system._outputs[*_block_ids.begin()] -> add_vector(_local_re, _var.dofIndices());
-      }
-//
-//      else if (!_initialize_rb_system._compliant)
-//        mooseError ("Currently, the implementation handles only one output term and only the compliant case.");
   }
 
   if (_has_save_in)

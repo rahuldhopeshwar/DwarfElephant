@@ -42,8 +42,10 @@ public:
   void cacheStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value);
   void cacheSubdomainStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value, unsigned int subdomain);
   void cacheSubdomainResidual(numeric_index_type i, Real value, unsigned int subdomain);
+  void cacheResidual(numeric_index_type i, Real value);
 
   void setCachedSubdomainResidual(NumericVector<Number> & _residual, unsigned int subdomain);
+  void setCachedResidual(NumericVector<Number> & _residual);
   void setCachedStiffnessMatrixContributions(SparseMatrix<Number> & _jacobian);
   void setCachedSubdomainStiffnessMatrixContributions(SparseMatrix<Number> & _jacobian, unsigned int subdomain);
 
@@ -64,6 +66,9 @@ protected:
 
   std::vector<std::vector <numeric_index_type>> _cached_residual_subdomain_contribution_rows;
   std::vector<std::vector <Real>> _cached_residual_subdomain_contribution_vals;
+
+  std::vector <numeric_index_type> _cached_residual_contribution_rows;
+  std::vector <Real> _cached_residual_contribution_vals;
 };
 
 #endif //CACHEBOUNDARIES_H
