@@ -85,6 +85,135 @@ public:
 
     Parent::init_data();
   }
+//
+//  void update_residual_terms(bool compute_inner_products)
+//{
+//  LOG_SCOPE("update_residual_terms()", "RBConstruction");
+//
+//  unsigned int RB_size = get_rb_evaluation().get_n_basis_functions();
+//
+//  for(unsigned int q_a=0; q_a<get_rb_theta_expansion().get_n_A_terms(); q_a++)
+//    {
+//      for(unsigned int i=(RB_size-delta_N); i<RB_size; i++)
+//        {
+//          // Initialize the vector in which we'll store the representor
+//          if(!get_rb_evaluation().Aq_representor[q_a][i])
+//            {
+//              get_rb_evaluation().Aq_representor[q_a][i] = (NumericVector<Number>::build(this->comm()).release());
+//              get_rb_evaluation().Aq_representor[q_a][i]->init(this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+//            }
+//
+//          libmesh_assert(get_rb_evaluation().Aq_representor[q_a][i]->size()       == this->n_dofs()       &&
+//                         get_rb_evaluation().Aq_representor[q_a][i]->local_size() == this->n_local_dofs() );
+//
+//          rhs->zero();
+//          get_Aq(q_a)->vector_mult(*rhs, get_rb_evaluation().get_basis_function(i));
+//          rhs->scale(-1.);
+//
+////          if (!is_quiet())
+////            {
+////              libMesh::out << "Starting solve [q_a][i]=[" << q_a <<"]["<< i << "] in RBConstruction::update_residual_terms() at "
+////                           << Utility::get_timestamp() << std::endl;
+////            }
+//
+//          solve_for_matrix_and_rhs(*inner_product_solver, *inner_product_matrix, *rhs);
+//
+//          if (assert_convergence)
+//            check_convergence(*inner_product_solver);
+////
+//          if (!is_quiet())
+//            {
+////              libMesh::out << "Finished solve [q_a][i]=[" << q_a <<"]["<< i << "] in RBConstruction::update_residual_terms() at "
+////                           << Utility::get_timestamp() << std::endl;
+//              libMesh::out << this->n_linear_iterations() << " iterations, final residual "
+//                           << this->final_linear_residual() << std::endl;
+//            }
+//
+//          // Store the representor
+//          *get_rb_evaluation().Aq_representor[q_a][i] = *solution;
+//        }
+//    }
+//
+//  // Now compute and store the inner products (if requested)
+//  if (compute_inner_products)
+//    {
+//
+//      for(unsigned int q_f=0; q_f<get_rb_theta_expansion().get_n_F_terms(); q_f++)
+//        {
+//          inner_product_matrix->vector_mult(*inner_product_storage_vector,*Fq_representor[q_f]);
+//
+//          for(unsigned int q_a=0; q_a<get_rb_theta_expansion().get_n_A_terms(); q_a++)
+//            {
+//              for(unsigned int i=(RB_size-delta_N); i<RB_size; i++)
+//                {
+//                  get_rb_evaluation().Fq_Aq_representor_innerprods[q_f][q_a][i] =
+//                    inner_product_storage_vector->dot(*get_rb_evaluation().Aq_representor[q_a][i]);
+//                }
+//            }
+//        }
+//
+//      unsigned int q=0;
+//      for(unsigned int q_a1=0; q_a1<get_rb_theta_expansion().get_n_A_terms(); q_a1++)
+//        {
+//          for(unsigned int q_a2=q_a1; q_a2<get_rb_theta_expansion().get_n_A_terms(); q_a2++)
+//            {
+//              for(unsigned int i=(RB_size-delta_N); i<RB_size; i++)
+//                {
+//                  for(unsigned int j=0; j<RB_size; j++)
+//                    {
+//                      inner_product_matrix->vector_mult(*inner_product_storage_vector, *get_rb_evaluation().Aq_representor[q_a2][j]);
+//                      get_rb_evaluation().Aq_Aq_representor_innerprods[q][i][j] =
+//                        inner_product_storage_vector->dot(*get_rb_evaluation().Aq_representor[q_a1][i]);
+//
+//                      if(i != j)
+//                        {
+//                          inner_product_matrix->vector_mult(*inner_product_storage_vector, *get_rb_evaluation().Aq_representor[q_a2][i]);
+//                          get_rb_evaluation().Aq_Aq_representor_innerprods[q][j][i] =
+//                            inner_product_storage_vector->dot(*get_rb_evaluation().Aq_representor[q_a1][j]);
+//                        }
+//                    }
+//                }
+//              q++;
+//            }
+//        }
+//    } // end if (compute_inner_products)
+//}
+//
+//  void enrich_RB_space()
+//{
+//  LOG_SCOPE("enrich_RB_space()", "RBConstruction");
+//
+//  NumericVector<Number> * new_bf = NumericVector<Number>::build(this->comm()).release();
+//  new_bf->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+//  *new_bf = *solution;
+//
+//  for(unsigned int index=0; index<get_rb_evaluation().get_n_basis_functions(); index++)
+//    {
+//      inner_product_matrix->vector_mult(*inner_product_storage_vector, *new_bf);
+//
+//      Number scalar =
+//        inner_product_storage_vector->dot(get_rb_evaluation().get_basis_function(index));
+//      new_bf->add(-scalar, get_rb_evaluation().get_basis_function(index));
+//    }
+//
+//  // Normalize new_bf
+//  inner_product_matrix->vector_mult(*inner_product_storage_vector, *new_bf);
+//  Number new_bf_norm = std::sqrt( inner_product_storage_vector->dot(*new_bf) );
+//
+//  libMesh::out << "Norm bf: " << new_bf_norm << std::endl;
+//
+//  if(new_bf_norm == 0.)
+//    {
+//      new_bf->zero(); // avoid potential nan's
+//    }
+//  else
+//    {
+//      new_bf->scale(1./new_bf_norm);
+//    }
+//
+//  // load the new basis function into the basis_functions vector.
+//  get_rb_evaluation().basis_functions.push_back( new_bf );
+//}
 
 //  Real train_reduced_basis(const bool resize_rb_eval_data=true)
 //{
@@ -325,7 +454,7 @@ public:
 //}
 
 
-  Real truth_norm;
+//  Real truth_norm;
   unsigned int u_var;
 
 };
@@ -365,8 +494,6 @@ public:
     }
 
     return min_mu;
-//    return 6.;
-//    return 1.;
   }
 
 //  Real rb_solve(unsigned int N)
@@ -495,6 +622,7 @@ public:
 //                                                     _rb_theta_expansion.eval_F_theta(q_f1, mu)
 //                                                     * libmesh_conj(_rb_theta_expansion.eval_F_theta(q_f2, mu)) * Fq_representor_innerprods[q] );
 //
+//  libMesh::out << residual_norm_sq_FF << std::endl;
 ////          libMesh::out << "F-F: " << std::to_string(q) << ": " <<residual_norm_sq_FF << std::endl;
 //          q++;
 //        }
@@ -550,7 +678,7 @@ public:
 //                }
 //            }
 //
-////          libMesh::out << "A-A: " << std::to_string(q) << ": " <<residual_norm_sq_AA << std::endl;
+//          libMesh::out << "A-A: " <<residual_norm_sq_AA << std::endl;
 //          q++;
 //        }
 //    }
@@ -573,7 +701,6 @@ public:
 //}
 
 //  RBSCMEvaluation * _rb_scm_eval;
-  bool use_relative_bound_in_greedy;
   FEProblemBase & fe_problem;
   RBP1Theta3ThetaEqualMuExpansionSteadyState _rb_theta_expansion;
 };

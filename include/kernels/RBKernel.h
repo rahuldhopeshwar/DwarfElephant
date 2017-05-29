@@ -83,7 +83,7 @@ protected:
 
   EquationSystems & _es;
 
-  const std::set<SubdomainID> & _block_ids;
+//  const std::set<SubdomainID> & _block_ids;
 
   const DwarfElephantInitializeRBSystem & _initialize_rb_system;
 };

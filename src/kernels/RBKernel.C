@@ -59,7 +59,7 @@ RBKernel::RBKernel(const InputParameters & parameters) :
     _max_z(getParam<Real>("max_z")),
     _min_z(getParam<Real>("min_z")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
-    _block_ids(this->blockIDs()),
+//    _block_ids(this->blockIDs()),
     _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystem>("initial_rb_userobject"))
 
 {
@@ -70,10 +70,10 @@ void
 RBKernel::initialSetup()
 {
   // Error messages
-  if (_block_ids.size()>1)
-  {
-      mooseError("For the RB method the stiffness matrix has to be saved separatly for each subdomain. Therefore each RBKernel and each inheriting Kernel needs to be defined individually for each block. You defined the Kernel for more than one block, please change your specifications in the Input file.");
-  }
+//  if (_block_ids.size()>1)
+//  {
+//      mooseError("For the RB method the stiffness matrix has to be saved separatly for each subdomain. Therefore each RBKernel and each inheriting Kernel needs to be defined individually for each block. You defined the Kernel for more than one block, please change your specifications in the Input file.");
+//  }
 
   if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
     mooseError("The initialization of the RB system has to be executed on 'initial'. "
@@ -82,10 +82,12 @@ RBKernel::initialSetup()
 
   // Defining the IDs of the stiffness matrix and load vectors in case of subdomain separation
   if(_matrix_separation_according_to_subdomains)
-    _ID_Aq = *_block_ids.begin();
+    _ID_Aq = _current_elem->subdomain_id();
 
   if(_vector_separation_according_to_subdomains)
-    _ID_Fq = *_block_ids.begin();
+    _ID_Fq = _current_elem->subdomain_id();
+
+  _console << _current_elem->id() << " ";
 
   _output_volume = (_max_x - _min_x) * (_max_y - _min_y) * (_max_z - _min_z);
 }

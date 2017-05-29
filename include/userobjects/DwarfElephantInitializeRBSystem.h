@@ -94,6 +94,7 @@ class DwarfElephantInitializeRBSystem :
 
     friend class RBKernel;
     friend class RBNodalBC;
+    friend class RBIntegratedBC;
     friend class DwarfElephantOfflineOnlineStage;
     friend class DwarfElephantRBConstructionSteadyState;
 };

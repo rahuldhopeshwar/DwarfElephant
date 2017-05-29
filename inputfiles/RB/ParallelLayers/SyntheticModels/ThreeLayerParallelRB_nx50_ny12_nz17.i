@@ -141,8 +141,8 @@ active = 'RBtop RBbottom'
   [./RBtop]
     type = RBDirichletBC
     variable = temperature
-    #boundary = 3 # top: MOOSE
-    boundary = top # top: MOOSE
+    boundary = 3 # top: MOOSE
+    #boundary = top # top: MOOSE
     #boundary = 1 # top: MeshIt
     value = 10.00
     initial_rb_userobject = initializeRBSystem
@@ -152,8 +152,8 @@ active = 'RBtop RBbottom'
   [./RBbottom]
     type = RBDirichletBC
     variable = temperature
-    #boundary = 1 # bottom: MOOSE
-    boundary = bottom # bottom: MOOSE
+    boundary = 1 # bottom: MOOSE
+    #boundary = bottom # bottom: MOOSE
     #boundary = 2 # bottom: MeshIt
     value = 31.00
     initial_rb_userobject = initializeRBSystem
@@ -299,7 +299,7 @@ mu_1 = '1.20000 12.80000'
 mu_2 = '0.01000 10.15000'
 
 # Define the number of training sets for the Greedy-algorithm
-n_training_samples = 100
+n_training_samples = 1000
 
 # Optionally:
 # Determine whether the training points are generated randomly or deterministically
@@ -308,7 +308,7 @@ deterministic_training = false
 # Determine whether relative or absolute error bounds are used in the Greedy-algorithm
 use_relative_bound_in_greedy = false
 
-rel_training_tolerance = 6.e-3
+rel_training_tolerance = 1.e-6
 
 #quiet_mode =  false
 
