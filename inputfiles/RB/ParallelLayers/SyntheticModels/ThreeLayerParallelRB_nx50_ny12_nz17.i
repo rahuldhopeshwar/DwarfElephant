@@ -295,11 +295,11 @@ parameter_names = 'mu_0 mu_1 mu_2'
 
 # Define the minimum and maximum value of the Theta object
 mu_0 = '0.01000 10.15000'
-mu_1 = '1.20000 12.80000'
+mu_1 = '0.01000 12.80000'
 mu_2 = '0.01000 10.15000'
 
 # Define the number of training sets for the Greedy-algorithm
-n_training_samples = 1000
+n_training_samples = 100
 
 # Optionally:
 # Determine whether the training points are generated randomly or deterministically
@@ -308,7 +308,7 @@ deterministic_training = false
 # Determine whether relative or absolute error bounds are used in the Greedy-algorithm
 use_relative_bound_in_greedy = false
 
-rel_training_tolerance = 1.e-6
+rel_training_tolerance = 1.e-5
 
 #quiet_mode =  false
 

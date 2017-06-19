@@ -19,8 +19,11 @@ InputParameters validParams<RBNodalBC>()
 
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
   params.addRequiredParam<FunctionName>("cache_boundaries", "");
+  params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
+  params.addParam<unsigned int>("ID_Fq", 0 , "ID if the load vector.");
+  params.addParam<unsigned int>("ID_Aq", 0 , "ID if the load vector.");
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
-  params.addParam<bool>("mesh_modified", false, "Determine whether you operate on a modified mesh or not.");
+  params.addRequiredParam<bool>("mesh_modified", "Determine whether you operate on a modified mesh or not.");
 
   return params;
 }
@@ -28,8 +31,10 @@ InputParameters validParams<RBNodalBC>()
 ///-------------------------------CONSTRUCTOR-------------------------------
 RBNodalBC::RBNodalBC(const InputParameters & parameters) :
     NodalBC(parameters),
+    _simulation_type(getParam<std::string>("simulation_type")),
+    _ID_Fq(getParam<unsigned int>("ID_Fq")),
+    _ID_Aq(getParam<unsigned int>("ID_Aq")),
     _mesh_modified(getParam<bool>("mesh_modified")),
-    _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystem>("initial_rb_userobject")),
     _function(&getFunction("cache_boundaries"))
 {
 
@@ -47,37 +52,54 @@ RBNodalBC::computeResidual(NumericVector<Number> & residual)
     Real res = computeQpResidual();
     residual.set(dof_idx, res);
 
-    if(_initialize_rb_system._offline_stage)
+    if (_simulation_type == "steady")  // Steady State
     {
-      if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
+      const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
+
+      if(_initialize_rb_system._offline_stage)
       {
-
-       _cache_boundaries->resizeSubdomainVectorCaches(_initialize_rb_system._qf);
-       _cache_boundaries->cacheResidual(dof_idx, -res);
-
-      if(_mesh_modified)
-      {
-        // MOOSE modified mesh
-        const std::vector<BoundaryName> & _boundary_names = boundaryNames();
-
-        for(unsigned int _i = 0; _i != _boundary_names.size(); _i++)
+        if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         {
-          if (_boundary_names[_i] == "bottom")
-            _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, 0);
 
-          else if (_boundary_names[_i] == "top")
-            _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, _initialize_rb_system._qf-1);
-        }
-       }
+         _cache_boundaries->resizeSubdomainVectorCaches(_initialize_rb_system._qf);
+         _cache_boundaries->cacheResidual(dof_idx, -res);
 
-       else
-       {
+//      if(_mesh_modified)
+//      {
+//         mooseError("Currently, a subdivison of the mesh over the MeshModifier block is not supported. "
+//                    "The reason for that is the unmodified mesh is still saves in the node_boundary_list. "
+//                    "Consequently, the subdivison for the RB method does not work properly. "
+//                    "At the moment, we advise to use an external mesh. "
+//                    "Alternatively, a method that calls the modified mesh only can be searched in MOOSE.");
+//      }
+//
+//       else
+//       {
          // external Mesh
-         const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
-         _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, *_node_boundary_list.begin());
-       }
+//         const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
+//         for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
+//              it != _node_boundary_list.end(); ++it)
+//           _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, *it - 0);
+//           _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, *it - _ID_first_block);
+           _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, _ID_Fq);
+//       }
+        }
       }
+    }
 
+    else if (_simulation_type == "transient")
+    {
+      const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
+
+      if(_initialize_rb_system._offline_stage)
+      {
+        if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
+        {
+          _cache_boundaries->resizeSubdomainVectorCaches(_initialize_rb_system._qf);
+          _cache_boundaries->cacheResidual(dof_idx, -res);
+          _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, _ID_Fq);
+        }
+      }
     }
 
     if (_has_save_in)
@@ -105,37 +127,50 @@ RBNodalBC::computeJacobian()
     // Cache the user's computeQpJacobian() value for later use.
     _fe_problem.assembly(0).cacheJacobianContribution(cached_row, cached_row, cached_val);
 
-    if(_initialize_rb_system._offline_stage)
+    if (_simulation_type == "steady")
     {
-      if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
+      const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
+
+      if(_initialize_rb_system._offline_stage)
       {
-       _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
-
-       _cache_boundaries->resizeSubdomainMatrixCaches(_initialize_rb_system._qa);
-
-        if (_mesh_modified)
+        if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
         {
-          // MOOSE modified mesh
-          const std::vector<BoundaryName> & _boundary_names = boundaryNames();
+//          _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
+          _cache_boundaries->resizeSubdomainMatrixCaches(_initialize_rb_system._qa);
 
-          for(unsigned int _i = 0; _i != _boundary_names.size(); _i++)
-          {
-            if (_boundary_names[_i] == "bottom")
-            {
-              _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, 0);
-            }
-            else if (_boundary_names[_i] == "top")
-            {
-              _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _initialize_rb_system._qa-1);
-            }
-          }
-        }
-
-        else
-        {
+//        if (_mesh_modified)
+//        {
+//          mooseError("Currently, a subdivison of the mesh over the MeshModifier block is not supported. "
+//                     "The reason for that is the unmodified mesh is still saves in the node_boundary_list. "
+//                     "Consequently, the subdivison for the RB method does not work properly. "
+//                     "At the moment, we advise to use an external mesh. "
+//                     "Alternatively, a method that calls the modified mesh only can be searched in MOOSE.");
+//        }
+//
+//        else
+//        {
           // external mesh
-          const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
-          _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val,*_node_boundary_list.begin());
+//          const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
+//          for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
+//               it != _node_boundary_list.end(); ++it)
+//            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val,*it - _ID_first_block);
+            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
+//        }
+        }
+      }
+    }
+
+    else if (_simulation_type == "transient")
+    {
+      const DwarfElephantInitializeRBSystemTransient& _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
+
+      if(_initialize_rb_system._offline_stage)
+      {
+        if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
+        {
+//          _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
+          _cache_boundaries->resizeSubdomainMatrixCaches(_initialize_rb_system._qa);
+          _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
         }
       }
     }

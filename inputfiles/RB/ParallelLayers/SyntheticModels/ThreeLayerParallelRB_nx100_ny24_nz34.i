@@ -24,7 +24,14 @@ active = 'subdomains'
 []
 
 [Variables]
+active = 'temperature'
+#active = 'temperature pressure'
   [./temperature]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+
+  [./pressure]
     order = FIRST
     family = LAGRANGE
   [../]
@@ -32,12 +39,18 @@ active = 'subdomains'
 
 [Kernels]
 active = 'RBConduction_block0 RBConduction_block1 RBConduction_block2'
-#active = 'Conduction'
+#active = 'Conduction Darcy' # Euler'
   [./RBConduction_block0]
     type = RBDiffusion
     variable = temperature
     block = 0
     initial_rb_userobject = initializeRBSystem
+    max_x = 1 #0.5
+    min_x = 0 #0.3
+    max_y = 0.2333333333333333 #0.04
+    min_y = 0 #0.02
+    max_z = 0.3333333333333333 #0.08
+    min_z = 0 #0.06
   [../]
 
   [./RBConduction_block1]
@@ -45,6 +58,12 @@ active = 'RBConduction_block0 RBConduction_block1 RBConduction_block2'
     variable = temperature
     block = 1
     initial_rb_userobject = initializeRBSystem
+    max_x = 1 #0.5
+    min_x = 0 #0.3
+    max_y = 0.2333333333333333 #0.04
+    min_y = 0 #0.02
+    max_z = 0.3333333333333333 #0.08
+    min_z = 0 #0.06
   [../]
 
   [./RBConduction_block2]
@@ -52,11 +71,27 @@ active = 'RBConduction_block0 RBConduction_block1 RBConduction_block2'
     variable = temperature
     block = 2
     initial_rb_userobject = initializeRBSystem
+    max_x = 1 #0.5
+    min_x = 0 #0.3
+    max_y = 0.2333333333333333 #0.04
+    min_y = 0 #0.02
+    max_z = 0.3333333333333333 #0.08
+    min_z = 0 #0.06
   [../]
 
   [./Conduction]
     type = Conduction
     variable = temperature
+  [../]
+
+  [./Darcy]
+    type = Darcy
+    variable = pressure
+  [../]
+
+  [./Euler]
+    type = TimeDerivative
+    variable = pressure
   [../]
 []
 
@@ -79,37 +114,83 @@ active = ' '
   [../]
 []
 
+[ICs]
+active = ' '
+#active = 'ICs_pressure'
+#active = 'ICs_temperature'
+  [./ICs_pressure]
+    variable = pressure
+    #type = FunctionIC
+    type = ConstantIC
+    #function = initial_pressure_gradient
+    value = 101325
+  [../]
+
+  [./ICs_temperature]
+    variable = temperature
+    type = ConstantIC
+    value = 10.00
+  [../]
+[]
+
 [BCs]
 active = 'RBtop RBbottom'
-#active = 'top bottom'
+#active = 'top_temp bottom_temp left_pres right_pres'
   [./RBtop]
     type = RBDirichletBC
     variable = temperature
-    boundary = 'top'
-    value = 10
+    #boundary = 3 # top: MOOSE
+    boundary = top # top: MOOSE
+    #boundary = 1 # top: MeshIt
+    value = 10.00
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
+    mesh_modified = true
   [../]
   [./RBbottom]
     type = RBDirichletBC
     variable = temperature
-    boundary = 'bottom'
-    value = 31
+    #boundary = 1 # bottom: MOOSE
+    boundary = bottom # bottom: MOOSE
+    #boundary = 2 # bottom: MeshIt
+    value = 31.00
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
+    mesh_modified = true
   [../]
 
-  [./top]
+  [./top_temp]
     type = DirichletBC
     variable = temperature
-    boundary = 'top'
-    value = 10
+    boundary = top
+    #boundary = 1
+    value = 10.00
   [../]
-  [./bottom]
+  [./bottom_temp]
     type = DirichletBC
     variable = temperature
-    boundary = 'bottom'
-    value = 31
+    boundary = bottom
+    #boundary = 2
+    value = 31.00
+  [../]
+
+  [./left_pres]
+    #type = DirichletBC
+    type = FunctionDirichletBC
+    variable = pressure
+    #boundary = left
+    boundary = 3
+    #value = 2
+    function = boundary_pressure_gradient
+  [../]
+  [./right_pres]
+    #type = DirichletBC
+    type = FunctionDirichletBC
+    variable = pressure
+    #boundary = right
+    boundary = 4
+    #value = 1
+    function = initial_pressure_gradient
   [../]
 []
 
@@ -118,20 +199,42 @@ active = 'RBtop RBbottom'
 []
 
 [Executioner]
+  #type = Steady
   type = DwarfElephantRBSteady
-  solve_type = 'PJFNK'
-  #solve_type = 'Newton'
+  #type = Transient
 
- petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_rest'
- petsc_options_value = 'hypre  boomeramg   101'
+  #num_steps = 200
+  #num_steps = 50
+  #dt = 3
+  #dt = 1
+
+  #solve_type = 'PJFNK'
+  solve_type = 'Newton'
+
+  l_tol = 1.e-8
+  nl_rel_tol = 1.e-8
+
+ #petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_rest'
+ #petsc_options_value = 'hypre  boomeramg   101'
 
 []
 
 [Functions]
 active = 'cacheBoundaries'
+#active = 'initial_pressure_gradient boundary_pressure_gradient'
 #active = ' '
   [./cacheBoundaries]
     type = CacheBoundaries
+  [../]
+
+  [./initial_pressure_gradient]
+    type = ParsedFunction
+    value = 101325-(9.81)*y
+  [../]
+
+  [./boundary_pressure_gradient]
+    type = ParsedFunction
+    value = 111325-(9.81)*y
   [../]
 []
 
@@ -144,16 +247,14 @@ active = 'initializeRBSystem performRBSystem'
     parameters_filename = inputfiles/RB/ParallelLayers/SyntheticModels/ThreeLayerParallelRB_nx100_ny24_nz34.i
     skip_matrix_assembly_in_rb_system = true
     skip_vector_assembly_in_rb_system = true
+    cache_boundaries = cacheBoundaries
     offline_stage = true
-    online_stage = true
-    store_basis_functions = true
     execute_on = 'initial'
   [../]
 
   [./performRBSystem]
     type = DwarfElephantOfflineOnlineStage
 
-    parameters_filename = inputfiles/RB/ParallelLayers/SyntheticModels/ThreeLayerParallelRB_nx100_ny24_nz34.i
     exodus_file_name = ThreeLayerParallelRB_nx100_ny24_nz34
 
     offline_stage = true
@@ -181,7 +282,7 @@ active = 'initializeRBSystem performRBSystem'
 []
 
 
-# ====================== Parameters for the RB approximation ======================
+# ======================= Parameters for the RB method ========================
 
 # Maximum number of basis functions that will be generated in the Offline-stage
 Nmax = 20
@@ -191,22 +292,22 @@ Nmax = 20
 parameter_names = 'mu_0 mu_1 mu_2'
 
 # Define the minimum and maximum value of the Theta object
-mu_0 = '0.05000 10.15000'
-mu_1 = '1.20000 12.80000'
-mu_2 = '0.05000 10.15000'
+mu_0 = '0.01000 10.15000'
+mu_1 = '0.01000 12.80000'
+mu_2 = '0.01000 10.15000'
 
 # Define the number of training sets for the Greedy-algorithm
-n_training_samples = 1000
+n_training_samples = 100
 
 # Optionally:
 # Determine whether the training points are generated randomly or deterministically
 deterministic_training = false
 
 # Determine whether relative or absolute error bounds are used in the Greedy-algorithm
-use_relative_bound_in_greedy = true
+use_relative_bound_in_greedy = false
 
-rel_training_tolerance = 3e-3
+rel_training_tolerance = 1.e-5
+
 #quiet_mode =  false
 
 #normalize_rb_bound_in_greedy = true
-

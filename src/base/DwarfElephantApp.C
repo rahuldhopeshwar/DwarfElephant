@@ -30,8 +30,10 @@
 #include "Shale.h"
 
 // UserObjects
-#include "DwarfElephantInitializeRBSystem.h"
-#include "DwarfElephantOfflineOnlineStage.h"
+#include "DwarfElephantInitializeRBSystemSteadyState.h"
+#include "DwarfElephantInitializeRBSystemTransient.h"
+#include "DwarfElephantOfflineOnlineStageSteadyState.h"
+#include "DwarfElephantOfflineOnlineStageTransient.h"
 
 // Functions
 #include "CacheBoundaries.h"
@@ -98,8 +100,10 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerMaterial(Shale);
 
   // UserObjects
-  registerUserObject(DwarfElephantInitializeRBSystem);
-  registerUserObject(DwarfElephantOfflineOnlineStage);
+  registerUserObject(DwarfElephantInitializeRBSystemSteadyState);
+  registerUserObject(DwarfElephantInitializeRBSystemTransient);
+  registerUserObject(DwarfElephantOfflineOnlineStageSteadyState);
+  registerUserObject(DwarfElephantOfflineOnlineStageTransient);
 
   // Functions
   registerFunction(CacheBoundaries);

@@ -22,7 +22,8 @@
 
 // MOOSE includes (DwarfElephant package)
 //#include "DwarfElephantRBClasses.h"
-#include "DwarfElephantInitializeRBSystem.h"
+#include "DwarfElephantInitializeRBSystemSteadyState.h"
+#include "DwarfElephantInitializeRBSystemTransient.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
@@ -33,7 +34,7 @@ namespace libMesh
 }
 
 class NonlinearSystemBase;
-class DwarfElephantInitializeRBSystem;
+class DwarfElephantInitializeRBSystemSteadyState;
 class DisplacedProblem;
 class RBKernel;
 
@@ -54,7 +55,6 @@ public:
   virtual void computeResidual() override;
   virtual void initialSetup() override;
 
-
 //--------------------------------PROTECTED---------------------------------
 protected:
 
@@ -65,27 +65,28 @@ protected:
 
   /*Attributes*/
   bool _use_displaced;
-  bool _matrix_separation_according_to_subdomains;
-  bool _vector_separation_according_to_subdomains;
+  bool _matrix_seperation_according_to_subdomains;
+  bool _vector_seperation_according_to_subdomains;
 
+  std::string _simulation_type;
+
+  unsigned int _ID_first_block;
   unsigned int _ID_Aq;
   unsigned int _ID_Fq;
 
-  Real _max_x;
-  Real _min_x;
-  Real _max_y;
-  Real _min_y;
-  Real _max_z;
-  Real _min_z;
-  Real _output_volume;
+//  Real _max_x;
+//  Real _min_x;
+//  Real _max_y;
+//  Real _min_y;
+//  Real _max_z;
+//  Real _min_z;
+//  Real _output_volume;
 
-  DenseVector<Number> _local_out;
+//  DenseVector<Number> _local_out;
 
   EquationSystems & _es;
 
-//  const std::set<SubdomainID> & _block_ids;
-
-  const DwarfElephantInitializeRBSystem & _initialize_rb_system;
+//  const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system;
 };
 
 ///-------------------------------------------------------------------------

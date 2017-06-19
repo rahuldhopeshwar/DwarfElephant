@@ -20,7 +20,8 @@
 #include "NonlinearSystemBase.h"
 
 // MOOSE includes (DwarfElephant package)
-#include "DwarfElephantInitializeRBSystem.h"
+#include "DwarfElephantInitializeRBSystemSteadyState.h"
+#include "DwarfElephantInitializeRBSystemTransient.h"
 #include "CacheBoundaries.h"
 
 ///-------------------------------------------------------------------------
@@ -34,7 +35,7 @@ class MooseMesh;
 class NonlinearSystemBase;
 class CacheBoundaries;
 
-class DwarfElephantInitializeRBSystem;
+class DwarfElephantInitializeRBSystemSteadyState;
 class RBNodalBC;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
@@ -62,8 +63,10 @@ protected:
   virtual Real computeQpJacobian();
 
   /* Attributes */
+  std::string _simulation_type;
+  unsigned int _ID_Fq;
+  unsigned int _ID_Aq;
   bool _mesh_modified;
-  const DwarfElephantInitializeRBSystem & _initialize_rb_system;
 
   Function * _function;
   CacheBoundaries * _cache_boundaries;

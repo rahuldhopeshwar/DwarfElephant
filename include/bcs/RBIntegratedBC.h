@@ -5,10 +5,11 @@
 #include "IntegratedBC.h"
 
 // MOOSE includes (DwarfElephant package)
-#include "DwarfElephantInitializeRBSystem.h"
+#include "DwarfElephantInitializeRBSystemSteadyState.h"
+#include "DwarfElephantInitializeRBSystemTransient.h"
 
 // Forward declarations
-class DwarfElephantInitializeRBSystem;
+class DwarfElephantInitializeRBSystemSteadyState;
 class RBIntegratedBC;
 
 template<>
@@ -30,6 +31,7 @@ public:
   void computeJacobianBlockScalar(unsigned int jvar);
   virtual void computeNonlocalJacobian() {}
   virtual void computeNonlocalOffDiagJacobian(unsigned int /* jvar */) {}
+  virtual void initialSetup() override;
 
 protected:
 
@@ -41,11 +43,15 @@ protected:
   /*Attributes*/
   bool _use_displaced;
 
+  std::string _simulation_type;
+
+  unsigned int _ID_Aq;
+  unsigned int _ID_Fq;
+
   Real _output_volume;
   DenseVector<Number> _local_out;
 
   EquationSystems & _es;
-  const DwarfElephantInitializeRBSystem & _initialize_rb_system;
 };
 
 #endif /* RBINTEGRATEDBC_H */
