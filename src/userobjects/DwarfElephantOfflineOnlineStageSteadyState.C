@@ -176,11 +176,12 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
       _rb_eval.rb_solve(_online_N);
 
-      for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
+//      for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
 //        for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
-          _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
-          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
+//          _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
+//          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
 
+      Moose::perf_log.push("write_exodus()", "Execution");
       _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
       _initialize_rb_system._rb_con_ptr->load_rb_solution();
       ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems(_exodus_file_name + ".e", _es);

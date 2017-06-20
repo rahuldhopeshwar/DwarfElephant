@@ -83,7 +83,7 @@ active = 'shale_top sandstone shale_bottom'
 
 [Outputs]
   print_perf_log = true
-  exodus = true
+  exodus = false
   execute_on = 'timestep_end'
 
   [./console]
