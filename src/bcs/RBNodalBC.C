@@ -21,9 +21,9 @@ InputParameters validParams<RBNodalBC>()
   params.addRequiredParam<FunctionName>("cache_boundaries", "");
   params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
   params.addParam<unsigned int>("ID_Fq", 0 , "ID if the load vector.");
-  params.addParam<unsigned int>("ID_Aq", 0 , "ID if the load vector.");
+  params.addParam<unsigned int>("ID_Aq", 0 , "ID if the stiffness matrix.");
+  params.addParam<unsigned int>("ID_Mq", 0 , "ID if the mass matrix.");
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
-  params.addRequiredParam<bool>("mesh_modified", "Determine whether you operate on a modified mesh or not.");
 
   return params;
 }
@@ -34,7 +34,7 @@ RBNodalBC::RBNodalBC(const InputParameters & parameters) :
     _simulation_type(getParam<std::string>("simulation_type")),
     _ID_Fq(getParam<unsigned int>("ID_Fq")),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
-    _mesh_modified(getParam<bool>("mesh_modified")),
+    _ID_Mq(getParam<unsigned int>("ID_Mq")),
     _function(&getFunction("cache_boundaries"))
 {
 
@@ -64,17 +64,6 @@ RBNodalBC::computeResidual(NumericVector<Number> & residual)
          _cache_boundaries->resizeSubdomainVectorCaches(_initialize_rb_system._qf);
          _cache_boundaries->cacheResidual(dof_idx, -res);
 
-//      if(_mesh_modified)
-//      {
-//         mooseError("Currently, a subdivison of the mesh over the MeshModifier block is not supported. "
-//                    "The reason for that is the unmodified mesh is still saves in the node_boundary_list. "
-//                    "Consequently, the subdivison for the RB method does not work properly. "
-//                    "At the moment, we advise to use an external mesh. "
-//                    "Alternatively, a method that calls the modified mesh only can be searched in MOOSE.");
-//      }
-//
-//       else
-//       {
          // external Mesh
 //         const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
 //         for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
@@ -82,7 +71,6 @@ RBNodalBC::computeResidual(NumericVector<Number> & residual)
 //           _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, *it - 0);
 //           _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, *it - _ID_first_block);
            _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, _ID_Fq);
-//       }
         }
       }
     }
@@ -136,26 +124,14 @@ RBNodalBC::computeJacobian()
         if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
         {
 //          _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
-          _cache_boundaries->resizeSubdomainMatrixCaches(_initialize_rb_system._qa);
+          _cache_boundaries->resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
 
-//        if (_mesh_modified)
-//        {
-//          mooseError("Currently, a subdivison of the mesh over the MeshModifier block is not supported. "
-//                     "The reason for that is the unmodified mesh is still saves in the node_boundary_list. "
-//                     "Consequently, the subdivison for the RB method does not work properly. "
-//                     "At the moment, we advise to use an external mesh. "
-//                     "Alternatively, a method that calls the modified mesh only can be searched in MOOSE.");
-//        }
-//
-//        else
-//        {
           // external mesh
 //          const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
 //          for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
 //               it != _node_boundary_list.end(); ++it)
 //            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val,*it - _ID_first_block);
             _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
-//        }
         }
       }
     }
@@ -169,8 +145,10 @@ RBNodalBC::computeJacobian()
         if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
         {
 //          _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
-          _cache_boundaries->resizeSubdomainMatrixCaches(_initialize_rb_system._qa);
+          _cache_boundaries->resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
+          _cache_boundaries->resizeSubdomainMassMatrixCaches(_initialize_rb_system._qm);
           _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
+          _cache_boundaries->cacheSubdomainMassMatrixContribution(cached_row, cached_row, cached_val, _ID_Mq);
         }
       }
     }

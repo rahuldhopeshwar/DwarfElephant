@@ -33,8 +33,10 @@ InputParameters validParams<RBKernel>()
   params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
   params.addParam<unsigned int>("ID_first_block", 0, "ID of the first block in the mesh");
   params.addParam<unsigned int>("ID_Aq", 0, "ID of the current stiffness matrix");
+  params.addParam<unsigned int>("ID_Mq", 0, "ID of the current mass matrix");
   params.addParam<unsigned int>("ID_Fq", 0, "ID of the current stiffness matrix");
   params.addParam<bool>("matrix_seperation_according_to_subdomains", true, "Tells whether the stiffness matrix is separated according to the subdomain_ids");
+  params.addParam<bool>("time_matrix_seperation_according_to_subdomains", true, "Tells whether the mass matrix is separated according to the subdomain_ids");
   params.addParam<bool>("vector_seperation_according_to_subdomains", true, "Tells whether the load vector is separated according to the subdomain_ids");
 //  params.addRequiredParam<Real>("max_x","Maximum extension of the volume of interest in x-direction.");
 //  params.addRequiredParam<Real>("min_x","Minimum extension of the volume of interest in x-direction.");
@@ -51,10 +53,12 @@ RBKernel::RBKernel(const InputParameters & parameters) :
     Kernel(parameters),
     _use_displaced(getParam<bool>("use_displaced")),
     _matrix_seperation_according_to_subdomains(getParam<bool>("matrix_seperation_according_to_subdomains")),
+    _time_matrix_seperation_according_to_subdomains(getParam<bool>("time_matrix_seperation_according_to_subdomains")),
     _vector_seperation_according_to_subdomains(getParam<bool>("vector_seperation_according_to_subdomains")),
     _simulation_type(getParam<std::string>("simulation_type")),
     _ID_first_block(getParam<unsigned int>("ID_first_block")),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
+    _ID_Mq(getParam<unsigned int>("ID_Mq")),
     _ID_Fq(getParam<unsigned int>("ID_Fq")),
 //    _max_x(getParam<Real>("max_x")),
 //    _min_x(getParam<Real>("min_x")),
@@ -135,8 +139,6 @@ RBKernel::computeResidual()
       // Add the calculated vectors to the vectors from the RB system.
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
-//        _initialize_rb_system._residuals[0] -> add_vector(_local_re, _var.dofIndices());
-//        _initialize_rb_system._outputs[0] -> add_vector(_local_out, _var.dofIndices());
   }
 
   if (_has_save_in)
@@ -182,7 +184,11 @@ RBKernel::computeJacobian()
     if(_initialize_rb_system._offline_stage)
     // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
+    {
         _initialize_rb_system._jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
+        // Add the mass matrix to the RB System
+        computeMassMatrix();
+    }
   }
 
  if (_has_diag_save_in)
@@ -197,6 +203,29 @@ RBKernel::computeJacobian()
       var->sys().solution().add_vector(diag, var->dofIndices());
   }
 }
+
+void
+RBKernel::computeMassMatrix()
+{
+  if(_time_matrix_seperation_according_to_subdomains)
+    _ID_Mq = _current_elem->subdomain_id() - _ID_first_block;
+
+  DenseMatrix<Number> & me = _assembly.jacobianBlock(_var.number(), _var.number());
+  _local_me.resize(me.m(), me.n());
+  _local_me.zero();
+
+  for (_i = 0; _i < _test.size(); _i++)
+    for (_j = 0; _j < _phi.size(); _j++)
+      for (_qp = 0; _qp < _qrule->n_points(); _qp++)
+        _local_me(_i, _j) += _JxW[_qp] * _coord[_qp] * computeQpMassMatrix();
+
+
+
+  me += _local_me;
+  const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
+  _initialize_rb_system._mass_matrix_subdomain[_ID_Mq] -> add_matrix(_local_me, _var.dofIndices());
+
+}
 ///----------------------------------PDEs-----------------------------------
 // For the PDEs zero is implemented, since this Kernel shall be used for any
 // RB problem. The problem specific PDEs are implemented in separate Kernels.
@@ -209,6 +238,12 @@ RBKernel::computeQpJacobian()
 
 Real
 RBKernel::computeQpResidual()
+{
+  return 0;
+}
+
+Real
+RBKernel::computeQpMassMatrix()
 {
   return 0;
 }

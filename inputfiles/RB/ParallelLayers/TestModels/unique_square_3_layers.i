@@ -19,7 +19,7 @@ active = 'RBConduction'
     type = RBDiffusion
     variable = temperature
     initial_rb_userobject = initializeRBSystem
-    simulation_type = transient
+    #simulation_type = transient
     #vector_seperation_according_to_subdomains = false
   [../]
 
@@ -46,7 +46,7 @@ active = 'RBtop RBbottom'
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
     mesh_modified = false
-    simulation_type = transient
+    #simulation_type = transient
     ID_Fq = 2
     ID_Aq = 2
   [../]
@@ -58,7 +58,7 @@ active = 'RBtop RBbottom'
     cache_boundaries = cacheBoundaries
     initial_rb_userobject = initializeRBSystem
     mesh_modified = false
-    simulation_type = transient
+    #simulation_type = transient
     ID_Fq = 0
     ID_Aq = 0
   [../]
@@ -128,7 +128,7 @@ active = 'initializeRBSystem performRBSystem'
 #active = ''
 
   [./initializeRBSystem]
-    type = DwarfElephantInitializeRBSystemTransient
+    type = DwarfElephantInitializeRBSystemSteadyState
     parameters_filename = inputfiles/RB/ParallelLayers/TestModels/unique_square_3_layers.i
     skip_matrix_assembly_in_rb_system = true
     skip_vector_assembly_in_rb_system = true
@@ -139,8 +139,7 @@ active = 'initializeRBSystem performRBSystem'
   [../]
 
   [./performRBSystem]
-    type = DwarfElephantOfflineOnlineStageTransient
-
+    type = DwarfElephantOfflineOnlineStageSteadyState
     exodus_file_name = unique_square_3_layers
 
     offline_stage = true

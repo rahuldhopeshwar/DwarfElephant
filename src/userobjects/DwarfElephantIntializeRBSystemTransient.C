@@ -57,6 +57,7 @@ DwarfElephantInitializeRBSystemTransient::initializeOfflineStage()
 
    // Define size of all new parameters.
    _jacobian_subdomain.resize(_qa);
+   _mass_matrix_subdomain.resize(_qm);
    _residuals.resize(_qf);
    _outputs.resize(_n_outputs);
 
@@ -71,6 +72,12 @@ DwarfElephantInitializeRBSystemTransient::initializeOfflineStage()
    PetscMatrix<Number> * _petsc_inner_matrix = dynamic_cast<PetscMatrix<Number>* > (_inner_product_matrix);
    MatSetOption(_petsc_inner_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
 
+   // Eliminates error message for the initialization of new non-zero entries
+   // For the future: change SparseMatrix pattern (increases efficency)
+   _L2_matrix = _rb_con_ptr->L2_matrix.get();
+   PetscMatrix<Number> * _petsc_L2_matrix = dynamic_cast<PetscMatrix<Number>* > (_L2_matrix);
+   MatSetOption(_petsc_L2_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
+
    for (unsigned int _q=0; _q < _qa; _q++)
    {
      _jacobian_subdomain[_q] = _rb_con_ptr->get_Aq(_q);
@@ -80,6 +87,16 @@ DwarfElephantInitializeRBSystemTransient::initializeOfflineStage()
      PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_jacobian_subdomain[_q]);
      MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
     }
+
+    for (unsigned int _q=0; _q < _qm; _q++)
+    {
+      _mass_matrix_subdomain[_q] = _rb_con_ptr->M_q_vector[_q];
+
+      // Eliminates error message for the initialization of new non-zero entries
+      // For the future: change SparseMatrix pattern (increases efficency)
+      PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_mass_matrix_subdomain[_q]);
+      MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
+     }
 
     // Get the correct vectors from the RB System.
     for (unsigned int _q=0; _q < _qf; _q++)

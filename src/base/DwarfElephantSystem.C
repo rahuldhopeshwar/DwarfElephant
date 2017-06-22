@@ -19,8 +19,8 @@ DwarfElephantSystem::solve()
     _fe_problem.computeResidual(_transient_sys, *_current_solution, *_transient_sys.rhs);
     _computing_initial_residual = false;
     _transient_sys.rhs->close();
-
-   // calculate the stiffness matrices
-   _fe_problem.computeJacobian(_transient_sys, *_current_solution, *_transient_sys.matrix);
   }
+
+  // calculate the stiffness matrices
+  _fe_problem.computeJacobian(_transient_sys, *_current_solution, *_transient_sys.matrix);
 }

@@ -66,7 +66,7 @@ protected:
   std::string _simulation_type;
   unsigned int _ID_Fq;
   unsigned int _ID_Aq;
-  bool _mesh_modified;
+  unsigned int _ID_Mq;
 
   Function * _function;
   CacheBoundaries * _cache_boundaries;

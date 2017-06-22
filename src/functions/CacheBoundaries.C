@@ -67,11 +67,19 @@ CacheBoundaries::cacheStiffnessMatrixContribution(numeric_index_type i, numeric_
 }
 
 void
-CacheBoundaries::resizeSubdomainMatrixCaches(unsigned int subdomains)
+CacheBoundaries::resizeSubdomainStiffnessMatrixCaches(unsigned int subdomains)
 {
   _cached_jacobian_subdomain_contribution_rows.resize(subdomains);
   _cached_jacobian_subdomain_contribution_cols.resize(subdomains);
   _cached_jacobian_subdomain_contribution_vals.resize(subdomains);
+}
+
+void
+CacheBoundaries::resizeSubdomainMassMatrixCaches(unsigned int subdomains)
+{
+  _cached_mass_subdomain_contribution_rows.resize(subdomains);
+  _cached_mass_subdomain_contribution_cols.resize(subdomains);
+  _cached_mass_subdomain_contribution_vals.resize(subdomains);
 }
 
 void
@@ -87,6 +95,14 @@ CacheBoundaries::cacheSubdomainStiffnessMatrixContribution(numeric_index_type i,
   _cached_jacobian_subdomain_contribution_rows[subdomain].push_back(i);
   _cached_jacobian_subdomain_contribution_cols[subdomain].push_back(j);
   _cached_jacobian_subdomain_contribution_vals[subdomain].push_back(value);
+}
+
+void
+CacheBoundaries::cacheSubdomainMassMatrixContribution(numeric_index_type i, numeric_index_type j, Real value, unsigned int subdomain)
+{
+  _cached_mass_subdomain_contribution_rows[subdomain].push_back(i);
+  _cached_mass_subdomain_contribution_cols[subdomain].push_back(j);
+  _cached_mass_subdomain_contribution_vals[subdomain].push_back(value);
 }
 
 void
@@ -114,3 +130,18 @@ CacheBoundaries::setCachedSubdomainStiffnessMatrixContributions(SparseMatrix<Num
                   _cached_jacobian_subdomain_contribution_vals[subdomain][i]);
   }
 }
+
+void
+CacheBoundaries::setCachedSubdomainMassMatrixContributions(SparseMatrix<Number> & _mass, unsigned int subdomain)
+{
+  _mass.close();
+  _mass.zero_rows(_cached_mass_subdomain_contribution_rows[subdomain]);
+
+  for (unsigned int i = 0; i < _cached_mass_subdomain_contribution_vals[subdomain].size(); ++i)
+  {
+    _mass.set(_cached_mass_subdomain_contribution_rows[subdomain][i],
+              _cached_mass_subdomain_contribution_cols[subdomain][i],
+              _cached_mass_subdomain_contribution_vals[subdomain][i]);
+  }
+}
+

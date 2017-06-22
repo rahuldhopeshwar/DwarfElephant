@@ -2,16 +2,16 @@
 #file = meshs/1x1x1_cube.e
   type = GeneratedMesh
   dim = 3
-  nx = 10
-  ny = 10
-  nz = 10
+  nx = 2
+  ny = 2
+  nz = 2
   xmin = 0.0
   xmax = 1
   ymin = 0.0
   ymax = 1
   zmin = 0.0
   zmax = 1
-#  elem_type=TET4
+  #elem_type=TET4
 []
 
 [Variables]
@@ -52,7 +52,7 @@ active = 'RBtop RBbottom'
     type = RBDirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
-    boundary = 2 #4
+    boundary = 3 #4
     value = 10.00
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
@@ -60,10 +60,10 @@ active = 'RBtop RBbottom'
     simulation_type = transient
   [../]
   [./RBbottom]
-    type = RBNeumannBC
+    type = RBDirichletBC
     variable = temperature
     boundary = 1 #2
-    value = -38.96
+    value = 31.00
     cache_boundaries = cacheBoundaries
     initial_rb_userobject = initializeRBSystem
     mesh_modified = false
@@ -74,15 +74,15 @@ active = 'RBtop RBbottom'
     type = DirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
-    boundary = 2
+    boundary = 3
     value = 10.00
   [../]
   [./bottom]
-    type = NeumannBC
+    type = DirichletBC
     variable = temperature
     #boundary = 'leftbottom rightbottom'
     boundary = 1
-    value = 27.275
+    value = 31.00
   [../]
 []
 
@@ -104,8 +104,8 @@ active = ' '
   #type = Steady
   #type = Transient
 
-  #num_steps = 35
-  #dt = 0.125
+  #num_steps = 10
+  #dt = 0.01
 
   solve_type = 'Newton'
   l_tol = 1.e-8
@@ -133,6 +133,7 @@ active = 'initializeRBSystem performRBSystem'
     offline_stage = true
     execute_on = 'initial'
     transient = true
+    #system = nl0
   [../]
 
   [./performRBSystem]
@@ -151,6 +152,7 @@ active = 'initializeRBSystem performRBSystem'
     execute_on = 'timestep_end'
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
+    #system = nl0
   [../]
 []
 
@@ -192,3 +194,16 @@ rel_training_tolerance = 1.e-5
 #quiet_mode =  false
 
 #normalize_rb_bound_in_greedy = true
+
+
+# ======================= Transient RB system parameters =======================
+
+# number of time steps
+n_time_steps = 10
+
+# size of time steps
+delta_t = 0.01
+
+# Generalized Euler method parameter in [0,1], euler_theta=1 implies backward Euler
+euler_theta = 1
+

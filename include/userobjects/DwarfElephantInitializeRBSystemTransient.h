@@ -89,7 +89,9 @@ class DwarfElephantInitializeRBSystemTransient :
     DwarfElephantRBConstructionTransient * _rb_con_ptr;
 
     SparseMatrix <Number> * _inner_product_matrix;
+    SparseMatrix <Number> * _L2_matrix;
     std::vector<SparseMatrix <Number> *> _jacobian_subdomain;
+    std::vector<SparseMatrix <Number> *> _mass_matrix_subdomain;
     std::vector<NumericVector <Number> *> _residuals;
     std::vector<std::vector<NumericVector <Number> *> > _outputs;
 

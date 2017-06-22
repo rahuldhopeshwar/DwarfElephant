@@ -66,6 +66,14 @@ DwarfElephantOfflineOnlineStageTransient::setAffineMatrices()
       _initialize_rb_system._jacobian_subdomain[_q] ->close();
       _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
     }
+
+    _initialize_rb_system._L2_matrix -> close();
+    for(unsigned int _q=0; _q<_initialize_rb_system._qm; _q++)
+    {
+      _cache_boundaries->setCachedSubdomainMassMatrixContributions(*_initialize_rb_system._mass_matrix_subdomain[_q], _q);
+      _initialize_rb_system._mass_matrix_subdomain[_q] ->close();
+      _initialize_rb_system._L2_matrix->add(_mu_bar, *_initialize_rb_system._mass_matrix_subdomain[_q]);
+    }
 }
 
 void
@@ -194,4 +202,10 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 void
 DwarfElephantOfflineOnlineStageTransient::finalize()
 {
+//  setAffineMatrices();
+//  _initialize_rb_system._rb_con_ptr->M_q_vector[0]->close();
+//  _console << *_initialize_rb_system._rb_con_ptr->M_q_vector[0] << std::endl;
+// std::string _info = _sys.get_info();
+// _console << _info << std::endl;
+//  _console << _sys.get_matrix("System Matrix") << std::endl;
 }

@@ -55,6 +55,8 @@ public:
   virtual void computeResidual() override;
   virtual void initialSetup() override;
 
+  virtual void computeMassMatrix();
+
 //--------------------------------PROTECTED---------------------------------
 protected:
 
@@ -62,16 +64,20 @@ protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
 
+  virtual Real computeQpMassMatrix();
+
 
   /*Attributes*/
   bool _use_displaced;
   bool _matrix_seperation_according_to_subdomains;
+  bool _time_matrix_seperation_according_to_subdomains;
   bool _vector_seperation_according_to_subdomains;
 
   std::string _simulation_type;
 
   unsigned int _ID_first_block;
   unsigned int _ID_Aq;
+  unsigned int _ID_Mq;
   unsigned int _ID_Fq;
 
 //  Real _max_x;
@@ -83,6 +89,7 @@ protected:
 //  Real _output_volume;
 
 //  DenseVector<Number> _local_out;
+  DenseMatrix<Number> _local_me;
 
   EquationSystems & _es;
 
