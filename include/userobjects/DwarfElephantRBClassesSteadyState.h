@@ -287,11 +287,11 @@ public:
 
       // Evaluate the dual norm of the residual for RB_solution_vector
 
-      // slower but less error prone error bound (does not work in parallel)
-      Real epsilon_N = sys_rb.compute_residual_dual_norm(N);
+//      // slower but less error prone error bound (does not work in parallel)
+//      Real epsilon_N = sys_rb.compute_residual_dual_norm(N);
 
-//      // faster but more error prone error bound (does work in parallel)
-//      Real epsilon_N = compute_residual_dual_norm(N);
+      // faster but more error prone error bound (does work in parallel)
+      Real epsilon_N = compute_residual_dual_norm(N);
 
       // Get lower bound for coercivity constant
       const Real alpha_LB = get_stability_lower_bound();

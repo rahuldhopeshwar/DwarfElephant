@@ -20,7 +20,7 @@ active = 'RBConduction'
     variable = temperature
     initial_rb_userobject = initializeRBSystem
     #simulation_type = transient
-    #vector_seperation_according_to_subdomains = false
+    vector_seperation_according_to_subdomains = false
   [../]
 
   [./Conduction]
@@ -42,12 +42,11 @@ active = 'RBtop RBbottom'
     variable = temperature
     #boundary = 'lefttop righttop'
     boundary = 2 #4
-    value = 10.00
+    value = 0.00
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
     mesh_modified = false
     #simulation_type = transient
-    ID_Fq = 2
     ID_Aq = 2
   [../]
   [./RBbottom]
@@ -59,7 +58,6 @@ active = 'RBtop RBbottom'
     initial_rb_userobject = initializeRBSystem
     mesh_modified = false
     #simulation_type = transient
-    ID_Fq = 0
     ID_Aq = 0
   [../]
 
@@ -68,14 +66,14 @@ active = 'RBtop RBbottom'
     variable = temperature
     #boundary = 'lefttop righttop'
     boundary = 2
-    value = 10.00
+    value = 0.00
   [../]
   [./bottom]
     type = NeumannBC
     variable = temperature
     #boundary = 'leftbottom rightbottom'
     boundary = 1
-    value = 27.275
+    value = 38.96
   [../]
 []
 

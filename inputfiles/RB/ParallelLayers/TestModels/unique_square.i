@@ -141,7 +141,7 @@ active = 'initializeRBSystem performRBSystem'
 
     exodus_file_name = unique_square
 
-    offline_stage = false
+    offline_stage = true
     online_stage = false
     offline_error_bound = true
     store_basis_functions = true

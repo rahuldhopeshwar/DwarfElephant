@@ -52,8 +52,8 @@ struct RBP1T3EqualD1N1SteadyStateExpansion : RBThetaExpansion
     attach_A_theta(&_theta_a_2);
 
     attach_F_theta(&_rb_theta);
-    attach_F_theta(&_rb_theta);
-    attach_F_theta(&_theta_a_2);
+//    attach_F_theta(&_rb_theta);
+//    attach_F_theta(&_theta_a_2);
 
 //    std::vector<RBTheta *> _thetas = {&_theta_a_0, &_theta_a_1, &_theta_a_2};
 //    attach_output_theta(_thetas);
