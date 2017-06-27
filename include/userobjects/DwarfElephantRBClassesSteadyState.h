@@ -33,6 +33,7 @@
 ///-------------------------------------------------------------------------
 // MOOSE includes (DwarfElephant package)
 #include "CacheBoundaries.h"
+#include "DwarfElephantInitializeRBSystemSteadyState.h"
 #include "RBStructuresP1T1EqualD2SteadyState.h"
 #include "RBStructuresP1T2EqualD2SteadyState.h"
 #include "RBStructuresP1T3EqualD2SteadyState.h"
@@ -54,7 +55,7 @@ namespace libMesh
 //using libMesh::RBSCMConstruction;
 //using libMesh::RBSCMEvaluation;
 
-//class DwarfElephantInitializeRBSystem;
+class DwarfElephantInitializeRBSystemSteadyState;
 
 ///-----------------------DWARFELEPHANTRBCONSTRUCTION-----------------------
 class DwarfElephantRBConstructionSteadyState : public RBConstruction
@@ -198,6 +199,7 @@ class DwarfElephantRBEvaluationSteadyState : public RBEvaluation
 public:
   DwarfElephantRBEvaluationSteadyState(const libMesh::Parallel::Communicator & comm, FEProblemBase & fe_problem):
     RBEvaluation(comm),
+//    offline_error_bound(false),
     fe_problem(fe_problem)
   {
     set_rb_theta_expansion(_rb_theta_expansion);
@@ -283,15 +285,13 @@ public:
   if(evaluate_RB_error_bound) // Calculate the error bounds
     {
       DwarfElephantRBConstructionSteadyState & sys_rb = fe_problem.es().get_system<DwarfElephantRBConstructionSteadyState>("RBSystem");
-      TransientNonlinearImplicitSystem & sys = fe_problem.es().get_system<TransientNonlinearImplicitSystem>("rb0");
-
       // Evaluate the dual norm of the residual for RB_solution_vector
 
 //      // slower but less error prone error bound (does not work in parallel)
-//      Real epsilon_N = sys_rb.compute_residual_dual_norm(N);
+//      epsilon_N = sys_rb.compute_residual_dual_norm(N);
 
       // faster but more error prone error bound (does work in parallel)
-      Real epsilon_N = compute_residual_dual_norm(N);
+      epsilon_N = compute_residual_dual_norm(N);
 
       // Get lower bound for coercivity constant
       const Real alpha_LB = get_stability_lower_bound();
@@ -316,6 +316,8 @@ public:
     }
 }
 
+  bool offline_error_bound;
+  Real epsilon_N;
   FEProblemBase & fe_problem;
   RBP1T3EqualD1N1SteadyStateExpansion _rb_theta_expansion;
 };

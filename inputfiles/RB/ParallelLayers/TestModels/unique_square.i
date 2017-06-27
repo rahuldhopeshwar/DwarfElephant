@@ -53,17 +53,17 @@ active = 'RBtop RBbottom'
     variable = temperature
     #boundary = 'lefttop righttop'
     boundary = 3 #4
-    value = 10.00
+    value = 0.00
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
     mesh_modified = false
     simulation_type = transient
   [../]
   [./RBbottom]
-    type = RBDirichletBC
+    type = RBNeumannBC
     variable = temperature
     boundary = 1 #2
-    value = 31.00
+    value = 117.5
     cache_boundaries = cacheBoundaries
     initial_rb_userobject = initializeRBSystem
     mesh_modified = false
@@ -143,7 +143,7 @@ active = 'initializeRBSystem performRBSystem'
 
     offline_stage = true
     online_stage = false
-    offline_error_bound = true
+    offline_error_bound = false
     store_basis_functions = true
 
     mu_bar = 1

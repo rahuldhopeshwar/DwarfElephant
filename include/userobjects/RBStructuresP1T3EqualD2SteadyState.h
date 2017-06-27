@@ -10,6 +10,18 @@
   * The structures defined are:
   * 1. Theta --> parameter-dependent part of the PDE
   * 2. RBThetaExpansion
+  *
+  * IMPORTANT: The Dirichlet boundary conditions are problematic for the
+  * default error bound as long as they are unequal to zero. In case you
+  * want to use them please switch to the more robust error bound in the
+  * method RB_solve() from the RBEvaluation class. Therefore, uncomment
+  * the following two lines in the method:
+  *     // // slower but less error prone error bound (does not work in parallel)
+  *     // epsilon_N = sys_rb.compute_residual_dual_norm(N);
+  * Not that the error bound is purely serial. In case of parallel
+  * implementations please reformulate your problem in such a way that you
+  * end up with an integrated boundary conditions no or zero Dirichlet boundary
+  * conditions.
   */
 
 ///-------------------------------------------------------------------------

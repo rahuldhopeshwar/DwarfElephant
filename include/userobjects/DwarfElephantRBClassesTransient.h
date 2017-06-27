@@ -33,6 +33,7 @@
 ///-------------------------------------------------------------------------
 // MOOSE includes (DwarfElephant package)
 #include "CacheBoundaries.h"
+#include "RBStructuresP1T1EqualD1N1Transient.h"
 #include "RBStructuresP1T1EqualD2Transient.h"
 #include "RBStructuresP1T2EqualD2SteadyState.h"
 #include "RBStructuresP1T3EqualD2SteadyState.h"
@@ -136,56 +137,6 @@ public:
    return std::sqrt( libmesh_real(slow_residual_norm_sq) );
 }
 
-//Real truth_solve(int plot_solution)
-//{
-//  LOG_SCOPE("truth_solve()", "RBConstruction");
-//
-//  truth_assembly();
-//
-//  // truth_assembly assembles into matrix and rhs, so use those for the solve
-//  if (extra_linear_solver)
-//    {
-//      // If extra_linear_solver has been initialized, then we use it for the
-//      // truth solves.
-//      solve_for_matrix_and_rhs(*extra_linear_solver, *matrix, *rhs);
-//
-//      if (assert_convergence)
-//        check_convergence(*extra_linear_solver);
-//    }
-//  else
-//    {
-//      solve_for_matrix_and_rhs(*get_linear_solver(), *matrix, *rhs);
-//
-//      if (assert_convergence)
-//        check_convergence(*get_linear_solver());
-//    }
-//
-//
-//
-//  const RBParameters & mu = get_parameters();
-//
-//  for(unsigned int n=0; n<get_rb_theta_expansion().get_n_outputs(); n++)
-//    {
-//      truth_outputs[n] = 0.;
-//      for(unsigned int q_l=0; q_l<get_rb_theta_expansion().get_n_output_terms(n); q_l++)
-//        truth_outputs[n] += get_rb_theta_expansion().eval_output_theta(n, q_l, mu)*
-//          get_output_vector(n,q_l)->dot(*solution);
-//    }
-//
-//
-//      ExodusII_IO(get_mesh()).write_equation_systems ("truth.e",
-//                                                      this->get_equation_systems());
-//
-//  // Get the X norm of the truth solution
-//  // Useful for normalizing our true error data
-//  inner_product_matrix->vector_mult(*inner_product_storage_vector, *solution);
-//  Number truth_X_norm = std::sqrt(inner_product_storage_vector->dot(*solution));
-//
-//  return libmesh_real(truth_X_norm);
-//
-//  }
-
-
   unsigned int u_var;
 
 };
@@ -202,12 +153,6 @@ public:
   {
     set_rb_theta_expansion(_rb_theta_expansion);
   }
-
-//    virtual Real get_stability_lower_bound()
-//  {
-//    _rb_scm_eval->set_parameters(get_parameters());
-//    return _rb_scm_eval->get_SCM_LB();
-//  }
 
   virtual Real get_stability_lower_bound()
   {
@@ -226,7 +171,7 @@ public:
 
     return min_mu;
   }
-//
+
 //  Real rb_solve(unsigned int N)
 //{
 //  LOG_SCOPE("rb_solve()", "RBEvaluation");
@@ -287,11 +232,11 @@ public:
 //
 //      // Evaluate the dual norm of the residual for RB_solution_vector
 //
-//      // slower but less error prone error bound (does not work in parallel)
-//      Real epsilon_N = sys_rb.compute_residual_dual_norm(N);
+////      // slower but less error prone error bound (does not work in parallel)
+////      Real epsilon_N = sys_rb.compute_residual_dual_norm(N);
 //
-////      // faster but more error prone error bound (does work in parallel)
-////      Real epsilon_N = compute_residual_dual_norm(N);
+//      // faster but more error prone error bound (does work in parallel)
+//      Real epsilon_N = compute_residual_dual_norm(N);
 //
 //      // Get lower bound for coercivity constant
 //      const Real alpha_LB = get_stability_lower_bound();
@@ -317,9 +262,8 @@ public:
 //}
 
   FEProblemBase & fe_problem;
-//  RBP1T3EqualD1N1SteadyStateExpansion _rb_theta_expansion;
-  RBP1T1EqualD2TransientExpansion _rb_theta_expansion;
+  RBP1T1EqualD1N1TransientExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTRBCLASSESSTEADYSTATE_H
+#endif // DWARFELEPHANTRBCLASSESTRANSIENT_H

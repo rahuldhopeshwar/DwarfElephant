@@ -104,19 +104,19 @@ void
 DwarfElephantOfflineOnlineStageTransient::offlineStage()
 {
     _initialize_rb_system._rb_con_ptr->train_reduced_basis();
-    #if defined(LIBMESH_HAVE_CAPNPROTO)
-      RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
-      _rb_eval_writer.write_to_file("rb_eval.bin");
-    #else
-      // Write the offline data to file (xdr format).
-      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files();
-    #endif
-
-    // If desired, store the basis functions (xdr format).
-    if (_store_basis_functions)
-    {
-        _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr);
-    }
+//    #if defined(LIBMESH_HAVE_CAPNPROTO)
+//      RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
+//      _rb_eval_writer.write_to_file("rb_eval.bin");
+//    #else
+//      // Write the offline data to file (xdr format).
+//      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files();
+//    #endif
+//
+//    // If desired, store the basis functions (xdr format).
+//    if (_store_basis_functions)
+//    {
+//        _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr);
+//    }
 
 //    _initialize_rb_system._rb_con_ptr->print_basis_function_orthogonality();
 }
@@ -202,10 +202,5 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 void
 DwarfElephantOfflineOnlineStageTransient::finalize()
 {
-//  setAffineMatrices();
-//  _initialize_rb_system._rb_con_ptr->M_q_vector[0]->close();
-//  _console << *_initialize_rb_system._rb_con_ptr->M_q_vector[0] << std::endl;
-// std::string _info = _sys.get_info();
-// _console << _info << std::endl;
-//  _console << _sys.get_matrix("System Matrix") << std::endl;
+//  _console << *_initialize_rb_system._rb_con_ptr->get_inner_product_matrix() << std::endl;
 }
