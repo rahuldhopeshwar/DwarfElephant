@@ -3,6 +3,13 @@
 
 #include "Assembly.h"
 
+// Forward Declarations
+namespace libMesh
+{
+  template <typename T> class SparseMatrix;
+  template <typename T> class NumericVector;
+}
+
 // MOOSE Forward Declares
 class SystemBase;
 class Assembly;
