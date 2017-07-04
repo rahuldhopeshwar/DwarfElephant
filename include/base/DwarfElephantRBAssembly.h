@@ -1,6 +1,10 @@
 #ifndef DWARFELEPHANTRBASSEMBLY_H
 #define DWARFELEPHANTRBASSEMBLY_H
 
+// libMesh includes
+#include "libmesh/sparse_matrix.h"
+#include "libmesh/numeric_vector.h"
+
 #include "Assembly.h"
 
 // Forward Declarations
