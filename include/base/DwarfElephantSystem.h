@@ -8,6 +8,7 @@
 #include "FEProblemBase.h"
 #include "TimeIntegrator.h"
 #include "NonlinearSystem.h"
+#include "DwarfElephantRBAssembly.h"
 
 // MOOSE includes (DwarfElephant package)
 //#include "RBStructuresP1Theta3ThetaEqualMuSteadyState.h"
@@ -33,6 +34,8 @@ public:
   virtual void 	solve () override;
 
   unsigned int u_var;
+
+  DwarfElephantRBAssembly * _rb_assembly;
 };
 
 #endif /* DWARFELEPHANTSYSTEM_H */
