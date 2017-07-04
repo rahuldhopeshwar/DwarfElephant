@@ -116,7 +116,7 @@ RBNodalBC::computeJacobian()
     // Cache the user's computeQpJacobian() value for later use.
     _fe_problem.assembly(0).cacheJacobianContribution(cached_row, cached_row, cached_val);
 
-    if (_simulation_type == "steady" && _tid==0)
+    if (_simulation_type == "steady")
     {
       const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
 

@@ -149,7 +149,7 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
         transferAffineVectors();
 
       // Transfer the affine matrices to the RB system.
-      if(_skip_matrix_assembly_in_rb_system && _tid == 0)
+      if(_skip_matrix_assembly_in_rb_system)
         setAffineMatrices();
 
      // // Perform the offline stage.
