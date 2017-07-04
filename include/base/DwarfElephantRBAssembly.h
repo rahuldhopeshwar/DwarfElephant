@@ -2,8 +2,8 @@
 #define DWARFELEPHANTRBASSEMBLY_H
 
 //#include "MooseArray.h"
-#include "MooseTypes.h"
-//#include "Assembly.h"
+//#include "MooseTypes.h"
+#include "Assembly.h"
 
 //// libMesh
 //#include "libmesh/dense_matrix.h"
@@ -50,6 +50,10 @@ class DwarfElephantRBAssembly: public Assembly
 public:
   DwarfElephantRBAssembly(SystemBase & sys, THREAD_ID tid);
   virtual ~DwarfElephantRBAssembly();
+
+protected:
+  SystemBase & _sys;
+  THREAD_ID _tid;
 };
 
 #endif /* DWARFELEPHANTRBASSEMBLY_H */
