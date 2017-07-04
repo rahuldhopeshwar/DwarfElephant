@@ -24,3 +24,9 @@ DwarfElephantSystem::solve()
   // calculate the stiffness matrices
   _fe_problem.computeJacobian(_transient_sys, *_current_solution, *_transient_sys.matrix);
 }
+
+void
+DwarfElephantRBAssembly::newRBAssemblyArray(NonlinearSystemBase & nl)
+{
+    _rb_assembly = new DwarfElephantRBAssembly(nl, 0);
+}

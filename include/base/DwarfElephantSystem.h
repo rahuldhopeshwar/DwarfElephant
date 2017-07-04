@@ -33,6 +33,10 @@ public:
   // Initialize data structure
   virtual void 	solve () override;
 
+  virtual DwarfElephantRBAssembly & rbAssembly(THREAD_ID tid) override { return *_rb_assembly; }
+
+  virtual void newRBAssemblyArray(NonlinearSystemBase & nl);
+
   unsigned int u_var;
 
   DwarfElephantRBAssembly * _rb_assembly;
