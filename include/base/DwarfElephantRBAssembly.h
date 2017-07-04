@@ -36,7 +36,7 @@
 // MOOSE Forward Declares
 //class MooseMesh;
 //class ArbitraryQuadrature;
-//class SystemBase;
+class SystemBase;
 //class MooseVariable;
 //class XFEMInterface;
 //typedef MooseArray<std::vector<Real>> VariablePhiValue;
@@ -48,7 +48,7 @@ class Assembly;
 class DwarfElephantRBAssembly: public Assembly
 {
 public:
-  DwarfElepAssembly(SystemBase & sys, THREAD_ID tid);
+  DwarfElephantRBAssembly(SystemBase & sys, THREAD_ID tid);
   virtual ~DwarfElephantRBAssembly();
 };
 

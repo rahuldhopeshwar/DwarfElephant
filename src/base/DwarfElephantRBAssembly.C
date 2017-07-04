@@ -37,7 +37,7 @@
 //#include "libmesh/vector_value.h"
 
 DwarfElephantRBAssembly::DwarfElephantRBAssembly(SystemBase & sys, THREAD_ID tid)
-  : Assembly (sys, tid),
+  : Assembly(sys, tid),
     _sys(sys),
     _tid(tid)
 {
