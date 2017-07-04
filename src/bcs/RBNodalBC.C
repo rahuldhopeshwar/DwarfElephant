@@ -61,8 +61,9 @@ RBNodalBC::computeResidual(NumericVector<Number> & residual)
         if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         {
 
-         _cache_boundaries->resizeSubdomainVectorCaches(_initialize_rb_system._qf);
-         _cache_boundaries->cacheResidual(dof_idx, -res);
+          _initialize_rb_system._residuals[_ID_Fq]->set(dof_idx,-res);
+	   //_cache_boundaries->resizeSubdomainVectorCaches(_initialize_rb_system._qf);
+//         _cache_boundaries->cacheResidual(dof_idx, -res);
 
          // external Mesh
 //         const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
@@ -70,7 +71,7 @@ RBNodalBC::computeResidual(NumericVector<Number> & residual)
 //              it != _node_boundary_list.end(); ++it)
 //           _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, *it - 0);
 //           _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, *it - _ID_first_block);
-           _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, _ID_Fq);
+//           _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, _ID_Fq);
         }
       }
     }
@@ -115,7 +116,7 @@ RBNodalBC::computeJacobian()
     // Cache the user's computeQpJacobian() value for later use.
     _fe_problem.assembly(0).cacheJacobianContribution(cached_row, cached_row, cached_val);
 
-    if (_simulation_type == "steady")
+    if (_simulation_type == "steady" && _tid==0)
     {
       const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
 

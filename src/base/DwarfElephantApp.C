@@ -21,9 +21,11 @@
 
 // Kernels
 #include "Conduction.h"
+#include "DwarfElephantConductionLiftingFunction.h"
 #include "Darcy.h"
 #include "RBKernel.h"
 #include "RBDiffusion.h"
+#include "RBDiffusionLiftingFunction.h"
 
 // Materials
 #include "SandStone.h"
@@ -91,9 +93,11 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // Kernels
   registerKernel(Conduction);
+  registerKernel(DwarfElephantConductionLiftingFunction);
   registerKernel(Darcy);
   registerKernel(RBKernel);
   registerKernel(RBDiffusion);
+  registerKernel(RBDiffusionLiftingFunction);
 
   // Materials
   registerMaterial(SandStone);

@@ -319,7 +319,7 @@ public:
   bool offline_error_bound;
   Real epsilon_N;
   FEProblemBase & fe_problem;
-  RBP1T3EqualD1N1SteadyStateExpansion _rb_theta_expansion;
+  RBP1T1EqualD2SteadyStateExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------

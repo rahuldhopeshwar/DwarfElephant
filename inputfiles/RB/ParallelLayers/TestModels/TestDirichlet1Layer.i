@@ -23,20 +23,23 @@ active = 'temperature'
 []
 
 [Kernels]
-#active = 'RBConduction'
-active = 'Conduction'
+active = 'RBConduction'
+#active = 'Conduction'
 #active = 'Conduction Euler'
   [./RBConduction]
+    #type = RBDiffusionLiftingFunction
     type = RBDiffusion
     variable = temperature
     initial_rb_userobject = initializeRBSystem
-    simulation_type = transient
+    lifting_function = temperature_gradient
+    #simulation_type = transient
     #vector_seperation_according_to_subdomains = false
   [../]
 
   [./Conduction]
-    type = Conduction
+    type = DwarfElephantConductionLiftingFunction
     variable = temperature
+    lifting_function = temperature_gradient
   [../]
 
   [./Euler]
@@ -46,28 +49,28 @@ active = 'Conduction'
 []
 
 [BCs]
-#active = 'RBtop RBbottom'
-active = 'top bottom'
+active = 'RBtop RBbottom'
+#active = 'top bottom'
   [./RBtop]
     type = RBDirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
     boundary = 3 #4
-    value = 0.00
+    value = 20.00
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
     mesh_modified = false
-    simulation_type = transient
+    #simulation_type = transient
   [../]
   [./RBbottom]
-    type = RBDirichletBC
+    type = RBNeumannBC
     variable = temperature
     boundary = 1 #2
-    value = 0.00
+    value = 117.5 
     cache_boundaries = cacheBoundaries
     initial_rb_userobject = initializeRBSystem
     mesh_modified = false
-    simulation_type = transient
+    #simulation_type = transient
   [../]
 
   [./top]
@@ -84,24 +87,31 @@ active = 'top bottom'
     boundary = 1
     value = 0.00
   [../]
+  [./left]
+    type = FunctionDirichletBC
+    variable = temperature
+    #boundary = 'lefttop righttop'
+    boundary = 5
+    function = temperature_gradient
+  [../]
 []
 
 [Materials]
-#active = ' '
-active = 'shale_top'
+active = ' '
+#active = 'shale_top'
   [./shale_top]
     type = Shale
     block = 0
   [../]
 []
 
-#[Problem]
-#  type = DwarfElephantRBProblem
-#[]
+[Problem]
+  type = DwarfElephantRBProblem
+[]
 
 [Executioner]
-  #type = DwarfElephantRBSteady
-  type = Steady
+  type = DwarfElephantRBSteady
+  #type = Steady
   #type = Transient
 
   #num_steps = 10
@@ -113,8 +123,8 @@ active = 'shale_top'
 []
 
 [Functions]
-active = 'cacheBoundaries'
-#active = ''
+active = 'cacheBoundaries temperature_gradient'
+#active = 'temperature_gradient'
   [./cacheBoundaries]
     type = CacheBoundaries
   [../]
@@ -132,21 +142,21 @@ active = 'initializeRBSystem performRBSystem'
 #active = ''
 
   [./initializeRBSystem]
-    type = DwarfElephantInitializeRBSystemTransient
-    parameters_filename = inputfiles/RB/ParallelLayers/TestModels/unique_square.i
+    type = DwarfElephantInitializeRBSystemSteadyState
+    parameters_filename = inputfiles/RB/ParallelLayers/TestModels/TestDirichlet1Layer.i
     skip_matrix_assembly_in_rb_system = true
     skip_vector_assembly_in_rb_system = true
     cache_boundaries = cacheBoundaries
     offline_stage = true
     execute_on = 'initial'
-    transient = true
+    #transient = true
     #system = nl0
   [../]
 
   [./performRBSystem]
-    type = DwarfElephantOfflineOnlineStageTransient
+    type = DwarfElephantOfflineOnlineStageSteadyState
 
-    exodus_file_name = unique_square
+    exodus_file_name = TestDirichlet1Layer
 
     offline_stage = true
     online_stage = false

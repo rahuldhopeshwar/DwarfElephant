@@ -71,25 +71,29 @@ DwarfElephantOfflineOnlineStageSteadyState::setAffineMatrices()
 void
 DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
 {
-  // Transfer the vectors
-  // Transfer the data for the F vectors.
-  for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
-  {
-    _cache_boundaries->setCachedSubdomainResidual(*_initialize_rb_system._residuals[_q], _q);
-    _initialize_rb_system._residuals[_q]->close();
-  }
+ // PARALLEL_TRY
+ // {
+ // // Transfer the vectors
+ // // Transfer the data for the F vectors.
+ // for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
+ // {
+    //_cache_boundaries->setCachedSubdomainResidual(*_initialize_rb_system._residuals[_q], _q);
+ //   _initialize_rb_system._residuals[_q]->close();
+ // }
 
-  // Transfer the data for the output vectors.
-  for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
-  {
-    for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
-    {
-      _cache_boundaries->setCachedResidual(*_initialize_rb_system._outputs[i][_q]);
-      _initialize_rb_system._outputs[i][_q]->close();
-      *_initialize_rb_system._outputs[i][_q] /= _mesh_ptr->nNodes();
+//  // Transfer the data for the output vectors.
+//  for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
+//  {
+//    for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
+//    {
+      //_cache_boundaries->setCachedResidual(*_initialize_rb_system._outputs[i][_q]);
+//      _initialize_rb_system._outputs[i][_q]->close();
+//      *_initialize_rb_system._outputs[i][_q] /= _mesh_ptr->nNodes();
 //          _initialize_rb_system._outputs[_q]->set(100, 17.5);
-      }
-    }
+//      }
+//    }
+//  }
+//  PARALLEL_CATCH;
 }
 
 void
@@ -145,13 +149,13 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
         transferAffineVectors();
 
       // Transfer the affine matrices to the RB system.
-      if(_skip_matrix_assembly_in_rb_system)
+      if(_skip_matrix_assembly_in_rb_system && _tid == 0)
         setAffineMatrices();
 
-      // Perform the offline stage.
-      _console << std::endl;
-      offlineStage();
-      _console << std::endl;
+     // // Perform the offline stage.
+     // _console << std::endl;
+     // offlineStage();
+     // _console << std::endl;
     }
 
     if(_online_stage)
@@ -195,4 +199,5 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 void
 DwarfElephantOfflineOnlineStageSteadyState::finalize()
 {
+  //_console << *_initialize_rb_system._residuals[0] << std::endl;
 }
