@@ -10,6 +10,7 @@
 #include "RBNodalBC.h"
 #include "MooseVariable.h"
 #include "Assembly.h"
+#include "DwarfElephantRBProblem.h"
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
@@ -39,6 +40,9 @@ RBNodalBC::RBNodalBC(const InputParameters & parameters) :
 {
 
     _cache_boundaries = dynamic_cast<CacheBoundaries *>(_function);
+    DwarfElephantRBProblem & _rb_problem = cast_ref<DwarfElephantRBProblem &>(_fe_problem);
+    
+    //_rb_problem.newRBAssemblyArray(_fe_problem.getNonlinearSystemBase());
 }
 
 ///-------------------------------------------------------------------------

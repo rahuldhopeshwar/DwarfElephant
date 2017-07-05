@@ -36,13 +36,13 @@ RBDiffusionLiftingFunction::RBDiffusionLiftingFunction(const InputParameters & p
 Real
 RBDiffusionLiftingFunction::computeQpResidual()
 {
-  return (_grad_u[_qp]-_lifting_function->gradient(_fe_problem.time(),_qp))*_grad_test[_i][_qp];
+  return 1.05 *   (_grad_test[_i][_qp]*(_grad_u[_qp]-_lifting_function->gradient(_fe_problem.time(),_qp)));
 }
 
 Real
 RBDiffusionLiftingFunction::computeQpJacobian()
 {
-  return _grad_phi[_j][_qp] * _grad_test[_i][_qp];
+  return  1.05*(_grad_phi[_j][_qp] * _grad_test[_i][_qp]);
 }
 
 Real

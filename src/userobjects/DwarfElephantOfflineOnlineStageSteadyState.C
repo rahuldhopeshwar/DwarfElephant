@@ -75,11 +75,11 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
  // {
  // // Transfer the vectors
  // // Transfer the data for the F vectors.
- // for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
- // {
+  for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
+  {
     //_cache_boundaries->setCachedSubdomainResidual(*_initialize_rb_system._residuals[_q], _q);
- //   _initialize_rb_system._residuals[_q]->close();
- // }
+    _initialize_rb_system._residuals[_q]->close();
+  }
 
 //  // Transfer the data for the output vectors.
 //  for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
@@ -152,10 +152,10 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       if(_skip_matrix_assembly_in_rb_system)
         setAffineMatrices();
 
-     // // Perform the offline stage.
-     // _console << std::endl;
-     // offlineStage();
-     // _console << std::endl;
+      // Perform the offline stage.
+      _console << std::endl;
+      offlineStage();
+      _console << std::endl;
     }
 
     if(_online_stage)

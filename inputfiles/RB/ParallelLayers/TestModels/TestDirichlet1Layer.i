@@ -1,16 +1,16 @@
 [Mesh]
 #file = meshs/1x1x1_cube.e
   type = GeneratedMesh
-  dim = 3
+  dim = 2
   nx = 2
   ny = 2
-  nz = 2
+  #nz = 2
   xmin = 0.0
   xmax = 1
   ymin = 0.0
   ymax = 1
-  zmin = 0.0
-  zmax = 1
+  #zmin = 0.0
+  #zmax = 1
   #elem_type=TET4
 []
 
@@ -23,12 +23,12 @@ active = 'temperature'
 []
 
 [Kernels]
-active = 'RBConduction'
-#active = 'Conduction'
+#active = 'RBConduction'
+active = 'Conduction'
 #active = 'Conduction Euler'
   [./RBConduction]
-    #type = RBDiffusionLiftingFunction
-    type = RBDiffusion
+    type = RBDiffusionLiftingFunction
+    #type = RBDiffusion
     variable = temperature
     initial_rb_userobject = initializeRBSystem
     lifting_function = temperature_gradient
@@ -37,9 +37,12 @@ active = 'RBConduction'
   [../]
 
   [./Conduction]
-    type = DwarfElephantConductionLiftingFunction
+    #type = Conduction
+    #type = DwarfElephantConductionLiftingFunction
+    type = RBDiffusionLiftingFunction
     variable = temperature
     lifting_function = temperature_gradient
+    initial_rb_userobject = initializeRBSystem
   [../]
 
   [./Euler]
@@ -49,14 +52,15 @@ active = 'RBConduction'
 []
 
 [BCs]
-active = 'RBtop RBbottom'
-#active = 'top bottom'
+#active = 'RBtop RBbottom'
+active = 'top bottom'
+#active = ' '
   [./RBtop]
     type = RBDirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
     boundary = 3 #4
-    value = 20.00
+    value = 0.00
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
     mesh_modified = false
@@ -77,15 +81,15 @@ active = 'RBtop RBbottom'
     type = DirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
-    boundary = 3
-    value = 0.00
+    boundary = 2
+    value = 0
   [../]
   [./bottom]
     type = DirichletBC
     variable = temperature
     #boundary = 'leftbottom rightbottom'
-    boundary = 1
-    value = 0.00
+    boundary = 0
+    value = 0
   [../]
   [./left]
     type = FunctionDirichletBC
@@ -97,8 +101,8 @@ active = 'RBtop RBbottom'
 []
 
 [Materials]
-active = ' '
-#active = 'shale_top'
+#active = ' '
+active = 'shale_top'
   [./shale_top]
     type = Shale
     block = 0
@@ -138,7 +142,8 @@ active = 'cacheBoundaries temperature_gradient'
 []
 
 [UserObjects]
-active = 'initializeRBSystem performRBSystem'
+#active = 'initializeRBSystem performRBSystem'
+active = 'initializeRBSystem'
 #active = ''
 
   [./initializeRBSystem]
@@ -159,7 +164,7 @@ active = 'initializeRBSystem performRBSystem'
     exodus_file_name = TestDirichlet1Layer
 
     offline_stage = true
-    online_stage = false
+    online_stage = true
     offline_error_bound = false
     store_basis_functions = true
 
@@ -175,7 +180,7 @@ active = 'initializeRBSystem performRBSystem'
 
 [Outputs]
   print_perf_log = false
-  exodus = false
+  exodus = true
   execute_on = 'timestep_end'
 
   [./console]

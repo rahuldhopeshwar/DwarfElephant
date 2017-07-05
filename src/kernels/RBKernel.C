@@ -111,9 +111,14 @@ RBKernel::computeResidual()
   precalculateResidual();
   for (_i = 0; _i < _test.size(); _i++)
     for (_qp = 0; _qp < _qrule->n_points(); _qp++)
+      {
       _local_re(_i) += _JxW[_qp] * _coord[_qp] * computeQpResidual();
+      _console << "weights: " << _JxW[_qp] << std::endl;
+      }
 
   re += _local_re;
+  
+  _console << _local_re << std::endl;
 
 
 //  if ((_min_x <= _centroid(0)) && (_centroid(0) <= _max_x) &&

@@ -17,16 +17,18 @@ DwarfElephantSystem::solve()
     // calculate the load vectors
     _computing_initial_residual = true;
     _fe_problem.computeResidual(_transient_sys, *_current_solution, *_transient_sys.rhs);
+    _console << *_transient_sys.rhs << std::endl;
     _computing_initial_residual = false;
     _transient_sys.rhs->close();
   }
 
   // calculate the stiffness matrices
   _fe_problem.computeJacobian(_transient_sys, *_current_solution, *_transient_sys.matrix);
+  _console << *_transient_sys.matrix << std::endl;
 }
 
 void
-DwarfElephantRBAssembly::newRBAssemblyArray(NonlinearSystemBase & nl)
+DwarfElephantSystem::newRBAssemblyArray(NonlinearSystemBase & nl)
 {
     _rb_assembly = new DwarfElephantRBAssembly(nl, 0);
 }
