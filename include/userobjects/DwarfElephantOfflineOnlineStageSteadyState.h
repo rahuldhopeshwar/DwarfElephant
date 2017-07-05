@@ -83,8 +83,8 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     TransientNonlinearImplicitSystem & _sys;
     const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system;
 
-    Function * _function;
-    CacheBoundaries * _cache_boundaries;
+//    Function * _function;
+//    CacheBoundaries * _cache_boundaries;
     MooseMesh * _mesh_ptr;
 
     const std::set<SubdomainID> & _subdomain_ids;
@@ -94,7 +94,7 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     std::vector<Real> _online_mu_parameters;
 
     RBParameters _rb_online_mu;
-    
+
     DwarfElephantRBProblem * _rb_problem;
 };
 ///-------------------------------------------------------------------------

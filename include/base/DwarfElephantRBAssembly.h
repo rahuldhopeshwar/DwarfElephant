@@ -38,6 +38,8 @@ public:
   void setCachedSubdomainStiffnessMatrixContributions(SparseMatrix<Number> & _jacobian, unsigned int subdomain);
   void setCachedSubdomainMassMatrixContributions(SparseMatrix<Number> & _mass, unsigned int subdomain);
 
+  void clearCachedSubdomainStiffnessMatrixContributions();
+
   void resizeSubdomainStiffnessMatrixCaches(unsigned int subdomains);
   void resizeSubdomainMassMatrixCaches(unsigned int subdomains);
   void resizeSubdomainVectorCaches(unsigned int subdomains);

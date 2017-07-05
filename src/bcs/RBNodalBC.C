@@ -18,7 +18,7 @@ InputParameters validParams<RBNodalBC>()
   InputParameters params = validParams<NodalBC>();
 
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
-  params.addRequiredParam<FunctionName>("cache_boundaries", "");
+//  params.addRequiredParam<FunctionName>("cache_boundaries", "");
   params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
   params.addParam<unsigned int>("ID_Fq", 0 , "ID if the load vector.");
   params.addParam<unsigned int>("ID_Aq", 0 , "ID if the stiffness matrix.");
@@ -35,12 +35,12 @@ RBNodalBC::RBNodalBC(const InputParameters & parameters) :
     _ID_Fq(getParam<unsigned int>("ID_Fq")),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
     _ID_Mq(getParam<unsigned int>("ID_Mq")),
-    _function(&getFunction("cache_boundaries"))
+//    _function(&getFunction("cache_boundaries"))
 {
 
-    _cache_boundaries = dynamic_cast<CacheBoundaries *>(_function);
+//    _cache_boundaries = dynamic_cast<CacheBoundaries *>(_function);
     _rb_problem = cast_ptr<DwarfElephantRBProblem *>(&_fe_problem);
-    
+
     _rb_problem->newRBAssemblyArray(_fe_problem.getNonlinearSystemBase());
 }
 
@@ -128,7 +128,7 @@ RBNodalBC::computeJacobian()
         if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
         {
 //          _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
-          _cache_boundaries->resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
+//          _cache_boundaries->resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
 	  _rb_problem->rbAssembly(0).resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
 
           // external mesh
@@ -136,7 +136,7 @@ RBNodalBC::computeJacobian()
 //          for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
 //               it != _node_boundary_list.end(); ++it)
 //            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val,*it - _ID_first_block);
-            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
+//            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
 	    _rb_problem->rbAssembly(0).cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
         }
       }

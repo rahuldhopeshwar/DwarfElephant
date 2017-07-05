@@ -23,7 +23,7 @@
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
 #include "DwarfElephantInitializeRBSystemTransient.h"
 #include "DwarfElephantRBProblem.h"
-#include "CacheBoundaries.h"
+//#include "CacheBoundaries.h"
 
 ///-------------------------------------------------------------------------
 // Forward declarations
@@ -34,7 +34,7 @@ namespace libMesh
 
 class MooseMesh;
 class NonlinearSystemBase;
-class CacheBoundaries;
+//class CacheBoundaries;
 
 class DwarfElephantInitializeRBSystemSteadyState;
 class RBNodalBC;
@@ -69,8 +69,8 @@ protected:
   unsigned int _ID_Aq;
   unsigned int _ID_Mq;
 
-  Function * _function;
-  CacheBoundaries * _cache_boundaries;
+//  Function * _function;
+//  CacheBoundaries * _cache_boundaries;
   DwarfElephantRBProblem * _rb_problem;
 };
 
