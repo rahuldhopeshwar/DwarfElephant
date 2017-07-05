@@ -34,7 +34,7 @@ RBNodalBC::RBNodalBC(const InputParameters & parameters) :
     _simulation_type(getParam<std::string>("simulation_type")),
     _ID_Fq(getParam<unsigned int>("ID_Fq")),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
-    _ID_Mq(getParam<unsigned int>("ID_Mq")),
+    _ID_Mq(getParam<unsigned int>("ID_Mq"))
 //    _function(&getFunction("cache_boundaries"))
 {
 
@@ -87,9 +87,9 @@ RBNodalBC::computeResidual(NumericVector<Number> & residual)
       {
         if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         {
-          _cache_boundaries->resizeSubdomainVectorCaches(_initialize_rb_system._qf);
-          _cache_boundaries->cacheResidual(dof_idx, -res);
-          _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, _ID_Fq);
+          //_cache_boundaries->resizeSubdomainVectorCaches(_initialize_rb_system._qf);
+//          _cache_boundaries->cacheResidual(dof_idx, -res);
+//          _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, _ID_Fq);
         }
       }
     }
@@ -129,7 +129,7 @@ RBNodalBC::computeJacobian()
         {
 //          _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
 //          _cache_boundaries->resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
-	  _rb_problem->rbAssembly(0).resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
+	  _rb_problem->rbAssembly(_mesh.getMesh().processor_id()).resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
 
           // external mesh
 //          const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
@@ -137,7 +137,7 @@ RBNodalBC::computeJacobian()
 //               it != _node_boundary_list.end(); ++it)
 //            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val,*it - _ID_first_block);
 //            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
-	    _rb_problem->rbAssembly(0).cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
+	    _rb_problem->rbAssembly(_mesh.getMesh().processor_id()).cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
         }
       }
     }
@@ -151,10 +151,10 @@ RBNodalBC::computeJacobian()
         if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
         {
 //          _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
-          _cache_boundaries->resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
-          _cache_boundaries->resizeSubdomainMassMatrixCaches(_initialize_rb_system._qm);
-          _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
-          _cache_boundaries->cacheSubdomainMassMatrixContribution(cached_row, cached_row, cached_val, _ID_Mq);
+          //_cache_boundaries->resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
+          //_cache_boundaries->resizeSubdomainMassMatrixCaches(_initialize_rb_system._qm);
+          //_cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
+//          _cache_boundaries->cacheSubdomainMassMatrixContribution(cached_row, cached_row, cached_val, _ID_Mq);
         }
       }
     }

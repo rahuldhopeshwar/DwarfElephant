@@ -115,7 +115,7 @@ DwarfElephantRBAssembly::setCachedSubdomainStiffnessMatrixContributions(SparseMa
                   _cached_jacobian_subdomain_contribution_vals[subdomain][i]);
   }
 
-  clearCachedSubdomainStiffnessMatrixContributions();
+  clearCachedSubdomainStiffnessMatrixContributions(subdomain);
 }
 
 void
@@ -134,15 +134,13 @@ DwarfElephantRBAssembly::setCachedSubdomainMassMatrixContributions(SparseMatrix<
 
 
 void
-DwarfElephantRBAssembly::clearCachedSubdomainStiffnessMatrixContributions()
+DwarfElephantRBAssembly::clearCachedSubdomainStiffnessMatrixContributions(unsigned int subdomains)
 {
-   for (unsigned int i = 0; i < _cached_jacobian_subdomain_contribution_vals[subdomain].size(); ++i)
-  {
     unsigned int orig_size = _cached_jacobian_contribution_rows.size();
 
-    _cached_jacobian_contribution_rows[i].clear();
-    _cached_jacobian_contribution_cols[i].clear();
-    _cached_jacobian_contribution_vals[i].clear();
+    _cached_jacobian_subdomain_contribution_rows[subdomains].clear();
+    _cached_jacobian_subdomain_contribution_cols[subdomains].clear();
+    _cached_jacobian_subdomain_contribution_vals[subdomains].clear();
 
     // It's possible (though massively unlikely) that clear() will
     // change the capacity of the vectors, so let's be paranoid and
@@ -151,7 +149,7 @@ DwarfElephantRBAssembly::clearCachedSubdomainStiffnessMatrixContributions()
     // original size that was cached to account for variations in the
     // number of BCs assigned to each thread (for when the Jacobian
     // contributions are computed threaded).
-    _cached_jacobian_contribution_rows[i].reserve(1.2 * orig_size);
-    _cached_jacobian_contribution_cols[i].reserve(1.2 * orig_size);
-    _cached_jacobian_contribution_vals[i].reserve(1.2 * orig_size);
+    _cached_jacobian_subdomain_contribution_rows[subdomains].reserve(1.2 * orig_size);
+    _cached_jacobian_subdomain_contribution_cols[subdomains].reserve(1.2 * orig_size);
+    _cached_jacobian_subdomain_contribution_vals[subdomains].reserve(1.2 * orig_size);
 }
