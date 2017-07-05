@@ -26,9 +26,3 @@ DwarfElephantSystem::solve()
   _fe_problem.computeJacobian(_transient_sys, *_current_solution, *_transient_sys.matrix);
   _console << *_transient_sys.matrix << std::endl;
 }
-
-void
-DwarfElephantSystem::newRBAssemblyArray(NonlinearSystemBase & nl)
-{
-    _rb_assembly = new DwarfElephantRBAssembly(nl, 0);
-}

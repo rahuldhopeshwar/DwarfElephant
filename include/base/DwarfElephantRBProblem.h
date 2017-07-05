@@ -7,6 +7,7 @@
 // MOOSE includes
 #include "FEProblemBase.h"
 #include "DwarfElephantSystem.h"
+#include "DwarfElephantRBAssembly.h"
 
 
 ///-------------------------------------------------------------------------
@@ -31,8 +32,14 @@ class DwarfElephantRBProblem :
 
     NonlinearSystem & getNonlinearSystem() override { return *_nl_sys; }
 
+    virtual DwarfElephantRBAssembly & rbAssembly(THREAD_ID tid) { return *_rb_assembly; }
+
+    virtual void newRBAssemblyArray(NonlinearSystemBase & nl);
+
   protected:
     NonlinearSystem * _nl_sys;
+
+    DwarfElephantRBAssembly * _rb_assembly;
 
 };
 ///-------------------------------------------------------------------------

@@ -61,3 +61,10 @@ DwarfElephantRBProblem::solve()
 
   Moose::perf_log.pop("constructRB()", "Execution");
 }
+
+void
+DwarfElephantRBProblem::newRBAssemblyArray(NonlinearSystemBase & nl)
+{
+    _rb_assembly = new DwarfElephantRBAssembly(nl, 0);
+}
+

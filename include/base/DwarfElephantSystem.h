@@ -8,7 +8,6 @@
 #include "FEProblemBase.h"
 #include "TimeIntegrator.h"
 #include "NonlinearSystem.h"
-#include "DwarfElephantRBAssembly.h"
 
 // MOOSE includes (DwarfElephant package)
 //#include "RBStructuresP1Theta3ThetaEqualMuSteadyState.h"
@@ -33,13 +32,7 @@ public:
   // Initialize data structure
   virtual void 	solve () override;
 
-  virtual DwarfElephantRBAssembly & rbAssembly(THREAD_ID tid) { return *_rb_assembly; }
-
-  virtual void newRBAssemblyArray(NonlinearSystemBase & nl);
-
   unsigned int u_var;
-
-  DwarfElephantRBAssembly * _rb_assembly;
 };
 
 #endif /* DWARFELEPHANTSYSTEM_H */
