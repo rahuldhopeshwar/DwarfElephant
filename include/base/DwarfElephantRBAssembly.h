@@ -5,7 +5,8 @@
 #include "libmesh/sparse_matrix.h"
 #include "libmesh/numeric_vector.h"
 
-#include "Assembly.h"
+//#include "Assembly.h"
+#include "MooseTypes.h"
 
 // Forward Declarations
 namespace libMesh
@@ -16,10 +17,10 @@ namespace libMesh
 
 // MOOSE Forward Declares
 class SystemBase;
-class Assembly;
+//class Assembly;
 
 
-class DwarfElephantRBAssembly: public Assembly
+class DwarfElephantRBAssembly //: public Assembly
 {
 public:
   DwarfElephantRBAssembly(SystemBase & sys, THREAD_ID tid);

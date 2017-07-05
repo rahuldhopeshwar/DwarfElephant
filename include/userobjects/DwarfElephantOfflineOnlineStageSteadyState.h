@@ -23,6 +23,7 @@
 #include "DwarfElephantRBClassesSteadyState.h"
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
 #include "CacheBoundaries.h"
+#include "DwarfElephantRBProblem.h"
 
 
 ///-------------------------------------------------------------------------
@@ -93,6 +94,8 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     std::vector<Real> _online_mu_parameters;
 
     RBParameters _rb_online_mu;
+    
+    DwarfElephantRBProblem * _rb_problem;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTOFFLINEONLINESTAGESTEADYSTATE_H

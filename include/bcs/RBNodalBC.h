@@ -22,6 +22,7 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
 #include "DwarfElephantInitializeRBSystemTransient.h"
+#include "DwarfElephantRBProblem.h"
 #include "CacheBoundaries.h"
 
 ///-------------------------------------------------------------------------
@@ -70,6 +71,7 @@ protected:
 
   Function * _function;
   CacheBoundaries * _cache_boundaries;
+  DwarfElephantRBProblem * _rb_problem;
 };
 
 #endif /* RBNODALBC_H */

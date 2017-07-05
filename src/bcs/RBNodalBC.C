@@ -10,7 +10,6 @@
 #include "RBNodalBC.h"
 #include "MooseVariable.h"
 #include "Assembly.h"
-#include "DwarfElephantRBProblem.h"
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
@@ -40,9 +39,9 @@ RBNodalBC::RBNodalBC(const InputParameters & parameters) :
 {
 
     _cache_boundaries = dynamic_cast<CacheBoundaries *>(_function);
-    DwarfElephantRBProblem & _rb_problem = cast_ref<DwarfElephantRBProblem &>(_fe_problem);
+    _rb_problem = cast_ptr<DwarfElephantRBProblem *>(&_fe_problem);
     
-    //_rb_problem.newRBAssemblyArray(_fe_problem.getNonlinearSystemBase());
+    _rb_problem->newRBAssemblyArray(_fe_problem.getNonlinearSystemBase());
 }
 
 ///-------------------------------------------------------------------------
@@ -130,6 +129,7 @@ RBNodalBC::computeJacobian()
         {
 //          _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
           _cache_boundaries->resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
+	  _rb_problem->rbAssembly(0).resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
 
           // external mesh
 //          const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
@@ -137,6 +137,7 @@ RBNodalBC::computeJacobian()
 //               it != _node_boundary_list.end(); ++it)
 //            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val,*it - _ID_first_block);
             _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
+	    _rb_problem->rbAssembly(0).cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
         }
       }
     }

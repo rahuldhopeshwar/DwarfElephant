@@ -54,18 +54,25 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     _online_mu_parameters(getParam<std::vector<Real>>("online_mu"))
 {
   _cache_boundaries = dynamic_cast<CacheBoundaries *>(_function);
+  _rb_problem = cast_ptr<DwarfElephantRBProblem *>(&_fe_problem);
 }
 
 void
 DwarfElephantOfflineOnlineStageSteadyState::setAffineMatrices()
 {
+  PARALLEL_TRY
+  {
    _initialize_rb_system._inner_product_matrix -> close();
     for(unsigned int _q=0; _q<_initialize_rb_system._qa; _q++)
     {
-      _cache_boundaries->setCachedSubdomainStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q], _q);
+      //_cache_boundaries->setCachedSubdomainStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q], _q);
+      _rb_problem->rbAssembly(0).setCachedSubdomainStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q], _q);
       _initialize_rb_system._jacobian_subdomain[_q] ->close();
+      //_fe_problem.assembly(0).setCachedJacobianContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
       _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
     }
+  }
+  PARALLEL_CATCH;
 }
 
 void
@@ -78,7 +85,7 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
   for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
   {
     //_cache_boundaries->setCachedSubdomainResidual(*_initialize_rb_system._residuals[_q], _q);
-    _initialize_rb_system._residuals[_q]->close();
+    //_initialize_rb_system._residuals[_q]->close();
   }
 
 //  // Transfer the data for the output vectors.
@@ -144,9 +151,9 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
     if (_offline_stage)
     {
-      // Transfer the affine vectors to the RB system.
-      if(_skip_vector_assembly_in_rb_system)
-        transferAffineVectors();
+      // // Transfer the affine vectors to the RB system.
+      // if(_skip_vector_assembly_in_rb_system)
+      //  transferAffineVectors();
 
       // Transfer the affine matrices to the RB system.
       if(_skip_matrix_assembly_in_rb_system)

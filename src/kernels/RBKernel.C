@@ -114,6 +114,7 @@ RBKernel::computeResidual()
       {
       _local_re(_i) += _JxW[_qp] * _coord[_qp] * computeQpResidual();
       _console << "weights: " << _JxW[_qp] << std::endl;
+      _console << "residual: " << computeQpResidual() << std::endl;
       }
 
   re += _local_re;
