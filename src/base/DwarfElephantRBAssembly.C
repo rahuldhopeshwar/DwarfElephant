@@ -133,7 +133,7 @@ DwarfElephantRBAssembly::setCachedStiffnessMatrixContributions(SparseMatrix<Numb
 
 
 void
-DwarfElephantRBAssembly::clearCachedSubdomainStiffnessMatrixContributions(unsigned int subdomains)
+DwarfElephantRBAssembly::clearCachedStiffnessMatrixContributions()
 {
     unsigned int orig_size = _cached_jacobian_contribution_rows.size();
 
