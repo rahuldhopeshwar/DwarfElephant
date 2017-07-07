@@ -161,8 +161,8 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       if(_skip_matrix_assembly_in_rb_system)
       {
         _initialize_rb_system._jacobian_subdomain[0]->close();         _rb_problem->rbAssembly(0).setCachedJacobian(*_initialize_rb_system._jacobian_subdomain[0]);
+	setAffineMatrices();
        }
-//        setAffineMatrices();
 
       // Perform the offline stage.
       //_console << std::endl;
