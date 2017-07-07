@@ -65,9 +65,7 @@ RBNodalBC::computeResidual(NumericVector<Number> & residual)
         if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         {
 
-          _initialize_rb_system._residuals[_ID_Fq]->set(dof_idx,-res);
-	   //_cache_boundaries->resizeSubdomainVectorCaches(_initialize_rb_system._qf);
-//         _cache_boundaries->cacheResidual(dof_idx, -res);
+          _rb_problem->rbAssembly(_ID_Fq).cacheResidual(dof_idx, -res);
 
          // external Mesh
 //         const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);

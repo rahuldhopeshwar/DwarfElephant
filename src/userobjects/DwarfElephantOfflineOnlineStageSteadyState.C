@@ -82,7 +82,7 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
     // Transfer the data for the F vectors.
     for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
     {
-      _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q], _q);
+      _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q]);
       _initialize_rb_system._residuals[_q]->close();
     }
 
