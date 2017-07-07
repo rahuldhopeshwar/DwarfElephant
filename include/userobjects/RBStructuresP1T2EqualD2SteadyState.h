@@ -53,9 +53,9 @@ namespace libMesh
  *
  */
 
-struct RBP1T2EqualMuD2SteadyStateExpansion : RBThetaExpansion
+struct RBP1T2EqualD2SteadyStateExpansion : RBThetaExpansion
 {
-  RBP1T2EqualMuD2SteadyStateExpansion()
+  RBP1T2EqualD2SteadyStateExpansion()
   {
     // Setting up the RBThetaExpansion object
     attach_A_theta(&_theta_a_0);
