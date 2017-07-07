@@ -65,10 +65,9 @@ DwarfElephantOfflineOnlineStageSteadyState::setAffineMatrices()
    _initialize_rb_system._inner_product_matrix -> close();
     for(unsigned int _q=0; _q<_initialize_rb_system._qa; _q++)
     {
-          _rb_problem->rbAssembly(0).setCachedStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[0]);
-      //_initialize_rb_system._jacobian_subdomain[_q] ->close();
-      //_fe_problem.assembly(0).setCachedJacobianContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
-      //_initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
+      _rb_problem->rbAssembly(_q).setCachedStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
+      _initialize_rb_system._jacobian_subdomain[_q] ->close();
+      _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
     }
   }
   PARALLEL_CATCH;
@@ -77,29 +76,29 @@ DwarfElephantOfflineOnlineStageSteadyState::setAffineMatrices()
 void
 DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
 {
- // PARALLEL_TRY
- // {
- // // Transfer the vectors
- // // Transfer the data for the F vectors.
-  for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
+  PARALLEL_TRY
   {
-    //_cache_boundaries->setCachedSubdomainResidual(*_initialize_rb_system._residuals[_q], _q);
-    //_initialize_rb_system._residuals[_q]->close();
-  }
+    // Transfer the vectors
+    // Transfer the data for the F vectors.
+    for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
+    {
+      _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q], _q);
+      _initialize_rb_system._residuals[_q]->close();
+    }
 
-//  // Transfer the data for the output vectors.
-//  for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
-//  {
-//    for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
-//    {
-      //_cache_boundaries->setCachedResidual(*_initialize_rb_system._outputs[i][_q]);
-//      _initialize_rb_system._outputs[i][_q]->close();
+    // Transfer the data for the output vectors.
+    for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
+    {
+      for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
+      {
+        _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._outputs[i][_q]);
+        _initialize_rb_system._outputs[i][_q]->close();
 //      *_initialize_rb_system._outputs[i][_q] /= _mesh_ptr->nNodes();
 //          _initialize_rb_system._outputs[_q]->set(100, 17.5);
-//      }
-//    }
-//  }
-//  PARALLEL_CATCH;
+      }
+    }
+  }
+  PARALLEL_CATCH;
 }
 
 void
@@ -158,10 +157,7 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
       // Transfer the affine matrices to the RB system.
       if(_skip_matrix_assembly_in_rb_system)
-      {
-        _initialize_rb_system._jacobian_subdomain[0]->close();         //_rb_problem->rbAssembly(0).setCachedJacobian(*_initialize_rb_system._jacobian_subdomain[0]);
-	setAffineMatrices();
-       }
+        setAffineMatrices();
 
       // Perform the offline stage.
       //_console << std::endl;

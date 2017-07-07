@@ -61,8 +61,7 @@ struct RBP1T2EqualMuD2SteadyStateExpansion : RBThetaExpansion
     attach_A_theta(&_theta_a_0);
     attach_A_theta(&_theta_a_1);
 
-    attach_F_theta(&_theta_a_0);
-    attach_F_theta(&_theta_a_1);
+    attach_F_theta(&_rb_theta);
 
     attach_output_theta(&_rb_theta);
 
