@@ -32,7 +32,7 @@ active = 'RBConduction'
     initial_rb_userobject = initializeRBSystem
     lifting_function = temperature_gradient
     #simulation_type = transient
-    #vector_seperation_according_to_subdomains = false
+    vector_seperation_according_to_subdomains = false
   [../]
 
   [./Conduction]
@@ -56,7 +56,7 @@ active = 'RBtop RBbottom'
     type = RBDirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
-    boundary = 3 #4
+    boundary = 2 #4
     value = 0.00
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
@@ -68,7 +68,7 @@ active = 'RBtop RBbottom'
     type = RBNeumannBC
     variable = temperature
     boundary = 1 #2
-    value = 117.5
+    value = -30.5
     cache_boundaries = cacheBoundaries
     initial_rb_userobject = initializeRBSystem
     mesh_modified = false
@@ -162,7 +162,7 @@ active = 'initializeRBSystem performRBSystem'
     exodus_file_name = TestParallelBoundaries
 
     offline_stage = true
-    online_stage = false
+    online_stage = true
     offline_error_bound = false
     store_basis_functions = true
 

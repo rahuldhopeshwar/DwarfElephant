@@ -82,7 +82,7 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
     // Transfer the data for the F vectors.
     for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
     {
-      _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q]);
+      //_rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q]);
       _initialize_rb_system._residuals[_q]->close();
     }
 
@@ -91,7 +91,7 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
     {
       for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
       {
-        _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._outputs[i][_q]);
+        //_rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._outputs[i][_q]);
         _initialize_rb_system._outputs[i][_q]->close();
 //      *_initialize_rb_system._outputs[i][_q] /= _mesh_ptr->nNodes();
 //          _initialize_rb_system._outputs[_q]->set(100, 17.5);
@@ -150,9 +150,9 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
     if (_offline_stage)
     {
-      // // Transfer the affine vectors to the RB system.
-      // if(_skip_vector_assembly_in_rb_system)
-      //  transferAffineVectors();
+       // Transfer the affine vectors to the RB system.
+       if(_skip_vector_assembly_in_rb_system)
+        transferAffineVectors();
 
 
       // Transfer the affine matrices to the RB system.
@@ -160,9 +160,9 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
         setAffineMatrices();
 
       // Perform the offline stage.
-      //_console << std::endl;
-      //offlineStage();
-      //_console << std::endl;
+      _console << std::endl;
+      offlineStage();
+      _console << std::endl;
     }
 
     if(_online_stage)

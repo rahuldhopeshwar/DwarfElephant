@@ -37,7 +37,7 @@ InputParameters validParams<RBKernel>()
   params.addParam<unsigned int>("ID_Fq", 0, "ID of the current stiffness matrix");
   params.addParam<bool>("matrix_seperation_according_to_subdomains", true, "Tells whether the stiffness matrix is separated according to the subdomain_ids");
   params.addParam<bool>("time_matrix_seperation_according_to_subdomains", true, "Tells whether the mass matrix is separated according to the subdomain_ids");
-  params.addParam<bool>("vector_seperation_according_to_subdomains", true, "Tells whether the load vector is separated according to the subdomain_ids");
+  params.addParam<bool>("vector_seperation_according_to_subdomains", false, "Tells whether the load vector is separated according to the subdomain_ids");
 //  params.addRequiredParam<Real>("max_x","Maximum extension of the volume of interest in x-direction.");
 //  params.addRequiredParam<Real>("min_x","Minimum extension of the volume of interest in x-direction.");
 //  params.addRequiredParam<Real>("max_y","Maximum extension of the volume of interest in y-direction.");
@@ -113,13 +113,13 @@ RBKernel::computeResidual()
     for (_qp = 0; _qp < _qrule->n_points(); _qp++)
       {
       _local_re(_i) += _JxW[_qp] * _coord[_qp] * computeQpResidual();
-      _console << "weights: " << _JxW[_qp] << std::endl;
-      _console << "residual: " << computeQpResidual() << std::endl;
+      //_console << "weights: " << _JxW[_qp] << std::endl;
+      //_console << "residual: " << computeQpResidual() << std::endl;
       }
 
   re += _local_re;
   
-  _console << _local_re << std::endl;
+  //_console << _local_re << std::endl;
 
 
 //  if ((_min_x <= _centroid(0)) && (_centroid(0) <= _max_x) &&
@@ -135,8 +135,6 @@ RBKernel::computeResidual()
       // Add the calculated vectors to the vectors from the RB system.
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
-//        _initialize_rb_system._residuals[0] -> add_vector(_local_re, _var.dofIndices());
-//        _initialize_rb_system._outputs[0] -> add_vector(_local_out, _var.dofIndices());
   }
   else if (_simulation_type == "transient") // Transient
   {
