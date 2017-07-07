@@ -55,7 +55,6 @@ public:
   /* Methods */
   virtual void computeResidual(NumericVector<Number> & residual) override;
   virtual void computeJacobian() override;
-  void test();
 
 //--------------------------------PROTECTED---------------------------------
 protected:

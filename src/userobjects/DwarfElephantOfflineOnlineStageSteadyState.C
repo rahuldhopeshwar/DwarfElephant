@@ -65,8 +65,7 @@ DwarfElephantOfflineOnlineStageSteadyState::setAffineMatrices()
    _initialize_rb_system._inner_product_matrix -> close();
     for(unsigned int _q=0; _q<_initialize_rb_system._qa; _q++)
     {
-      //_cache_boundaries->setCachedSubdomainStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q], _q);
-      _rb_problem->rbAssembly(0).setCachedStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
+          _rb_problem->rbAssembly(0).setCachedStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[0]);
       //_initialize_rb_system._jacobian_subdomain[_q] ->close();
       //_fe_problem.assembly(0).setCachedJacobianContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
       //_initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
