@@ -156,14 +156,15 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       // if(_skip_vector_assembly_in_rb_system)
       //  transferAffineVectors();
 
- 
+
       int size;
       MPI_Comm_size(MPI_COMM_WORLD, &size);
       _console << size << std::endl;
-      
+
       // Transfer the affine matrices to the RB system.
       if(_skip_matrix_assembly_in_rb_system)
-        setAffineMatrices();
+        _rb_problem.rbAssembly(0).setCachedJacobian(_initialize_rb_system._jacobian_subdomain[0]);
+//        setAffineMatrices();
 
       // Perform the offline stage.
       //_console << std::endl;
