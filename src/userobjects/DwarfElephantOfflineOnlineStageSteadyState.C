@@ -66,7 +66,7 @@ DwarfElephantOfflineOnlineStageSteadyState::setAffineMatrices()
     for(unsigned int _q=0; _q<_initialize_rb_system._qa; _q++)
     {
       //_cache_boundaries->setCachedSubdomainStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q], _q);
-      _rb_problem->rbAssembly(_fe_problem.mesh().getMesh().processor_id()).setCachedSubdomainStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q], _q);
+      _rb_problem->rbAssembly(0).setCachedSubdomainStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q], _q);
       _initialize_rb_system._jacobian_subdomain[_q] ->close();
       //_fe_problem.assembly(0).setCachedJacobianContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
       _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
@@ -142,6 +142,9 @@ DwarfElephantOfflineOnlineStageSteadyState::initialize()
 void
 DwarfElephantOfflineOnlineStageSteadyState::execute()
 {
+
+    _console << "TID: " << _tid << std::endl;
+    _console << "PID: " << processor_id() << std::endl;
     // Build the RBEvaluation object
     // Required for both the Offline and Online stage.
     DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm() , _fe_problem);
@@ -154,15 +157,20 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       // // Transfer the affine vectors to the RB system.
       // if(_skip_vector_assembly_in_rb_system)
       //  transferAffineVectors();
+      
+      int _world_rank;
+      MPI_Comm_rank(MPI_COMM_WORLD, &_world_rank);
 
       // Transfer the affine matrices to the RB system.
-      if(_skip_matrix_assembly_in_rb_system)
+      if(_skip_matrix_assembly_in_rb_system && _app.processor_id()==0 && _world_rank==0)
         setAffineMatrices();
+       
+      //MPI_Barrier(MPI_COMM_WORLD);
 
       // Perform the offline stage.
-      _console << std::endl;
-      offlineStage();
-      _console << std::endl;
+      //_console << std::endl;
+      //offlineStage();
+      //_console << std::endl;
     }
 
     if(_online_stage)

@@ -12,6 +12,7 @@
 // MOOSE includes (DwarfElephant package)
 //#include "RBStructuresP1Theta3ThetaEqualMuSteadyState.h"
 //#include "RBStructuresP1Theta5ThetaEqualMuSteadyState.h"
+#include "DwarfElephantRBClassesSteadyState.h"
 
 // Forward Declarations
 namespace libMesh
@@ -20,6 +21,7 @@ namespace libMesh
 }
 
 class FEProblemBase;
+class DwarfElephantRBConstructionSteadyState;
 
 class DwarfElephantSystem : public NonlinearSystem
 

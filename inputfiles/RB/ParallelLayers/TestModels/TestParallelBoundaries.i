@@ -124,7 +124,7 @@ active = ' '
 []
 
 [Functions]
-active = 'cacheBoundaries'
+#active = 'cacheBoundaries'
 #active = 'temperature_gradient'
   [./cacheBoundaries]
     type = CacheBoundaries
