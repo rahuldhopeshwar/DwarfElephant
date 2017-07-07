@@ -153,3 +153,27 @@ DwarfElephantRBAssembly::clearCachedSubdomainStiffnessMatrixContributions(unsign
     _cached_jacobian_subdomain_contribution_cols[subdomains].reserve(1.2 * orig_size);
     _cached_jacobian_subdomain_contribution_vals[subdomains].reserve(1.2 * orig_size);
 }
+
+void
+DwarfElephantRBAssembly::cacheJacobian(numeric_index_type i, numeric_index_type j, Real value)
+{
+  _cached_jacobian_rows.push_back(i);
+  _cached_jacobian_cols.push_back(j);
+  _cached_jacobian_vals.push_back(value);
+}
+
+void
+DwarfElephantRBAssembly::setCachedJacobian(SparseMatrix<Number> & jacobian)
+{
+  // First zero the rows (including the diagonals) to prepare for
+  // setting the cached values.
+  jacobian.zero_rows(_cached_jacobian_rows, 0.0);
+
+  // TODO: Use SparseMatrix::set_values() for efficiency
+  for (unsigned int i = 0; i < _cached_jacobian_vals.size(); ++i)
+    jacobian.set(_cached_jacobian_rows[i],
+                 _cached_jacobian_cols[i],
+                 _cached_jacobian_vals[i]);
+
+//  clearCachedJacobianContributions();
+}

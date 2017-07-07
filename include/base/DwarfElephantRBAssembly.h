@@ -44,6 +44,9 @@ public:
   void resizeSubdomainMassMatrixCaches(unsigned int subdomains);
   void resizeSubdomainVectorCaches(unsigned int subdomains);
 
+  void cacheJacobian(numeric_index_type i, numeric_index_type j, Real value);
+  void setCachedJacobian(SparseMatrix<Number> & jacobian);
+
 protected:
   SystemBase & _sys;
   THREAD_ID _tid;
@@ -65,6 +68,11 @@ protected:
 
   std::vector <numeric_index_type> _cached_residual_contribution_rows;
   std::vector <Real> _cached_residual_contribution_vals;
+
+
+  std::vector<Real> _cached_jacobian_vals;
+  std::vector<numeric_index_type> _cached_jacobian_rows;
+  std::vector<numeric_index_type> _cached_jacobian_cols;
 };
 
 #endif /* DWARFELEPHANTRBASSEMBLY_H */
