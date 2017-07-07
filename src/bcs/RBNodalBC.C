@@ -124,7 +124,6 @@ RBNodalBC::computeJacobian()
     {
       const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
 
-      _rb_problem->rbAssembly(0).cacheJacobian(cached_row, cached_row, cached_val)
       if(_initialize_rb_system._offline_stage)
       {
         if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
@@ -132,7 +131,8 @@ RBNodalBC::computeJacobian()
 //          _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
 //          _cache_boundaries->resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
 
-//	 _rb_problem->rbAssembly(0).resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
+//	
+_rb_problem->rbAssembly(0).cacheJacobian(cached_row, cached_row, cached_val); _rb_problem->rbAssembly(0).resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
 
           // external mesh
 //          const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
