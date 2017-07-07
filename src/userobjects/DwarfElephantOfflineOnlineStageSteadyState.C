@@ -143,8 +143,6 @@ void
 DwarfElephantOfflineOnlineStageSteadyState::execute()
 {
 
-    _console << "TID: " << _tid << std::endl;
-    _console << "PID: " << processor_id() << std::endl;
     // Build the RBEvaluation object
     // Required for both the Offline and Online stage.
     DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm() , _fe_problem);
@@ -157,15 +155,11 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       // // Transfer the affine vectors to the RB system.
       // if(_skip_vector_assembly_in_rb_system)
       //  transferAffineVectors();
-      
-      int _world_rank;
-      MPI_Comm_rank(MPI_COMM_WORLD, &_world_rank);
+
 
       // Transfer the affine matrices to the RB system.
-      if(_skip_matrix_assembly_in_rb_system && _app.processor_id()==0 && _world_rank==0)
+      if(_skip_matrix_assembly_in_rb_system)
         setAffineMatrices();
-       
-      //MPI_Barrier(MPI_COMM_WORLD);
 
       // Perform the offline stage.
       //_console << std::endl;

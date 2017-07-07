@@ -42,7 +42,7 @@ RBNodalBC::RBNodalBC(const InputParameters & parameters) :
     _rb_problem = cast_ptr<DwarfElephantRBProblem *>(&_fe_problem);
 
     //_rb_problem->newRBAssemblyArray(_fe_problem.getNonlinearSystemBase());
-    
+
 }
 
 ///-------------------------------------------------------------------------
@@ -130,9 +130,7 @@ RBNodalBC::computeJacobian()
         {
 //          _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
 //          _cache_boundaries->resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
-	
-	_console << "PID: " << processor_id() << std::endl; 
-	_console << "TID: " << _tid << std::endl;
+
 	 _rb_problem->rbAssembly(0).resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
 
           // external mesh

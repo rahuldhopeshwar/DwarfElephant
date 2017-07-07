@@ -22,17 +22,15 @@ DwarfElephantRBProblem::DwarfElephantRBProblem(const InputParameters & params):
 {
     _nl = _nl_sys;
     _aux = new AuxiliarySystem(*this, "aux0");
-    
+
     //_assembly = _rb_assembly;
-    
+
     newRBAssemblyArray(*_nl_sys);
- 
+
     newAssemblyArray(*_nl_sys);
 //    initNullSpaceVectors(parameters, *_nl_sys);
 
     _eq.parameters.set<DwarfElephantRBProblem *>("_fe_problem") = this;
-    
-    _console << "FE PID: " << processor_id() << std::endl;
 }
 
 DwarfElephantRBProblem::~DwarfElephantRBProblem()
@@ -84,10 +82,10 @@ DwarfElephantRBProblem::newRBAssemblyArray(NonlinearSystemBase & nl)
 //  _assembly.resize(n_threads);
 // for (unsigned int i = 0; i < n_threads; i++)
 //    _assembly[i] = new DwarfElephantRBAssembly(nl, i);
-//  
+//
 //  _rb_assembly.resize(n_threads);
 //  for (unsigned int i = 0; i < n_threads; i++)
 //    _rb_assembly[i] = new DwarfElephantRBAssembly(nl, i);
-//    
-//    _console << "PID: " << processor_id() << std::endl; 
+//
+//    _console << "PID: " << processor_id() << std::endl;
 //}
