@@ -69,9 +69,9 @@ DwarfElephantRBProblem::solve()
 void
 DwarfElephantRBProblem::newRBAssemblyArray(NonlinearSystemBase & nl)
 {
-  unsigned int n_threads = libMesh::n_threads();
-  _rb_assembly.resize(n_threads);
-  for (unsigned int i = 0; i < n_threads; i++)
+  unsigned int subdomains = mesh().meshSubdomains().size();
+  _rb_assembly.resize(subdomains);
+  for (unsigned int i = 0; i < subdomains; i++)
     _rb_assembly[i] = new DwarfElephantRBAssembly(nl, i);
 }
 

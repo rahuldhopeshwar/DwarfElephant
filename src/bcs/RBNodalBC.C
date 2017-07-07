@@ -126,21 +126,22 @@ RBNodalBC::computeJacobian()
 
       if(_initialize_rb_system._offline_stage)
       {
-        if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
+        if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0 && processor_id()==0 && _tid ==0)
         {
 //          _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
 //          _cache_boundaries->resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
 
-//	
-_rb_problem->rbAssembly(0).cacheJacobian(cached_row, cached_row, cached_val); _rb_problem->rbAssembly(0).resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
+//	_rb_problem->rbAssembly(0).cacheJacobian(cached_row, cached_row, cached_val);
+
+_console << "PID: " << processor_id() << std::endl;
+ _rb_problem->rbAssembly(0).resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
 
           // external mesh
 //          const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
 //          for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
 //               it != _node_boundary_list.end(); ++it)
 //            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val,*it - _ID_first_block);
-//            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
-	    _rb_problem->rbAssembly(0).cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
+//            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);    _rb_problem->rbAssembly(0).cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
         }
       }
     }
@@ -182,4 +183,10 @@ Real
 RBNodalBC::computeQpResidual()
 {
   return 0.;
+}
+
+void
+RBNodalBC::test()
+{
+  _console << "PID: " << processor_id() << std::endl;
 }

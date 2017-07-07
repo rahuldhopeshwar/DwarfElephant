@@ -32,7 +32,7 @@ class DwarfElephantRBProblem :
 
     NonlinearSystem & getNonlinearSystem() override { return *_nl_sys; }
 
-    virtual DwarfElephantRBAssembly & rbAssembly(THREAD_ID tid) { return *_rb_assembly[tid]; }
+    virtual DwarfElephantRBAssembly & rbAssembly(unsigned int subdomain_id) { return *_rb_assembly[subdomain_id]; }
 
     virtual void newRBAssemblyArray(NonlinearSystemBase & nl);
     //virtual void newAssemblyArray(NonlinearSystemBase & nl) override;
