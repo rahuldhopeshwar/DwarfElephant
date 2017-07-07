@@ -105,17 +105,12 @@ DwarfElephantRBAssembly::setCachedStiffnessMatrixContributions(SparseMatrix<Numb
 void
 DwarfElephantRBAssembly::setCachedSubdomainStiffnessMatrixContributions(SparseMatrix<Number> & _jacobian, unsigned int subdomain)
 {
-  _jacobian.close();
-  _jacobian.zero_rows(_cached_jacobian_subdomain_contribution_rows[subdomain],0.0);
+  jacobian.zero_rows(_cached_jacobian_rows, 0.0);
 
-  for (unsigned int i = 0; i < _cached_jacobian_subdomain_contribution_vals[subdomain].size(); ++i)
-  {
-    _jacobian.set(_cached_jacobian_subdomain_contribution_rows[subdomain][i],
-                  _cached_jacobian_subdomain_contribution_cols[subdomain][i],
-                  _cached_jacobian_subdomain_contribution_vals[subdomain][i]);
-  }
-
-  clearCachedSubdomainStiffnessMatrixContributions(subdomain);
+  for (unsigned int i = 0; i < _cached_jacobian_vals.size(); ++i)
+    jacobian.set(_cached_jacobian_rows[i],
+                 _cached_jacobian_cols[i],
+                 _cached_jacobian_vals[i]);
 }
 
 void
