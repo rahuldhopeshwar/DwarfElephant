@@ -156,7 +156,11 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       // if(_skip_vector_assembly_in_rb_system)
       //  transferAffineVectors();
 
-
+ 
+      int size;
+      MPI_Comm_size(MPI_COMM_WORLD, &size);
+      _console << size << std::endl;
+      
       // Transfer the affine matrices to the RB system.
       if(_skip_matrix_assembly_in_rb_system)
         setAffineMatrices();
