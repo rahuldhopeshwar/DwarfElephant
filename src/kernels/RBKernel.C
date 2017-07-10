@@ -98,7 +98,7 @@ RBKernel::computeResidual()
 {
   if(_vector_seperation_according_to_subdomains)
     _ID_Fq = _current_elem->subdomain_id() - _ID_first_block;
-
+  
   DenseVector<Number> & re = _assembly.residualBlock(_var.number());
   _local_re.resize(re.size());
   _local_re.zero();
@@ -118,7 +118,6 @@ RBKernel::computeResidual()
       }
 
   re += _local_re;
-  
   //_console << _local_re << std::endl;
 
 
@@ -172,7 +171,7 @@ RBKernel::computeJacobian()
 
 
   ke += _local_ke;
-
+  
   if(_simulation_type == "steady")  // Steady State
   {
     const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
@@ -181,7 +180,7 @@ RBKernel::computeJacobian()
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
         _initialize_rb_system._jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
    }
-
+     
   else if(_simulation_type == "transient") // Transient
   {
     const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
@@ -194,7 +193,7 @@ RBKernel::computeJacobian()
         computeMassMatrix();
     }
   }
-
+  
  if (_has_diag_save_in)
   {
     unsigned int rows = ke.m();

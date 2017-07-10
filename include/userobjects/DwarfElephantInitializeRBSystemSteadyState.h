@@ -96,8 +96,8 @@ class DwarfElephantInitializeRBSystemSteadyState :
 
     const std::vector<ExecFlagType> & _exec_flags;
 
-    Function * _function;
-    CacheBoundaries * _cache_boundaries;
+    //Function * _function;
+    //CacheBoundaries * _cache_boundaries;
 
 
     friend class RBKernel;

@@ -1,18 +1,28 @@
 [Mesh]
-file = meshs/unit_2layer.e
-#  type = GeneratedMesh
-#  dim = 2
-#  nx = 2
-#  ny = 2
-#  #nz = 2
-#  xmin = 0.0
-#  xmax = 1
-#  ymin = 0.0
-#  ymax = 1
-#  zmin = 0.0
-#  zmax = 1
+#file = meshs/unit_2layer.e
+  type = GeneratedMesh
+  dim = 3
+  nx = 2
+  ny = 2
+  nz = 2
+  xmin = 0.0
+  xmax = 1
+  ymin = 0.0
+  ymax = 1
+  zmin = 0.0
+  zmax = 1
 #  #elem_type=TET4
 []
+
+[MeshModifiers]
+#active = 'subdomains'
+active = ' '
+  [./subdomains]
+    type = AssignElementSubdomainID
+    subdomain_ids = '0 0 1 1'
+  [../]
+[]
+
 
 [Variables]
 active = 'temperature'
@@ -56,19 +66,19 @@ active = 'RBtop RBbottom'
     type = RBDirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
-    boundary = 2 #4
+    boundary = 3 #4
     value = 0.00
     initial_rb_userobject = initializeRBSystem
     cache_boundaries = cacheBoundaries
     mesh_modified = false
     #simulation_type = transient
-    ID_Aq = 1
+    ID_Aq = 0
   [../]
   [./RBbottom]
     type = RBNeumannBC
     variable = temperature
     boundary = 1 #2
-    value = -30.5
+    value = -40
     cache_boundaries = cacheBoundaries
     initial_rb_userobject = initializeRBSystem
     mesh_modified = false
@@ -167,7 +177,7 @@ active = 'initializeRBSystem performRBSystem'
     store_basis_functions = true
 
     mu_bar = 1
-    online_mu = '1.05 2.5'
+    online_mu = '1.05'
 
     execute_on = 'timestep_end'
     initial_rb_userobject = initializeRBSystem
@@ -195,11 +205,10 @@ Nmax = 20
 
 # Name of the parameters
 # Please name them mu_0, mu_1, ..., mu_n for the re-usability
-parameter_names = 'mu_0 mu_1'
+parameter_names = 'mu_0'
 
 # Define the minimum and maximum value of the Theta object
 mu_0 = '1.00 5.15'
-mu_1 = '1.50 6.15'
 
 # Define the number of training sets for the Greedy-algorithm
 n_training_samples = 10
