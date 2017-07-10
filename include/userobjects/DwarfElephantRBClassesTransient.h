@@ -34,7 +34,6 @@
 // MOOSE includes (DwarfElephant package)
 #include "CacheBoundaries.h"
 #include "RBStructuresP1T1EqualF1O1Transient.h"
-#include "RBStructuresP1T1EqualD2Transient.h"
 #include "RBStructuresP1T2EqualD2SteadyState.h"
 #include "RBStructuresP1T3EqualD2SteadyState.h"
 #include "RBStructuresP1T3EqualD1N1SteadyState.h"
@@ -262,7 +261,7 @@ public:
 //}
 
   FEProblemBase & fe_problem;
-  RBP1T1EqualD1N1TransientExpansion _rb_theta_expansion;
+  RBP1T1EqualF1O1TransientExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------

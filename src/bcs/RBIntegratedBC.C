@@ -59,9 +59,9 @@ RBIntegratedBC::computeResidual()
 
 //  if ((_min_x <= _centroid(0)) && (_centroid(0) <= _max_x) &&
 //      (_min_y <= _centroid(1)) && (_centroid(1) <= _max_y))
-    for (_i = 0; _i < _test.size(); _i++)
-      for (_qp = 0; _qp < _qrule->n_points(); _qp++)
-        _local_out(_i) += _JxW[_qp] * _coord[_qp] * computeQpResidual() / _output_volume;
+//    for (_i = 0; _i < _test.size(); _i++)
+//      for (_qp = 0; _qp < _qrule->n_points(); _qp++)
+//        _local_out(_i) += _JxW[_qp] * _coord[_qp] * computeQpResidual() / _output_volume;
 
 
   if(_simulation_type == "steady")  // SteadyState
