@@ -206,5 +206,5 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 void
 DwarfElephantOfflineOnlineStageSteadyState::finalize()
 {
-  _console << *_sys.rhs << std::endl;
+  //_console << *_sys.rhs << std::endl;
 }

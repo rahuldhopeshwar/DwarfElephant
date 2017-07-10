@@ -117,8 +117,8 @@ RBKernel::computeResidual()
       //_console << "residual: " << computeQpResidual() << std::endl;
       }
 
+  _console << *_fe_problem.es().get_system<TransientNonlinearImplicitSystem>("rb0").rhs << std::endl;
   re += _local_re;
-  //_console << _local_re << std::endl;
 
 
 //  if ((_min_x <= _centroid(0)) && (_centroid(0) <= _max_x) &&
@@ -132,7 +132,7 @@ RBKernel::computeResidual()
     const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
     if(_initialize_rb_system._offline_stage)
       // Add the calculated vectors to the vectors from the RB system.
-      if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
+      //if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
   }
   else if (_simulation_type == "transient") // Transient

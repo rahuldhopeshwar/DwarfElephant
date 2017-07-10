@@ -25,6 +25,7 @@
 #include "Darcy.h"
 #include "RBKernel.h"
 #include "RBDiffusion.h"
+#include "DwarfElephantRBDarcy.h"
 #include "RBDiffusionLiftingFunction.h"
 
 // Materials
@@ -97,6 +98,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerKernel(Darcy);
   registerKernel(RBKernel);
   registerKernel(RBDiffusion);
+  registerKernel(DwarfElephantRBDarcy);
   registerKernel(RBDiffusionLiftingFunction);
 
   // Materials

@@ -38,6 +38,7 @@ active = 'Conduction'
 
   [./Conduction]
     #type = Conduction
+    #type = Darcy
     #type = DwarfElephantConductionLiftingFunction
     type = RBDiffusionLiftingFunction
     variable = temperature
@@ -53,8 +54,8 @@ active = 'Conduction'
 
 [BCs]
 #active = 'RBtop RBbottom'
-active = 'top bottom'
-#active = ' '
+#active = 'top bottom'
+active = 'top'
   [./RBtop]
     type = RBDirichletBC
     variable = temperature
@@ -62,8 +63,6 @@ active = 'top bottom'
     boundary = 3 #4
     value = 0.00
     initial_rb_userobject = initializeRBSystem
-    cache_boundaries = cacheBoundaries
-    mesh_modified = false
     #simulation_type = transient
   [../]
   [./RBbottom]
@@ -71,9 +70,7 @@ active = 'top bottom'
     variable = temperature
     boundary = 1 #2
     value = 117.5
-    cache_boundaries = cacheBoundaries
     initial_rb_userobject = initializeRBSystem
-    mesh_modified = false
     #simulation_type = transient
   [../]
 
@@ -89,7 +86,7 @@ active = 'top bottom'
     variable = temperature
     #boundary = 'leftbottom rightbottom'
     boundary = 0
-    value = 0
+    value = 20
   [../]
   [./left]
     type = FunctionDirichletBC
@@ -127,12 +124,7 @@ active = 'shale_top'
 []
 
 [Functions]
-active = 'cacheBoundaries temperature_gradient'
-#active = 'temperature_gradient'
-  [./cacheBoundaries]
-    type = CacheBoundaries
-  [../]
-
+active = 'temperature_gradient'
   [./temperature_gradient]
     type = ParsedFunction
     # T_top - scalar*y
@@ -147,10 +139,9 @@ active = 'initializeRBSystem performRBSystem'
 
   [./initializeRBSystem]
     type = DwarfElephantInitializeRBSystemSteadyState
-    parameters_filename = inputfiles/RB/ParallelLayers/TestModels/TestDirichlet1Layer.i
+    parameters_filename = inputfiles/RB/ParallelLayers/TestModels/TestLiftingFunction.i
     skip_matrix_assembly_in_rb_system = true
     skip_vector_assembly_in_rb_system = true
-    cache_boundaries = cacheBoundaries
     offline_stage = true
     execute_on = 'initial'
     #transient = true
@@ -160,7 +151,7 @@ active = 'initializeRBSystem performRBSystem'
   [./performRBSystem]
     type = DwarfElephantOfflineOnlineStageSteadyState
 
-    exodus_file_name = TestDirichlet1Layer
+    exodus_file_name = TestLiftingFunction
 
     offline_stage = false
     online_stage = false
@@ -172,7 +163,6 @@ active = 'initializeRBSystem performRBSystem'
 
     execute_on = 'timestep_end'
     initial_rb_userobject = initializeRBSystem
-    cache_boundaries = cacheBoundaries
     #system = nl0
   [../]
 []

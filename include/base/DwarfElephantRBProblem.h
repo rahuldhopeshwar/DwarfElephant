@@ -35,7 +35,6 @@ class DwarfElephantRBProblem :
     virtual DwarfElephantRBAssembly & rbAssembly(unsigned int subdomain_id) { return *_rb_assembly[subdomain_id]; }
 
     virtual void newRBAssemblyArray(NonlinearSystemBase & nl);
-    //virtual void newAssemblyArray(NonlinearSystemBase & nl) override;
 
   protected:
     NonlinearSystem * _nl_sys;

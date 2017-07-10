@@ -62,6 +62,9 @@ DwarfElephantRBProblem::solve()
 
   if (_solve)
     _nl_sys->solve();
+    
+  if (_solve)
+    _nl_sys->update();
 
   Moose::perf_log.pop("constructRB()", "Execution");
 }
@@ -74,18 +77,3 @@ DwarfElephantRBProblem::newRBAssemblyArray(NonlinearSystemBase & nl)
   for (unsigned int i = 0; i < subdomains; i++)
     _rb_assembly[i] = new DwarfElephantRBAssembly(nl, i);
 }
-
-//void
-//DwarfElephantRBProblem::newAssemblyArray(NonlinearSystemBase & nl)
-//{
-//  unsigned int n_threads = libMesh::n_threads();
-//  _assembly.resize(n_threads);
-// for (unsigned int i = 0; i < n_threads; i++)
-//    _assembly[i] = new DwarfElephantRBAssembly(nl, i);
-//
-//  _rb_assembly.resize(n_threads);
-//  for (unsigned int i = 0; i < n_threads; i++)
-//    _rb_assembly[i] = new DwarfElephantRBAssembly(nl, i);
-//
-//    _console << "PID: " << processor_id() << std::endl;
-//}
