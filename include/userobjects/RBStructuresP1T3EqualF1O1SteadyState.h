@@ -10,7 +10,7 @@
   * The structures defined are:
   * 1. Theta --> parameter-dependent part of the PDE
   * 2. RBThetaExpansion
-  *
+  */
 
 ///-------------------------------------------------------------------------
 #ifndef RBSTRUCTURESP1T3EQUALF1O1STEADYSTATE_H
@@ -52,8 +52,7 @@ struct RBP1T3EqualF1O1SteadyStateExpansion : RBThetaExpansion
     attach_A_theta(&_theta_a_2);
 
     attach_F_theta(&_rb_theta);
-//    std::vector<RBTheta *> _thetas = {&_theta_a_0, &_theta_a_1, &_theta_a_2};
-//    attach_output_theta(_thetas);
+
     attach_output_theta(&_rb_theta);
   }
   // Member Variables
