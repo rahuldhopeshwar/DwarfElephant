@@ -5,28 +5,16 @@
   *  3. Theta is equal to mu (for implementing other relationships,please
   *     follow the structure of these implementation for a general usability)
   *     (Equal).
-  *  4. The problem contains two Dirichlet boundaries (D2).
+  *  4. The problem contains one load vector (F1) and one output (O1).
   *
   * The structures defined are:
   * 1. Theta --> parameter-dependent part of the PDE
   * 2. RBThetaExpansion
   *
-  * IMPORTANT: The Dirichlet boundary conditions are problematic for the
-  * default error bound as long as they are unequal to zero. In case you
-  * want to use them please switch to the more robust error bound in the
-  * method RB_solve() from the RBEvaluation class. Therefore, uncomment
-  * the following two lines in the method:
-  *     // // slower but less error prone error bound (does not work in parallel)
-  *     // epsilon_N = sys_rb.compute_residual_dual_norm(N);
-  * Not that the error bound is purely serial. In case of parallel
-  * implementations please reformulate your problem in such a way that you
-  * end up with an integrated boundary conditions no or zero Dirichlet boundary
-  * conditions.
-  */
 
 ///-------------------------------------------------------------------------
-#ifndef RBSTRUCTURESP1T3EQUALD2STEADYSTATE_H
-#define RBSTRUCTURESP1T3EQUALD2STEADYSTATE_H
+#ifndef RBSTRUCTURESP1T3EQUALF1O1STEADYSTATE_H
+#define RBSTRUCTURESP1T3EQUALF1O1STEADYSTATE_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
@@ -54,19 +42,16 @@ namespace libMesh
  *
  */
 
-struct RBP1T3EqualD2SteadyStateExpansion : RBThetaExpansion
+struct RBP1T3EqualF1O1SteadyStateExpansion : RBThetaExpansion
 {
-  RBP1T3EqualD2SteadyStateExpansion()
+  RBP1T3EqualF1O1SteadyStateExpansion()
   {
     // Setting up the RBThetaExpansion object
     attach_A_theta(&_theta_a_0);
     attach_A_theta(&_theta_a_1);
     attach_A_theta(&_theta_a_2);
 
-    attach_F_theta(&_theta_a_0);
     attach_F_theta(&_rb_theta);
-    attach_F_theta(&_theta_a_2);
-
 //    std::vector<RBTheta *> _thetas = {&_theta_a_0, &_theta_a_1, &_theta_a_2};
 //    attach_output_theta(_thetas);
     attach_output_theta(&_rb_theta);
@@ -79,4 +64,4 @@ struct RBP1T3EqualD2SteadyStateExpansion : RBThetaExpansion
 };
 
 ///-------------------------------------------------------------------------
-#endif // RBSTRUCTURESP1T3EQUALD2STEADYSTATE_H
+#endif // RBSTRUCTURESP1T3EQUALF1O1STEADYSTATE_H

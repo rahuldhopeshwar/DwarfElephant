@@ -34,10 +34,9 @@
 // MOOSE includes (DwarfElephant package)
 #include "CacheBoundaries.h"
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
-#include "RBStructuresP1T1EqualD2SteadyState.h"
-#include "RBStructuresP1T2EqualD2SteadyState.h"
-#include "RBStructuresP1T3EqualD2SteadyState.h"
-#include "RBStructuresP1T3EqualD1N1SteadyState.h"
+#include "RBStructuresP1T1EqualF1O1SteadyState.h"
+#include "RBStructuresP1T2EqualF1O1SteadyState.h"
+#include "RBStructuresP1T3EqualF1O1SteadyState.h"
 
 #include "FEProblemBase.h"
 

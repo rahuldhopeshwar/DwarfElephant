@@ -5,16 +5,15 @@
   *  3. Theta is equal to mu (for implementing other relationships,please
   *     follow the structure of these implementation for a general usability)
   *     (Equal).
-  *  4. The problem contains two Dirichlet boundaries (D2).
+  *  4. The problem contains one load vector (F1) and one output (O1).
   *
   * The structures defined are:
   * 1. Theta --> parameter-dependent part of the PDE
   * 2. RBThetaExpansion
   */
-
 ///-------------------------------------------------------------------------
-#ifndef RBSTRUCTURESP1T1EQUALD2TRANSIENT_H
-#define RBSTRUCTURESP1T1EQUALD2TRANSIENT_H
+#ifndef RBSTRUCTURESP1T1EQUALF1O1TRANSIENT_H
+#define RBSTRUCTURESP1T1EQUALF1O1TRANSIENT_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
@@ -40,19 +39,16 @@ namespace libMesh
  *
  */
 
-struct RBP1T1EqualD2TransientExpansion : TransientRBThetaExpansion
+struct RBP1T1EqualF1O1TransientExpansion : TransientRBThetaExpansion
 {
-  RBP1T1EqualD2TransientExpansion()
+  RBP1T1EqualF1O1TransientExpansion()
   {
     // Setting up the RBThetaExpansion object
     attach_M_theta(&_rb_theta);
 
     attach_A_theta(&_theta_a_0);
 
-//    attach_F_theta(&_rb_theta);
-    attach_F_theta(&_theta_a_0);
-//    attach_F_theta(&_theta_a_0);
-//    attach_F_theta(&_theta_a_0);
+    attach_F_theta(&_rb_theta);
 
     attach_output_theta(&_rb_theta);
 
@@ -63,4 +59,4 @@ struct RBP1T1EqualD2TransientExpansion : TransientRBThetaExpansion
 };
 
 ///-------------------------------------------------------------------------
-#endif // RBSTRUCTURESP1T1EQUALD2Transient_H
+#endif // RBSTRUCTURESP1T1EQUALF1O1Transient_H
