@@ -70,7 +70,7 @@ active = 'top bottom'
     type = RBNeumannBC
     variable = temperature
     boundary = 1 #2
-    value = 117.5 
+    value = 117.5
     cache_boundaries = cacheBoundaries
     initial_rb_userobject = initializeRBSystem
     mesh_modified = false
@@ -142,8 +142,7 @@ active = 'cacheBoundaries temperature_gradient'
 []
 
 [UserObjects]
-#active = 'initializeRBSystem performRBSystem'
-active = 'initializeRBSystem'
+active = 'initializeRBSystem performRBSystem'
 #active = ''
 
   [./initializeRBSystem]
@@ -163,8 +162,8 @@ active = 'initializeRBSystem'
 
     exodus_file_name = TestDirichlet1Layer
 
-    offline_stage = true
-    online_stage = true
+    offline_stage = false
+    online_stage = false
     offline_error_bound = false
     store_basis_functions = true
 
