@@ -21,7 +21,7 @@ template<>
 InputParameters validParams<DwarfElephantConduction>();
 
 ///-------------------------------------------------------------------------
-class DwarfElephantConduction : public DwarfElephantDiffusion
+class DwarfElephantConduction : public Diffusion
 {
 //----------------------------------PUBLIC----------------------------------
 public:
