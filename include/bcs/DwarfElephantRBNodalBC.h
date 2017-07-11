@@ -39,7 +39,7 @@ class DwarfElephantRBNodalBC;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<RBNodalBC>();
+InputParameters validParams<DwarfElephantRBNodalBC>();
 
 ///-------------------------------------------------------------------------
 class DwarfElephantRBNodalBC :
