@@ -29,8 +29,8 @@
 #include "DwarfElephantRBDiffusionLiftingFunction.h"
 
 // Materials
-#include "SandStone.h"
-#include "Shale.h"
+#include "DwarfElephantSandStone.h"
+#include "DwarfElephantShale.h"
 
 // UserObjects
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
@@ -101,8 +101,8 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerKernel(DwarfElephantRBDiffusionLiftingFunction);
 
   // Materials
-  registerMaterial(SandStone);
-  registerMaterial(Shale);
+  registerMaterial(DwarfElephantSandStone);
+  registerMaterial(DwarfElephantShale);
 
   // UserObjects
   registerUserObject(DwarfElephantInitializeRBSystemSteadyState);

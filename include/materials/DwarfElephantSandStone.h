@@ -1,12 +1,13 @@
 /**
- * Shale inherits from the MOOSE class  Material and overrides
+ * SandStone inherits from the MOOSE class Material and overrides
  * computeQpProperties.
- * Within the class Shale the typical rock properties of a shale are stored.
+ * Within the Class SandStone the typical rock properties of a sandstone are
+ * stored.
  */
 
- ///-------------------------------------------------------------------------
-#ifndef SHALE_H
-#define SHALE_H
+///-------------------------------------------------------------------------
+#ifndef DWARFELEPHANTSANDSTONE_H
+#define DWARFELEPHANTSANDSTONE_H
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
@@ -14,27 +15,26 @@
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
-class Shale;
+class DwarfElephantSandStone;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<Shale>();
+InputParameters validParams<DwarfElephantSandStone>();
 
 ///-------------------------------------------------------------------------
-class Shale : public Material
+class DwarfElephantSandStone : public Material
 {
 
 //----------------------------------PUBLIC----------------------------------
 public:
-  Shale(const InputParameters & parameters);
+  DwarfElephantSandStone(const InputParameters & parameters);
 
 //--------------------------------PROTECTED---------------------------------
 protected:
-
-  /* Methods */
+/* Methods */
   virtual void computeQpProperties() override;
 
-  /* Attributes */
+/* Attributes */
   MaterialProperty<Real> & _thermal_conductivity;
   MaterialProperty<Real> & _permeability;
   MaterialProperty<Real> & _dynamic_viscosity;
@@ -43,4 +43,4 @@ protected:
 };
 
 ///-------------------------------------------------------------------------
-#endif //SHALE_H
+#endif //DWARFELEPHANTSANDSTONE_H

@@ -96,7 +96,7 @@ active = 'RBtop'
 active = ' '
 #active = 'shale_top'
   [./shale_top]
-    type = Shale
+    type = DwarfElephantShale
     block = 0
   [../]
 []

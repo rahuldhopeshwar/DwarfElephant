@@ -23,11 +23,11 @@
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes (DwarfElephant package)
-#include "SandStone.h"
+#include "DwarfElephantSandStone.h"
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<SandStone>()
+InputParameters validParams<DwarfElephantSandStone>()
 {
   InputParameters params = validParams<Material>();
   params.addClassDescription("Saves the rock properties of a typical \
@@ -36,7 +36,7 @@ InputParameters validParams<SandStone>()
 }
 
 ///-------------------------------CONSTRUCTOR-------------------------------
-SandStone::SandStone(const InputParameters & parameters) :
+DwarfElephantSandStone::DwarfElephantSandStone(const InputParameters & parameters) :
     Material(parameters),
     _thermal_conductivity(declareProperty<Real>("thermal_conductivity")),
     _permeability(declareProperty<Real>("permeability")),
@@ -49,7 +49,7 @@ SandStone::SandStone(const InputParameters & parameters) :
 
 ///-------------------------------------------------------------------------
 void
-SandStone::computeQpProperties()
+DwarfElephantSandStone::computeQpProperties()
 {
   _thermal_conductivity[_qp] = 2.5;                  // [W/(m K)]
   _permeability[_qp] = 1.e-6;                        // [m²]

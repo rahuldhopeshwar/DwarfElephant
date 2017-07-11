@@ -22,11 +22,11 @@
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes (DwarfElephant package)
-#include "Shale.h"
+#include "DwarfElephantShale.h"
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<Shale>()
+InputParameters validParams<DwarfElephantShale>()
 {
   InputParameters params = validParams<Material>();
 
@@ -34,7 +34,7 @@ InputParameters validParams<Shale>()
 }
 
 ///-------------------------------CONSTRUCTOR-------------------------------
-Shale::Shale(const InputParameters & parameters) :
+DwarfElephantShale::DwarfElephantShale(const InputParameters & parameters) :
     Material(parameters),
     _thermal_conductivity(declareProperty<Real>("thermal_conductivity")),
     _permeability(declareProperty<Real>("permeability")),
@@ -46,7 +46,7 @@ Shale::Shale(const InputParameters & parameters) :
 
 ///-------------------------------------------------------------------------
 void
-Shale::computeQpProperties()
+DwarfElephantShale::computeQpProperties()
 {
   _thermal_conductivity[_qp] = 1.05;                 // [W/(m K)]
   _permeability[_qp] = 1.e-9;                        // [m²]
