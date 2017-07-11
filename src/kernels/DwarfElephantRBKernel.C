@@ -19,11 +19,11 @@
 #include "SystemBase.h"
 
 //MOOSE includes (DwarfElephant package)
-#include "RBKernel.h"
+#include "DwarfElephantRBKernel.h"
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<RBKernel>()
+InputParameters validParams<DwarfElephantRBKernel>()
 {
   InputParameters params = validParams<Kernel>();
 
@@ -67,14 +67,13 @@ RBKernel::RBKernel(const InputParameters & parameters) :
 //    _max_z(getParam<Real>("max_z")),
 //    _min_z(getParam<Real>("min_z")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es())
-//    _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject"))
 
 {
 }
 
 ///-------------------------------------------------------------------------
 void
-RBKernel::initialSetup()
+DwarfElephantRBKernel::initialSetup()
 {
 //  if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
 //    mooseError("The initialization of the RB system has to be executed on 'initial'. "
@@ -94,11 +93,11 @@ RBKernel::initialSetup()
 }
 
 void
-RBKernel::computeResidual()
+DwarfElephantRBKernel::computeResidual()
 {
   if(_vector_seperation_according_to_subdomains)
     _ID_Fq = _current_elem->subdomain_id() - _ID_first_block;
-  
+
   DenseVector<Number> & re = _assembly.residualBlock(_var.number());
   _local_re.resize(re.size());
   _local_re.zero();
@@ -153,7 +152,7 @@ RBKernel::computeResidual()
 }
 
 void
-RBKernel::computeJacobian()
+DwarfElephantRBKernel::computeJacobian()
 {
   if(_matrix_seperation_according_to_subdomains)
     _ID_Aq = _current_elem->subdomain_id() - _ID_first_block;
@@ -171,7 +170,7 @@ RBKernel::computeJacobian()
 
 
   ke += _local_ke;
-  
+
   if(_simulation_type == "steady")  // Steady State
   {
     const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
@@ -180,7 +179,7 @@ RBKernel::computeJacobian()
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
         _initialize_rb_system._jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
    }
-     
+
   else if(_simulation_type == "transient") // Transient
   {
     const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
@@ -193,7 +192,7 @@ RBKernel::computeJacobian()
         computeMassMatrix();
     }
   }
-  
+
  if (_has_diag_save_in)
   {
     unsigned int rows = ke.m();
@@ -208,7 +207,7 @@ RBKernel::computeJacobian()
 }
 
 void
-RBKernel::computeMassMatrix()
+DwarfElephantRBKernel::computeMassMatrix()
 {
   if(_time_matrix_seperation_according_to_subdomains)
     _ID_Mq = _current_elem->subdomain_id() - _ID_first_block;
@@ -234,19 +233,19 @@ RBKernel::computeMassMatrix()
 // RB problem. The problem specific PDEs are implemented in separate Kernels.
 
 Real
-RBKernel::computeQpJacobian()
+DwarfElephantRBKernel::computeQpJacobian()
 {
   return 0;
 }
 
 Real
-RBKernel::computeQpResidual()
+DwarfElephantRBKernel::computeQpResidual()
 {
   return 0;
 }
 
 Real
-RBKernel::computeQpMassMatrix()
+DwarfElephantRBKernel::computeQpMassMatrix()
 {
   return 0;
 }

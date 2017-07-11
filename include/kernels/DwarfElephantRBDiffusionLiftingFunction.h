@@ -10,28 +10,29 @@
  */
 
 ///-------------------------------------------------------------------------
-#ifndef RBDIFFUSION_H
-#define RBDIFFUSION_H
+#ifndef DWARFELEPHANTRBDIFFUSIONLIFTINGFUNCTION_H
+#define DWARFELEPHANTRBDIFFUSIONLIFTINGFUNCTION_H
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes (DwarfElephant package)
-#include "RBKernel.h"
+#include "DwarfElephantRBKernel.h"
+#include "Function.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
-class RBDiffusion;
+class DwarfElephantRBDiffusionLiftingFunction;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<RBDiffusion>();
+InputParameters validParams<DwarfElephantRBDiffusionLiftingFunction>();
 
 ///-------------------------------------------------------------------------
-class RBDiffusion : public RBKernel
+class DwarfElephantRBDiffusionLiftingFunction : public DwarfElephantRBKernel
 {
 
 //----------------------------------PUBLIC----------------------------------
 public:
-  RBDiffusion(const InputParameters & parameters);
+  DwarfElephantRBDiffusionLiftingFunction(const InputParameters & parameters);
 
 //--------------------------------PROTECTED---------------------------------
 protected:
@@ -40,7 +41,9 @@ protected:
   virtual Real computeQpResidual() override;
   virtual Real computeQpJacobian() override;
   virtual Real computeQpMassMatrix() override;
+
+  Function * _lifting_function;
 };
 
 ///-------------------------------------------------------------------------
-#endif // RBDIFFUSION_H
+#endif // DWARFELEPHANTRBDIFFUSIONLIFTINGFUNCTION_H

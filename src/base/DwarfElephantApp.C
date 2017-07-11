@@ -20,13 +20,13 @@
 #include "DwarfElephantRBNeumannBC.h"
 
 // Kernels
-#include "Conduction.h"
+#include "DwarfElephantConduction.h"
 #include "DwarfElephantConductionLiftingFunction.h"
-#include "Darcy.h"
-#include "RBKernel.h"
-#include "RBDiffusion.h"
+#include "DwarfElephantDarcy.h"
+#include "DwarfElephantRBKernel.h"
+#include "DwarfElephantRBDiffusion.h"
 #include "DwarfElephantRBDarcy.h"
-#include "RBDiffusionLiftingFunction.h"
+#include "DwarfElephantRBDiffusionLiftingFunction.h"
 
 // Materials
 #include "SandStone.h"
@@ -43,7 +43,6 @@
 
 // Executioners
 #include "DwarfElephantRBSteady.h"
-#include "DwarfElephantRBTransient.h"
 
 template<>
 InputParameters validParams<DwarfElephantApp>()
@@ -93,13 +92,13 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerBoundaryCondition(DwarfElephantRBNeumannBC);
 
   // Kernels
-  registerKernel(Conduction);
+  registerKernel(DwarfElephantConduction);
   registerKernel(DwarfElephantConductionLiftingFunction);
-  registerKernel(Darcy);
-  registerKernel(RBKernel);
-  registerKernel(RBDiffusion);
+  registerKernel(DwarfElephantDarcy);
+  registerKernel(DwarfElephantRBKernel);
+  registerKernel(DwarfElephantRBDiffusion);
   registerKernel(DwarfElephantRBDarcy);
-  registerKernel(RBDiffusionLiftingFunction);
+  registerKernel(DwarfElephantRBDiffusionLiftingFunction);
 
   // Materials
   registerMaterial(SandStone);
@@ -116,7 +115,6 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // Executioners
   registerExecutioner(DwarfElephantRBSteady);
-  registerExecutioner(DwarfElephantRBTransient);
 
 }
 

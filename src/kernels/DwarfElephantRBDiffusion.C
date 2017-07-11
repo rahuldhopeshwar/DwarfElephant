@@ -11,39 +11,39 @@
 
 ///---------------------------------INCLUDES--------------------------------
 //MOOSE includes (DwarfElephant package)
-#include "RBDiffusion.h"
+#include "DwarfElephantRBDiffusion.h"
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<RBDiffusion>()
+InputParameters validParams<DwarfElephantRBDiffusion>()
 {
-  InputParameters params = validParams<RBKernel>();
+  InputParameters params = validParams<DwarfElephantRBKernel>();
   params.addClassDescription("Implements a Diffusion problem using \
                              the RBKernel.");
   return params;
 }
 
 ///-------------------------------CONSTRUCTOR-------------------------------
-RBDiffusion::RBDiffusion(const InputParameters & parameters) :
-  RBKernel(parameters)
+DwarfElephantRBDiffusion::DwarfElephantRBDiffusion(const InputParameters & parameters) :
+  DwarfElephantRBKernel(parameters)
 {
 }
 
 ///----------------------------------PDEs-----------------------------------
 Real
-RBDiffusion::computeQpResidual()
+DwarfElephantRBDiffusion::computeQpResidual()
 {
   return _grad_u[_qp] * _grad_test[_i][_qp];
 }
 
 Real
-RBDiffusion::computeQpJacobian()
+DwarfElephantRBDiffusion::computeQpJacobian()
 {
   return _grad_phi[_j][_qp] * _grad_test[_i][_qp];
 }
 
 Real
-RBDiffusion::computeQpMassMatrix()
+DwarfElephantRBDiffusion::computeQpMassMatrix()
 {
   return _phi[_j][_qp] * _test[_i][_qp];
 }

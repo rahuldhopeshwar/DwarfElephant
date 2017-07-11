@@ -7,8 +7,8 @@
  */
 
 ///-------------------------------------------------------------------------
-#ifndef RBKERNEL_H
-#define RBKERNEL_H
+#ifndef DWARFELEPHANTRBKERNEL_H
+#define DWARFELEPHANTRBKERNEL_H
 
 ///---------------------------------INCLUDES--------------------------------
 //libMesh includes
@@ -34,21 +34,22 @@ namespace libMesh
 }
 
 class NonlinearSystemBase;
-class DwarfElephantInitializeRBSystemSteadyState;
 class DisplacedProblem;
-class RBKernel;
+
+class DwarfElephantInitializeRBSystemSteadyState;
+class DwarfElephantRBKernel;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<RBKernel>();
+InputParameters validParams<DwarfElephantRBKernel>();
 
 ///-------------------------------------------------------------------------
-class RBKernel : public Kernel
+class DwarfElephantRBKernel : public Kernel
 {
 
 //----------------------------------PUBLIC----------------------------------
 public:
-  RBKernel(const InputParameters & parameters);
+  DwarfElephantRBKernel(const InputParameters & parameters);
 
  /* Methods */
   virtual void computeJacobian() override;
@@ -92,9 +93,7 @@ protected:
   DenseMatrix<Number> _local_me;
 
   EquationSystems & _es;
-
-//  const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system;
 };
 
 ///-------------------------------------------------------------------------
-#endif //RBKERNEL_H
+#endif //DWARFELEPHANTRBKERNEL_H

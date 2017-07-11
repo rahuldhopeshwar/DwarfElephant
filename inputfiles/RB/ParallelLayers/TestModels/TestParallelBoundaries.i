@@ -37,7 +37,7 @@ active = 'RBConduction'
 #active = 'Conduction'
 #active = 'Conduction Euler'
   [./RBConduction]
-    type = RBDiffusion
+    type = DwarfElephantRBDiffusion
     variable = temperature
     initial_rb_userobject = initializeRBSystem
     lifting_function = temperature_gradient

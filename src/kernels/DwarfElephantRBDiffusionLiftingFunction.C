@@ -11,42 +11,42 @@
 
 ///---------------------------------INCLUDES--------------------------------
 //MOOSE includes (DwarfElephant package)
-#include "RBDiffusionLiftingFunction.h"
+#include "DwarfElephantRBDiffusionLiftingFunction.h"
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<RBDiffusionLiftingFunction>()
+InputParameters validParams<DwarfElephantRBDiffusionLiftingFunction>()
 {
-  InputParameters params = validParams<RBKernel>();
+  InputParameters params = validParams<DwarfElephantRBKernel>();
   params.addClassDescription("Implements a Diffusion problem using \
                              the RBKernel.");
   params.addRequiredParam<FunctionName>("lifting_function", "Name of the lifting function two account for the inhomogeneous Dirichlet boundary conditions.");
-   
+
   return params;
 }
 
 ///-------------------------------CONSTRUCTOR-------------------------------
-RBDiffusionLiftingFunction::RBDiffusionLiftingFunction(const InputParameters & parameters) :
-  RBKernel(parameters),
+DwarfElephantRBDiffusionLiftingFunction::DwarfElephantRBDiffusionLiftingFunction(const InputParameters & parameters) :
+  DwarfElephantRBKernel(parameters),
   _lifting_function(&getFunction("lifting_function"))
 {
 }
 
 ///----------------------------------PDEs-----------------------------------
 Real
-RBDiffusionLiftingFunction::computeQpResidual()
+DwarfElephantRBDiffusionLiftingFunction::computeQpResidual()
 {
   return    (_grad_test[_i][_qp]*(_grad_u[_qp]-_lifting_function->gradient(_fe_problem.time(),_qp)));
 }
 
 Real
-RBDiffusionLiftingFunction::computeQpJacobian()
+DwarfElephantRBDiffusionLiftingFunction::computeQpJacobian()
 {
   return  (_grad_phi[_j][_qp] * _grad_test[_i][_qp]);
 }
 
 Real
-RBDiffusionLiftingFunction::computeQpMassMatrix()
+DwarfElephantRBDiffusionLiftingFunction::computeQpMassMatrix()
 {
   return _phi[_j][_qp] * _test[_i][_qp];
 }

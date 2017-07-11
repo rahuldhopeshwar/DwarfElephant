@@ -5,8 +5,8 @@
  */
 
 ///-------------------------------------------------------------------------
-#ifndef CONDUCTION_H
-#define CONDUCTION_H
+#ifndef DWARFELEPHANTCONDUCTION_H
+#define DWARFELEPHANTCONDUCTION_H
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
@@ -14,18 +14,18 @@
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
-class Conduction;
+class DwarfElephantConduction;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<Conduction>();
+InputParameters validParams<DwarfElephantConduction>();
 
 ///-------------------------------------------------------------------------
-class Conduction : public Diffusion
+class DwarfElephantConduction : public DwarfElephantDiffusion
 {
 //----------------------------------PUBLIC----------------------------------
 public:
-  Conduction(const InputParameters & parameters);
+  DwarfElephantConduction(const InputParameters & parameters);
 
 //--------------------------------PROTECTED---------------------------------
 protected:
@@ -39,4 +39,4 @@ protected:
 };
 
 ///-------------------------------------------------------------------------
-#endif // CONDUCTION_H
+#endif // DWARFELEPHANTCONDUCTION_H

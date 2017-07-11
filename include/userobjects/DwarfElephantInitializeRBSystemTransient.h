@@ -97,7 +97,7 @@ class DwarfElephantInitializeRBSystemTransient :
     const std::vector<ExecFlagType> & _exec_flags;
 
 
-    friend class RBKernel;
+    friend class DwarfElephantRBKernel;
     friend class DwarfElephantRBNodalBC;
     friend class DwarfElephantRBIntegratedBC;
     friend class DwarfElephantOfflineOnlineStageTransient;

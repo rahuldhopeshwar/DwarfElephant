@@ -6,11 +6,11 @@
 
  ///---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
-#include "Darcy.h"
+#include "DwarfElephantDarcy.h"
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<Darcy>()
+InputParameters validParams<DwarfElephantDarcy>()
 {
   InputParameters params = validParams<Diffusion>();
 
@@ -20,7 +20,7 @@ InputParameters validParams<Darcy>()
 }
 
 ///-------------------------------CONSTRUCTOR-------------------------------
-Darcy::Darcy(const InputParameters & parameters) :
+DwarfElephantDarcy::DwarfElephantDarcy(const InputParameters & parameters) :
   Diffusion(parameters),
   _permeability(getMaterialProperty<Real>("permeability")),
   _dynamic_viscosity(getMaterialProperty<Real>("dynamic_viscosity")),
@@ -32,13 +32,13 @@ Darcy::Darcy(const InputParameters & parameters) :
 ///----------------------------------PDEs-----------------------------------
 // Definition of the necessary PDE in the weak formulation
 Real
-Darcy::computeQpResidual()
+DwarfElephantDarcy::computeQpResidual()
 {
   return (_permeability[_qp]/_dynamic_viscosity[_qp]) * (Diffusion::computeQpResidual() - ((_fluid_density[_qp] * _gravity[_qp]) * _grad_test[_i][_qp]));
 }
 
 Real
-Darcy::computeQpJacobian()
+DwarfElephantDarcy::computeQpJacobian()
 {
   return (_permeability[_qp]/_dynamic_viscosity[_qp]) * Diffusion::computeQpJacobian();
 }
