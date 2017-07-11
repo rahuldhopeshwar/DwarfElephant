@@ -49,7 +49,7 @@ InputParameters validParams<DwarfElephantRBKernel>()
 }
 
 ///-------------------------------CONSTRUCTOR-------------------------------
-RBKernel::RBKernel(const InputParameters & parameters) :
+DwarfElephantRBKernel::DwarfElephantRBKernel(const InputParameters & parameters) :
     Kernel(parameters),
     _use_displaced(getParam<bool>("use_displaced")),
     _matrix_seperation_according_to_subdomains(getParam<bool>("matrix_seperation_according_to_subdomains")),
