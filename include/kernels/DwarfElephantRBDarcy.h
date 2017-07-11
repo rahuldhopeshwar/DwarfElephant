@@ -10,7 +10,7 @@
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
-#include "RBKernel.h"
+#include "DwarfElephantRBKernel.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
@@ -21,7 +21,7 @@ template<>
 InputParameters validParams<DwarfElephantRBDarcy>();
 
 ///-------------------------------------------------------------------------
-class DwarfElephantRBDarcy : public RBKernel
+class DwarfElephantRBDarcy : public DwarfElephantRBKernel
 {
 //----------------------------------PUBLIC----------------------------------
 public:

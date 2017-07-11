@@ -12,7 +12,7 @@
 template<>
 InputParameters validParams<DwarfElephantRBDarcy>()
 {
-  InputParameters params = validParams<RBKernel>();
+  InputParameters params = validParams<DwarfElephantRBKernel>();
 
   params.addClassDescription("The class implements a RB darcy flow problem.");
 
@@ -21,7 +21,7 @@ InputParameters validParams<DwarfElephantRBDarcy>()
 
 ///-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantRBDarcy::DwarfElephantRBDarcy(const InputParameters & parameters) :
-  RBKernel(parameters),
+  DwarfElephantRBKernel(parameters),
   _permeability(getMaterialProperty<Real>("permeability")),
   _dynamic_viscosity(getMaterialProperty<Real>("dynamic_viscosity")),
   _fluid_density(getMaterialProperty<Real>("fluid_density")),
