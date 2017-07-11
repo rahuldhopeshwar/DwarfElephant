@@ -21,7 +21,7 @@ template<>
 InputParameters validParams<DwarfElephantShale>();
 
 ///-------------------------------------------------------------------------
-class Shale : public Material
+class DwarfElephantShale : public Material
 {
 
 //----------------------------------PUBLIC----------------------------------
