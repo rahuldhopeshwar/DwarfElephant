@@ -1,6 +1,6 @@
 ///-------------------------------------------------------------------------
-#ifndef RBSTRUCTURESA4THETAEQUALMUP1_H
-#define RBSTRUCTURESA4THETAEQUALMUP1_H
+#ifndef DWARFELEPHANTRBSTRUCTURESA00THETAISCONSTANTP1_H
+#define DWARFELEPHANTRBSTRUCTURESA00THETAISCONSTANTP1_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
@@ -21,13 +21,15 @@ namespace libMesh
  * account to ensure a gernal useability of your class.
  */
 
-struct ThetaA4 : RBTheta
+struct DwarfElephantThetaA00Constant : RBTheta
 {
-  virtual Number evaluate (const RBParameters & _mu)
+  virtual Number evaluate (const RBParameters & )
   {
-    return _mu.get_value("mu_4");
+    Real _constant = 0.05;
+
+    return _constant;
   }
 };
 
 ///-------------------------------------------------------------------------
-#endif // RBSTRUCTURESA4THETAEQUALMUP1_H
+#endif // DWARFELEPHANTRBSTRUCTURESA00THETAISCONSTANTP1_H

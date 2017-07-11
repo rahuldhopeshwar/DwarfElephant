@@ -34,9 +34,9 @@
 // MOOSE includes (DwarfElephant package)
 #include "CacheBoundaries.h"
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
-#include "RBStructuresP1T1EqualF1O1SteadyState.h"
-#include "RBStructuresP1T2EqualF1O1SteadyState.h"
-#include "RBStructuresP1T3EqualF1O1SteadyState.h"
+#include "DwarfElephantRBStructuresP1T1EqualF1O1SteadyState.h"
+#include "DwarfElephantRBStructuresP1T2EqualF1O1SteadyState.h"
+#include "DwarfElephantRBStructuresP1T3EqualF1O1SteadyState.h"
 
 #include "FEProblemBase.h"
 
@@ -318,7 +318,7 @@ public:
   bool offline_error_bound;
   Real epsilon_N;
   FEProblemBase & fe_problem;
-  RBP1T1EqualF1O1SteadyStateExpansion _rb_theta_expansion;
+  DwarfElephantRBP1T1EqualF1O1SteadyStateExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------

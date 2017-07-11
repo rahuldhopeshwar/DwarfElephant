@@ -1,7 +1,7 @@
  /**
   * The structures are defined for an elliptic PDE with the following restrictions:
   *  1. The parameter dimension p is equal to one (P1).
-  *  2. The number of thetas is equal to three (T3).
+  *  2. The number of thetas is equal to one (T1).
   *  3. Theta is equal to mu (for implementing other relationships,please
   *     follow the structure of these implementation for a general usability)
   *     (Equal).
@@ -13,18 +13,16 @@
   */
 
 ///-------------------------------------------------------------------------
-#ifndef RBSTRUCTURESP1T3EQUALF1O1STEADYSTATE_H
-#define RBSTRUCTURESP1T3EQUALF1O1STEADYSTATE_H
+#ifndef DWARFELEPHANTRBSTRUCTURESP1T1EQUALF1O1STEADYSTATE_H
+#define DWARFELPHANTRBSTRUCTURESP1T1EQUALF1O1STEADYSTATE_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
 #include "libmesh/rb_theta.h"
 #include "libmesh/rb_assembly_expansion.h"
 
-#include "RBStructuresA00ThetaIsConstantP1.h"
-#include "RBStructuresA0ThetaEqualMuP1.h"
-#include "RBStructuresA1ThetaEqualMuP1.h"
-#include "RBStructuresA2ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA00ThetaIsConstantP1.h"
+#include "DwarfElephantRBStructuresA0ThetaEqualMuP1.h"
 
 
 // Forward Declarations
@@ -42,25 +40,21 @@ namespace libMesh
  *
  */
 
-struct RBP1T3EqualF1O1SteadyStateExpansion : RBThetaExpansion
+struct DwarfElephantRBP1T1EqualF1O1SteadyStateExpansion : RBThetaExpansion
 {
-  RBP1T3EqualF1O1SteadyStateExpansion()
+  DwarfElephantRBP1T1EqualF1O1SteadyStateExpansion()
   {
-    // Setting up the RBThetaExpansion object
     attach_A_theta(&_theta_a_0);
-    attach_A_theta(&_theta_a_1);
-    attach_A_theta(&_theta_a_2);
 
-    attach_F_theta(&_rb_theta);
+    attach_F_theta(&_theta_a_0);
 
     attach_output_theta(&_rb_theta);
+
   }
   // Member Variables
-  ThetaA0 _theta_a_0;
-  ThetaA1 _theta_a_1;
-  ThetaA2 _theta_a_2;
+  DwarfElephantThetaA0 _theta_a_0;
   RBTheta _rb_theta;         // Default RBTheta object, simply returns one.
 };
 
 ///-------------------------------------------------------------------------
-#endif // RBSTRUCTURESP1T3EQUALF1O1STEADYSTATE_H
+#endif // DWARFELEPHANTRBSTRUCTURESP1T1EQUALF1O1STEADYSTATE_H

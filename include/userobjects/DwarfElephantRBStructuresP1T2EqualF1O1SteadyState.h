@@ -13,17 +13,17 @@
   */
 
 ///-------------------------------------------------------------------------
-#ifndef RBSTRUCTURESP1T2EQUALF1O1STEADYSTATE_H
-#define RBSTRUCTURESP1T2EQUALF1O1STEADYSTATE_H
+#ifndef DWARFELEPHANTRBSTRUCTURESP1T2EQUALF1O1STEADYSTATE_H
+#define DWARFELEPHANTRBSTRUCTURESP1T2EQUALF1O1STEADYSTATE_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
 #include "libmesh/rb_theta.h"
 #include "libmesh/rb_assembly_expansion.h"
 
-#include "RBStructuresA00ThetaIsConstantP1.h"
-#include "RBStructuresA0ThetaEqualMuP1.h"
-#include "RBStructuresA1ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA00ThetaIsConstantP1.h"
+#include "DwarfElephantRBStructuresA0ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA1ThetaEqualMuP1.h"
 
 
 // Forward Declarations
@@ -41,9 +41,9 @@ namespace libMesh
  *
  */
 
-struct RBP1T2EqualF1O1SteadyStateExpansion : RBThetaExpansion
+struct DwarfElephantRBP1T2EqualF1O1SteadyStateExpansion : RBThetaExpansion
 {
-  RBP1T2EqualF1O1SteadyStateExpansion()
+  DwarfElephantRBP1T2EqualF1O1SteadyStateExpansion()
   {
     // Setting up the RBThetaExpansion object
     attach_A_theta(&_theta_a_0);
@@ -55,10 +55,10 @@ struct RBP1T2EqualF1O1SteadyStateExpansion : RBThetaExpansion
 
   }
   // Member Variables
-  ThetaA0 _theta_a_0;
-  ThetaA1 _theta_a_1;
+  DwarfElephantThetaA0 _theta_a_0;
+  DwarfElephantThetaA1 _theta_a_1;
   RBTheta _rb_theta;         // Default RBTheta object, simply returns one.
 };
 
 ///-------------------------------------------------------------------------
-#endif // RBSTRUCTURESP1T2EQUALF1O1STEADYSTATE_H
+#endif // DWARFELEPHANTRBSTRUCTURESP1T2EQUALF1O1STEADYSTATE_H

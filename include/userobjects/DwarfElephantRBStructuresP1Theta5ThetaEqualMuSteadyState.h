@@ -12,19 +12,19 @@
   */
 
 ///-------------------------------------------------------------------------
-#ifndef RBSTRUCTURESP1THETA5THETAEQUALMUSTEADYSTATE_H
-#define RBSTRUCTURESP1THETA5THETAEQUALMUSTEADYSTATE_H
+#ifndef DWARFELEPHANTRBSTRUCTURESP1THETA5THETAEQUALMUSTEADYSTATE_H
+#define DWARFELEPHANTRBSTRUCTURESP1THETA5THETAEQUALMUSTEADYSTATE_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
 #include "libmesh/rb_theta.h"
 #include "libmesh/rb_assembly_expansion.h"
 
-#include "RBStructuresA0ThetaEqualMuP1.h"
-#include "RBStructuresA1ThetaEqualMuP1.h"
-#include "RBStructuresA2ThetaEqualMuP1.h"
-#include "RBStructuresA3ThetaEqualMuP1.h"
-#include "RBStructuresA4ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA0ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA1ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA2ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA3ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA4ThetaEqualMuP1.h"
 
 
 // Forward Declarations
@@ -42,9 +42,9 @@ namespace libMesh
  *
  */
 
-struct RBP1Theta5ThetaEqualMuExpansionSteadyState : RBThetaExpansion
+struct DwarfElephantRBP1Theta5ThetaEqualMuExpansionSteadyState : RBThetaExpansion
 {
-  RBP1Theta5ThetaEqualMuExpansionSteadyState()
+  DwarfElephantRBP1Theta5ThetaEqualMuExpansionSteadyState()
   {
     // Setting up the RBThetaExpansion object
     attach_A_theta(&_theta_a_0);
@@ -68,13 +68,13 @@ struct RBP1Theta5ThetaEqualMuExpansionSteadyState : RBThetaExpansion
 //    attach_output_theta(&_theta_a_2);
   }
   // Member Variables
-  ThetaA0 _theta_a_0;
-  ThetaA1 _theta_a_1;
-  ThetaA2 _theta_a_2;
-  ThetaA3 _theta_a_3;
-  ThetaA4 _theta_a_4;
+  DwarfElephantThetaA0 _theta_a_0;
+  DwarfElephantThetaA1 _theta_a_1;
+  DwarfElephantThetaA2 _theta_a_2;
+  DwarfElephantThetaA3 _theta_a_3;
+  DwarfElephantThetaA4 _theta_a_4;
   RBTheta _rb_theta;         // Default RBTheta object, simply returns one.
 };
 
 ///-------------------------------------------------------------------------
-#endif // RBSTRUCTURESP1THETA5THETAEQUALMUSTEADYSTATE_H
+#endif // DWARFELEPHANTRBSTRUCTURESP1THETA5THETAEQUALMUSTEADYSTATE_H
