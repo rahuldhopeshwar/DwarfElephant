@@ -63,7 +63,7 @@ active = 'RBtop RBbottom'
 #active = 'top bottom'
 #active = ' '
   [./RBtop]
-    type = RBDirichletBC
+    type = DwarfElephantRBDirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
     boundary = 3 #4
@@ -75,7 +75,7 @@ active = 'RBtop RBbottom'
     ID_Aq = 0
   [../]
   [./RBbottom]
-    type = RBNeumannBC
+    type = DwarfElephantRBNeumannBC
     variable = temperature
     boundary = 1 #2
     value = -40

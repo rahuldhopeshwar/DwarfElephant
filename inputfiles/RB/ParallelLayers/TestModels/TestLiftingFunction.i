@@ -59,7 +59,7 @@ active = 'RBtop'
 #active = 'top'
 #active = ' '
   [./RBtop]
-    type = RBDirichletBC
+    type = DwarfElephantRBDirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
     boundary = 2 #4
@@ -68,7 +68,7 @@ active = 'RBtop'
     #simulation_type = transient
   [../]
   [./RBbottom]
-    type = RBDirichletBC
+    type = DwarfElephantRBDirichletBC
     variable = temperature
     boundary = 0 #2
     value = 0

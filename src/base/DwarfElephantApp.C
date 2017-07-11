@@ -12,12 +12,12 @@
 #include "DwarfElephantRBProblem.h"
 
 //BCs
-#include "RBNodalBC.h"
-#include "RBDirichletBC.h"
-#include "RBPresetNodalBC.h"
-#include "RBPresetBC.h"
-#include "RBIntegratedBC.h"
-#include "RBNeumannBC.h"
+#include "DwarfElephantRBNodalBC.h"
+#include "DwarfElephantRBDirichletBC.h"
+#include "DwarfElephantRBPresetNodalBC.h"
+#include "DwarfElephantRBPresetBC.h"
+#include "DwarfElephantRBIntegratedBC.h"
+#include "DwarfElephantRBNeumannBC.h"
 
 // Kernels
 #include "Conduction.h"
@@ -85,12 +85,12 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerProblem(DwarfElephantRBProblem);
 
   // BCs
-  registerBoundaryCondition(RBNodalBC);
-  registerBoundaryCondition(RBDirichletBC);
-  registerBoundaryCondition(RBPresetNodalBC);
-  registerBoundaryCondition(RBPresetBC);
-  registerBoundaryCondition(RBIntegratedBC);
-  registerBoundaryCondition(RBNeumannBC);
+  registerBoundaryCondition(DwarfElephantRBNodalBC);
+  registerBoundaryCondition(DwarfElephantRBDirichletBC);
+  registerBoundaryCondition(DwarfElephantRBPresetNodalBC);
+  registerBoundaryCondition(DwarfElephantRBPresetBC);
+  registerBoundaryCondition(DwarfElephantRBIntegratedBC);
+  registerBoundaryCondition(DwarfElephantRBNeumannBC);
 
   // Kernels
   registerKernel(Conduction);
