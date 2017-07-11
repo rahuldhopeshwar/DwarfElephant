@@ -32,6 +32,11 @@ DwarfElephantSystem::solve()
   
   if(_use_finite_differenced_preconditioner)
     setupFiniteDifferencedPreconditioner();
+    
+  if (_time_integrator)
+  {
+    _console << "Time Integrator" << std::endl;
+  }
 
   // calculate the stiffness matrices
   _fe_problem.computeJacobian(_transient_sys, *_current_solution, *_transient_sys.matrix);

@@ -34,12 +34,11 @@ DwarfElephantConductionLiftingFunction::DwarfElephantConductionLiftingFunction(c
 Real
 DwarfElephantConductionLiftingFunction::computeQpResidual()
 {
-  return _lambda[_qp] *  (_grad_test[_i][_qp]*(_grad_u[_qp]-_lifting_function->gradient(_fe_problem.time(),_qp)));
+  return _lambda[_qp] *   (_grad_test[_i][_qp]*(_grad_u[_qp]-_lifting_function->gradient(_fe_problem.time(),_qp)));
 }
 
 Real
 DwarfElephantConductionLiftingFunction::computeQpJacobian()
 {
-   //return 0.;
-  return  _lambda[_qp]*(_grad_phi[_j][_qp] * _grad_test[_i][_qp]);
+   return  _lambda[_qp]*(_grad_phi[_j][_qp] * _grad_test[_i][_qp]);
 }

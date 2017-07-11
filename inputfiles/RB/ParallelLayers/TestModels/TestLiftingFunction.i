@@ -23,8 +23,8 @@ active = 'temperature'
 []
 
 [Kernels]
-#active = 'RBConduction'
-active = 'Conduction'
+active = 'RBConduction'
+#active = 'Conduction'
 #active = 'Conduction Euler'
   [./RBConduction]
     type = RBDiffusionLiftingFunction
@@ -39,8 +39,8 @@ active = 'Conduction'
   [./Conduction]
     #type = Conduction
     #type = Darcy
-    #type = DwarfElephantConductionLiftingFunction
-    type = RBDiffusionLiftingFunction
+    type = DwarfElephantConductionLiftingFunction
+    #type = RBDiffusionLiftingFunction
     variable = temperature
     lifting_function = temperature_gradient
     initial_rb_userobject = initializeRBSystem
@@ -54,22 +54,24 @@ active = 'Conduction'
 
 [BCs]
 #active = 'RBtop RBbottom'
+active = 'RBtop'
 #active = 'top bottom'
-active = 'top'
+#active = 'top'
+#active = ' '
   [./RBtop]
     type = RBDirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
-    boundary = 3 #4
+    boundary = 2 #4
     value = 0.00
     initial_rb_userobject = initializeRBSystem
     #simulation_type = transient
   [../]
   [./RBbottom]
-    type = RBNeumannBC
+    type = RBDirichletBC
     variable = temperature
-    boundary = 1 #2
-    value = 117.5
+    boundary = 0 #2
+    value = 0
     initial_rb_userobject = initializeRBSystem
     #simulation_type = transient
   [../]
@@ -86,20 +88,13 @@ active = 'top'
     variable = temperature
     #boundary = 'leftbottom rightbottom'
     boundary = 0
-    value = 20
-  [../]
-  [./left]
-    type = FunctionDirichletBC
-    variable = temperature
-    #boundary = 'lefttop righttop'
-    boundary = 5
-    function = temperature_gradient
+    value = 0
   [../]
 []
 
 [Materials]
-#active = ' '
-active = 'shale_top'
+active = ' '
+#active = 'shale_top'
   [./shale_top]
     type = Shale
     block = 0
@@ -128,7 +123,7 @@ active = 'temperature_gradient'
   [./temperature_gradient]
     type = ParsedFunction
     # T_top - scalar*y
-    value = 10-(30)*y
+    value = 10-(-30)*y
   [../]
 
 []
@@ -153,8 +148,8 @@ active = 'initializeRBSystem performRBSystem'
 
     exodus_file_name = TestLiftingFunction
 
-    offline_stage = false
-    online_stage = false
+    offline_stage = true
+    online_stage = true
     offline_error_bound = false
     store_basis_functions = true
 

@@ -117,7 +117,7 @@ RBKernel::computeResidual()
       //_console << "residual: " << computeQpResidual() << std::endl;
       }
 
-  _console << *_fe_problem.es().get_system<TransientNonlinearImplicitSystem>("rb0").rhs << std::endl;
+  //_console << *_fe_problem.es().get_system<TransientNonlinearImplicitSystem>("nl0").rhs << std::endl;
   re += _local_re;
 
 
