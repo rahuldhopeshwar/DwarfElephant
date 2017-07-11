@@ -20,7 +20,6 @@
 #include "DwarfElephantRBClassesSteadyState.h"
 //#include "DwarfElephantRBConstructionSteadyState.h"
 //#include "DwarfElephantRBClassesTransient.h"
-#include "CacheBoundaries.h"
 
 
 ///-------------------------------------------------------------------------
@@ -96,13 +95,10 @@ class DwarfElephantInitializeRBSystemSteadyState :
 
     const std::vector<ExecFlagType> & _exec_flags;
 
-    //Function * _function;
-    //CacheBoundaries * _cache_boundaries;
-
 
     friend class RBKernel;
-    friend class RBNodalBC;
-    friend class RBIntegratedBC;
+    friend class DwarfElephantRBNodalBC;
+    friend class DwarfElephantRBIntegratedBC;
     friend class DwarfElephantOfflineOnlineStageSteadyState;
     friend class DwarfElephantRBEvaluationSteadyState;
 };

@@ -18,7 +18,6 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantSystem.h"
 #include "DwarfElephantRBClassesTransient.h"
-#include "CacheBoundaries.h"
 
 
 ///-------------------------------------------------------------------------
@@ -97,13 +96,10 @@ class DwarfElephantInitializeRBSystemTransient :
 
     const std::vector<ExecFlagType> & _exec_flags;
 
-    Function * _function;
-    CacheBoundaries * _cache_boundaries;
-
 
     friend class RBKernel;
-    friend class RBNodalBC;
-    friend class RBIntegratedBC;
+    friend class DwarfElephantRBNodalBC;
+    friend class DwarfElephantRBIntegratedBC;
     friend class DwarfElephantOfflineOnlineStageTransient;
 };
 ///-------------------------------------------------------------------------

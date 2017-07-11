@@ -7,8 +7,8 @@
  */
 
 ///-------------------------------------------------------------------------
-#ifndef RBNODALBC_H
-#define RBNODALBC_H
+#ifndef DWARFELEPHANTRBNODALBC_H
+#define DWARFELEPHANTRBNODALBC_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes
@@ -23,7 +23,6 @@
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
 #include "DwarfElephantInitializeRBSystemTransient.h"
 #include "DwarfElephantRBProblem.h"
-//#include "CacheBoundaries.h"
 
 ///-------------------------------------------------------------------------
 // Forward declarations
@@ -34,23 +33,22 @@ namespace libMesh
 
 class MooseMesh;
 class NonlinearSystemBase;
-//class CacheBoundaries;
 
 class DwarfElephantInitializeRBSystemSteadyState;
-class RBNodalBC;
+class DwarfElephantRBNodalBC;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<RBNodalBC>();
 
 ///-------------------------------------------------------------------------
-class RBNodalBC :
+class DwarfElephantRBNodalBC :
   public NodalBC
 {
 
 //----------------------------------PUBLIC----------------------------------
 public:
-  RBNodalBC(const InputParameters & parameters);
+  DwarfElephantRBNodalBC(const InputParameters & parameters);
 
   /* Methods */
   virtual void computeResidual(NumericVector<Number> & residual) override;
@@ -69,9 +67,7 @@ protected:
   unsigned int _ID_Aq;
   unsigned int _ID_Mq;
 
-//  Function * _function;
-//  CacheBoundaries * _cache_boundaries;
   DwarfElephantRBProblem * _rb_problem;
 };
 
-#endif /* RBNODALBC_H */
+#endif /* DWARFELEPHANTRBNODALBC_H */

@@ -13,7 +13,6 @@ InputParameters validParams<DwarfElephantInitializeRBSystemSteadyState>()
   params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
   params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
   params.addRequiredParam<std::string>("parameters_filename","Path to the input file. Required for the libMesh functions");
-  //params.addRequiredParam<FunctionName>("cache_boundaries", "");
 
   return params;
 }
@@ -31,9 +30,7 @@ DwarfElephantInitializeRBSystemSteadyState::DwarfElephantInitializeRBSystemStead
   _mesh_ptr(&_fe_problem.mesh()),
   _sys(&_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
   _exec_flags(this->execFlags())
-  //_function(&getFunction("cache_boundaries"))
 {
-  //_cache_boundaries = dynamic_cast<CacheBoundaries *>(_function);
 }
 
 

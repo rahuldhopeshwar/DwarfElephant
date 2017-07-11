@@ -1,5 +1,5 @@
-#ifndef RBINTEGRATEDBC_H
-#define RBINTEGRATEDBC_H
+#ifndef DWARFELEPHANTRBINTEGRATEDBC_H
+#define DWARFELEPHANTRBINTEGRATEDBC_H
 
 // MOOSE includes
 #include "IntegratedBC.h"
@@ -10,20 +10,20 @@
 
 // Forward declarations
 class DwarfElephantInitializeRBSystemSteadyState;
-class RBIntegratedBC;
+class DwarfElephantRBIntegratedBC;
 
 template<>
-InputParameters validParams<RBIntegratedBC>();
+InputParameters validParams<DwarfElephantRBIntegratedBC>();
 
-class RBIntegratedBC :
+class DwarfElephantRBIntegratedBC :
   public IntegratedBC
 {
 public:
 
   /*Methods*/
-  RBIntegratedBC(const InputParameters & parameters);
+  DwarfElephantRBIntegratedBC(const InputParameters & parameters);
 
-  virtual ~RBIntegratedBC();
+  virtual ~DwarfElephantRBIntegratedBC();
 
   virtual void computeResidual();
   virtual void computeJacobian();
@@ -48,10 +48,7 @@ protected:
   unsigned int _ID_Aq;
   unsigned int _ID_Fq;
 
-  Real _output_volume;
-  DenseVector<Number> _local_out;
-
   EquationSystems & _es;
 };
 
-#endif /* RBINTEGRATEDBC_H */
+#endif /* DWARFELEPHANTRBINTEGRATEDBC_H */

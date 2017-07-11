@@ -1,4 +1,4 @@
-#include "RBIntegratedBC.h"
+#include "DwarfElephantRBIntegratedBC.h"
 #include "SubProblem.h"
 #include "SystemBase.h"
 #include "MooseVariable.h"
@@ -8,7 +8,7 @@
 #include "libmesh/quadrature.h"
 
 template<>
-InputParameters validParams<RBIntegratedBC>()
+InputParameters validParams<DwarfElephantRBIntegratedBC>()
 {
   InputParameters params = validParams<IntegratedBC>();
 
@@ -21,7 +21,7 @@ InputParameters validParams<RBIntegratedBC>()
   return params;
 }
 
-RBIntegratedBC::RBIntegratedBC(const InputParameters & parameters) :
+DwarfElephantRBIntegratedBC::DwarfElephantRBIntegratedBC(const InputParameters & parameters) :
     IntegratedBC(parameters),
     _use_displaced(getParam<bool>("use_displaced")),
     _simulation_type(getParam<std::string>("simulation_type")),
@@ -31,38 +31,27 @@ RBIntegratedBC::RBIntegratedBC(const InputParameters & parameters) :
 {
 }
 
-RBIntegratedBC::~RBIntegratedBC()
+DwarfElephantRBIntegratedBC::~DwarfElephantRBIntegratedBC()
 {
 }
 
 void
-RBIntegratedBC::initialSetup()
+DwarfElephantRBIntegratedBC::initialSetup()
 {
-  _output_volume = 0.00777;
 }
 
 void
-RBIntegratedBC::computeResidual()
+DwarfElephantRBIntegratedBC::computeResidual()
 {
   DenseVector<Number> & re = _assembly.residualBlock(_var.number());
   _local_re.resize(re.size());
   _local_re.zero();
-
-  _local_out.resize(re.size());
-  _local_out.zero();
 
   for (_qp = 0; _qp < _qrule->n_points(); _qp++)
     for (_i = 0; _i < _test.size(); _i++)
       _local_re(_i) += _JxW[_qp]*_coord[_qp]*computeQpResidual();
 
   re += _local_re;
-
-//  if ((_min_x <= _centroid(0)) && (_centroid(0) <= _max_x) &&
-//      (_min_y <= _centroid(1)) && (_centroid(1) <= _max_y))
-//    for (_i = 0; _i < _test.size(); _i++)
-//      for (_qp = 0; _qp < _qrule->n_points(); _qp++)
-//        _local_out(_i) += _JxW[_qp] * _coord[_qp] * computeQpResidual() / _output_volume;
-
 
   if(_simulation_type == "steady")  // SteadyState
   {
@@ -71,8 +60,6 @@ RBIntegratedBC::computeResidual()
       // Add the calculated vectors to the vectors from the RB system.
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
-//        _initialize_rb_system._residuals[0] -> add_vector(_local_re, _var.dofIndices());
-//        _initialize_rb_system._outputs[0] -> add_vector(_local_out, _var.dofIndices());
   }
 
   else if (_simulation_type == "transient") // Transient
@@ -82,8 +69,6 @@ RBIntegratedBC::computeResidual()
       // Add the calculated vectors to the vectors from the RB system.
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
-//        _initialize_rb_system._residuals[0] -> add_vector(_local_re, _var.dofIndices());
-//        _initialize_rb_system._outputs[0] -> add_vector(_local_out, _var.dofIndices());
   }
 
 
@@ -96,7 +81,7 @@ RBIntegratedBC::computeResidual()
 }
 
 void
-RBIntegratedBC::computeJacobian()
+DwarfElephantRBIntegratedBC::computeJacobian()
 {
   DenseMatrix<Number> & ke = _assembly.jacobianBlock(_var.number(), _var.number());
   _local_ke.resize(ke.m(), ke.n());
@@ -141,7 +126,7 @@ RBIntegratedBC::computeJacobian()
 }
 
 void
-RBIntegratedBC::computeJacobianBlock(unsigned int jvar)
+DwarfElephantRBIntegratedBC::computeJacobianBlock(unsigned int jvar)
 {
   DenseMatrix<Number> & ke = _assembly.jacobianBlock(_var.number(), jvar);
 
@@ -157,7 +142,7 @@ RBIntegratedBC::computeJacobianBlock(unsigned int jvar)
 }
 
 void
-RBIntegratedBC::computeJacobianBlockScalar(unsigned int jvar)
+DwarfElephantRBIntegratedBC::computeJacobianBlockScalar(unsigned int jvar)
 {
   DenseMatrix<Number> & ke = _assembly.jacobianBlock(_var.number(), jvar);
 
@@ -169,19 +154,19 @@ RBIntegratedBC::computeJacobianBlockScalar(unsigned int jvar)
 }
 
 Real
-RBIntegratedBC::computeQpResidual()
+DwarfElephantRBIntegratedBC::computeQpResidual()
 {
   return 0;
 }
 
 Real
-RBIntegratedBC::computeQpJacobian()
+DwarfElephantRBIntegratedBC::computeQpJacobian()
 {
   return 0;
 }
 
 Real
-RBIntegratedBC::computeQpOffDiagJacobian(unsigned int /*jvar*/)
+DwarfElephantRBIntegratedBC::computeQpOffDiagJacobian(unsigned int /*jvar*/)
 {
   return 0;
 }

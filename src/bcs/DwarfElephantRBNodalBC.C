@@ -7,18 +7,17 @@
  */
 
 ///---------------------------------INCLUDES--------------------------------
-#include "RBNodalBC.h"
+#include "DwarfElephantRBNodalBC.h"
 #include "MooseVariable.h"
 #include "Assembly.h"
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<RBNodalBC>()
+InputParameters validParams<DwarfElephantRBNodalBC>()
 {
   InputParameters params = validParams<NodalBC>();
 
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
-//  params.addRequiredParam<FunctionName>("cache_boundaries", "");
   params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
   params.addParam<unsigned int>("ID_Fq", 0 , "ID if the load vector.");
   params.addParam<unsigned int>("ID_Aq", 0 , "ID if the stiffness matrix.");
@@ -29,25 +28,19 @@ InputParameters validParams<RBNodalBC>()
 }
 
 ///-------------------------------CONSTRUCTOR-------------------------------
-RBNodalBC::RBNodalBC(const InputParameters & parameters) :
+DwarfElephantRBNodalBC::DwarfElephantRBNodalBC(const InputParameters & parameters) :
     NodalBC(parameters),
     _simulation_type(getParam<std::string>("simulation_type")),
     _ID_Fq(getParam<unsigned int>("ID_Fq")),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
     _ID_Mq(getParam<unsigned int>("ID_Mq"))
-//    _function(&getFunction("cache_boundaries"))
 {
-
-//    _cache_boundaries = dynamic_cast<CacheBoundaries *>(_function);
     _rb_problem = cast_ptr<DwarfElephantRBProblem *>(&_fe_problem);
-
-    //_rb_problem->newRBAssemblyArray(_fe_problem.getNonlinearSystemBase());
-
 }
 
 ///-------------------------------------------------------------------------
 void
-RBNodalBC::computeResidual(NumericVector<Number> & residual)
+DwarfElephantRBNodalBC::computeResidual(NumericVector<Number> & residual)
 {
   if (_var.isNodalDefined())
   {
@@ -84,14 +77,8 @@ RBNodalBC::computeResidual(NumericVector<Number> & residual)
       const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
 
       if(_initialize_rb_system._offline_stage)
-      {
         if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
-        {
-          //_cache_boundaries->resizeSubdomainVectorCaches(_initialize_rb_system._qf);
-//          _cache_boundaries->cacheResidual(dof_idx, -res);
-//          _cache_boundaries->cacheSubdomainResidual(dof_idx, -res, _ID_Fq);
-        }
-      }
+          _rb_problem->rbAssembly(_ID_Fq).cacheResidual(dof_idx, -res);
     }
 
     if (_has_save_in)
@@ -104,7 +91,7 @@ RBNodalBC::computeResidual(NumericVector<Number> & residual)
 }
 
 void
-RBNodalBC::computeJacobian()
+DwarfElephantRBNodalBC::computeJacobian()
 {
   // We call the user's computeQpJacobian() function and store the
   // results in the _assembly object. We can't store them directly in
@@ -145,16 +132,8 @@ RBNodalBC::computeJacobian()
       const DwarfElephantInitializeRBSystemTransient& _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
 
       if(_initialize_rb_system._offline_stage)
-      {
         if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
-        {
-//          _cache_boundaries -> cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
-          //_cache_boundaries->resizeSubdomainStiffnessMatrixCaches(_initialize_rb_system._qa);
-          //_cache_boundaries->resizeSubdomainMassMatrixCaches(_initialize_rb_system._qm);
-          //_cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
-//          _cache_boundaries->cacheSubdomainMassMatrixContribution(cached_row, cached_row, cached_val, _ID_Mq);
-        }
-      }
+          _rb_problem->rbAssembly(_ID_Aq).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
     }
 
 
@@ -168,13 +147,13 @@ RBNodalBC::computeJacobian()
 }
 
 Real
-RBNodalBC::computeQpJacobian()
+DwarfElephantRBNodalBC::computeQpJacobian()
 {
   return 1.;
 }
 
 Real
-RBNodalBC::computeQpResidual()
+DwarfElephantRBNodalBC::computeQpResidual()
 {
   return 0.;
 }
