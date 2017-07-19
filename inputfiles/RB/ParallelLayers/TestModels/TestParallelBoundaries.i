@@ -40,9 +40,6 @@ active = 'RBConduction'
     type = DwarfElephantRBDiffusion
     variable = temperature
     initial_rb_userobject = initializeRBSystem
-    lifting_function = temperature_gradient
-    #simulation_type = transient
-    vector_seperation_according_to_subdomains = false
   [../]
 
   [./Conduction]
@@ -69,9 +66,6 @@ active = 'RBtop RBbottom'
     boundary = 3 #4
     value = 0.00
     initial_rb_userobject = initializeRBSystem
-    cache_boundaries = cacheBoundaries
-    mesh_modified = false
-    #simulation_type = transient
     ID_Aq = 0
   [../]
   [./RBbottom]
@@ -79,10 +73,7 @@ active = 'RBtop RBbottom'
     variable = temperature
     boundary = 1 #2
     value = -40
-    cache_boundaries = cacheBoundaries
     initial_rb_userobject = initializeRBSystem
-    mesh_modified = false
-    #simulation_type = transient
     ID_Aq = 0
   [../]
 
@@ -224,16 +215,4 @@ rel_training_tolerance = 1.e-5
 #quiet_mode =  false
 
 #normalize_rb_bound_in_greedy = true
-
-
-# ======================= Transient RB system parameters =======================
-
-# number of time steps
-n_time_steps = 10
-
-# size of time steps
-delta_t = 0.01
-
-# Generalized Euler method parameter in [0,1], euler_theta=1 implies backward Euler
-euler_theta = 1
 

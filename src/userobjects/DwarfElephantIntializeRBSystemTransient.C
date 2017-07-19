@@ -138,9 +138,7 @@ DwarfElephantInitializeRBSystemTransient::initialize()
 
     // Initialize required matrices and vectors.
     if (_offline_stage)
-    {
       initializeOfflineStage();
-    }
   }
 }
 

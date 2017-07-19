@@ -31,39 +31,10 @@ active = 'subdomains'
 []
 
 [Kernels]
-active = 'RBConduction_block0 RBConduction_block1 RBConduction_block2 RBConduction_block3 RBConduction_block4'
-  [./RBConduction_block0]
-    type = RBDiffusion
+active = 'RBConduction'
+    [./RBConduction]
+    type = DwarfElephantRBDiffusion
     variable = temperature
-    block = 0
-    initial_rb_userobject = initializeRBSystem
-  [../]
-
-  [./RBConduction_block1]
-    type = RBDiffusion
-    variable = temperature
-    block = 1
-    initial_rb_userobject = initializeRBSystem
-  [../]
-
-  [./RBConduction_block2]
-    type = RBDiffusion
-    variable = temperature
-    block = 2
-    initial_rb_userobject = initializeRBSystem
-  [../]
-
-  [./RBConduction_block3]
-    type = RBDiffusion
-    variable = temperature
-    block = 3
-    initial_rb_userobject = initializeRBSystem
-  [../]
-
-  [./RBConduction_block4]
-    type = RBDiffusion
-    variable = temperature
-    block = 4
     initial_rb_userobject = initializeRBSystem
   [../]
 []
@@ -87,22 +58,23 @@ active = ' '
 []
 
 [BCs]
-active = 'top bottom'
-  [./top]
-    type = RBDirichletBC
+active = 'RBtop RBbottom'
+  [./RBtop]
+    type = DwarfElephantRBDirichletBC
     variable = temperature
-    boundary = 'top'
-    value = 10
+    #boundary = 'lefttop righttop'
+    boundary = 3 #4
+    value = 0.00
     initial_rb_userobject = initializeRBSystem
-    cache_boundaries = cacheBoundaries
+    ID_Aq = 0
   [../]
-  [./bottom]
-    type = RBDirichletBC
+  [./RBbottom]
+    type = DwarfElephantRBNeumannBC
     variable = temperature
-    boundary = 'bottom'
-    value = 31
+    boundary = 1 #2
+    value = -40
     initial_rb_userobject = initializeRBSystem
-    cache_boundaries = cacheBoundaries
+    ID_Aq = 0
   [../]
 []
 

@@ -163,8 +163,8 @@ active = 'initializeRBSystem performRBSystem'
 []
 
 [Outputs]
-  print_perf_log = false
-  exodus = true
+  print_perf_log = true
+  exodus = false
   execute_on = 'timestep_end'
 
   [./console]

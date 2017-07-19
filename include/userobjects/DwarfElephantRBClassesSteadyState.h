@@ -39,6 +39,7 @@
 #include "DwarfElephantRBStructuresP1T3EqualF1O1SteadyState.h"
 
 #include "FEProblemBase.h"
+#include "MooseVariable.h"
 
 // Forward Declarations
 namespace libMesh
@@ -82,9 +83,10 @@ public:
   // Initialize data structure
   virtual void init_data()
   {
-    u_var = this->add_variable ("u", libMesh::FIRST);
+    u_var = this->add_variable (get_equation_systems().get_system(0).variable_name(0));
 
     Parent::init_data();
+    
   }
 
   Real compute_residual_dual_norm(const unsigned int N)
@@ -315,10 +317,13 @@ public:
     }
 }
 
+FEProblemBase & get_fe_problem(){return fe_problem;}
+
   bool offline_error_bound;
   Real epsilon_N;
   FEProblemBase & fe_problem;
-  DwarfElephantRBP1T1EqualF1O1SteadyStateExpansion _rb_theta_expansion;
+  MooseVariable * var;
+  DwarfElephantRBP1T2EqualF1O1SteadyStateExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------

@@ -25,7 +25,6 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageTransient>()
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
     params.addParam<Real>("mu_bar", 1., "Value for mu-bar");
     params.addRequiredParam<std::vector<Real>>("online_mu", "Current values of the different layers for which the RB Method is solved.");
-    params.addRequiredParam<FunctionName>("cache_boundaries", "");
 
     return params;
 }
@@ -46,14 +45,12 @@ DwarfElephantOfflineOnlineStageTransient::DwarfElephantOfflineOnlineStageTransie
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
     _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject")),
-    _function(&getFunction("cache_boundaries")),
     _mesh_ptr(&_fe_problem.mesh()),
     _subdomain_ids(_mesh_ptr->meshSubdomains()),
     _mu_bar(getParam<Real>("mu_bar")),
-//    _online_N(getParam<unsigned int>("online_N")),
-    _online_mu_parameters(getParam<std::vector<Real>>("online_mu"))
+    _online_mu_parameters(getParam<std::vector<Real>>("online_mu")),
+    _rb_problem(cast_ptr<DwarfElephantRBProblem *>(&_fe_problem))
 {
-  _cache_boundaries = dynamic_cast<CacheBoundaries *>(_function);
 }
 
 void
@@ -62,7 +59,7 @@ DwarfElephantOfflineOnlineStageTransient::setAffineMatrices()
    _initialize_rb_system._inner_product_matrix -> close();
     for(unsigned int _q=0; _q<_initialize_rb_system._qa; _q++)
     {
-      _cache_boundaries->setCachedSubdomainStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q], _q);
+      _rb_problem->rbAssembly(_q).setCachedStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
       _initialize_rb_system._jacobian_subdomain[_q] ->close();
       _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
     }
@@ -70,7 +67,6 @@ DwarfElephantOfflineOnlineStageTransient::setAffineMatrices()
     _initialize_rb_system._L2_matrix -> close();
     for(unsigned int _q=0; _q<_initialize_rb_system._qm; _q++)
     {
-      _cache_boundaries->setCachedSubdomainMassMatrixContributions(*_initialize_rb_system._mass_matrix_subdomain[_q], _q);
       _initialize_rb_system._mass_matrix_subdomain[_q] ->close();
       _initialize_rb_system._L2_matrix->add(_mu_bar, *_initialize_rb_system._mass_matrix_subdomain[_q]);
     }
@@ -81,9 +77,9 @@ DwarfElephantOfflineOnlineStageTransient::transferAffineVectors()
 {
   // Transfer the vectors
   // Transfer the data for the F vectors.
-  for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
+ for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
   {
-    _cache_boundaries->setCachedSubdomainResidual(*_initialize_rb_system._residuals[_q], _q);
+    _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q]);
     _initialize_rb_system._residuals[_q]->close();
   }
 
@@ -92,31 +88,31 @@ DwarfElephantOfflineOnlineStageTransient::transferAffineVectors()
   {
     for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
     {
-      _cache_boundaries->setCachedResidual(*_initialize_rb_system._outputs[i][_q]);
+      _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._outputs[i][_q]);
       _initialize_rb_system._outputs[i][_q]->close();
-      *_initialize_rb_system._outputs[i][_q] /= _mesh_ptr->nNodes();
+//      *_initialize_rb_system._outputs[i][_q] /= _mesh_ptr->nNodes();
 //          _initialize_rb_system._outputs[_q]->set(100, 17.5);
-      }
     }
+  }
 }
 
 void
 DwarfElephantOfflineOnlineStageTransient::offlineStage()
 {
     _initialize_rb_system._rb_con_ptr->train_reduced_basis();
-//    #if defined(LIBMESH_HAVE_CAPNPROTO)
-//      RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
-//      _rb_eval_writer.write_to_file("rb_eval.bin");
-//    #else
-//      // Write the offline data to file (xdr format).
-//      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files();
-//    #endif
-//
-//    // If desired, store the basis functions (xdr format).
-//    if (_store_basis_functions)
-//    {
-//        _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr);
-//    }
+   #if defined(LIBMESH_HAVE_CAPNPROTO)
+      RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
+     _rb_eval_writer.write_to_file("rb_eval.bin");
+    #else
+      // Write the offline data to file (xdr format).
+      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files();
+    #endif
+
+    // If desired, store the basis functions (xdr format).
+    if (_store_basis_functions)
+    {
+        _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr);
+    }
 
 //    _initialize_rb_system._rb_con_ptr->print_basis_function_orthogonality();
 }

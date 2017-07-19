@@ -11,7 +11,7 @@
 #include "libmesh/threads.h"
 #include "libmesh/quadrature.h"
 
-////MOOSE includes
+//MOOSE includes
 #include "Assembly.h"
 #include "MooseVariable.h"
 #include "Problem.h"
@@ -31,7 +31,7 @@ InputParameters validParams<DwarfElephantRBKernel>()
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system");
   params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
-  params.addParam<unsigned int>("ID_first_block", 0, "ID of the first block in the mesh");
+  //params.addParam<unsigned int>("ID_first_block", 0, "ID of the first block in the mesh");
   params.addParam<unsigned int>("ID_Aq", 0, "ID of the current stiffness matrix");
   params.addParam<unsigned int>("ID_Mq", 0, "ID of the current mass matrix");
   params.addParam<unsigned int>("ID_Fq", 0, "ID of the current stiffness matrix");
@@ -56,7 +56,8 @@ DwarfElephantRBKernel::DwarfElephantRBKernel(const InputParameters & parameters)
     _time_matrix_seperation_according_to_subdomains(getParam<bool>("time_matrix_seperation_according_to_subdomains")),
     _vector_seperation_according_to_subdomains(getParam<bool>("vector_seperation_according_to_subdomains")),
     _simulation_type(getParam<std::string>("simulation_type")),
-    _ID_first_block(getParam<unsigned int>("ID_first_block")),
+   // _ID_first_block(getParam<unsigned int>("ID_first_block")),
+    _ID_first_block(*_fe_problem.mesh().meshSubdomains().begin()),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
     _ID_Mq(getParam<unsigned int>("ID_Mq")),
     _ID_Fq(getParam<unsigned int>("ID_Fq")),
@@ -69,6 +70,7 @@ DwarfElephantRBKernel::DwarfElephantRBKernel(const InputParameters & parameters)
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es())
 
 {
+
 }
 
 ///-------------------------------------------------------------------------
@@ -82,12 +84,9 @@ DwarfElephantRBKernel::initialSetup()
 
   mooseInfo("For performing the reduced basis method a seperation of the stiffness matrix and the load vector according to "
             "the theta values is necessary. Therefore, the algorithm needs an ID for the matrices and vectors. The default "
-            "setting seperates both the matrices and the vectors into the subdomain contributions. By performing the "
-            "Kernels block wise and specify the ID in the inputfile any other seperation is also possible. For the seperation "
-            "a default value of zero is assumed. In case your first volume ID is unequal to zero you have to define the "
-            "'first_block_ID' in the input file. Due to the seperation the occurence of segmentation faults is likely. If "
-            "a segementation fault occurs right after 'quiet mode?' check whether you: 1. defined the correct "
-            "first_block_ID, 2. used the correct RBStructes header file in the RBClasses class.");
+            "setting seperates the matrices into the subdomain contributions. By performing the "
+            "Kernels block wise and specify the ID in the inputfile any other seperation is also possible. Due to the seperation the occurence of segmentation faults is likely. If "
+            "a segementation fault occurs right after 'quiet mode?' check whether you: used the correct RBStructures header file in the RBClasses class.");
 
 //  _output_volume = (_max_x - _min_x) * (_max_y - _min_y) * (_max_z - _min_z);
 }
@@ -224,6 +223,7 @@ DwarfElephantRBKernel::computeMassMatrix()
 
 
   me += _local_me;
+  
   const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
   _initialize_rb_system._mass_matrix_subdomain[_ID_Mq] -> add_matrix(_local_me, _var.dofIndices());
 

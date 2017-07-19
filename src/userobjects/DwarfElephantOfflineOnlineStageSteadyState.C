@@ -25,7 +25,6 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
     params.addParam<Real>("mu_bar", 1., "Value for mu-bar");
     params.addRequiredParam<std::vector<Real>>("online_mu", "Current values of the different layers for which the RB Method is solved.");
-//    params.addRequiredParam<FunctionName>("cache_boundaries", "");
 
     return params;
 }
@@ -46,15 +45,12 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
     _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject")),
-//    _function(&getFunction("cache_boundaries")),
     _mesh_ptr(&_fe_problem.mesh()),
     _subdomain_ids(_mesh_ptr->meshSubdomains()),
     _mu_bar(getParam<Real>("mu_bar")),
-//    _online_N(getParam<unsigned int>("online_N")),
-    _online_mu_parameters(getParam<std::vector<Real>>("online_mu"))
+    _online_mu_parameters(getParam<std::vector<Real>>("online_mu")),
+    _rb_problem(cast_ptr<DwarfElephantRBProblem *>(&_fe_problem))
 {
-//  _cache_boundaries = dynamic_cast<CacheBoundaries *>(_function);
-  _rb_problem = cast_ptr<DwarfElephantRBProblem *>(&_fe_problem);
 }
 
 void
@@ -193,9 +189,14 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 //          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
 
       Moose::perf_log.push("write_exodus()", "Execution");
+
+      std::string _systems_for_print[] = {"RBSystem"};
+      const std::set<std::string>  _system_names_for_print (_systems_for_print, _systems_for_print+sizeof(_systems_for_print)/sizeof(_systems_for_print[0]));
+      
       _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
-      _initialize_rb_system._rb_con_ptr->load_rb_solution();
-      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems(_exodus_file_name + ".e", _es);
+      _initialize_rb_system._rb_con_ptr->load_rb_solution();     
+      
+     ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems(_exodus_file_name + ".e", _es, &_system_names_for_print);
 
 
 //      _initialize_rb_system._rb_con_ptr->load_basis_function(0);

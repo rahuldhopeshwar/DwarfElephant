@@ -22,7 +22,7 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBClassesTransient.h"
 #include "DwarfElephantInitializeRBSystemTransient.h"
-#include "CacheBoundaries.h"
+#include "DwarfElephantRBProblem.h"
 
 
 ///-------------------------------------------------------------------------
@@ -82,8 +82,6 @@ class DwarfElephantOfflineOnlineStageTransient :
     TransientNonlinearImplicitSystem & _sys;
     const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system;
 
-    Function * _function;
-    CacheBoundaries * _cache_boundaries;
     MooseMesh * _mesh_ptr;
 
     const std::set<SubdomainID> & _subdomain_ids;
@@ -93,6 +91,8 @@ class DwarfElephantOfflineOnlineStageTransient :
     std::vector<Real> _online_mu_parameters;
 
     RBParameters _rb_online_mu;
+    
+    DwarfElephantRBProblem * _rb_problem;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTOFFLINEONLINESTAGETRANSIENT_H

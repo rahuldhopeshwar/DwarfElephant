@@ -27,16 +27,18 @@ active = 'RBConduction'
 #active = 'Conduction'
 #active = 'Conduction Euler'
   [./RBConduction]
-    type = RBDiffusion
+    type = DwarfElephantRBDiffusion
     variable = temperature
     initial_rb_userobject = initializeRBSystem
+    lifting_function = temperature_gradient
     simulation_type = transient
-    #vector_seperation_according_to_subdomains = false
   [../]
 
   [./Conduction]
     type = Conduction
     variable = temperature
+    lifting_function = temperature_gradient
+    initial_rb_userobject = initializeRBSystem
   [../]
 
   [./Euler]
@@ -48,41 +50,49 @@ active = 'RBConduction'
 [BCs]
 active = 'RBtop RBbottom'
 #active = 'top bottom'
+#active = ' '
   [./RBtop]
-    type = RBDirichletBC
+    type = DwarfElephantRBDirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
     boundary = 3 #4
     value = 0.00
     initial_rb_userobject = initializeRBSystem
-    cache_boundaries = cacheBoundaries
     mesh_modified = false
     simulation_type = transient
+    ID_Aq = 0
   [../]
   [./RBbottom]
-    type = RBNeumannBC
+    type = DwarfElephantRBNeumannBC
     variable = temperature
     boundary = 1 #2
-    value = 117.5
-    cache_boundaries = cacheBoundaries
+    value = -40
     initial_rb_userobject = initializeRBSystem
     mesh_modified = false
     simulation_type = transient
+    ID_Aq = 0
   [../]
 
   [./top]
     type = DirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
-    boundary = 3
-    value = 10.00
+    boundary = 2
+    value = 0
   [../]
   [./bottom]
     type = DirichletBC
     variable = temperature
     #boundary = 'leftbottom rightbottom'
-    boundary = 1
-    value = 31.00
+    boundary = 0
+    value = 0
+  [../]
+  [./left]
+    type = FunctionDirichletBC
+    variable = temperature
+    #boundary = 'lefttop righttop'
+    boundary = 5
+    function = temperature_gradient
   [../]
 []
 
@@ -90,7 +100,7 @@ active = 'RBtop RBbottom'
 active = ' '
 #active = 'shale_top'
   [./shale_top]
-    type = Shale
+    type = DwarfElephantShale
     block = 0
   [../]
 []
@@ -113,11 +123,18 @@ active = ' '
 []
 
 [Functions]
-active = 'cacheBoundaries'
-#active = ''
+#active = 'cacheBoundaries'
+#active = 'temperature_gradient'
   [./cacheBoundaries]
     type = CacheBoundaries
   [../]
+
+  [./temperature_gradient]
+    type = ParsedFunction
+    # T_top - scalar*y
+    value = 10-(30)*y
+  [../]
+
 []
 
 [UserObjects]
@@ -132,7 +149,6 @@ active = 'initializeRBSystem performRBSystem'
     cache_boundaries = cacheBoundaries
     offline_stage = true
     execute_on = 'initial'
-    transient = true
     #system = nl0
   [../]
 
@@ -151,7 +167,6 @@ active = 'initializeRBSystem performRBSystem'
 
     execute_on = 'timestep_end'
     initial_rb_userobject = initializeRBSystem
-    cache_boundaries = cacheBoundaries
     #system = nl0
   [../]
 []
@@ -178,7 +193,7 @@ Nmax = 20
 parameter_names = 'mu_0'
 
 # Define the minimum and maximum value of the Theta object
-mu_0 = '1.01000 5.15000'
+mu_0 = '1.00 5.15'
 
 # Define the number of training sets for the Greedy-algorithm
 n_training_samples = 10
@@ -206,4 +221,5 @@ delta_t = 0.01
 
 # Generalized Euler method parameter in [0,1], euler_theta=1 implies backward Euler
 euler_theta = 1
+
 
