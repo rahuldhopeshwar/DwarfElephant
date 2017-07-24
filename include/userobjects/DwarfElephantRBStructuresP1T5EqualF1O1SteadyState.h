@@ -12,8 +12,8 @@
   */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTRBSTRUCTURESP1THETA5THETAEQUALMUSTEADYSTATE_H
-#define DWARFELEPHANTRBSTRUCTURESP1THETA5THETAEQUALMUSTEADYSTATE_H
+#ifndef DWARFELEPHANTRBSTRUCTURESP1T5EQUALF1O1STEADYSTATE_H
+#define DWARFELEPHANTRBSTRUCTURESP1T5EQUALF1O1STEADYSTATE_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
@@ -42,9 +42,9 @@ namespace libMesh
  *
  */
 
-struct DwarfElephantRBP1Theta5ThetaEqualMuExpansionSteadyState : RBThetaExpansion
+struct DwarfElephantRBP1T5EqualF1O1SteadyStateExpansion : RBThetaExpansion
 {
-  DwarfElephantRBP1Theta5ThetaEqualMuExpansionSteadyState()
+  DwarfElephantRBP1T5EqualF1O1SteadyStateExpansion()
   {
     // Setting up the RBThetaExpansion object
     attach_A_theta(&_theta_a_0);
@@ -53,19 +53,10 @@ struct DwarfElephantRBP1Theta5ThetaEqualMuExpansionSteadyState : RBThetaExpansio
     attach_A_theta(&_theta_a_3);
     attach_A_theta(&_theta_a_4);
 
-    attach_F_theta(&_theta_a_0);
-    attach_F_theta(&_theta_a_1);
-    attach_F_theta(&_theta_a_2);
-    attach_F_theta(&_theta_a_3);
-    attach_F_theta(&_theta_a_4);
-//    attach_F_theta(&_rb_theta);
-//    attach_output_theta(&_rb_theta);
+    attach_F_theta(&_rb_theta);
+    
+    attach_output_theta(&_rb_theta);
 
-    std::vector <RBTheta *> _thetas = {&_rb_theta, &_rb_theta, &_rb_theta, &_rb_theta, &_rb_theta};
-    attach_output_theta(_thetas);
-//    attach_output_theta(&_theta_a_0);
-//    attach_output_theta(&_theta_a_1);
-//    attach_output_theta(&_theta_a_2);
   }
   // Member Variables
   DwarfElephantThetaA0 _theta_a_0;
@@ -77,4 +68,4 @@ struct DwarfElephantRBP1Theta5ThetaEqualMuExpansionSteadyState : RBThetaExpansio
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTRBSTRUCTURESP1THETA5THETAEQUALMUSTEADYSTATE_H
+#endif // DWARFELEPHANTRBSTRUCTURESP1T5EQUALF1O1STEADYSTATE_H

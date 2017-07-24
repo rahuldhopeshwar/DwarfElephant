@@ -37,6 +37,7 @@
 #include "DwarfElephantRBStructuresP1T1EqualF1O1SteadyState.h"
 #include "DwarfElephantRBStructuresP1T2EqualF1O1SteadyState.h"
 #include "DwarfElephantRBStructuresP1T3EqualF1O1SteadyState.h"
+#include "DwarfElephantRBStructuresP1T5EqualF1O1SteadyState.h"
 
 #include "FEProblemBase.h"
 #include "MooseVariable.h"
@@ -323,7 +324,7 @@ FEProblemBase & get_fe_problem(){return fe_problem;}
   Real epsilon_N;
   FEProblemBase & fe_problem;
   MooseVariable * var;
-  DwarfElephantRBP1T2EqualF1O1SteadyStateExpansion _rb_theta_expansion;
+  DwarfElephantRBP1T5EqualF1O1SteadyStateExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------

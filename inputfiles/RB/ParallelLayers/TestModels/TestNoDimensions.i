@@ -14,8 +14,8 @@
 []
 
 [MeshModifiers]
-active = 'subdomains'
-#active = ' '
+#active = 'subdomains'
+active = ' '
   [./subdomains]
     type = AssignElementSubdomainID
     subdomain_ids = '0 0 1 1'
@@ -171,7 +171,7 @@ active = 'initializeRBSystem performRBSystem'
     store_basis_functions = true
 
     mu_bar = 1
-    online_mu = '1.05 2.5'
+    online_mu = '1.05' # 2.5'
 
     execute_on = 'timestep_end'
     initial_rb_userobject = initializeRBSystem
@@ -198,11 +198,11 @@ Nmax = 20
 
 # Name of the parameters
 # Please name them mu_0, mu_1, ..., mu_n for the re-usability
-parameter_names = 'mu_0 mu_1'
+parameter_names = 'mu_0' # mu_1'
 
 # Define the minimum and maximum value of the Theta object
 mu_0 = '1.01 5.15'
-mu_1 = '1.01 7.15'
+#mu_1 = '1.01 7.15'
 
 # Define the number of training sets for the Greedy-algorithm
 n_training_samples = 10

@@ -5,11 +5,11 @@
   ny = 28
   nz = 80
   xmin = 0.0
-  xmax = 10000
+  xmax = 0.66666667
   ymin = 0.0
-  ymax = 8000
+  ymax = 0.53333333
   zmin = 0.0
-  zmax = 15000
+  zmax = 1
 
   block_id = '0 1 2 3 4'
   block_name = 'air top shale_top sandstone shale_bottom'
@@ -33,9 +33,11 @@ active = 'subdomains'
 [Kernels]
 active = 'RBConduction'
     [./RBConduction]
-    type = DwarfElephantRBDiffusion
+    type = DwarfElephantRBDiffusionND
     variable = temperature
     initial_rb_userobject = initializeRBSystem
+    u_ref = 20
+    l_ref = 15000
   [../]
 []
 
@@ -63,80 +65,98 @@ active = 'RBtop RBbottom'
     type = DwarfElephantRBDirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
-    boundary = 3 #4
+    boundary = 5 #4
     value = 0.00
     initial_rb_userobject = initializeRBSystem
-    ID_Aq = 0
+    ID_Aq = 4
   [../]
   [./RBbottom]
-    type = DwarfElephantRBNeumannBC
+    type = DwarfElephantRBNeumannBCND
     variable = temperature
-    boundary = 1 #2
-    value = -40
+    boundary = 0 #2
+    value = -0.03
+    u_ref = 20
+    l_ref = 15000
     initial_rb_userobject = initializeRBSystem
     ID_Aq = 0
   [../]
+[]
+
+[Problem]
+  type = DwarfElephantRBProblem
 []
 
 [Executioner]
-  type = Steady
-  solve_type = 'PJFNK'
+  type = DwarfElephantRBSteady
+  #type = Steady
 
-  petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_rest'
-  petsc_options_value = 'hypre  boomeramg   101'
-
+  solve_type = 'Newton'
+  l_tol = 1.e-8
+  nl_rel_tol = 1.e-8
 []
 
 [Functions]
-  [./cacheBoundaries]
-    type = CacheBoundaries
+active = ''
+  [./temperature_gradient]
+    type = ParsedFunction
+    # T_top - scalar*y
+    value = 10-(-30)*y
   [../]
+
+  [./non_dimensionalize_temperature]
+    type = ParsedFunction
+    value = (10-10)/10
+  [../]
+
 []
 
 [UserObjects]
 active = 'initializeRBSystem performRBSystem'
+#active = ''
 
   [./initializeRBSystem]
-    type = DwarfElephantInitializeRBSystem
-    parameters_filename = PerthBasinRB.i
+    type = DwarfElephantInitializeRBSystemSteadyState
+    parameters_filename = inputfiles/RB/PerthBasin/PerthBasinRB.i
     skip_matrix_assembly_in_rb_system = true
     skip_vector_assembly_in_rb_system = true
     offline_stage = true
-    online_stage = true
-    store_basis_functions = true
     execute_on = 'initial'
+    #transient = true
+    #system = nl0
   [../]
 
   [./performRBSystem]
-    type = DwarfElephantOfflineOnlineStage
+    type = DwarfElephantOfflineOnlineStageSteadyState
 
-    parameters_filename = PerthBasinRB.i
+    exodus_file_name = PerthBasinRB
 
     offline_stage = true
     online_stage = true
+    offline_error_bound = false
     store_basis_functions = true
 
     mu_bar = 1
     online_mu = '50 2.8 1.05 2.5 1.05'
 
-    skip_matrix_assembly_in_rb_system = true
-    skip_vector_assembly_in_rb_system = true
-
     execute_on = 'timestep_end'
     initial_rb_userobject = initializeRBSystem
-    cache_boundaries = cacheBoundaries
+    #system = nl0
   [../]
 []
 
 [Outputs]
-  exodus = true
-  xda = false
-  xdr = false
+  print_perf_log = true
+  exodus = false
   execute_on = 'timestep_end'
+
+  [./console]
+    type = Console
+    outlier_variable_norms = false
+  [../]
 []
 
 
-# ====================== Parameters for the RB approximation ======================
+# ======================= Parameters for the RB method ========================
 
 # Maximum number of basis functions that will be generated in the Offline-stage
 Nmax = 20
@@ -160,11 +180,13 @@ n_training_samples = 100
 deterministic_training = false
 
 # Determine whether relative or absolute error bounds are used in the Greedy-algorithm
-use_relative_bound_in_greedy = true
+use_relative_bound_in_greedy = false
 
-rel_training_tolerance = 1e-4
+rel_training_tolerance = 1.e-5
 #quiet_mode =  false
 
 #normalize_rb_bound_in_greedy = true
+
+
 
 
