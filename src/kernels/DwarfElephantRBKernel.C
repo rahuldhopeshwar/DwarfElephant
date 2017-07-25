@@ -223,7 +223,7 @@ DwarfElephantRBKernel::computeMassMatrix()
 
 
   me += _local_me;
-  
+
   const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
   _initialize_rb_system._mass_matrix_subdomain[_ID_Mq] -> add_matrix(_local_me, _var.dofIndices());
 

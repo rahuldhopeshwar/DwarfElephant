@@ -46,8 +46,8 @@ DwarfElephantRBDiffusionND::computeQpJacobian()
   return (1/_u_ref) * _grad_phi[_j][_qp] * _grad_test[_i][_qp];
 }
 
-Real
-DwarfElephantRBDiffusionND::computeQpMassMatrix()
-{
-  return _phi[_j][_qp] * _test[_i][_qp];
-}
+//Real
+//DwarfElephantRBDiffusionND::computeQpMassMatrix()
+//{
+//  return _phi[_j][_qp] * _test[_i][_qp];
+//}

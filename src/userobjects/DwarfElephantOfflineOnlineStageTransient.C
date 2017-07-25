@@ -67,6 +67,7 @@ DwarfElephantOfflineOnlineStageTransient::setAffineMatrices()
     _initialize_rb_system._L2_matrix -> close();
     for(unsigned int _q=0; _q<_initialize_rb_system._qm; _q++)
     {
+      _rb_problem->rbAssembly(_q).setCachedStiffnessMatrixContributions(*_initialize_rb_system._mass_matrix_subdomain[_q]);
       _initialize_rb_system._mass_matrix_subdomain[_q] ->close();
       _initialize_rb_system._L2_matrix->add(_mu_bar, *_initialize_rb_system._mass_matrix_subdomain[_q]);
     }
@@ -102,7 +103,7 @@ DwarfElephantOfflineOnlineStageTransient::offlineStage()
     _initialize_rb_system._rb_con_ptr->train_reduced_basis();
    #if defined(LIBMESH_HAVE_CAPNPROTO)
       RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
-     _rb_eval_writer.write_to_file("rb_eval.bin");
+     _rb_eval_writer.write_to_file("trans_rb_eval.bin");
     #else
       // Write the offline data to file (xdr format).
       _initialize_rb_system._rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files();
@@ -142,6 +143,9 @@ DwarfElephantOfflineOnlineStageTransient::execute()
     // RBConstruction object
     _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
 
+    _initialize_rb_system._rb_con_ptr->process_parameters_file(_initialize_rb_system._parameters_filename);
+
+
     if (_offline_stage)
     {
       // Transfer the affine vectors to the RB system.
@@ -163,6 +167,7 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       Moose::perf_log.push("onlineStage()", "Execution");
       #if defined(LIBMESH_HAVE_CAPNPROTO)
       RBDataDeserialization::RBEvaluationDeserialization _rb_eval_reader(_rb_eval);
+      _rb_eval_reader.read_from_file("trans_rb_eval.bin", /*read_error_bound_data*/ true);
       #else
       _rb_eval.legacy_read_offline_data_from_files();
       #endif
@@ -175,20 +180,37 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 
       _online_N = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
 
-      if(_offline_error_bound)
-       _initialize_rb_system._rb_con_ptr->get_rb_evaluation().evaluate_RB_error_bound = false;
+//      if(_offline_error_bound)
+//       _initialize_rb_system._rb_con_ptr->get_rb_evaluation().evaluate_RB_error_bound = false;
 
-      _rb_eval.rb_solve(_online_N);
+      Real _error_bound_final_time = _rb_eval.rb_solve(_online_N);
 
-      for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
-//        for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
-          _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
-          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
+      _console << "Error bound (absolute) at the final time is " << _error_bound_final_time << std::endl << std::endl;
 
+      // Read in the basis functions
       _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
-      _initialize_rb_system._rb_con_ptr->load_rb_solution();
-      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems(_exodus_file_name + ".e", _es);
 
+      // Plot the solution
+
+      unsigned int _num = 1;
+
+      for (unsigned int _time_step = 1; _time_step <= _initialize_rb_system._rb_con_ptr->get_n_time_steps(); _time_step++)
+      {
+        ExodusII_IO exo(_mesh_ptr->getMesh());
+        exo.write_equation_systems(_exodus_file_name + ".e", _es);
+        exo.append(true);
+        _initialize_rb_system._rb_con_ptr->pull_temporal_discretization_data(_rb_eval);
+        _initialize_rb_system._rb_con_ptr->set_time_step(_time_step);
+        _initialize_rb_system._rb_con_ptr->load_rb_solution();
+        exo.write_timestep(_exodus_file_name + ".e", _es, _time_step, _num);
+        _console << _time_step << _num << std::endl;
+        _num++;
+      }
+
+//      for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
+////        for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
+//          _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
+//          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
 
 //      _initialize_rb_system._rb_con_ptr->load_basis_function(0);
 //      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
@@ -198,5 +220,6 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 void
 DwarfElephantOfflineOnlineStageTransient::finalize()
 {
-//  _console << *_initialize_rb_system._rb_con_ptr->get_inner_product_matrix() << std::endl;
+//  _initialize_rb_system._rb_con_ptr->get_inner_product_matrix()->close();
+//  _console << *_initialize_rb_system._rb_con_ptr->M_q_vector[0] << std::endl;
 }

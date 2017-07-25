@@ -109,7 +109,10 @@ DwarfElephantRBIntegratedBC::computeJacobian()
     if(_initialize_rb_system._offline_stage)
     // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
+    {
         _initialize_rb_system._jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
+        _initialize_rb_system._mass_matrix_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
+    }
   }
 
   if (_has_diag_save_in)

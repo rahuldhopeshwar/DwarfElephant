@@ -7,6 +7,7 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
 #include "DwarfElephantInitializeRBSystemTransient.h"
+#include "MooseVariableScalar.h"
 
 // Forward declarations
 class DwarfElephantInitializeRBSystemSteadyState;

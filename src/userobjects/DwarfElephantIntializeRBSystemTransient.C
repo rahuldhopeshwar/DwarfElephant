@@ -109,6 +109,9 @@ DwarfElephantInitializeRBSystemTransient::initialize()
 {
   if (_exec_flags[0]==EXEC_INITIAL)
   {
+    //#if !defined(LIBMESH_HAVE_SLEPC)
+    //  libmesh_example_requires(false, "--enable");
+
     // Define the parameter file for the libMesh functions.
     GetPot infile (_parameters_filename);
 
@@ -139,6 +142,8 @@ DwarfElephantInitializeRBSystemTransient::initialize()
     // Initialize required matrices and vectors.
     if (_offline_stage)
       initializeOfflineStage();
+
+    //#endif
   }
 }
 

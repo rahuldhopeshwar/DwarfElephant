@@ -32,6 +32,8 @@
 #include "DwarfElephantRBDiffusionND.h"
 #include "DwarfElephantRBDarcy.h"
 #include "DwarfElephantRBDiffusionLiftingFunction.h"
+#include "DwarfElephantRBTimeKernel.h"
+#include "DwarfElephantRBTimeDerivative.h"
 
 // Materials
 #include "DwarfElephantSandStone.h"
@@ -109,6 +111,8 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerKernel(DwarfElephantRBDiffusionND);
   registerKernel(DwarfElephantRBDarcy);
   registerKernel(DwarfElephantRBDiffusionLiftingFunction);
+  registerKernel(DwarfElephantRBTimeKernel);
+  registerKernel(DwarfElephantRBTimeDerivative);
 
   // Materials
   registerMaterial(DwarfElephantSandStone);

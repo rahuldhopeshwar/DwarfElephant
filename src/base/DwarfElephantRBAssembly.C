@@ -11,28 +11,12 @@ DwarfElephantRBAssembly::~DwarfElephantRBAssembly()
 {
 }
 
-//void
-//DwarfElephantRBAssembly::cacheSubdomainResidual(numeric_index_type i, Real value, unsigned int subdomain)
-//{
-//  _cached_residual_subdomain_contribution_rows[subdomain].push_back(i);
-//  _cached_residual_subdomain_contribution_vals[subdomain].push_back(value);
-//}
-
 void
 DwarfElephantRBAssembly::cacheResidual(numeric_index_type i, Real value)
 {
   _cached_residual_contribution_rows.push_back(i);
   _cached_residual_contribution_vals.push_back(value);
 }
-
-//void
-//DwarfElephantRBAssembly::setCachedSubdomainResidual(NumericVector<Number> & _residual, unsigned int subdomain)
-//{
-//  _residual.close();
-//
-//  for (unsigned int i = 0; i < _cached_residual_subdomain_contribution_vals[subdomain].size(); ++i)
-//    _residual.set(_cached_residual_subdomain_contribution_rows[subdomain][i], _cached_residual_subdomain_contribution_vals[subdomain][i]);
-//}
 
 void
 DwarfElephantRBAssembly::setCachedResidual(NumericVector<Number> & _residual)
@@ -51,45 +35,6 @@ DwarfElephantRBAssembly::cacheStiffnessMatrixContribution(numeric_index_type i, 
   _cached_jacobian_contribution_vals.push_back(value);
 }
 
-//void
-//DwarfElephantRBAssembly::resizeSubdomainStiffnessMatrixCaches(unsigned int subdomains)
-//{
-//  _cached_jacobian_subdomain_contribution_rows.resize(subdomains);
-//  _cached_jacobian_subdomain_contribution_cols.resize(subdomains);
-//  _cached_jacobian_subdomain_contribution_vals.resize(subdomains);
-//}
-//
-//void
-//DwarfElephantRBAssembly::resizeSubdomainMassMatrixCaches(unsigned int subdomains)
-//{
-//  _cached_mass_subdomain_contribution_rows.resize(subdomains);
-//  _cached_mass_subdomain_contribution_cols.resize(subdomains);
-//  _cached_mass_subdomain_contribution_vals.resize(subdomains);
-//}
-//
-//void
-//DwarfElephantRBAssembly::resizeSubdomainVectorCaches(unsigned int subdomains)
-//{
-//  _cached_residual_subdomain_contribution_rows.resize(subdomains);
-//  _cached_residual_subdomain_contribution_vals.resize(subdomains);
-//}
-
-//void
-//DwarfElephantRBAssembly::cacheSubdomainStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value, unsigned int subdomain)
-//{
-//  _cached_jacobian_subdomain_contribution_rows[subdomain].push_back(i);
-//  _cached_jacobian_subdomain_contribution_cols[subdomain].push_back(j);
-//  _cached_jacobian_subdomain_contribution_vals[subdomain].push_back(value);
-//}
-
-//void
-//DwarfElephantRBAssembly::cacheSubdomainMassMatrixContribution(numeric_index_type i, numeric_index_type j, Real value, unsigned int subdomain)
-//{
-//  _cached_mass_subdomain_contribution_rows[subdomain].push_back(i);
-//  _cached_mass_subdomain_contribution_cols[subdomain].push_back(j);
-//  _cached_mass_subdomain_contribution_vals[subdomain].push_back(value);
-//}
-
 void
 DwarfElephantRBAssembly::setCachedStiffnessMatrixContributions(SparseMatrix<Number> & _jacobian)
 {
@@ -101,36 +46,8 @@ DwarfElephantRBAssembly::setCachedStiffnessMatrixContributions(SparseMatrix<Numb
                   _cached_jacobian_contribution_cols[i],
                   _cached_jacobian_contribution_vals[i]);
 
-  clearCachedStiffnessMatrixContributions();
+//  clearCachedStiffnessMatrixContributions();
 }
-
-//void
-//DwarfElephantRBAssembly::setCachedSubdomainStiffnessMatrixContributions(SparseMatrix<Number> & _jacobian, unsigned int subdomain)
-//{
-//  _jacobian.zero_rows(_cached_jacobian_rows, 0.0);
-//
-//  //for (unsigned int i = 0; i < _cached_jacobian_subdomain_contribution_vals[subdomain].size(); ++i)
-//    //_jacobian.set(_cached_jacobian_subdomain_contribution_rows[subdomain][i],
-//    //             _cached_jacobian_subdomain_contribution_cols[subdomain][i],
-//    //             _cached_jacobian_subdomain_contribution_vals[subdomain][i]);
-//
-//  //clearCachedSubdomainStiffnessMatrixContributions(subdomain);
-//}
-
-//void
-//DwarfElephantRBAssembly::setCachedSubdomainMassMatrixContributions(SparseMatrix<Number> & _mass, unsigned int subdomain)
-//{
-//  _mass.close();
-//  _mass.zero_rows(_cached_mass_subdomain_contribution_rows[subdomain]);
-//
-//  for (unsigned int i = 0; i < _cached_mass_subdomain_contribution_vals[subdomain].size(); ++i)
-//  {
-//    _mass.set(_cached_mass_subdomain_contribution_rows[subdomain][i],
-//              _cached_mass_subdomain_contribution_cols[subdomain][i],
-//              _cached_mass_subdomain_contribution_vals[subdomain][i]);
-//  }
-//}
-
 
 void
 DwarfElephantRBAssembly::clearCachedStiffnessMatrixContributions()
@@ -152,27 +69,3 @@ DwarfElephantRBAssembly::clearCachedStiffnessMatrixContributions()
     _cached_jacobian_contribution_cols.reserve(1.2 * orig_size);
     _cached_jacobian_contribution_vals.reserve(1.2 * orig_size);
 }
-
-//void
-//DwarfElephantRBAssembly::cacheJacobian(numeric_index_type i, numeric_index_type j, Real value)
-//{
-//  _cached_jacobian_rows.push_back(i);
-//  _cached_jacobian_cols.push_back(j);
-//  _cached_jacobian_vals.push_back(value);
-//}
-
-//void
-//DwarfElephantRBAssembly::setCachedJacobian(SparseMatrix<Number> & jacobian)
-//{
-//  // First zero the rows (including the diagonals) to prepare for
-//  // setting the cached values.
-//  jacobian.zero_rows(_cached_jacobian_rows, 0.0);
-//
-//  // TODO: Use SparseMatrix::set_values() for efficiency
-//  for (unsigned int i = 0; i < _cached_jacobian_vals.size(); ++i)
-//    jacobian.set(_cached_jacobian_rows[i],
-//                 _cached_jacobian_cols[i],
-//                 _cached_jacobian_vals[i]);
-//
-////  clearCachedJacobianContributions();
-//}
