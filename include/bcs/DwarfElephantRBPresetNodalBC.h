@@ -2,6 +2,7 @@
 #define DWARFELEPHANTRBPRESETNODALBC_H
 
 #include "DwarfElephantRBDirichletBC.h"
+#include "MooseVariable.h"
 
 class DwarfElephantRBPresetNodalBC;
 
