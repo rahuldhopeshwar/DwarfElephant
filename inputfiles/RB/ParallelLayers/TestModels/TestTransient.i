@@ -15,14 +15,13 @@
 []
 
 [MeshModifiers]
-#active = 'subdomains'
-active = ' '
+active = 'subdomains'
+#active = ' '
   [./subdomains]
     type = AssignElementSubdomainID
-    subdomain_ids = '0 0 1 1'
+    subdomain_ids = '0 0 1 1 0 0 1 1'
   [../]
 []
-
 
 [Variables]
 active = 'temperature'
@@ -33,7 +32,7 @@ active = 'temperature'
 []
 
 [Kernels]
-active = 'RBConduction' # RBConductionTransient'
+active = 'RBConduction RBTime'
 #active = 'Conduction'
 #active = 'Conduction Euler'
   [./RBConduction]
@@ -43,7 +42,7 @@ active = 'RBConduction' # RBConductionTransient'
     simulation_type = transient
   [../]
 
-  [./RBConductionTransient]
+  [./RBTime]
     type = DwarfElephantRBTimeDerivative
     variable = temperature
     initial_rb_userobject = initializeRBSystem
@@ -51,7 +50,7 @@ active = 'RBConduction' # RBConductionTransient'
   [../]
 
   [./Conduction]
-    type = Conduction
+    type = DwarfElephantConduction
     variable = temperature
     lifting_function = temperature_gradient
     initial_rb_userobject = initializeRBSystem
@@ -69,13 +68,13 @@ active = 'RBtop RBbottom'
 #active = 'top bottom'
 #active = ' '
   [./RBtop]
-    type = DwarfElephantRBDirichletBC
+    type = DwarfElephantRBPresetBC
     variable = temperature
     #boundary = 'lefttop righttop'
-    boundary = 3 #4
+    boundary = 3 #3 (MOOSE)
     value = 0.00
     initial_rb_userobject = initializeRBSystem
-    ID_Aq = 0
+    ID_Aq = 1
     simulation_type = transient
   [../]
   [./RBbottom]
@@ -92,15 +91,15 @@ active = 'RBtop RBbottom'
     type = DirichletBC
     variable = temperature
     #boundary = 'lefttop righttop'
-    boundary = 2
+    boundary = 3
     value = 0
   [../]
   [./bottom]
-    type = DirichletBC
+    type = NeumannBC
     variable = temperature
     #boundary = 'leftbottom rightbottom'
-    boundary = 0
-    value = 0
+    boundary = 1
+    value = 40
   [../]
   [./left]
     type = FunctionDirichletBC
@@ -113,10 +112,15 @@ active = 'RBtop RBbottom'
 
 [Materials]
 active = ' '
-#active = 'shale_top'
-  [./shale_top]
+#active = 'shale sandstone'
+  [./shale]
     type = DwarfElephantShale
     block = 0
+  [../]
+
+  [./sandstone]
+    type = DwarfElephantSandStone
+    block = 1
   [../]
 []
 
@@ -125,7 +129,7 @@ active = ' '
 []
 
 [Executioner]
-  type = DwarfElephantRBSteady
+  type = DwarfElephantRBExecutioner
   #type = Steady
   #type = Transient
 
@@ -178,7 +182,7 @@ active = 'initializeRBSystem performRBSystem'
     store_basis_functions = true
 
     mu_bar = 1
-    online_mu = '1.05'
+    online_mu = '1.05 2.5'
 
     execute_on = 'timestep_end'
     initial_rb_userobject = initializeRBSystem
@@ -205,13 +209,14 @@ Nmax = 20
 
 # Name of the parameters
 # Please name them mu_0, mu_1, ..., mu_n for the re-usability
-parameter_names = 'mu_0'
+parameter_names = 'mu_0 mu_1'
 
 # Define the minimum and maximum value of the Theta object
 mu_0 = '1.00 5.15'
+mu_1 = '1.00 7.15'
 
 # Define the number of training sets for the Greedy-algorithm
-n_training_samples = 10
+n_training_samples = 100
 
 # Optionally:
 # Determine whether the training points are generated randomly or deterministically
@@ -228,10 +233,10 @@ rel_training_tolerance = 1.e-5
 # ======================= Transient RB system parameters =======================
 
 # number of time steps
-n_time_steps = 10
+n_time_steps = 80
 
 # size of time steps
-delta_t = 0.1
+delta_t = 0.04
 
 # Generalized Euler method parameter in [0,1], euler_theta=1 implies backward Euler
 euler_theta = 1

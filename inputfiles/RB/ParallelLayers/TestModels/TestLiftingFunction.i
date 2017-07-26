@@ -106,7 +106,7 @@ active = ' '
 []
 
 [Executioner]
-  type = DwarfElephantRBSteady
+  type = DwarfElephantRBExecutioner
   #type = Steady
   #type = Transient
 

@@ -24,13 +24,13 @@ DwarfElephantRBTimeDerivative::DwarfElephantRBTimeDerivative(const InputParamete
 Real
 DwarfElephantRBTimeDerivative::computeQpResidual()
 {
-  return _test[_i][_qp] * _u[_qp]; //_u_dot[_qp];
+  return 0;
 }
 
 Real
 DwarfElephantRBTimeDerivative::computeQpJacobian()
 {
-  return _test[_i][_qp] * _phi[_j][_qp]; // * _du_dot_du[_qp];
+  return _test[_i][_qp] * _phi[_j][_qp];
 }
 
 void

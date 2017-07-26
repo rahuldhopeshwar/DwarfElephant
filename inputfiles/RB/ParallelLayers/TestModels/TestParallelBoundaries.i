@@ -1,5 +1,4 @@
 [Mesh]
-#file = meshs/unit_2layer.e
   type = GeneratedMesh
   dim = 3
   nx = 2
@@ -11,7 +10,6 @@
   ymax = 1
   zmin = 0.0
   zmax = 1
-#  #elem_type=TET4
 []
 
 [MeshModifiers]
@@ -35,7 +33,6 @@ active = 'temperature'
 [Kernels]
 active = 'RBConduction'
 #active = 'Conduction'
-#active = 'Conduction Euler'
   [./RBConduction]
     type = DwarfElephantRBDiffusion
     variable = temperature
@@ -47,11 +44,6 @@ active = 'RBConduction'
     variable = temperature
     lifting_function = temperature_gradient
     initial_rb_userobject = initializeRBSystem
-  [../]
-
-  [./Euler]
-    type = TimeDerivative
-    variable = temperature
   [../]
 []
 
@@ -114,7 +106,7 @@ active = ' '
 []
 
 [Executioner]
-  type = DwarfElephantRBSteady
+  type = DwarfElephantRBExecutioner
   #type = Steady
   #type = Transient
 
@@ -127,12 +119,7 @@ active = ' '
 []
 
 [Functions]
-#active = 'cacheBoundaries'
 #active = 'temperature_gradient'
-  [./cacheBoundaries]
-    type = CacheBoundaries
-  [../]
-
   [./temperature_gradient]
     type = ParsedFunction
     # T_top - scalar*y

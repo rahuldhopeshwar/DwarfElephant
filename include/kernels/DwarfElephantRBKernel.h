@@ -56,17 +56,12 @@ public:
   virtual void computeResidual() override;
   virtual void initialSetup() override;
 
-  virtual void computeMassMatrix();
-
 //--------------------------------PROTECTED---------------------------------
 protected:
 
   /* Methods */
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
-
-  virtual Real computeQpMassMatrix();
-
 
   /*Attributes*/
   bool _use_displaced;
@@ -90,7 +85,6 @@ protected:
 //  Real _output_volume;
 
 //  DenseVector<Number> _local_out;
-  DenseMatrix<Number> _local_me;
 
   EquationSystems & _es;
 };

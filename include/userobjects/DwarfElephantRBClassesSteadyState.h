@@ -84,10 +84,10 @@ public:
   // Initialize data structure
   virtual void init_data()
   {
-    u_var = this->add_variable (get_equation_systems().get_system(0).variable_name(0));
+    u_var = this->add_variable (get_equation_systems().get_system(0).variable_name(0) + "(RB)");
 
     Parent::init_data();
-    
+
   }
 
   Real compute_residual_dual_norm(const unsigned int N)
@@ -324,7 +324,7 @@ FEProblemBase & get_fe_problem(){return fe_problem;}
   Real epsilon_N;
   FEProblemBase & fe_problem;
   MooseVariable * var;
-  DwarfElephantRBP1T5EqualF1O1SteadyStateExpansion _rb_theta_expansion;
+  DwarfElephantRBP1T1EqualF1O1SteadyStateExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------

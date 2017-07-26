@@ -133,7 +133,10 @@ DwarfElephantRBNodalBC::computeJacobian()
 
       if(_initialize_rb_system._offline_stage)
         if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
+        {
           _rb_problem->rbAssembly(_ID_Aq).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
+          _rb_problem->rbAssembly(_ID_Mq).cacheMassMatrixContribution(cached_row, cached_row, cached_val);
+        }
     }
 
 

@@ -27,12 +27,11 @@
 #include "DwarfElephantConduction.h"
 #include "DwarfElephantConductionLiftingFunction.h"
 #include "DwarfElephantDarcy.h"
-#include "DwarfElephantRBKernel.h"
+//#include "DwarfElephantRBKernel.h"
 #include "DwarfElephantRBDiffusion.h"
 #include "DwarfElephantRBDiffusionND.h"
 #include "DwarfElephantRBDarcy.h"
 #include "DwarfElephantRBDiffusionLiftingFunction.h"
-#include "DwarfElephantRBTimeKernel.h"
 #include "DwarfElephantRBTimeDerivative.h"
 
 // Materials
@@ -49,7 +48,7 @@
 #include "CacheBoundaries.h"
 
 // Executioners
-#include "DwarfElephantRBSteady.h"
+#include "DwarfElephantRBExecutioner.h"
 
 template<>
 InputParameters validParams<DwarfElephantApp>()
@@ -106,12 +105,11 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerKernel(DwarfElephantConduction);
   registerKernel(DwarfElephantConductionLiftingFunction);
   registerKernel(DwarfElephantDarcy);
-  registerKernel(DwarfElephantRBKernel);
+//  registerKernel(DwarfElephantRBKernel);
   registerKernel(DwarfElephantRBDiffusion);
   registerKernel(DwarfElephantRBDiffusionND);
   registerKernel(DwarfElephantRBDarcy);
   registerKernel(DwarfElephantRBDiffusionLiftingFunction);
-  registerKernel(DwarfElephantRBTimeKernel);
   registerKernel(DwarfElephantRBTimeDerivative);
 
   // Materials
@@ -128,7 +126,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerFunction(CacheBoundaries);
 
   // Executioners
-  registerExecutioner(DwarfElephantRBSteady);
+  registerExecutioner(DwarfElephantRBExecutioner);
 
 }
 

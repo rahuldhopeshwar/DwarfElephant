@@ -98,6 +98,7 @@ class DwarfElephantInitializeRBSystemTransient :
 
 
     friend class DwarfElephantRBKernel;
+    friend class DwarfElephantRBTimeKernel;
     friend class DwarfElephantRBNodalBC;
     friend class DwarfElephantRBIntegratedBC;
     friend class DwarfElephantOfflineOnlineStageTransient;

@@ -1,7 +1,7 @@
  /**
   * The structures are defined for an parabolic PDE with the following restrictions:
   *  1. The parameter dimension p is equal to one (P1).
-  *  2. The number of thetas is equal to one (T1).
+  *  2. The number of thetas is equal to two (T2).
   *  3. Theta is equal to mu (for implementing other relationships,please
   *     follow the structure of these implementation for a general usability)
   *     (Equal).
@@ -12,8 +12,8 @@
   * 2. RBThetaExpansion
   */
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTRBSTRUCTURESP1T1EQUALF1O1TRANSIENT_H
-#define DWARFELEPHANTRBSTRUCTURESP1T1EQUALF1O1TRANSIENT_H
+#ifndef DWARFELEPHANTRBSTRUCTURESP1T2EQUALF1O1TRANSIENT_H
+#define DWARFELEPHANTRBSTRUCTURESP1T2EQUALF1O1TRANSIENT_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
@@ -22,6 +22,7 @@
 
 #include "DwarfElephantRBStructuresA00ThetaIsConstantP1.h"
 #include "DwarfElephantRBStructuresA0ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA1ThetaEqualMuP1.h"
 
 
 // Forward Declarations
@@ -39,14 +40,15 @@ namespace libMesh
  *
  */
 
-struct DwarfElephantRBP1T1EqualF1O1TransientExpansion : TransientRBThetaExpansion
+struct DwarfElephantRBP1T2EqualF1O1TransientExpansion : TransientRBThetaExpansion
 {
-  DwarfElephantRBP1T1EqualF1O1TransientExpansion()
+  DwarfElephantRBP1T2EqualF1O1TransientExpansion()
   {
     // Setting up the RBThetaExpansion object
     attach_M_theta(&_rb_theta);
 
     attach_A_theta(&_theta_a_0);
+    attach_A_theta(&_theta_a_1);
 
     attach_F_theta(&_rb_theta);
 
@@ -55,8 +57,9 @@ struct DwarfElephantRBP1T1EqualF1O1TransientExpansion : TransientRBThetaExpansio
   }
   // Member Variables
   DwarfElephantThetaA0 _theta_a_0;
+  DwarfElephantThetaA1 _theta_a_1;
   RBTheta _rb_theta;         // Default RBTheta object, simply returns one.
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTRBSTRUCTURESP1T1EQUALF1O1Transient_H
+#endif // DWARFELEPHANTRBSTRUCTURESP1T2EQUALF1O1Transient_H

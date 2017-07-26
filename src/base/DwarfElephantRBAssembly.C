@@ -36,6 +36,15 @@ DwarfElephantRBAssembly::cacheStiffnessMatrixContribution(numeric_index_type i, 
 }
 
 void
+DwarfElephantRBAssembly::cacheMassMatrixContribution(numeric_index_type i, numeric_index_type j, Real value)
+{
+  _cached_mass_contribution_rows.push_back(i);
+  _cached_mass_contribution_cols.push_back(j);
+  _cached_mass_contribution_vals.push_back(value);
+}
+
+
+void
 DwarfElephantRBAssembly::setCachedStiffnessMatrixContributions(SparseMatrix<Number> & _jacobian)
 {
   _jacobian.close();
@@ -47,6 +56,20 @@ DwarfElephantRBAssembly::setCachedStiffnessMatrixContributions(SparseMatrix<Numb
                   _cached_jacobian_contribution_vals[i]);
 
 //  clearCachedStiffnessMatrixContributions();
+}
+
+void
+DwarfElephantRBAssembly::setCachedMassMatrixContributions(SparseMatrix<Number> & _mass)
+{
+  _mass.close();
+  _mass.zero_rows(_cached_mass_contribution_rows);
+
+  for (unsigned int i = 0; i < _cached_mass_contribution_vals.size(); ++i)
+    _mass.set(_cached_mass_contribution_rows[i],
+              _cached_mass_contribution_cols[i],
+              _cached_mass_contribution_vals[i]);
+
+//  clearCachedMassMatrixContributions();
 }
 
 void
@@ -68,4 +91,25 @@ DwarfElephantRBAssembly::clearCachedStiffnessMatrixContributions()
     _cached_jacobian_contribution_rows.reserve(1.2 * orig_size);
     _cached_jacobian_contribution_cols.reserve(1.2 * orig_size);
     _cached_jacobian_contribution_vals.reserve(1.2 * orig_size);
+}
+
+void
+DwarfElephantRBAssembly::clearCachedMassMatrixContributions()
+{
+    unsigned int orig_size = _cached_mass_contribution_rows.size();
+
+    _cached_mass_contribution_rows.clear();
+    _cached_mass_contribution_cols.clear();
+    _cached_mass_contribution_vals.clear();
+
+    // It's possible (though massively unlikely) that clear() will
+    // change the capacity of the vectors, so let's be paranoid and
+    // explicitly reserve() the same amount of memory to avoid multiple
+    // push_back() induced allocations.  We reserve 20% more than the
+    // original size that was cached to account for variations in the
+    // number of BCs assigned to each thread (for when the Jacobian
+    // contributions are computed threaded).
+    _cached_mass_contribution_rows.reserve(1.2 * orig_size);
+    _cached_mass_contribution_cols.reserve(1.2 * orig_size);
+    _cached_mass_contribution_vals.reserve(1.2 * orig_size);
 }

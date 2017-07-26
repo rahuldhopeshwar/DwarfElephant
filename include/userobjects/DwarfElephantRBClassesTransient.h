@@ -34,6 +34,7 @@
 // MOOSE includes (DwarfElephant package)
 #include "CacheBoundaries.h"
 #include "DwarfElephantRBStructuresP1T1EqualF1O1Transient.h"
+#include "DwarfElephantRBStructuresP1T2EqualF1O1Transient.h"
 
 #include "FEProblemBase.h"
 
@@ -79,7 +80,7 @@ public:
   // Initialize data structure
   virtual void init_data()
   {
-    u_var = this->add_variable ("u", libMesh::FIRST);
+    u_var = this->add_variable (get_equation_systems().get_system(0).variable_name(0) + "(RB)", libMesh::FIRST);
 
     Parent::init_data();
   }
@@ -377,7 +378,7 @@ Real rb_solve(unsigned int N)
 }
 
   FEProblemBase & fe_problem;
-  DwarfElephantRBP1T1EqualF1O1TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBP1T2EqualF1O1TransientExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------

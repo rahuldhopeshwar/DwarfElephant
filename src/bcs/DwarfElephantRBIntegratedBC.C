@@ -16,7 +16,8 @@ InputParameters validParams<DwarfElephantRBIntegratedBC>()
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system");
   params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
   params.addParam<unsigned int>("ID_Aq", 0, "ID of the current stiffness matrix");
-  params.addParam<unsigned int>("ID_Fq", 0, "ID of the current stiffness matrix");
+  params.addParam<unsigned int>("ID_Mq", 0, "ID of the current mass matrix");
+  params.addParam<unsigned int>("ID_Fq", 0, "ID of the current load vector");
 
   return params;
 }
@@ -26,6 +27,7 @@ DwarfElephantRBIntegratedBC::DwarfElephantRBIntegratedBC(const InputParameters &
     _use_displaced(getParam<bool>("use_displaced")),
     _simulation_type(getParam<std::string>("simulation_type")),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
+    _ID_Mq(getParam<unsigned int>("ID_Mq")),
     _ID_Fq(getParam<unsigned int>("ID_Fq")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es())
 {
@@ -111,7 +113,7 @@ DwarfElephantRBIntegratedBC::computeJacobian()
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
     {
         _initialize_rb_system._jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
-        _initialize_rb_system._mass_matrix_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
+        _initialize_rb_system._mass_matrix_subdomain[_ID_Mq] -> add_matrix(_local_ke, _var.dofIndices());
     }
   }
 

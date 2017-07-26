@@ -39,7 +39,6 @@ protected:
   /* Methods */
   virtual Real computeQpResidual() override;
   virtual Real computeQpJacobian() override;
-//  virtual Real computeQpMassMatrix() override;
 
   Real _u_ref;
   Real _l_ref;

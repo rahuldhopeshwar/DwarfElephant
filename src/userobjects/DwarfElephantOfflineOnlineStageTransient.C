@@ -67,7 +67,7 @@ DwarfElephantOfflineOnlineStageTransient::setAffineMatrices()
     _initialize_rb_system._L2_matrix -> close();
     for(unsigned int _q=0; _q<_initialize_rb_system._qm; _q++)
     {
-      _rb_problem->rbAssembly(_q).setCachedStiffnessMatrixContributions(*_initialize_rb_system._mass_matrix_subdomain[_q]);
+      _rb_problem->rbAssembly(_q).setCachedMassMatrixContributions(*_initialize_rb_system._mass_matrix_subdomain[_q]);
       _initialize_rb_system._mass_matrix_subdomain[_q] ->close();
       _initialize_rb_system._L2_matrix->add(_mu_bar, *_initialize_rb_system._mass_matrix_subdomain[_q]);
     }
@@ -191,35 +191,31 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
 
       // Plot the solution
+      Moose::perf_log.push("write_exodus()", "Execution");
 
-      unsigned int _num = 1;
+      std::string _systems_for_print[] = {"RBSystem"};
+      const std::set<std::string>  _system_names_for_print (_systems_for_print, _systems_for_print+sizeof(_systems_for_print)/sizeof(_systems_for_print[0]));
+
+      ExodusII_IO exo(_mesh_ptr->getMesh());
+      exo.write_equation_systems(_exodus_file_name + ".e", _es, &_system_names_for_print);
 
       for (unsigned int _time_step = 1; _time_step <= _initialize_rb_system._rb_con_ptr->get_n_time_steps(); _time_step++)
       {
-        ExodusII_IO exo(_mesh_ptr->getMesh());
-        exo.write_equation_systems(_exodus_file_name + ".e", _es);
         exo.append(true);
         _initialize_rb_system._rb_con_ptr->pull_temporal_discretization_data(_rb_eval);
         _initialize_rb_system._rb_con_ptr->set_time_step(_time_step);
         _initialize_rb_system._rb_con_ptr->load_rb_solution();
-        exo.write_timestep(_exodus_file_name + ".e", _es, _time_step, _num);
-        _console << _time_step << _num << std::endl;
-        _num++;
+        exo.write_timestep(_exodus_file_name + ".e", _es, _time_step, _time_step * _initialize_rb_system._rb_con_ptr->get_delta_t());
       }
 
 //      for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
 ////        for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
 //          _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
 //          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
-
-//      _initialize_rb_system._rb_con_ptr->load_basis_function(0);
-//      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
     }
 }
 
 void
 DwarfElephantOfflineOnlineStageTransient::finalize()
 {
-//  _initialize_rb_system._rb_con_ptr->get_inner_product_matrix()->close();
-//  _console << *_initialize_rb_system._rb_con_ptr->M_q_vector[0] << std::endl;
 }

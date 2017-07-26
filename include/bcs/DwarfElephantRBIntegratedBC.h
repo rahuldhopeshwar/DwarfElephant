@@ -47,6 +47,7 @@ protected:
   std::string _simulation_type;
 
   unsigned int _ID_Aq;
+  unsigned int _ID_Mq;
   unsigned int _ID_Fq;
 
   EquationSystems & _es;

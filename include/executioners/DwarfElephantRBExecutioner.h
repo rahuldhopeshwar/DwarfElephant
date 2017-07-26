@@ -1,6 +1,6 @@
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTRBSTEADY_H
-#define DWARFELEPHANTRBSTEADY_H
+#ifndef DWARFELEPHANTRBEXECUTIONER_H
+#define DWARFELEPHANTRBEXECUTIONER_H
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
@@ -8,18 +8,18 @@
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
-class DwarfElephantRBSteady;
+class DwarfElephantRBExecutioner;
 
 template<>
-InputParameters validParams<DwarfElephantRBSteady>();
+InputParameters validParams<DwarfElephantRBExecutioner>();
 
-class DwarfElephantRBSteady :
+class DwarfElephantRBExecutioner :
   public Steady
 {
   public:
-    DwarfElephantRBSteady(const InputParameters & params);
+    DwarfElephantRBExecutioner(const InputParameters & params);
 
     void execute() override;
 };
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTRBSTEADY_H
+#endif // DWARFELEPHANTRBEXECUTIONER_H

@@ -31,7 +31,6 @@ InputParameters validParams<DwarfElephantRBKernel>()
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system");
   params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
-  //params.addParam<unsigned int>("ID_first_block", 0, "ID of the first block in the mesh");
   params.addParam<unsigned int>("ID_Aq", 0, "ID of the current stiffness matrix");
   params.addParam<unsigned int>("ID_Mq", 0, "ID of the current mass matrix");
   params.addParam<unsigned int>("ID_Fq", 0, "ID of the current stiffness matrix");
@@ -56,7 +55,6 @@ DwarfElephantRBKernel::DwarfElephantRBKernel(const InputParameters & parameters)
     _time_matrix_seperation_according_to_subdomains(getParam<bool>("time_matrix_seperation_according_to_subdomains")),
     _vector_seperation_according_to_subdomains(getParam<bool>("vector_seperation_according_to_subdomains")),
     _simulation_type(getParam<std::string>("simulation_type")),
-   // _ID_first_block(getParam<unsigned int>("ID_first_block")),
     _ID_first_block(*_fe_problem.mesh().meshSubdomains().begin()),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
     _ID_Mq(getParam<unsigned int>("ID_Mq")),
@@ -188,7 +186,7 @@ DwarfElephantRBKernel::computeJacobian()
     {
         _initialize_rb_system._jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
         // Add the mass matrix to the RB System
-        computeMassMatrix();
+//        computeMassMatrix();
     }
   }
 
@@ -204,30 +202,6 @@ DwarfElephantRBKernel::computeJacobian()
       var->sys().solution().add_vector(diag, var->dofIndices());
   }
 }
-
-void
-DwarfElephantRBKernel::computeMassMatrix()
-{
-  if(_time_matrix_seperation_according_to_subdomains)
-    _ID_Mq = _current_elem->subdomain_id() - _ID_first_block;
-
-  DenseMatrix<Number> & me = _assembly.jacobianBlock(_var.number(), _var.number());
-  _local_me.resize(me.m(), me.n());
-  _local_me.zero();
-
-  for (_i = 0; _i < _test.size(); _i++)
-    for (_j = 0; _j < _phi.size(); _j++)
-      for (_qp = 0; _qp < _qrule->n_points(); _qp++)
-        _local_me(_i, _j) += _JxW[_qp] * _coord[_qp] * computeQpMassMatrix();
-
-
-
-  me += _local_me;
-
-  const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
-  _initialize_rb_system._mass_matrix_subdomain[_ID_Mq] -> add_matrix(_local_me, _var.dofIndices());
-
-}
 ///----------------------------------PDEs-----------------------------------
 // For the PDEs zero is implemented, since this Kernel shall be used for any
 // RB problem. The problem specific PDEs are implemented in separate Kernels.
@@ -240,12 +214,6 @@ DwarfElephantRBKernel::computeQpJacobian()
 
 Real
 DwarfElephantRBKernel::computeQpResidual()
-{
-  return 0;
-}
-
-Real
-DwarfElephantRBKernel::computeQpMassMatrix()
 {
   return 0;
 }

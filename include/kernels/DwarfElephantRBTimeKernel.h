@@ -19,6 +19,7 @@ public:
   DwarfElephantRBTimeKernel(const InputParameters & parameters);
 
   virtual void computeResidual() override;
+  virtual void computeJacobian() override;
 };
 
 #endif // DWARFELEPHANTRBTIMEKERNEL_H

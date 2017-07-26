@@ -1,22 +1,22 @@
  ///-------------------------------------------------------------------------
 // MOOSE includes (DwarfElephant package)
-#include "DwarfElephantRBSteady.h"
+#include "DwarfElephantRBExecutioner.h"
 
 template<>
-InputParameters validParams<DwarfElephantRBSteady>()
+InputParameters validParams<DwarfElephantRBExecutioner>()
 {
   InputParameters params = validParams<Steady>();
 
   return params;
 }
 
-DwarfElephantRBSteady::DwarfElephantRBSteady(const InputParameters & params):
+DwarfElephantRBExecutioner::DwarfElephantRBExecutioner(const InputParameters & params):
   Steady(params)
 {
 }
 
 void
-DwarfElephantRBSteady::execute()
+DwarfElephantRBExecutioner::execute()
 {
   if (_app.isRecovering())
     return;
