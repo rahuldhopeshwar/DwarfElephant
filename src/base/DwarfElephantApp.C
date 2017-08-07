@@ -24,9 +24,10 @@
 #include "DwarfElephantRBFunctionNeumannBC.h"
 
 // Kernels
-#include "DwarfElephantConduction.h"
-#include "DwarfElephantConductionLiftingFunction.h"
-#include "DwarfElephantDarcy.h"
+#include "DwarfElephantFEThermalConduction.h"
+#include "DwarfElephantFEConductionLiftingFunction.h"
+#include "DwarfElephantFEElectricalConduction.h"
+#include "DwarfElephantFEDarcy.h"
 //#include "DwarfElephantRBKernel.h"
 #include "DwarfElephantRBDiffusion.h"
 #include "DwarfElephantRBDiffusionND.h"
@@ -43,6 +44,7 @@
 #include "DwarfElephantInitializeRBSystemTransient.h"
 #include "DwarfElephantOfflineOnlineStageSteadyState.h"
 #include "DwarfElephantOfflineOnlineStageTransient.h"
+#include "DwarfElephantERTPreCalculations.h"
 
 // Functions
 #include "CacheBoundaries.h"
@@ -102,9 +104,10 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerBoundaryCondition(DwarfElephantRBFunctionNeumannBC);
 
   // Kernels
-  registerKernel(DwarfElephantConduction);
-  registerKernel(DwarfElephantConductionLiftingFunction);
-  registerKernel(DwarfElephantDarcy);
+  registerKernel(DwarfElephantFEThermalConduction);
+  registerKernel(DwarfElephantFEConductionLiftingFunction);
+  registerKernel(DwarfElephantFEElectricalConduction);
+  registerKernel(DwarfElephantFEDarcy);
 //  registerKernel(DwarfElephantRBKernel);
   registerKernel(DwarfElephantRBDiffusion);
   registerKernel(DwarfElephantRBDiffusionND);
@@ -121,6 +124,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerUserObject(DwarfElephantInitializeRBSystemTransient);
   registerUserObject(DwarfElephantOfflineOnlineStageSteadyState);
   registerUserObject(DwarfElephantOfflineOnlineStageTransient);
+  registerUserObject(DwarfElephantERTPreCalculations);
 
   // Functions
   registerFunction(CacheBoundaries);

@@ -30,17 +30,23 @@
 #include "libmesh/rb_scm_construction.h"
 #include "libmesh/rb_scm_evaluation.h"
 
-///-------------------------------------------------------------------------
+// MOOSE includes
+#include "FEProblemBase.h"
+
 // MOOSE includes (DwarfElephant package)
-#include "CacheBoundaries.h"
+//#include "CacheBoundaries.h"
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
+
 #include "DwarfElephantRBStructuresP1T1EqualF1O1SteadyState.h"
 #include "DwarfElephantRBStructuresP1T2EqualF1O1SteadyState.h"
 #include "DwarfElephantRBStructuresP1T3EqualF1O1SteadyState.h"
 #include "DwarfElephantRBStructuresP1T5EqualF1O1SteadyState.h"
 
-#include "FEProblemBase.h"
+#include "DwarfElephantRBStructuresP1T1ScalarDivisionF1O1SteadyState.h"
+#include "DwarfElephantRBStructuresP1T2ScalarDivisionF1O1SteadyState.h"
+#include "DwarfElephantRBStructuresP1T3ScalarDivisionF1O1SteadyState.h"
 
+///-------------------------------------------------------------------------
 // Forward Declarations
 namespace libMesh
 {
@@ -272,7 +278,7 @@ public:
 FEProblemBase & get_fe_problem(){return fe_problem;}
 
   FEProblemBase & fe_problem;
-  DwarfElephantRBP1T1EqualF1O1SteadyStateExpansion _rb_theta_expansion;
+  DwarfElephantRBP1T2ScalarDivisionF1O1SteadyStateExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------

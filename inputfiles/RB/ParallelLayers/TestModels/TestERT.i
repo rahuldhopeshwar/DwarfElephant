@@ -13,37 +13,44 @@
 []
 
 [MeshModifiers]
-#active = 'subdomains'
-active = ' '
+active = 'subdomains'
+#active = ' '
   [./subdomains]
     type = AssignElementSubdomainID
-    subdomain_ids = '0 0 1 1'
+    subdomain_ids = '0 0 1 1 0 0 1 1'
   [../]
 []
 
 
 [Variables]
-active = 'temperature'
-  [./temperature]
+active = 'potential'
+  [./potential]
     order = FIRST
     family = LAGRANGE
   [../]
 []
 
 [Kernels]
-active = 'RBConduction'
-#active = 'Conduction'
-  [./RBConduction]
+active = 'RBERT'
+#active = 'ElectricalConduction0 ElectricalConduction1'
+  [./RBERT]
     type = DwarfElephantRBDiffusion
-    variable = temperature
+    variable = potential
     initial_rb_userobject = initializeRBSystem
   [../]
 
-  [./Conduction]
-    type = Conduction
-    variable = temperature
-    lifting_function = temperature_gradient
-    initial_rb_userobject = initializeRBSystem
+  [./ElectricalConduction1]
+    type = DwarfElephantFEElectricalConduction
+    variable = potential
+    resistivity = 200
+    block = 1
+  [../]
+
+  [./ElectricalConduction0]
+    type = DwarfElephantFEElectricalConduction
+    variable = potential
+    resistivity = 400
+    block = 0
   [../]
 []
 
@@ -53,52 +60,48 @@ active = 'RBtop RBbottom'
 #active = ' '
   [./RBtop]
     type = DwarfElephantRBDirichletBC
-    variable = temperature
+    variable = potential
     #boundary = 'lefttop righttop'
     boundary = 3 #4
     value = 0.00
     initial_rb_userobject = initializeRBSystem
-    ID_Aq = 0
+    ID_Aq = 1
   [../]
   [./RBbottom]
     type = DwarfElephantRBNeumannBC
-    variable = temperature
+    variable = potential
     boundary = 1 #2
-    value = -40
+    value = -1
     initial_rb_userobject = initializeRBSystem
     ID_Aq = 0
   [../]
 
   [./top]
     type = DirichletBC
-    variable = temperature
-    #boundary = 'lefttop righttop'
-    boundary = 2
+    variable = potential
+    boundary = 3
     value = 0
   [../]
   [./bottom]
     type = DirichletBC
-    variable = temperature
-    #boundary = 'leftbottom rightbottom'
-    boundary = 0
-    value = 0
-  [../]
-  [./left]
-    type = FunctionDirichletBC
-    variable = temperature
-    #boundary = 'lefttop righttop'
-    boundary = 5
-    function = temperature_gradient
+    variable = potential
+    boundary = 1
+    value = 1
   [../]
 []
 
 [Materials]
 active = ' '
-#active = 'shale_top'
-  [./shale_top]
-    type = DwarfElephantShale
+#active = 'shale_top sand_bottom'
+  [./sand_bottom]
+    type = DwarfElephantSandStone
     block = 0
   [../]
+
+ [./shale_top]
+   type = DwarfElephantShale
+   block = 1
+ [../]
 []
 
 [Problem]
@@ -118,36 +121,32 @@ active = ' '
   nl_rel_tol = 1.e-8
 []
 
-[Functions]
-#active = 'temperature_gradient'
-  [./temperature_gradient]
-    type = ParsedFunction
-    # T_top - scalar*y
-    value = 10-(30)*y
-  [../]
-
-[]
-
 [UserObjects]
-active = 'initializeRBSystem performRBSystem'
+active = 'ERTPreCalculations initializeRBSystem performRBSystem'
 #active = ''
+
+ [./ERTPreCalculations]
+    type = DwarfElephantERTPreCalculations
+    execute_on = 'initial'
+    position_A_electrode = '1. 2. 3. 4. 5. 6. 7.'
+    position_B_electrode = '4. 5. 6. 7. 8. 9. 10.'
+    position_M_electrode = '2. 3. 4. 5. 6. 7. 8.'
+    position_N_electrode = '3. 4. 5. 6. 7. 8. 9.'
+  [../]
 
   [./initializeRBSystem]
     type = DwarfElephantInitializeRBSystemSteadyState
-    parameters_filename = inputfiles/RB/ParallelLayers/TestModels/TestParallelBoundaries.i
+    parameters_filename = inputfiles/RB/ParallelLayers/TestModels/TestERT.i
     skip_matrix_assembly_in_rb_system = true
     skip_vector_assembly_in_rb_system = true
-    cache_boundaries = cacheBoundaries
     offline_stage = true
     execute_on = 'initial'
-    #transient = true
-    #system = nl0
   [../]
 
   [./performRBSystem]
     type = DwarfElephantOfflineOnlineStageSteadyState
 
-    exodus_file_name = TestParallelBoundaries
+    exodus_file_name = TestERT
 
     offline_stage = true
     online_stage = true
@@ -155,19 +154,16 @@ active = 'initializeRBSystem performRBSystem'
     store_basis_functions = true
 
     mu_bar = 1
-    online_mu = '1.05'
+    online_mu = '400 200'
 
     execute_on = 'timestep_end'
     initial_rb_userobject = initializeRBSystem
-    cache_boundaries = cacheBoundaries
-    #system = nl0
   [../]
 []
 
 [Outputs]
   print_perf_log = false
   exodus = false
-  xda = false
   execute_on = 'timestep_end'
 
   [./console]
@@ -184,10 +180,11 @@ Nmax = 20
 
 # Name of the parameters
 # Please name them mu_0, mu_1, ..., mu_n for the re-usability
-parameter_names = 'mu_0'
+parameter_names = 'mu_0 mu_1'
 
 # Define the minimum and maximum value of the Theta object
-mu_0 = '1.00 5.15'
+mu_0 = '380 420'
+mu_1 = '180 220'
 
 # Define the number of training sets for the Greedy-algorithm
 n_training_samples = 10

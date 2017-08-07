@@ -6,11 +6,11 @@
 
  ///---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
-#include "DwarfElephantDarcy.h"
+#include "DwarfElephantFEDarcy.h"
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<DwarfElephantDarcy>()
+InputParameters validParams<DwarfElephantFEDarcy>()
 {
   InputParameters params = validParams<Diffusion>();
 
@@ -20,7 +20,7 @@ InputParameters validParams<DwarfElephantDarcy>()
 }
 
 ///-------------------------------CONSTRUCTOR-------------------------------
-DwarfElephantDarcy::DwarfElephantDarcy(const InputParameters & parameters) :
+DwarfElephantFEDarcy::DwarfElephantFEDarcy(const InputParameters & parameters) :
   Diffusion(parameters),
   _permeability(getMaterialProperty<Real>("permeability")),
   _dynamic_viscosity(getMaterialProperty<Real>("dynamic_viscosity")),
@@ -32,13 +32,13 @@ DwarfElephantDarcy::DwarfElephantDarcy(const InputParameters & parameters) :
 ///----------------------------------PDEs-----------------------------------
 // Definition of the necessary PDE in the weak formulation
 Real
-DwarfElephantDarcy::computeQpResidual()
+DwarfElephantFEDarcy::computeQpResidual()
 {
   return (_permeability[_qp]/_dynamic_viscosity[_qp]) * (Diffusion::computeQpResidual() - ((_fluid_density[_qp] * _gravity[_qp]) * _grad_test[_i][_qp]));
 }
 
 Real
-DwarfElephantDarcy::computeQpJacobian()
+DwarfElephantFEDarcy::computeQpJacobian()
 {
   return (_permeability[_qp]/_dynamic_viscosity[_qp]) * Diffusion::computeQpJacobian();
 }

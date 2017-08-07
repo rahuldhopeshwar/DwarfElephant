@@ -5,8 +5,8 @@
  */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTDARCY_H
-#define DWARFELEPHANTDARCY_H
+#ifndef DWARFELEPHANTFEDARCY_H
+#define DWARFELEPHANTFEDARCY_H
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
@@ -14,18 +14,18 @@
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
-class DwarfElephantDarcy;
+class DwarfElephantFEDarcy;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<DwarfElephantDarcy>();
+InputParameters validParams<DwarfElephantFEDarcy>();
 
 ///-------------------------------------------------------------------------
-class DwarfElephantDarcy : public Diffusion
+class DwarfElephantFEDarcy : public Diffusion
 {
 //----------------------------------PUBLIC----------------------------------
 public:
-  DwarfElephantDarcy(const InputParameters & parameters);
+  DwarfElephantFEDarcy(const InputParameters & parameters);
 
 //--------------------------------PROTECTED---------------------------------
 protected:
@@ -42,4 +42,4 @@ protected:
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTDARCY_H
+#endif // DWARFELEPHANTFEDARCY_H

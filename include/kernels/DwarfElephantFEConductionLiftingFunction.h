@@ -5,27 +5,28 @@
  */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTCONDUCTION_H
-#define DWARFELEPHANTCONDUCTION_H
+#ifndef DWARFELEPHANTFECONDUCTIONLIFTINGFUNCTION_H
+#define DWARFELEPHANTFECONDUCTIONLIFTINGFUNCTION_H
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
 #include "Diffusion.h"
+#include "Function.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
-class DwarfElephantConduction;
+class DwarfElephantFEConductionLiftingFunction;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<DwarfElephantConduction>();
+InputParameters validParams<DwarfElephantFEConductionLiftingFunction>();
 
 ///-------------------------------------------------------------------------
-class DwarfElephantConduction : public Diffusion
+class DwarfElephantFEConductionLiftingFunction : public Diffusion
 {
 //----------------------------------PUBLIC----------------------------------
 public:
-  DwarfElephantConduction(const InputParameters & parameters);
+  DwarfElephantFEConductionLiftingFunction(const InputParameters & parameters);
 
 //--------------------------------PROTECTED---------------------------------
 protected:
@@ -34,9 +35,12 @@ protected:
   virtual Real computeQpResidual() override;
   virtual Real computeQpJacobian() override;
 
+
   /* Attributes */
   const MaterialProperty<Real> &_lambda;
+
+  Function * _lifting_function;
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTCONDUCTION_H
+#endif // DWARFELEPHANTFECONDUCTIONLIFTINGFUNCTION_H
