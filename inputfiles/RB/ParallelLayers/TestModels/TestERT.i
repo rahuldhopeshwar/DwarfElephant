@@ -122,17 +122,8 @@ active = ' '
 []
 
 [UserObjects]
-active = 'ERTPreCalculations initializeRBSystem performRBSystem'
+active = 'initializeRBSystem ERTPreCalculations performRBSystem'
 #active = ''
-
- [./ERTPreCalculations]
-    type = DwarfElephantERTPreCalculations
-    execute_on = 'initial'
-    position_A_electrode = '1. 2. 3. 4. 5. 6. 7.'
-    position_B_electrode = '4. 5. 6. 7. 8. 9. 10.'
-    position_M_electrode = '2. 3. 4. 5. 6. 7. 8.'
-    position_N_electrode = '3. 4. 5. 6. 7. 8. 9.'
-  [../]
 
   [./initializeRBSystem]
     type = DwarfElephantInitializeRBSystemSteadyState
@@ -141,6 +132,16 @@ active = 'ERTPreCalculations initializeRBSystem performRBSystem'
     skip_vector_assembly_in_rb_system = true
     offline_stage = true
     execute_on = 'initial'
+  [../]
+
+  [./ERTPreCalculations]
+    type = DwarfElephantERTPreCalculations
+    execute_on = 'initial'
+    n_electrodes = 10
+    position_A_electrode = '1. 2. 3. 4. 5. 6. 7.'
+    position_B_electrode = '4. 5. 6. 7. 8. 9. 10.'
+    position_M_electrode = '2. 3. 4. 5. 6. 7. 8.'
+    position_N_electrode = '3. 4. 5. 6. 7. 8. 9.'
   [../]
 
   [./performRBSystem]

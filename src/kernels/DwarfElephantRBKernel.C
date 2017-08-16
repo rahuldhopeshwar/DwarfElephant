@@ -185,8 +185,6 @@ DwarfElephantRBKernel::computeJacobian()
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
     {
         _initialize_rb_system._jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
-        // Add the mass matrix to the RB System
-//        computeMassMatrix();
     }
   }
 

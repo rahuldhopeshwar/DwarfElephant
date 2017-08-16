@@ -11,6 +11,7 @@ template<>
 InputParameters validParams<DwarfElephantRBIntegratedBC>()
 {
   InputParameters params = validParams<IntegratedBC>();
+  params += validParams<BlockRestrictable>();
 
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system");
@@ -18,14 +19,18 @@ InputParameters validParams<DwarfElephantRBIntegratedBC>()
   params.addParam<unsigned int>("ID_Aq", 0, "ID of the current stiffness matrix");
   params.addParam<unsigned int>("ID_Mq", 0, "ID of the current mass matrix");
   params.addParam<unsigned int>("ID_Fq", 0, "ID of the current load vector");
+  params.addParam<bool>("matrix_seperation_according_to_subdomains", false, "Tells whether the stiffness matrix is separated according to the subdomain_ids");
 
   return params;
 }
 
 DwarfElephantRBIntegratedBC::DwarfElephantRBIntegratedBC(const InputParameters & parameters) :
     IntegratedBC(parameters),
+    BlockRestrictable(parameters),
     _use_displaced(getParam<bool>("use_displaced")),
+    _matrix_seperation_according_to_subdomains(getParam<bool>("matrix_seperation_according_to_subdomains")),
     _simulation_type(getParam<std::string>("simulation_type")),
+    _ID_first_block(*_fe_problem.mesh().meshSubdomains().begin()),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
     _ID_Mq(getParam<unsigned int>("ID_Mq")),
     _ID_Fq(getParam<unsigned int>("ID_Fq")),
@@ -85,6 +90,9 @@ DwarfElephantRBIntegratedBC::computeResidual()
 void
 DwarfElephantRBIntegratedBC::computeJacobian()
 {
+  if(_matrix_seperation_according_to_subdomains)
+    _ID_Aq = _current_elem->subdomain_id() - _ID_first_block;
+
   DenseMatrix<Number> & ke = _assembly.jacobianBlock(_var.number(), _var.number());
   _local_ke.resize(ke.m(), ke.n());
   _local_ke.zero();

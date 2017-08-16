@@ -38,6 +38,7 @@
 // Materials
 #include "DwarfElephantSandStone.h"
 #include "DwarfElephantShale.h"
+#include "DwarfElephantFault.h"
 
 // UserObjects
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
@@ -118,6 +119,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   // Materials
   registerMaterial(DwarfElephantSandStone);
   registerMaterial(DwarfElephantShale);
+  registerMaterial(DwarfElephantFault);
 
   // UserObjects
   registerUserObject(DwarfElephantInitializeRBSystemSteadyState);

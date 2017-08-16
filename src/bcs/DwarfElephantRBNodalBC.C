@@ -23,6 +23,7 @@ InputParameters validParams<DwarfElephantRBNodalBC>()
   params.addParam<unsigned int>("ID_Aq", 0 , "ID if the stiffness matrix.");
   params.addParam<unsigned int>("ID_Mq", 0 , "ID if the mass matrix.");
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
+  params.addParam<bool>("matrix_seperation_according_to_subdomains", false, "Tells whether the stiffness matrix is separated according to the subdomain_ids");
 
   return params;
 }
@@ -30,6 +31,7 @@ InputParameters validParams<DwarfElephantRBNodalBC>()
 ///-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantRBNodalBC::DwarfElephantRBNodalBC(const InputParameters & parameters) :
     NodalBC(parameters),
+    _matrix_seperation_according_to_subdomains(getParam<bool>("matrix_seperation_according_to_subdomains")),
     _simulation_type(getParam<std::string>("simulation_type")),
     _ID_Fq(getParam<unsigned int>("ID_Fq")),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
@@ -114,15 +116,16 @@ DwarfElephantRBNodalBC::computeJacobian()
       {
         if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0 )
         {
-
-	      _rb_problem->rbAssembly(_ID_Aq).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
-
           // external mesh
-//          const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
-//          for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
-//               it != _node_boundary_list.end(); ++it)
-//            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val,*it - _ID_first_block);
-//            _cache_boundaries->cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);    _rb_problem->rbAssembly(0).cacheSubdomainStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
+          if (_matrix_seperation_according_to_subdomains)
+          {
+          const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
+          for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
+               it != _node_boundary_list.end(); ++it)
+            _rb_problem->rbAssembly(*it).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
+           }
+           else
+	        _rb_problem->rbAssembly(_ID_Aq).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
         }
       }
     }

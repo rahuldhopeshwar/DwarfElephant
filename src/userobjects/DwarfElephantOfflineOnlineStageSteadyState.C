@@ -192,10 +192,10 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
       std::string _systems_for_print[] = {"RBSystem"};
       const std::set<std::string>  _system_names_for_print (_systems_for_print, _systems_for_print+sizeof(_systems_for_print)/sizeof(_systems_for_print[0]));
-      
+
       _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
-      _initialize_rb_system._rb_con_ptr->load_rb_solution();     
-      
+      _initialize_rb_system._rb_con_ptr->load_rb_solution();
+
      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems(_exodus_file_name + ".e", _es, &_system_names_for_print);
 
 
