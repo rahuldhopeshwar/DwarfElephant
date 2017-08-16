@@ -3,6 +3,7 @@
 
 // MOOSE includes
 #include "IntegratedBC.h"
+#include "BlockRestrictable.h"
 
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
@@ -10,6 +11,8 @@
 #include "MooseVariableScalar.h"
 
 // Forward declarations
+//class BlockRestrictable;
+
 class DwarfElephantInitializeRBSystemSteadyState;
 class DwarfElephantRBIntegratedBC;
 
@@ -17,7 +20,8 @@ template<>
 InputParameters validParams<DwarfElephantRBIntegratedBC>();
 
 class DwarfElephantRBIntegratedBC :
-  public IntegratedBC
+  public IntegratedBC,
+  public BlockRestrictable
 {
 public:
 
@@ -43,9 +47,11 @@ protected:
 
   /*Attributes*/
   bool _use_displaced;
+  bool _matrix_seperation_according_to_subdomains;
 
   std::string _simulation_type;
 
+  unsigned int _ID_first_block;
   unsigned int _ID_Aq;
   unsigned int _ID_Mq;
   unsigned int _ID_Fq;

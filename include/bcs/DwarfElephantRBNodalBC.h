@@ -62,7 +62,10 @@ protected:
   virtual Real computeQpJacobian();
 
   /* Attributes */
+  bool _matrix_seperation_according_to_subdomains;
+
   std::string _simulation_type;
+
   unsigned int _ID_Fq;
   unsigned int _ID_Aq;
   unsigned int _ID_Mq;

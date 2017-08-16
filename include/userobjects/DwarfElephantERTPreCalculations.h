@@ -11,7 +11,6 @@
 #include "DisplacedProblem.h"
 #include "MooseMesh.h"
 
-
 ///-------------------------------------------------------------------------
 // Forward Declarations
 namespace libMesh
@@ -44,8 +43,9 @@ class DwarfElephantERTPreCalculations :
     // Method not used in this UserObject.
     virtual void finalize() override;
 
-    DenseVector<Real> & computeGemeotricFactor();
-    DenseVector<Real> & computeDistance(DenseVector<Real> & vec1, DenseVector<Real> & vec2);
+    void setUpElectrodeVectors();
+    NumericVector<Number> & computeGeometricFactor();
+    NumericVector<Number> & computeDistance(NumericVector<Number> & vec1, NumericVector<Number> & vec2);
 
 //--------------------------------PROTECTED---------------------------------
   protected:
@@ -53,12 +53,19 @@ class DwarfElephantERTPreCalculations :
     /* Attributes */
     const std::vector<ExecFlagType> & _exec_flags;
 
-    DenseVector<Real> _position_A_electrode;
-    DenseVector<Real> _position_B_electrode;
-    DenseVector<Real> _position_M_electrode;
-    DenseVector<Real> _position_N_electrode;
+    unsigned int _n_electrodes;
 
-    DenseVector<Real> _geometric_factor;
+    std::vector<Real> _position_A_electrode;
+    std::vector<Real> _position_B_electrode;
+    std::vector<Real> _position_M_electrode;
+    std::vector<Real> _position_N_electrode;
+
+    UniquePtr<NumericVector<Number>> _A_electrode;
+    UniquePtr<NumericVector<Number>> _B_electrode;
+    UniquePtr<NumericVector<Number>> _M_electrode;
+    UniquePtr<NumericVector<Number>> _N_electrode;
+    UniquePtr<NumericVector<Number>> _dist;
+    UniquePtr<NumericVector<Number>> _geometric_factor;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTERTPRECALCULATIONS_H

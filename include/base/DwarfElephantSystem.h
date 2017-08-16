@@ -33,8 +33,6 @@ public:
 
   // Initialize data structure
   virtual void 	solve () override;
-
-  unsigned int u_var;
 };
 
 #endif /* DWARFELEPHANTSYSTEM_H */
