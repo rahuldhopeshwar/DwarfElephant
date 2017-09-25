@@ -149,7 +149,7 @@ active = 'initializeRBSystem performRBSystem'
   [./performRBSystem]
     type = DwarfElephantOfflineOnlineStage
 
-    parameters_filename = inputfiles/RB/ParallelLayers/SyntheticModels/ThreeLayerParallelRB_nx200_ny48_nz68.i
+    parameters_filename = inputfiles/RB/ParallelLayers/SyntheticModels/NoFaults/ThreeLayerParallelRB_nx200_ny48_nz68.i
     exodus_file_name = ThreeLayerParallelRB_nx200_ny48_nz68
 
     offline_stage = true
