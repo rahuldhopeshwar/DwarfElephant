@@ -53,6 +53,9 @@
 // Executioners
 #include "DwarfElephantRBExecutioner.h"
 
+// Outputs
+#include "DwarfElephantDakotaOutput.h"
+
 template<>
 InputParameters validParams<DwarfElephantApp>()
 {
@@ -133,6 +136,9 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // Executioners
   registerExecutioner(DwarfElephantRBExecutioner);
+
+  // Outputs
+  registerOutput(DwarfElephantDakotaOutput);
 
 }
 
