@@ -144,3 +144,7 @@ out.xyz
 
 # ignore GMSH files
 *.msh
+
+# ignore the inputfile folder and the mesh folder
+inputfiles/*
+meshs/*
