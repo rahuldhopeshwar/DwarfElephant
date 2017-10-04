@@ -23,7 +23,7 @@ InputParameters validParams<DwarfElephantRBNodalBC>()
   params.addParam<unsigned int>("ID_Aq", 0 , "ID if the stiffness matrix.");
   params.addParam<unsigned int>("ID_Mq", 0 , "ID if the mass matrix.");
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
-  params.addParam<bool>("matrix_seperation_according_to_subdomains", false, "Tells whether the stiffness matrix is separated according to the subdomain_ids");
+  params.addParam<bool>("matrix_seperation_according_to_subdomains", true, "Tells whether the stiffness matrix is separated according to the subdomain_ids");
 
   return params;
 }

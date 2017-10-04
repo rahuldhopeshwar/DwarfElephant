@@ -17,8 +17,8 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     params.addParam<bool>("compliant", true, "Determines whether F is equal to the output vector or not.");
     params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
     params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
-    params.addParam<bool>("offline_stage", false, "Determines whether the Offline stage will be calculated or not.");
-    params.addParam<bool>("online_stage", false, "Determines whether the Online stage will be calculated or not.");
+    params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
+    params.addParam<bool>("online_stage", true, "Determines whether the Online stage will be calculated or not.");
     params.addParam<bool>("offline_error_bound", false, "Determines which error bound is used.");
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
     params.addRequiredParam<std::string>("exodus_file_name","The name of the Exodus output file.");

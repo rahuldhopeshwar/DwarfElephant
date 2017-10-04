@@ -19,7 +19,7 @@ InputParameters validParams<DwarfElephantRBIntegratedBC>()
   params.addParam<unsigned int>("ID_Aq", 0, "ID of the current stiffness matrix");
   params.addParam<unsigned int>("ID_Mq", 0, "ID of the current mass matrix");
   params.addParam<unsigned int>("ID_Fq", 0, "ID of the current load vector");
-  params.addParam<bool>("matrix_seperation_according_to_subdomains", false, "Tells whether the stiffness matrix is separated according to the subdomain_ids");
+  params.addParam<bool>("matrix_seperation_according_to_subdomains", true, "Tells whether the stiffness matrix is separated according to the subdomain_ids");
 
   return params;
 }

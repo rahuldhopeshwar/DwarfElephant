@@ -16,7 +16,7 @@ DwarfElephantRBNeumannBC::DwarfElephantRBNeumannBC(const InputParameters & param
 Real
 DwarfElephantRBNeumannBC::computeQpResidual()
 {
-  return -_test[_i][_qp]*_value;
+  return _test[_i][_qp]*_value;
 }
 
 
