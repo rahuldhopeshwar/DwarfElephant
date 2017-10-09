@@ -51,6 +51,8 @@ class DwarfElephantInitializeRBSystemTransient :
 
     /* Methods */
 
+    void processParameters();
+
     // Initializes all required matrices and vectors for the RB solve.
     void initializeOfflineStage();
 
@@ -72,15 +74,36 @@ class DwarfElephantInitializeRBSystemTransient :
     bool _skip_vector_assembly_in_rb_system;
     bool _offline_stage;
     bool _compliant;
+    bool _deterministic_training;
+    bool _quiet_mode;
+    bool _normalize_rb_bound_in_greedy;
+    bool _nonzero_initialization;
 
+    unsigned int _n_training_samples;
+    unsigned int _training_parameters_random_seed;
+    unsigned int _N_max;
+    unsigned int _n_time_steps;
     unsigned int _n_outputs;
     unsigned int _qa;
     unsigned int _qm;
     unsigned int _qf;
     std::vector<unsigned int> _ql;
 
+    Real _rel_training_tolerance;
+    Real _abs_training_tolerance;
+    Real _delta_t;
+    Real _euler_theta;
+    Real _POD_tol;
+    std::vector<Real> _continuous_parameter_min_values;
+    std::vector<Real> _continuous_parameter_max_values;
+    std::vector<Real> _discrete_parameter_values_in;
+
     std::string _system_name;
-    std::string _parameters_filename;
+//    std::string _parameters_filename;
+    std::string _init_filename;
+    std::vector<std::string> _continuous_parameters;
+    std::vector<std::string> _discrete_parameters;
+    std::map< std::string, std::vector<Real> > _discrete_parameter_values;
 
     EquationSystems & _es;
     MooseMesh * _mesh_ptr;

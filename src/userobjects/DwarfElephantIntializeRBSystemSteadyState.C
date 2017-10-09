@@ -11,8 +11,21 @@ InputParameters validParams<DwarfElephantInitializeRBSystemSteadyState>()
   params.addParam<bool>("compliant", true, "Determines whether F is equal to the output vector or not.");
   params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
   params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
+  params.addParam<bool>("deterministic_training", false, "Determines whether the training set is generated deterministically or randomly.");
+  params.addParam<bool>("quiet_mode", true, "Determines the what is printed to the console.");
+  params.addParam<bool>("normalize_rb_bound_in_greedy", false, "Determines whether the normalized RB bound is used in the Greedy or not.");
   params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
-  params.addRequiredParam<std::string>("parameters_filename","Path to the input file. Required for the libMesh functions");
+//  params.addRequiredParam<std::string>("parameters_filename","Path to the input file. Required for the libMesh functions");
+  params.addRequiredParam<std::vector<std::string>>("parameter_names", "Parameter names for the RB method.");
+  params.addParam<std::vector<std::string>>("discrete_parameter_names", "Discrete parameter names for the RB method.");
+  params.addRequiredParam<unsigned int>("n_training_samples", "Defines the number of training samples used in the Greedy.");
+  params.addParam<unsigned int>("training_parameters_random_seed", -1, "Defines the random seed for the generation of the traning set.");
+  params.addRequiredParam<unsigned int>("N_max", "Defines the maximum number of basis functions.");
+  params.addParam<Real>("rel_training_tolerance", 1.0e-4, "Defines the relative training tolerance for the Greedy.");
+  params.addParam<Real>("abs_training_tolerance", 1.0e-12, "Defines the relative training tolerance for the Greedy.");
+  params.addParam<std::vector<Real>>("parameter_min_values", "Defines the lower bound of the parameter range.");
+  params.addParam<std::vector<Real>>("parameter_max_values", "Defines the upper bound of the parameter range.");
+  params.addParam<std::vector<Real>>("discrete_parameter_values", "Defines the list of parameters.");
 
   return params;
 }
@@ -24,13 +37,79 @@ DwarfElephantInitializeRBSystemSteadyState::DwarfElephantInitializeRBSystemStead
   _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
   _offline_stage(getParam<bool>("offline_stage")),
   _compliant(getParam<bool>("compliant")),
+  _deterministic_training(getParam<bool>("deterministic_training")),
+  _quiet_mode(getParam<bool>("quiet_mode")),
+  _normalize_rb_bound_in_greedy(getParam<bool>("normalize_rb_bound_in_greedy")),
+  _n_training_samples(getParam<unsigned int>("n_training_samples")),
+  _training_parameters_random_seed(getParam<unsigned int>("training_parameters_random_seed")),
+  _N_max(getParam<unsigned int>("N_max")),
+  _rel_training_tolerance(getParam<Real>("rel_training_tolerance")),
+  _abs_training_tolerance(getParam<Real>("abs_training_tolerance")),
+  _continuous_parameter_min_values(getParam<std::vector<Real>>("parameter_min_values")),
+  _continuous_parameter_max_values(getParam<std::vector<Real>>("parameter_max_values")),
+  _discrete_parameter_values_in(getParam<std::vector<Real>>("discrete_parameter_values")),
   _system_name(getParam<std::string>("system")),
-  _parameters_filename(getParam<std::string>("parameters_filename")),
+//  _parameters_filename(getParam<std::string>("parameters_filename")),
+  _continuous_parameters(getParam<std::vector<std::string>>("parameter_names")),
+  _discrete_parameters(getParam<std::vector<std::string>>("discrete_parameter_names")),
   _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
   _mesh_ptr(&_fe_problem.mesh()),
   _sys(&_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
   _exec_flags(this->execFlags())
 {
+}
+
+void
+DwarfElephantInitializeRBSystemSteadyState::processParameters()
+{
+  // Set the random seed for the RNG. By default -1 is set, meaning that std::time is used as a seed for the RNG.
+  _rb_con_ptr->set_training_random_seed(_training_parameters_random_seed);
+
+  // Set quiet mode.
+  _rb_con_ptr->set_quiet_mode(_quiet_mode);
+
+  // Initialization of the RB parameters.
+  _rb_con_ptr->set_Nmax(_N_max);
+
+  _rb_con_ptr->set_rel_training_tolerance(_rel_training_tolerance);
+  _rb_con_ptr->set_abs_training_tolerance(_abs_training_tolerance);
+
+  _rb_con_ptr->set_normalize_rb_bound_in_greedy(_normalize_rb_bound_in_greedy);
+
+  RBParameters _mu_min;
+  RBParameters _mu_max;
+
+  for (unsigned int i=0; i<_continuous_parameters.size(); i++)
+  {
+    _mu_min.set_value(_continuous_parameters[i], _continuous_parameter_min_values[i]);
+    _mu_max.set_value(_continuous_parameters[i], _continuous_parameter_max_values[i]);
+  }
+
+  for (unsigned int i=0; i<_discrete_parameters.size(); i++)
+  {
+    _discrete_parameter_values[_discrete_parameters[i]] = _discrete_parameter_values_in;
+  }
+
+  std::map<std::string,bool> _log_scaling;
+  RBParameters::const_iterator it     = _mu_min.begin();
+  RBParameters::const_iterator it_end = _mu_min.end();
+  for ( ; it != it_end; ++it)
+    {
+      std::string _param_name = it->first;
+
+      // For now, just set all entries to false.
+      // TODO: Implement a decent way to specify log-scaling true/false
+      // in the input text file
+      _log_scaling[_param_name] = false;
+    }
+
+    _rb_con_ptr->initialize_parameters(_mu_min, _mu_max, _discrete_parameter_values);
+
+   _rb_con_ptr->initialize_training_parameters(_rb_con_ptr->get_parameters_min(),
+                                               _rb_con_ptr->get_parameters_max(),
+                                               _n_training_samples,
+                                               _log_scaling,
+                                               _deterministic_training);
 }
 
 
@@ -39,7 +118,9 @@ DwarfElephantInitializeRBSystemSteadyState::initializeOfflineStage()
 {
   // Get and process the necessary input parameters for the
   // offline stage
-  _rb_con_ptr->process_parameters_file(_parameters_filename);
+
+  //libMesh way: //  _rb_con_ptr->process_parameters_file(_parameters_filename);
+  processParameters();
 
   // Print the system informations for the RBConstruction system.
   _rb_con_ptr->print_info();
@@ -93,7 +174,8 @@ DwarfElephantInitializeRBSystemSteadyState::initialize()
   if (_exec_flags[0]==EXEC_INITIAL)
   {
     // Define the parameter file for the libMesh functions.
-    GetPot infile (_parameters_filename);
+    // In our case not required, because the read-in is done via the MOOSE inputfile.
+    // GetPot infile (_parameters_filename);
 
     // Add a new equation system for the RB construction.
     _rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionSteadyState> ("RBSystem");

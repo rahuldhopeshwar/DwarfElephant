@@ -143,7 +143,7 @@ DwarfElephantOfflineOnlineStageTransient::execute()
     // RBConstruction object
     _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
 
-    _initialize_rb_system._rb_con_ptr->process_parameters_file(_initialize_rb_system._parameters_filename);
+//    _initialize_rb_system._rb_con_ptr->process_parameters_file(_initialize_rb_system._parameters_filename);
 
 
     if (_offline_stage)

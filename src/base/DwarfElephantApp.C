@@ -34,11 +34,13 @@
 #include "DwarfElephantRBDarcy.h"
 #include "DwarfElephantRBDiffusionLiftingFunction.h"
 #include "DwarfElephantRBTimeDerivative.h"
+#include "ExtractQpPointsKernel.h"
 
 // Materials
 #include "DwarfElephantSandStone.h"
 #include "DwarfElephantShale.h"
 #include "DwarfElephantFault.h"
+#include "ExtractQpPoints.h"
 
 // UserObjects
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
@@ -118,11 +120,13 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerKernel(DwarfElephantRBDarcy);
   registerKernel(DwarfElephantRBDiffusionLiftingFunction);
   registerKernel(DwarfElephantRBTimeDerivative);
+  registerKernel(ExtractQpPointsKernel);
 
   // Materials
   registerMaterial(DwarfElephantSandStone);
   registerMaterial(DwarfElephantShale);
   registerMaterial(DwarfElephantFault);
+  registerMaterial(ExtractQpPoints);
 
   // UserObjects
   registerUserObject(DwarfElephantInitializeRBSystemSteadyState);
