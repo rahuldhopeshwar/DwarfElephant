@@ -3,6 +3,7 @@
 
 // MOOSE includes
 #include "FileOutput.h"
+#include "MooseMesh.h"
 
 // Forward declerations
 class DwarfElephantRBOutput;
@@ -16,6 +17,9 @@ public:
   DwarfElephantRBOutput(const InputParameters & parameters);
 
   virtual void output(const ExecFlagType & type) override;
+
+protected:
+  MooseMesh * _mesh_ptr;
 };
 
 #endif /* DWARFELEPHANTRBOUTPUT_H */

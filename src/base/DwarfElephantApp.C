@@ -57,6 +57,7 @@
 
 // Outputs
 #include "DwarfElephantDakotaOutput.h"
+#include "DwarfElephantRBOutput.h"
 
 template<>
 InputParameters validParams<DwarfElephantApp>()
@@ -143,6 +144,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // Outputs
   registerOutput(DwarfElephantDakotaOutput);
+  registerOutput(DwarfElephantRBOutput);
 
 }
 

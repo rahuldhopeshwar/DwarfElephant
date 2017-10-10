@@ -57,7 +57,6 @@
 [../]
 [./ performRBSystem ]
   type = DwarfElephantOfflineOnlineStageSteadyState
-  exodus_file_name = FirstRBProblem
   store_basis_functions = true
   online_mu = '1.05 2.5 1.05'
   execute_on = 'timestep_end'
@@ -66,10 +65,9 @@
 []
 
 [Outputs]
-  exodus = false
-  execute_on = 'timestep_end'
-[./console]
-  type = Console
-  outlier_variable_norms = false
-[../]
+#print_perf_log = true
+  [./console]
+    type = Console
+    outlier_variable_norms = false
+  [../]
 []

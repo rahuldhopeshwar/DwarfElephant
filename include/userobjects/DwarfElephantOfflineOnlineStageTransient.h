@@ -57,6 +57,7 @@ class DwarfElephantOfflineOnlineStageTransient :
     void offlineStage();
     void setOnlineParameters();
     void transferAffineVectors();
+    std::string getFileName();
 
     virtual void initialize() override;
     virtual void execute() override;
@@ -74,9 +75,10 @@ class DwarfElephantOfflineOnlineStageTransient :
     bool _offline_stage;
     bool _online_stage;
     bool _offline_error_bound;
+    bool _output;
 
     std::string _system_name;
-    std::string _exodus_file_name;
+//    std::string _exodus_file_name;
 
     EquationSystems & _es;
     TransientNonlinearImplicitSystem & _sys;
@@ -91,7 +93,7 @@ class DwarfElephantOfflineOnlineStageTransient :
     std::vector<Real> _online_mu_parameters;
 
     RBParameters _rb_online_mu;
-    
+
     DwarfElephantRBProblem * _rb_problem;
 };
 ///-------------------------------------------------------------------------

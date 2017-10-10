@@ -57,6 +57,7 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     void offlineStage();
     void setOnlineParameters();
     void transferAffineVectors();
+    std::string getFileName();
 
     virtual void initialize() override;
     virtual void execute() override;
@@ -74,9 +75,9 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     bool _offline_stage;
     bool _online_stage;
     bool _offline_error_bound;
+    bool _output;
 
     std::string _system_name;
-    std::string _exodus_file_name;
 
     EquationSystems & _es;
     TransientNonlinearImplicitSystem & _sys;

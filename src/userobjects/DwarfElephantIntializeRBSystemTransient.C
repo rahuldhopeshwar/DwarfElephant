@@ -20,10 +20,12 @@ InputParameters validParams<DwarfElephantInitializeRBSystemTransient>()
   params.addParam<std::string>("init_filename", "", "Name of the file containing the inital conditions.");
   params.addRequiredParam<std::vector<std::string>>("parameter_names", "Parameter names for the RB method.");
   params.addParam<std::vector<std::string>>("discrete_parameter_names", "Discrete parameter names for the RB method.");
+  params.addParam<int>("max_truth_solves", -1, "Maximum number of truth solves within the POD.");
   params.addRequiredParam<unsigned int>("n_training_samples", "Defines the number of training samples used in the Greedy.");
   params.addParam<unsigned int>("training_parameters_random_seed", -1, "Defines the random seed for the generation of the traning set.");
   params.addRequiredParam<unsigned int>("N_max", "Defines the maximum number of basis functions.");
   params.addRequiredParam<unsigned int>("n_time_steps", "Defines the number of time steps.");
+  params.addParam<unsigned int>("delta_N",1,"Defines the number of basis functions that are added for each POD-Greedy step.");
   params.addParam<Real>("rel_training_tolerance", 1.0e-4, "Defines the relative training tolerance for the Greedy.");
   params.addParam<Real>("abs_training_tolerance", 1.0e-12, "Defines the relative training tolerance for the Greedy.");
   params.addRequiredParam<Real>("delta_t", "Defines the size of the individual time step.");
@@ -47,10 +49,12 @@ DwarfElephantInitializeRBSystemTransient::DwarfElephantInitializeRBSystemTransie
   _quiet_mode(getParam<bool>("quiet_mode")),
   _normalize_rb_bound_in_greedy(getParam<bool>("normalize_rb_bound_in_greedy")),
   _nonzero_initialization(getParam<bool>("nonzero_initialization")),
+  _max_truth_solves(getParam<int>("max_truth_solves")),
   _n_training_samples(getParam<unsigned int>("n_training_samples")),
   _training_parameters_random_seed(getParam<unsigned int>("training_parameters_random_seed")),
   _N_max(getParam<unsigned int>("N_max")),
   _n_time_steps(getParam<unsigned int>("n_time_steps")),
+  _delta_N(getParam<unsigned int>("delta_N")),
   _rel_training_tolerance(getParam<Real>("rel_training_tolerance")),
   _abs_training_tolerance(getParam<Real>("abs_training_tolerance")),
   _delta_t(getParam<Real>("delta_t")),
@@ -133,6 +137,12 @@ DwarfElephantInitializeRBSystemTransient::processParameters()
   _rb_con_ptr->nonzero_initialization = _nonzero_initialization;
   _rb_con_ptr->init_filename = _init_filename;
 
+  _rb_con_ptr->set_POD_tol(_POD_tol);
+  _rb_con_ptr->set_max_truth_solves(_max_truth_solves);
+  _rb_con_ptr->set_delta_N(_delta_N);
+
+  TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_rb_con_ptr->get_rb_evaluation());
+  trans_rb_eval.pull_temporal_discretization_data(*_rb_con_ptr);
 }
 
 void

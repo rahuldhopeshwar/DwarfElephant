@@ -20,8 +20,8 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
     params.addParam<bool>("online_stage", true, "Determines whether the Online stage will be calculated or not.");
     params.addParam<bool>("offline_error_bound", false, "Determines which error bound is used.");
+    params.addParam<bool>("output", true, "Determines whether an output file is generated or not.");
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
-    params.addRequiredParam<std::string>("exodus_file_name","The name of the Exodus output file.");
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
     params.addParam<Real>("mu_bar", 1., "Value for mu-bar");
     params.addRequiredParam<std::vector<Real>>("online_mu", "Current values of the different layers for which the RB Method is solved.");
@@ -40,8 +40,8 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     _offline_stage(getParam<bool>("offline_stage")),
     _online_stage(getParam<bool>("online_stage")),
     _offline_error_bound(getParam<bool>("offline_error_bound")),
+    _output(getParam<bool>("output")),
     _system_name(getParam<std::string>("system")),
-    _exodus_file_name(getParam<std::string>("exodus_file_name")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
     _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject")),
@@ -188,16 +188,19 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 //          _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
 //          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
 
-      Moose::perf_log.push("write_exodus()", "Execution");
+/// Output was moved to separate Output class
+      if(_output)
+      {
+        Moose::perf_log.push("write_Exodus()", "Output");
 
-      std::string _systems_for_print[] = {"RBSystem"};
-      const std::set<std::string>  _system_names_for_print (_systems_for_print, _systems_for_print+sizeof(_systems_for_print)/sizeof(_systems_for_print[0]));
+        std::string _systems_for_print[] = {"RBSystem"};
+        const std::set<std::string>  _system_names_for_print (_systems_for_print, _systems_for_print+sizeof(_systems_for_print)/sizeof(_systems_for_print[0]));
 
-      _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
-      _initialize_rb_system._rb_con_ptr->load_rb_solution();
+        _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
+        _initialize_rb_system._rb_con_ptr->load_rb_solution();
 
-     ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems(_exodus_file_name + ".e", _es, &_system_names_for_print);
-
+        ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems(getFileName(), _es, &_system_names_for_print);
+      }
 
 //      _initialize_rb_system._rb_con_ptr->load_basis_function(0);
 //      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
@@ -207,4 +210,13 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 void
 DwarfElephantOfflineOnlineStageSteadyState::finalize()
 {
+}
+
+std::string
+DwarfElephantOfflineOnlineStageSteadyState::getFileName()
+{
+  std::string input_filename = _app.getFileName();
+  size_t pos = input_filename.find_last_of('.');
+
+  return input_filename.substr(0, pos) + ".e";
 }
