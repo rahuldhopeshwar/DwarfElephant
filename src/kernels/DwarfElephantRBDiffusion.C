@@ -41,3 +41,9 @@ DwarfElephantRBDiffusion::computeQpJacobian()
 {
   return _grad_phi[_j][_qp] * _grad_test[_i][_qp];
 }
+
+Real
+DwarfElephantRBDiffusion::computeQpOutput()
+{
+  return _grad_u[_qp] * _grad_test[_i][_qp];
+}

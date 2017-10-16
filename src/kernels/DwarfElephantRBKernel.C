@@ -33,16 +33,18 @@ InputParameters validParams<DwarfElephantRBKernel>()
   params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
   params.addParam<unsigned int>("ID_Aq", 0, "ID of the current stiffness matrix");
   params.addParam<unsigned int>("ID_Mq", 0, "ID of the current mass matrix");
-  params.addParam<unsigned int>("ID_Fq", 0, "ID of the current stiffness matrix");
+  params.addParam<unsigned int>("ID_Fq", 0, "ID of the current load vector");
+  params.addParam<unsigned int>("ID_Oq", 0, "ID of the current output vector");
   params.addParam<bool>("matrix_seperation_according_to_subdomains", true, "Tells whether the stiffness matrix is separated according to the subdomain_ids");
   params.addParam<bool>("time_matrix_seperation_according_to_subdomains", true, "Tells whether the mass matrix is separated according to the subdomain_ids");
   params.addParam<bool>("vector_seperation_according_to_subdomains", false, "Tells whether the load vector is separated according to the subdomain_ids");
-//  params.addRequiredParam<Real>("max_x","Maximum extension of the volume of interest in x-direction.");
-//  params.addRequiredParam<Real>("min_x","Minimum extension of the volume of interest in x-direction.");
-//  params.addRequiredParam<Real>("max_y","Maximum extension of the volume of interest in y-direction.");
-//  params.addRequiredParam<Real>("min_y","Minimum extension of the volume of interest in y-direction.");
-//  params.addRequiredParam<Real>("max_z","Maximum extension of the volume of interest in z-direction.");
-//  params.addRequiredParam<Real>("min_z","Minimum extension of the volume of interest in z-direction.");
+  params.addParam<bool>("compute_output",false,"Determines whether an output function is used or not");
+  params.addParam<Real>("max_x", 0.,"Maximum extension of the volume of interest in x-direction.");
+  params.addParam<Real>("min_x", 0.,"Minimum extension of the volume of interest in x-direction.");
+  params.addParam<Real>("max_y", 0.,"Maximum extension of the volume of interest in y-direction.");
+  params.addParam<Real>("min_y", 0.,"Minimum extension of the volume of interest in y-direction.");
+  params.addParam<Real>("max_z", 0.,"Maximum extension of the volume of interest in z-direction.");
+  params.addParam<Real>("min_z", 0.,"Minimum extension of the volume of interest in z-direction.");
 
   return params;
 }
@@ -54,17 +56,19 @@ DwarfElephantRBKernel::DwarfElephantRBKernel(const InputParameters & parameters)
     _matrix_seperation_according_to_subdomains(getParam<bool>("matrix_seperation_according_to_subdomains")),
     _time_matrix_seperation_according_to_subdomains(getParam<bool>("time_matrix_seperation_according_to_subdomains")),
     _vector_seperation_according_to_subdomains(getParam<bool>("vector_seperation_according_to_subdomains")),
+    _compute_output(getParam<bool>("compute_output")),
     _simulation_type(getParam<std::string>("simulation_type")),
     _ID_first_block(*_fe_problem.mesh().meshSubdomains().begin()),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
     _ID_Mq(getParam<unsigned int>("ID_Mq")),
     _ID_Fq(getParam<unsigned int>("ID_Fq")),
-//    _max_x(getParam<Real>("max_x")),
-//    _min_x(getParam<Real>("min_x")),
-//    _max_y(getParam<Real>("max_y")),
-//    _min_y(getParam<Real>("min_y")),
-//    _max_z(getParam<Real>("max_z")),
-//    _min_z(getParam<Real>("min_z")),
+    _ID_Oq(getParam<unsigned int>("ID_Oq")),
+    _max_x(getParam<Real>("max_x")),
+    _min_x(getParam<Real>("min_x")),
+    _max_y(getParam<Real>("max_y")),
+    _min_y(getParam<Real>("min_y")),
+    _max_z(getParam<Real>("max_z")),
+    _min_z(getParam<Real>("min_z")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es())
 
 {
@@ -75,18 +79,14 @@ DwarfElephantRBKernel::DwarfElephantRBKernel(const InputParameters & parameters)
 void
 DwarfElephantRBKernel::initialSetup()
 {
-//  if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
-//    mooseError("The initialization of the RB system has to be executed on 'initial'. "
-//               "You defined a wrong state in your 'execute_on' line in the Inputfile. "
-//               "Please, correct your settings.");
-
   mooseInfo("For performing the reduced basis method a seperation of the stiffness matrix and the load vector according to "
             "the theta values is necessary. Therefore, the algorithm needs an ID for the matrices and vectors. The default "
             "setting seperates the matrices into the subdomain contributions. By performing the "
             "Kernels block wise and specify the ID in the inputfile any other seperation is also possible. Due to the seperation the occurence of segmentation faults is likely. If "
             "a segementation fault occurs right after 'quiet mode?' check whether you: used the correct RBStructures header file in the RBClasses class.");
 
-//  _output_volume = (_max_x - _min_x) * (_max_y - _min_y) * (_max_z - _min_z);
+  if(_compute_output)
+    _output_volume = (_max_x - _min_x) * (_max_y - _min_y) * (_max_z - _min_z);
 }
 
 void
@@ -99,33 +99,25 @@ DwarfElephantRBKernel::computeResidual()
   _local_re.resize(re.size());
   _local_re.zero();
 
-//  _local_out.resize(re.size());
-//  _local_out.zero();
-
-  Point _centroid = _current_elem->centroid();
-
   precalculateResidual();
   for (_i = 0; _i < _test.size(); _i++)
     for (_qp = 0; _qp < _qrule->n_points(); _qp++)
       {
       _local_re(_i) += _JxW[_qp] * _coord[_qp] * computeQpResidual();
-      //_console << "weights: " << _JxW[_qp] << std::endl;
-      //_console << "residual: " << computeQpResidual() << std::endl;
       }
 
-  //_console << *_fe_problem.es().get_system<TransientNonlinearImplicitSystem>("nl0").rhs << std::endl;
   re += _local_re;
-
-
-//  if ((_min_x <= _centroid(0)) && (_centroid(0) <= _max_x) &&
-//      (_min_y <= _centroid(1)) && (_centroid(1) <= _max_y))
-//    for (_i = 0; _i < _test.size(); _i++)
-//      for (_qp = 0; _qp < _qrule->n_points(); _qp++)
-//      _local_out(_i) += _JxW[_qp] * _coord[_qp] * computeQpResidual() / _output_volume;
 
   if(_simulation_type == "steady")  // SteadyState
   {
     const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
+
+    if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
+    mooseError("The UserObject 'DwarfElephantInitializeRBSystemSteadyState' has to be executed on 'initial'. "
+               "You defined a wrong state in your 'execute_on' line in the input file. "
+               "Please, correct your settings.");
+
+
     if(_initialize_rb_system._offline_stage)
       // Add the calculated vectors to the vectors from the RB system.
       //if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
@@ -134,6 +126,12 @@ DwarfElephantRBKernel::computeResidual()
   else if (_simulation_type == "transient") // Transient
   {
     const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
+
+    if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
+    mooseError("The UserObject 'DwarfElephantInitializeRBSystemTransient' has to be executed on 'initial'. "
+               "You defined a wrong state in your 'execute_on' line in the input file. "
+               "Please, correct your settings.");
+
     if(_initialize_rb_system._offline_stage)
       // Add the calculated vectors to the vectors from the RB system.
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
@@ -145,6 +143,53 @@ DwarfElephantRBKernel::computeResidual()
     Threads::spin_mutex::scoped_lock lock(Threads::spin_mtx);
     for (const auto & var : _save_in)
       var->sys().solution().add_vector(_local_re, var->dofIndices());
+  }
+
+ if(_compute_output)
+  computeOutput();
+}
+
+void
+DwarfElephantRBKernel::computeOutput()
+{
+ if(_vector_seperation_according_to_subdomains)
+    _ID_Oq = _current_elem->subdomain_id() - _ID_first_block;
+
+  DenseVector<Number> & out = _assembly.residualBlock(_var.number());
+  _local_out.resize(out.size());
+  _local_out.zero();
+
+  Point _centroid = _current_elem->centroid();
+
+  if ((_min_x <= _centroid(0)) && (_centroid(0) <= _max_x) &&
+      (_min_y <= _centroid(1)) && (_centroid(1) <= _max_y) &&
+      (_min_z <= _centroid(2)) && (_centroid(2) <= _max_z))
+  {
+    precalculateResidual();
+    for (_i = 0; _i < _test.size(); _i++)
+      for (_qp = 0; _qp < _qrule->n_points(); _qp++)
+      _local_out(_i) += _JxW[_qp] * _coord[_qp] * computeQpOutput();
+
+
+    out += _local_out;
+  }
+
+  if(_simulation_type == "steady")  // SteadyState
+  {
+    const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
+
+    if(_initialize_rb_system._offline_stage)
+      // Add the calculated vectors to the vectors from the RB system.
+        _initialize_rb_system._outputs[0][_ID_Oq] -> add_vector(_local_out, _var.dofIndices());
+  }
+  else if (_simulation_type == "transient") // Transient
+  {
+    const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
+
+    if(_initialize_rb_system._offline_stage)
+      // Add the calculated vectors to the vectors from the RB system.
+      if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
+        _initialize_rb_system._outputs[0][_ID_Oq] -> add_vector(_local_out, _var.dofIndices());
   }
 }
 
@@ -212,6 +257,12 @@ DwarfElephantRBKernel::computeQpJacobian()
 
 Real
 DwarfElephantRBKernel::computeQpResidual()
+{
+  return 0;
+}
+
+Real
+DwarfElephantRBKernel::computeQpOutput()
 {
   return 0;
 }

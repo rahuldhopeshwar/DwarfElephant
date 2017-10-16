@@ -11,6 +11,7 @@ template<>
 InputParameters validParams<DwarfElephantRBProblem>()
 {
   InputParameters params = validParams<FEProblemBase>();
+//  params.addRequiredParam<std::vector<std::string>>("kernels","Name of the used Kernel");
 
   return params;
 }
@@ -18,6 +19,7 @@ InputParameters validParams<DwarfElephantRBProblem>()
 DwarfElephantRBProblem::DwarfElephantRBProblem(const InputParameters & params):
   FEProblemBase(params),
   _nl_sys((new DwarfElephantSystem(*this, "rb0")))
+//  _kernel_names(getParam<std::vector<std::string>>("kernels"))
 
 {
     _nl = _nl_sys;
@@ -62,7 +64,7 @@ DwarfElephantRBProblem::solve()
 
   if (_solve)
     _nl_sys->solve();
-    
+
   if (_solve)
     _nl_sys->update();
 
@@ -76,4 +78,15 @@ DwarfElephantRBProblem::newRBAssemblyArray(NonlinearSystemBase & nl)
   _rb_assembly.resize(subdomains);
   for (unsigned int i = 0; i < subdomains; i++)
     _rb_assembly[i] = new DwarfElephantRBAssembly(nl, i);
+}
+
+MooseVariable &
+DwarfElephantRBProblem::getVariable(THREAD_ID tid, const std::string & var_name)
+{
+  if (_nl->hasVariable(var_name))
+    return _nl->getVariable(tid, var_name);
+  else if (!_aux->hasVariable(var_name))
+    mooseError("Unknown variable " + var_name);
+
+  return _aux->getVariable(tid, var_name);
 }

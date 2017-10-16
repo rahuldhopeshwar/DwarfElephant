@@ -32,6 +32,19 @@ DwarfElephantSystem::solve()
   if(_use_finite_differenced_preconditioner)
     setupFiniteDifferencedPreconditioner();
 
+//  system().solve();
+
   // calculate the stiffness matrices
   _fe_problem.computeJacobian(_transient_sys, *_current_solution, *_transient_sys.matrix);
+
+//  DwarfElephantRBProblem & _rb_problem = cast_ref<DwarfElephantRBProblem &>(_fe_problem);
+
+//  std::vector<std::string> _kernel_names = _rb_problem.getKernelNames();
+
+//  for(unsigned int i = 0; i < _kernel_names.size(); i++)
+//  {
+//    std::shared_ptr<DwarfElephantRBKernel> _rb_kernel_ptr = std::static_pointer_cast<DwarfElephantRBKernel> (_kernels.getActiveObject(_kernel_names[i]));
+//    _console << _kernel_names[i] << std::endl;
+//    _rb_kernel_ptr->computeOutput();
+//  }
 }

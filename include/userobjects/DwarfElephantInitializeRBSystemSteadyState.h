@@ -14,6 +14,7 @@
 #include "GeneralUserObject.h"
 #include "DisplacedProblem.h"
 #include "MooseMesh.h"
+#include "MooseVariable.h"
 
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantSystem.h"

@@ -19,12 +19,28 @@ DwarfElephantRBAssembly::cacheResidual(numeric_index_type i, Real value)
 }
 
 void
+DwarfElephantRBAssembly::cacheOutput(numeric_index_type i, Real value)
+{
+  _cached_output_contribution_rows.push_back(i);
+  _cached_output_contribution_vals.push_back(value);
+}
+
+void
 DwarfElephantRBAssembly::setCachedResidual(NumericVector<Number> & _residual)
 {
   _residual.close();
 
   for (unsigned int i = 0; i < _cached_residual_contribution_vals.size(); ++i)
-    _residual.set(_cached_residual_contribution_rows[i], _cached_residual_contribution_vals[i]); // / 0.07778);
+    _residual.set(_cached_residual_contribution_rows[i], _cached_residual_contribution_vals[i]);
+}
+
+void
+DwarfElephantRBAssembly::setCachedOutput(NumericVector<Number> & _output)
+{
+  _output.close();
+
+  for (unsigned int i = 0; i < _cached_output_contribution_vals.size(); ++i)
+    _output.set(_cached_output_contribution_rows[i], _cached_output_contribution_vals[i]);
 }
 
 void

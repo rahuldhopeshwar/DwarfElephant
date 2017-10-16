@@ -7,34 +7,34 @@
   [../]
 []
 
+[GlobalParams]
+  initial_rb_userobject = initializeRBSystem
+  variable = temperature
+[]
+
 [Kernels]
   [./RBConduction]
     type = DwarfElephantRBDiffusion
-    variable = temperature
-    initial_rb_userobject = initializeRBSystem
   [../]
 []
 
 [BCs]
 [./ RBtop]
   type = DwarfElephantRBDirichletBC
-  variable = temperature
   boundary = 2
   value = 0.00
-  initial_rb_userobject = initializeRBSystem
 [../]
 
 [./RBbottom]
   type = DwarfElephantRBNeumannBC
-  variable = temperature
   boundary = 1
   value = 40
-  initial_rb_userobject = initializeRBSystem
 [../]
 []
 
 [Problem]
   type = DwarfElephantRBProblem
+  kernels = RBConduction
 []
 
 [Executioner]
@@ -57,15 +57,22 @@
 [../]
 [./ performRBSystem ]
   type = DwarfElephantOfflineOnlineStageSteadyState
-  store_basis_functions = true
   online_mu = '1.05 2.5 1.05'
   execute_on = 'timestep_end'
-  initial_rb_userobject = initializeRBSystem
 [../]
 []
 
+[Postprocessors]
+  [./average]
+    type = ElementAverageValue
+    variable = temperature
+    execute_on = 'custom'
+  [../]
+[]
+
 [Outputs]
-#print_perf_log = true
+exodus = true
+print_perf_log = true
   [./console]
     type = Console
     outlier_variable_norms = false

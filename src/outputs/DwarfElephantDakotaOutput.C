@@ -9,29 +9,38 @@ InputParameters
 validParams<DwarfElephantDakotaOutput>()
 {
   InputParameters params = validParams<FileOutput>();
+  params.addParam<std::string>("system", "RBSystem", "Name of the used system for the solve.");
+  params.addParam<std::string>("variable_of_interest", "", "Variable that should be exported to the output file.");
 
   return params;
 }
 
 DwarfElephantDakotaOutput::DwarfElephantDakotaOutput(const InputParameters & parameters) :
-    FileOutput(parameters) {}
+    FileOutput(parameters),
+    _system_name(getParam<std::string>("system")),
+    _variable_of_interest(getParam<std::string>("variable_of_interest"))
+{
+}
 
 
 void
 DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
 {
-  NonlinearSystemBase & _nl_sys = _problem_ptr->getNonlinearSystemBase();
+  // This result file enables the use of MOOSE as a forward simulator within Dakota.
+  // Which output parameters are printed to the result file can be controlled over the MOOSE input file.
+
+//  NonlinearSystemBase & _nl_sys = _problem_ptr->getNonlinearSystemBase();
 
   std::ofstream dakota_file;
   dakota_file.open(_file_base + ".txt", std::ios::app);
 
-  // Header of the file
-  dakota_file << "Input file for Dakota generated within the DwarfElephant Application" << std::endl;
-  dakota_file << std::endl;
-  dakota_file << "****************************************************************************" << std::endl;
-  dakota_file << "* Description: This input file enables the use of MOOSE as a forward       *" << std::endl;
-  dakota_file << "*              simulator within Dakota. Which input parameters are defined *" << std::endl;
-  dakota_file << "*              can be controlled over the MOOSE input file.                *" << std::endl;
-  dakota_file << "****************************************************************************" << std::endl;
-  dakota_file << std::endl;
+//  if(_system_name == "rb0")
+//  dakota_file << *_es_ptr->get_system<DwarfElephantRBConstructionSteadyState>(_system_name).solution << std::endl;
+
+/// Retrieving matrices
+//  dakota_file << *_es_ptr->get_system<DwarfElephantRBConstructionSteadyState>(_system_name).matrix << std::endl;
+
+//  SparseMatrix<Number> & _matrix = *_es_ptr->get_system<DwarfElephantRBConstructionSteadyState>(_system_name).matrix;
+
+//  _matrix.print_matlab("Matrix_Matlab_format");
 }

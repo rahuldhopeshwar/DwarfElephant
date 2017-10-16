@@ -15,6 +15,7 @@
 #include "GeneralUserObject.h"
 #include "DisplacedProblem.h"
 #include "MooseMesh.h"
+#include "MooseVariable.h"
 #include "NonlinearSystemBase.h"
 #include "NodalBC.h"
 #include "Assembly.h"
@@ -75,7 +76,8 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     bool _offline_stage;
     bool _online_stage;
     bool _offline_error_bound;
-    bool _output;
+    bool _output_file;
+    bool _compute_output;
 
     std::string _system_name;
 

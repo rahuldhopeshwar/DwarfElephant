@@ -52,12 +52,13 @@ DwarfElephantRBExecutioner::execute()
 //      _console << "Aborting as solve did not converge\n";
 //      break;
 //    }
-
     _problem.onTimestepEnd();
     _problem.execute(EXEC_TIMESTEP_END);
 
     _problem.computeIndicators();
     _problem.computeMarkers();
+
+    _problem.execute(EXEC_CUSTOM);
 
     _problem.outputStep(EXEC_TIMESTEP_END);
 

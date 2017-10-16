@@ -13,14 +13,15 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     InputParameters params = validParams<GeneralUserObject>();
 
     params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
-    params.addRequiredParam<bool>("store_basis_functions","Determines whether the basis functions are stored or not.");
+    params.addParam<bool>("store_basis_functions", true, "Determines whether the basis functions are stored or not.");
     params.addParam<bool>("compliant", true, "Determines whether F is equal to the output vector or not.");
     params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
     params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
     params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
     params.addParam<bool>("online_stage", true, "Determines whether the Online stage will be calculated or not.");
     params.addParam<bool>("offline_error_bound", false, "Determines which error bound is used.");
-    params.addParam<bool>("output", true, "Determines whether an output file is generated or not.");
+    params.addParam<bool>("output_file", true, "Determines whether an output file is generated or not.");
+    params.addParam<bool>("compute_output", false, "Determines whether an output of interest is computed or not.");
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
     params.addParam<Real>("mu_bar", 1., "Value for mu-bar");
@@ -40,7 +41,8 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     _offline_stage(getParam<bool>("offline_stage")),
     _online_stage(getParam<bool>("online_stage")),
     _offline_error_bound(getParam<bool>("offline_error_bound")),
-    _output(getParam<bool>("output")),
+    _output_file(getParam<bool>("output_file")),
+    _compute_output(getParam<bool>("compute_output")),
     _system_name(getParam<std::string>("system")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
@@ -82,15 +84,16 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
       _initialize_rb_system._residuals[_q]->close();
     }
 
-    // Transfer the data for the output vectors.
-    for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
+    if(_compute_output)
     {
-      for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
+      // Transfer the data for the output vectors.
+      for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
       {
-        _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._outputs[i][_q]);
-        _initialize_rb_system._outputs[i][_q]->close();
-//      *_initialize_rb_system._outputs[i][_q] /= _mesh_ptr->nNodes();
-//          _initialize_rb_system._outputs[_q]->set(100, 17.5);
+        for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
+        {
+          _rb_problem->rbAssembly(_q).setCachedOutput(*_initialize_rb_system._outputs[i][_q]);
+          _initialize_rb_system._outputs[i][_q]->close();
+        }
       }
     }
   }
@@ -131,6 +134,7 @@ DwarfElephantOfflineOnlineStageSteadyState::setOnlineParameters()
 void
 DwarfElephantOfflineOnlineStageSteadyState::initialize()
 {
+
 }
 
 void
@@ -183,27 +187,34 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
       _rb_eval.rb_solve(_online_N);
 
-//      for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
-//        for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
-//          _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
-//          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
+      for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
+        for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
+          _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
+          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
 
-/// Output was moved to separate Output class
-      if(_output)
+      // Back transfer of the data to use MOOSE Postprocessor and Output classes
+      if(_output_file)
       {
-        Moose::perf_log.push("write_Exodus()", "Output");
-
-        std::string _systems_for_print[] = {"RBSystem"};
-        const std::set<std::string>  _system_names_for_print (_systems_for_print, _systems_for_print+sizeof(_systems_for_print)/sizeof(_systems_for_print[0]));
-
         _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
         _initialize_rb_system._rb_con_ptr->load_rb_solution();
 
-        ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems(getFileName(), _es, &_system_names_for_print);
-      }
+         *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
+         _fe_problem.getNonlinearSystemBase().update();
+
+//        How to write own Exodus file  // not required anymore
+//        Moose::perf_log.push("write_Exodus()", "Output");
+
+//        std::string _systems_for_print[] = {"RBSystem"};
+//        const std::set<std::string>  _system_names_for_print (_systems_for_print, _systems_for_print+sizeof(_systems_for_print)/sizeof(_systems_for_print[0]));
+
+//        _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
+//        _initialize_rb_system._rb_con_ptr->load_rb_solution();
+
+//        ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems(getFileName(), _es, &_system_names_for_print);
 
 //      _initialize_rb_system._rb_con_ptr->load_basis_function(0);
 //      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
+      }
     }
 }
 

@@ -52,6 +52,7 @@ public:
 
   /* Methods */
   virtual void computeResidual(NumericVector<Number> & residual) override;
+  virtual void computeOutput();
   virtual void computeJacobian() override;
 
 //--------------------------------PROTECTED---------------------------------
@@ -63,12 +64,21 @@ protected:
 
   /* Attributes */
   bool _matrix_seperation_according_to_subdomains;
+  bool _compute_output;
 
   std::string _simulation_type;
 
   unsigned int _ID_Fq;
   unsigned int _ID_Aq;
   unsigned int _ID_Mq;
+  unsigned int _ID_Oq;
+
+  Real _max_x;
+  Real _min_x;
+  Real _max_y;
+  Real _min_y;
+  Real _max_z;
+  Real _min_z;
 
   DwarfElephantRBProblem * _rb_problem;
 };

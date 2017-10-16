@@ -36,9 +36,14 @@ class DwarfElephantRBProblem :
 
     virtual void newRBAssemblyArray(NonlinearSystemBase & nl);
 
+    virtual MooseVariable & getVariable(THREAD_ID tid, const std::string & var_name) override;
+
+//    std::vector<std::string> & getKernelNames(){return _kernel_names;}
+
   protected:
     NonlinearSystem * _nl_sys;
 
+//    std::vector<std::string> _kernel_names;
     std::vector<DwarfElephantRBAssembly *> _rb_assembly;
 
 };
