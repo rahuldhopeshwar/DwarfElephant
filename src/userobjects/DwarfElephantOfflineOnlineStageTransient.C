@@ -194,22 +194,17 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 
       if(_output_file)
       {
-         _fe_problem.transient(true);
-         _console << _fe_problem.isTransient() << std::endl;
-          _fe_problem.getNonlinearSystemBase().update();
          _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
-
+//
          for (unsigned int _time_step = 0; _time_step <= _initialize_rb_system._rb_con_ptr->get_n_time_steps(); _time_step++)
         {
-          _console << "Hello: " << _time_step << std::endl;
           _initialize_rb_system._rb_con_ptr->pull_temporal_discretization_data(_rb_eval);
           _initialize_rb_system._rb_con_ptr->set_time_step(_time_step);
           _initialize_rb_system._rb_con_ptr->load_rb_solution();
           *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
-          _es.get_system(_system_name).time = _es.get_system("RBSystem").time;
-          *_es.get_system<TransientNonlinearImplicitSystem>(_system_name).old_local_solution = *_es.get_system<DwarfElephantRBConstructionTransient>("RBSystem").old_local_solution;
-          *_es.get_system<TransientNonlinearImplicitSystem>(_system_name).older_local_solution = *_es.get_system<DwarfElephantRBConstructionTransient>("RBSystem").older_local_solution;
           _fe_problem.getNonlinearSystemBase().update();
+          _fe_problem.timeStep()=_time_step;
+          endStep(_time_step);
         }
 
 
@@ -242,16 +237,35 @@ DwarfElephantOfflineOnlineStageTransient::execute()
     }
 }
 
-std::string
-DwarfElephantOfflineOnlineStageTransient::getFileName()
-{
-  std::string input_filename = _app.getFileName();
-  size_t pos = input_filename.find_last_of('.');
-
-  return input_filename.substr(0, pos) + ".e";
-}
+//std::string
+//DwarfElephantOfflineOnlineStageTransient::getFileName()
+//{
+//  std::string input_filename = _app.getFileName();
+//  size_t pos = input_filename.find_last_of('.');
+//
+//  return input_filename.substr(0, pos) + ".e";
+//}
 
 void
 DwarfElephantOfflineOnlineStageTransient::finalize()
 {
+}
+
+void
+DwarfElephantOfflineOnlineStageTransient::endStep(Real input_time)
+{
+    Real _time = input_time;
+
+    // Compute the Error Indicators and Markers
+    _fe_problem.computeIndicators();
+    _fe_problem.computeMarkers();
+
+    _fe_problem.execute(EXEC_CUSTOM);
+
+    // Perform the output of the current time step
+    _fe_problem.outputStep(EXEC_TIMESTEP_END);
+
+    // output
+//    if (_time_interval && (_time + _timestep_tolerance >= _next_interval_output_time))
+//      _next_interval_output_time += _time_interval_output_interval;
 }

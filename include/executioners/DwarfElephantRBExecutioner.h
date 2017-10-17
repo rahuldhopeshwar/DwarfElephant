@@ -20,6 +20,9 @@ class DwarfElephantRBExecutioner :
     DwarfElephantRBExecutioner(const InputParameters & params);
 
     void execute() override;
+
+  protected:
+    bool _transient;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBEXECUTIONER_H

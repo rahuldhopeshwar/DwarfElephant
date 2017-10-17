@@ -76,5 +76,6 @@ print_perf_log = true
   [./console]
     type = Console
     outlier_variable_norms = false
+    output_postprocessors = false
   [../]
 []

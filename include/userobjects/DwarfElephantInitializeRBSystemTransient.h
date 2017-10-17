@@ -127,6 +127,7 @@ class DwarfElephantInitializeRBSystemTransient :
     friend class DwarfElephantRBNodalBC;
     friend class DwarfElephantRBIntegratedBC;
     friend class DwarfElephantOfflineOnlineStageTransient;
+    friend class DwarfElephantRBExecutionerSteady;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTINITIALIZERBSYSTEMTRANSIENT_H

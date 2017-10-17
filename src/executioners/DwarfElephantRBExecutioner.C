@@ -6,7 +6,7 @@ template<>
 InputParameters validParams<DwarfElephantRBExecutioner>()
 {
   InputParameters params = validParams<Steady>();
-
+  params.addParam<bool>("transient", false, "Determines whether the system is steady or transient.");
   return params;
 }
 
@@ -55,12 +55,16 @@ DwarfElephantRBExecutioner::execute()
     _problem.onTimestepEnd();
     _problem.execute(EXEC_TIMESTEP_END);
 
-    _problem.computeIndicators();
-    _problem.computeMarkers();
 
-    _problem.execute(EXEC_CUSTOM);
+    if(!_transient)
+    {
+      _problem.computeIndicators();
+      _problem.computeMarkers();
 
-    _problem.outputStep(EXEC_TIMESTEP_END);
+      _problem.execute(EXEC_CUSTOM);
+
+      _problem.outputStep(EXEC_TIMESTEP_END);
+    }
 
 #ifdef LIBMESH_ENABLE_AMR
     if (r_step != steps)
