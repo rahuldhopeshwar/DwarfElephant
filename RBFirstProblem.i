@@ -34,7 +34,7 @@
 
 [Problem]
   type = DwarfElephantRBProblem
-  kernels = RBConduction
+ # kernels = RBConduction
 []
 
 [Executioner]

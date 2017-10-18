@@ -35,7 +35,8 @@ protected:
   virtual Real computeQpJacobian() override;
 
   /* Attributes */
-  const MaterialProperty<Real> &_lambda;
+//  const MaterialProperty<Real> &_lambda; // for future use in case of varying material properties
+  Real _lambda;
 };
 
 ///-------------------------------------------------------------------------

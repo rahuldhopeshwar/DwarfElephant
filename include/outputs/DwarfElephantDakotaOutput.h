@@ -19,8 +19,10 @@ public:
   virtual void output(const ExecFlagType & type) override;
 
 protected:
-  std::string _system_name;
-  std::string _variable_of_interest;
+  std::string _result_file_name;
+  std::string _file_path;
+
+  PostprocessorName _postprocessor_name;
 };
 
 #endif /* DWARFELEPHANTDAKOTAOUTPUT_H */
