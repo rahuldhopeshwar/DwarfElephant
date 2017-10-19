@@ -29,14 +29,14 @@
 [BCs]
 [./ RBtop]
   type = DwarfElephantRBDirichletBC
-  boundary = 2
+  boundary = 3
   value = 0.00
 [../]
 
 [./RBbottom]
   type = DwarfElephantRBNeumannBC
   boundary = 1
-  value = 2.000000000000000e+01
+  value = 5.000000000000000e+01
 [../]
 []
 
@@ -47,7 +47,7 @@
 
 [Executioner]
   type = DwarfElephantRBExecutioner
-  transient = false
+  #offline_stage = false
   solve_type = 'Newton'
   l_tol = 1.0e-8
   nl_rel_tol = 1.0e-8
@@ -63,11 +63,13 @@
   parameter_names = 'mu_0'    #Please name them mu_0 , mu_1 , ..., mu_n for the reusability
   parameter_min_values = '1.0'
   parameter_max_values = '8.15'
+  #offline_stage = false
 [../]
 [./ performRBSystem ]
   type = DwarfElephantOfflineOnlineStageSteadyState
-  online_mu = '1.000000000000000e+00'
+  online_mu = '7.000000000000000e+00'
   execute_on = 'timestep_end'
+  #offline_stage = false
 [../]
 []
 
@@ -91,5 +93,6 @@ print_perf_log = false
     type = DwarfElephantDakotaOutput
     #file_path = '/home/dd823599/Dakota_first_example/'
     postprocessor = average
+    execute_on = 'timestep_end'
   [../]
 []

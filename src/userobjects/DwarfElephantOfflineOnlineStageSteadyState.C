@@ -223,11 +223,11 @@ DwarfElephantOfflineOnlineStageSteadyState::finalize()
 {
 }
 
-std::string
-DwarfElephantOfflineOnlineStageSteadyState::getFileName()
-{
-  std::string input_filename = _app.getFileName();
-  size_t pos = input_filename.find_last_of('.');
-
-  return input_filename.substr(0, pos) + ".e";
-}
+//std::string
+//DwarfElephantOfflineOnlineStageSteadyState::getFileName()
+//{
+//  std::string input_filename = _app.getFileName();
+//  size_t pos = input_filename.find_last_of('.');
+//
+//  return input_filename.substr(0, pos) + ".e";
+//}

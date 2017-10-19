@@ -23,6 +23,7 @@ class DwarfElephantRBExecutioner :
 
   protected:
     bool _transient;
+    bool _offline_stage;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBEXECUTIONER_H

@@ -7,12 +7,14 @@ InputParameters validParams<DwarfElephantRBExecutioner>()
 {
   InputParameters params = validParams<Steady>();
   params.addParam<bool>("transient", false, "Determines whether the system is steady or transient.");
+  params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
   return params;
 }
 
 DwarfElephantRBExecutioner::DwarfElephantRBExecutioner(const InputParameters & params):
   Steady(params),
-  _transient(getParam<bool>("transient"))
+  _transient(getParam<bool>("transient")),
+  _offline_stage(getParam<bool>("offline_stage"))
 {
 }
 
@@ -45,7 +47,8 @@ DwarfElephantRBExecutioner::execute()
     // Update warehouse active objects
     _problem.updateActiveObjects();
 
-    _problem.solve();
+    if (_offline_stage)
+      _problem.solve();
     postSolve();
 
 //    if (!lastSolveConverged())
