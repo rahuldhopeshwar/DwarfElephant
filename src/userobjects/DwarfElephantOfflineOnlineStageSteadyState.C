@@ -203,17 +203,17 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
 //        How to write own Exodus file  // not required anymore
 //        Moose::perf_log.push("write_Exodus()", "Output");
-
+//
 //        std::string _systems_for_print[] = {"RBSystem"};
 //        const std::set<std::string>  _system_names_for_print (_systems_for_print, _systems_for_print+sizeof(_systems_for_print)/sizeof(_systems_for_print[0]));
-
+//
 //        _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
 //        _initialize_rb_system._rb_con_ptr->load_rb_solution();
-
-//        ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems(getFileName(), _es, &_system_names_for_print);
-
-//      _initialize_rb_system._rb_con_ptr->load_basis_function(0);
-//      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
+//
+//        ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("TestDakotaRB.e", _es, &_system_names_for_print);
+////
+////      _initialize_rb_system._rb_con_ptr->load_basis_function(0);
+////      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
       }
     }
 }

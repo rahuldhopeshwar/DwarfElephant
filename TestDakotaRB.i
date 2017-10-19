@@ -47,6 +47,7 @@
 
 [Executioner]
   type = DwarfElephantRBExecutioner
+  transient = false
   solve_type = 'Newton'
   l_tol = 1.0e-8
   nl_rel_tol = 1.0e-8
@@ -80,15 +81,15 @@
 
 [Outputs]
 exodus = true
-print_perf_log = true
+print_perf_log = false
   [./console]
     type = Console
     outlier_variable_norms = false
-    output_postprocessors = false
+    execute_postprocessors_on = 'timestep_end'
   [../]
   [./DakotaOutput]
     type = DwarfElephantDakotaOutput
-    file_path = '/home/dd823599/Dakota_first_example/'
+    #file_path = '/home/dd823599/Dakota_first_example/'
     postprocessor = average
   [../]
 []

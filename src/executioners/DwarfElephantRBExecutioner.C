@@ -11,7 +11,8 @@ InputParameters validParams<DwarfElephantRBExecutioner>()
 }
 
 DwarfElephantRBExecutioner::DwarfElephantRBExecutioner(const InputParameters & params):
-  Steady(params)
+  Steady(params),
+  _transient(getParam<bool>("transient"))
 {
 }
 
@@ -54,7 +55,6 @@ DwarfElephantRBExecutioner::execute()
 //    }
     _problem.onTimestepEnd();
     _problem.execute(EXEC_TIMESTEP_END);
-
 
     if(!_transient)
     {

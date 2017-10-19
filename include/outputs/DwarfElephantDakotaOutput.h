@@ -3,7 +3,6 @@
 
 // MOOSE includes
 #include "FileOutput.h"
-#include "DwarfElephantInitializeRBSystemSteadyState.h"
 
 // Forward declerations
 class DwarfElephantDakotaOutput;

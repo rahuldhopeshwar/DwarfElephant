@@ -46,7 +46,7 @@ struct DwarfElephantRBP1T1EqualF1O1SteadyStateExpansion : RBThetaExpansion
   {
     attach_A_theta(&_theta_a_0);
 
-    attach_F_theta(&_theta_a_0);
+    attach_F_theta(&_rb_theta);
 
     attach_output_theta(&_rb_theta);
 

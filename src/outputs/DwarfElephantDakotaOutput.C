@@ -26,12 +26,26 @@ DwarfElephantDakotaOutput::DwarfElephantDakotaOutput(const InputParameters & par
 
 
 void
-DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
+DwarfElephantDakotaOutput::output(const ExecFlagType & type)
 {
   // This result file enables the use of MOOSE as a forward simulator within Dakota.
   // Which output parameters are printed to the result file can be controlled over the MOOSE input file.
 
-  std::ofstream dakota_file;
-  dakota_file.open(_file_path + _result_file_name + ".out", std::ios::app);
-  dakota_file << _problem_ptr->getPostprocessorValue(_postprocessor_name) << " f"<< std::endl;
+  if (type == EXEC_TIMESTEP_END)
+  {
+    std::ofstream dakota_file;
+    dakota_file.open(_file_path + _result_file_name + ".out", std::ios::app);
+    dakota_file << _problem_ptr->getPostprocessorValue(_postprocessor_name) << " f"<< std::endl;
+  }
+//  std::string deleteline = "0 f";
+//  std::string line;
+//
+//  std::ifstream dakota_file_rb;
+//  dakota_file_rb.open(_file_path + _result_file_name + ".out", std::ios::app);
+//
+//  while (std::getline(dakota_file_rb,line))
+//  {
+//    line.replace(line.find(deleteline),deleteline.length(),"");
+//    dakota_file << line << std::endl;
+//  }
 }

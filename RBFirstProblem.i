@@ -72,10 +72,11 @@
 
 [Outputs]
 exodus = true
-print_perf_log = true
+csv = true
+print_perf_log = false
   [./console]
     type = Console
     outlier_variable_norms = false
-    output_postprocessors = false
+    #output_postprocessors = false
   [../]
 []
