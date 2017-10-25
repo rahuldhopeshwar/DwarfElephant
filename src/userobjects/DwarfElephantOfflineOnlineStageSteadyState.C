@@ -187,10 +187,11 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
       _rb_eval.rb_solve(_online_N);
 
-      for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
-        for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
-          _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
-          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
+      if (_compute_output)
+        for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
+          for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
+            _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
+            << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
 
       // Back transfer of the data to use MOOSE Postprocessor and Output classes
       if(_output_file)

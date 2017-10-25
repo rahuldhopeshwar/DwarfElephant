@@ -36,7 +36,7 @@
 [./RBbottom]
   type = DwarfElephantRBNeumannBC
   boundary = 1
-  value = 5.000000000000000e+01
+  value = 2.000000000000000e+01
 [../]
 []
 
@@ -67,7 +67,7 @@
 [../]
 [./ performRBSystem ]
   type = DwarfElephantOfflineOnlineStageSteadyState
-  online_mu = '7.000000000000000e+00'
+  online_mu = '1.000000000000000e+00'
   execute_on = 'timestep_end'
   #offline_stage = false
 [../]
