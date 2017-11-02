@@ -42,6 +42,7 @@
 #include "DwarfElephantRBStructuresP1T3EqualF1O1SteadyState.h"
 #include "DwarfElephantRBStructuresP1T4EqualF1O1SteadyState.h"
 #include "DwarfElephantRBStructuresP1T5EqualF1O1SteadyState.h"
+#include "DwarfElephantRBStructuresP1T6EqualF1O1SteadyState.h"
 
 #include "DwarfElephantRBStructuresP1T1ScalarDivisionF1O1SteadyState.h"
 #include "DwarfElephantRBStructuresP1T2ScalarDivisionF1O1SteadyState.h"
@@ -88,6 +89,69 @@ public:
 //  Real train_reduced_basis(const bool resize_rb_eval_data = true);
 
   Real compute_residual_dual_norm(const unsigned int N);
+
+//  Real truth_solve(int plot_solution)
+//{
+//  LOG_SCOPE("truth_solve()", "RBConstruction");
+//
+//  truth_assembly();
+//
+//  // truth_assembly assembles into matrix and rhs, so use those for the solve
+//  if (extra_linear_solver)
+//    {
+//      // If extra_linear_solver has been initialized, then we use it for the
+//      // truth solves.
+//      solve_for_matrix_and_rhs(*extra_linear_solver, *matrix, *rhs);
+//
+//      if (assert_convergence)
+//        check_convergence(*extra_linear_solver);
+//    }
+//  else
+//    {
+//      solve_for_matrix_and_rhs(*get_linear_solver(), *matrix, *rhs);
+//
+//      if (assert_convergence)
+//        check_convergence(*get_linear_solver());
+//    }
+//
+//
+//
+//  const RBParameters & mu = get_parameters();
+//
+//  for (unsigned int n=0; n<get_rb_theta_expansion().get_n_outputs(); n++)
+//    {
+//      truth_outputs[n] = 0.;
+//      for (unsigned int q_l=0; q_l<get_rb_theta_expansion().get_n_output_terms(n); q_l++)
+//        truth_outputs[n] += get_rb_theta_expansion().eval_output_theta(n, q_l, mu)*
+//          get_output_vector(n,q_l)->dot(*solution);
+//    }
+//
+//  if (plot_solution > 0)
+//    {
+//#if defined(LIBMESH_USE_COMPLEX_NUMBERS)
+//      GMVIO(get_mesh()).write_equation_systems ("truth.gmv",
+//                                                this->get_equation_systems());
+//#else
+//#ifdef LIBMESH_HAVE_EXODUS_API
+//      ExodusII_IO(get_mesh()).write_equation_systems ("truth.e",
+//                                                      this->get_equation_systems());
+//#endif
+//#endif
+//    }
+//
+//    get_vector(0).zero();
+//    get_vector(0).add(*solution->clone());
+//
+//  ExodusII_IO(get_mesh()).write_equation_systems ("truth.e",
+//                                                      this->get_equation_systems());
+//
+//  // Get the X norm of the truth solution
+//  // Useful for normalizing our true error data
+//  inner_product_matrix->vector_mult(*inner_product_storage_vector, *solution);
+//  Number truth_X_norm = std::sqrt(inner_product_storage_vector->dot(*solution));
+//
+//  return libmesh_real(truth_X_norm);
+//}
 
   unsigned int u_var;
 
@@ -197,7 +261,7 @@ public:
 
   FEProblemBase & fe_problem;
   //DwarfElephantRBP1T2ScalarDivisionF1O1SteadyStateExpansion _rb_theta_expansion;
-  DwarfElephantRBP1T5EqualF1O1SteadyStateExpansion _rb_theta_expansion;
+  DwarfElephantRBP1T3EqualF1O1SteadyStateExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------

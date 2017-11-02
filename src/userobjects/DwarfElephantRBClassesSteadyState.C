@@ -108,9 +108,6 @@ DwarfElephantRBConstructionSteadyState::init_data()
 //      // Perform an Offline truth solve for the current parameter
 //      Real truth_X_norm = truth_solve(-1);
 //
-//      // Print the truth X norm
-//      libMesh::out << "Truth X Norm: " << truth_X_norm << std::endl;
-//
 //      // Add orthogonal part of the snapshot to the RB space
 //      libMesh::out << "Enriching the RB space" << std::endl;
 //      enrich_RB_space();
