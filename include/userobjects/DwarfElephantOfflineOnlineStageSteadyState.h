@@ -58,7 +58,7 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     void offlineStage();
     void setOnlineParameters();
     void transferAffineVectors();
-//    std::string getFileName();
+    std::string getFileName();
 
     virtual void initialize() override;
     virtual void execute() override;

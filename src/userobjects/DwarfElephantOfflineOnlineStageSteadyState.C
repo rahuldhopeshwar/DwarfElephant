@@ -196,25 +196,25 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       // Back transfer of the data to use MOOSE Postprocessor and Output classes
       if(_output_file)
       {
-        _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
-        _initialize_rb_system._rb_con_ptr->load_rb_solution();
-
-         *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
-         _fe_problem.getNonlinearSystemBase().update();
-
-//        How to write own Exodus file  // not required anymore
-//        Moose::perf_log.push("write_Exodus()", "Output");
-//
-//        std::string _systems_for_print[] = {"RBSystem"};
-//        const std::set<std::string>  _system_names_for_print (_systems_for_print, _systems_for_print+sizeof(_systems_for_print)/sizeof(_systems_for_print[0]));
-//
 //        _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
 //        _initialize_rb_system._rb_con_ptr->load_rb_solution();
 //
-//        ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("TestDakotaRB.e", _es, &_system_names_for_print);
-////
-////      _initialize_rb_system._rb_con_ptr->load_basis_function(0);
-////      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
+//         *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
+//         _fe_problem.getNonlinearSystemBase().update();
+
+//        How to write own Exodus file  // not required anymore
+        Moose::perf_log.push("write_Exodus()", "Output");
+
+        std::string _systems_for_print[] = {"RBSystem"};
+        const std::set<std::string>  _system_names_for_print (_systems_for_print, _systems_for_print+sizeof(_systems_for_print)/sizeof(_systems_for_print[0]));
+
+        _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
+        _initialize_rb_system._rb_con_ptr->load_rb_solution();
+
+        ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems(getFileName(), _es, &_system_names_for_print);
+//
+//      _initialize_rb_system._rb_con_ptr->load_basis_function(0);
+//      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
       }
     }
 }
@@ -224,11 +224,11 @@ DwarfElephantOfflineOnlineStageSteadyState::finalize()
 {
 }
 
-//std::string
-//DwarfElephantOfflineOnlineStageSteadyState::getFileName()
-//{
-//  std::string input_filename = _app.getFileName();
-//  size_t pos = input_filename.find_last_of('.');
-//
-//  return input_filename.substr(0, pos) + ".e";
-//}
+std::string
+DwarfElephantOfflineOnlineStageSteadyState::getFileName()
+{
+  std::string input_filename = _app.getFileName();
+  size_t pos = input_filename.find_last_of('.');
+
+  return input_filename.substr(0, pos) + ".e";
+}
