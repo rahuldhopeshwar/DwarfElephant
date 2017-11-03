@@ -14,6 +14,7 @@
 //MOOSE includes
 #include "Assembly.h"
 #include "MooseVariable.h"
+#include "MooseVariableScalar.h"
 #include "Problem.h"
 #include "SubProblem.h"
 #include "SystemBase.h"

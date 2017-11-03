@@ -21,7 +21,6 @@
 #include "NonlinearSystemBase.h"
 
 // MOOSE includes (DwarfElephant package)
-//#include "DwarfElephantRBClasses.h"
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
 #include "DwarfElephantInitializeRBSystemTransient.h"
 
