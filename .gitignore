@@ -203,3 +203,7 @@ python/peacock/tests/postprocessor_tab/TestPostprocessorPluginManager_test_scrip
 !python/peacock/tests/**/gold/*.png
 !python/peacock/icons/**/*.*
 !python/peacock/tests/**/input/*.*
+
+# ignore mesh and inputfiles folder
+inputfiles/*
+meshs/*
