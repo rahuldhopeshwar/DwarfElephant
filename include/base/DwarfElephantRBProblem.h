@@ -41,7 +41,7 @@ class DwarfElephantRBProblem :
 //    std::vector<std::string> & getKernelNames(){return _kernel_names;}
 
   protected:
-    NonlinearSystem * _nl_sys;
+    std::shared_ptr<NonlinearSystem> _nl_sys;
 
 //    std::vector<std::string> _kernel_names;
     std::vector<DwarfElephantRBAssembly *> _rb_assembly;

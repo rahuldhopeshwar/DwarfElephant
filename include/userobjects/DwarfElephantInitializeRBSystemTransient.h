@@ -8,7 +8,6 @@
 #include "libmesh/sparse_matrix.h"
 #include "libmesh/petsc_matrix.h"
 #include "libmesh/petsc_vector.h"
-#include "libmesh/getpot.h"
 
 // MOOSE includes
 #include "GeneralUserObject.h"

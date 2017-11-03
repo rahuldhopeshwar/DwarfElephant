@@ -18,12 +18,11 @@ InputParameters validParams<DwarfElephantRBProblem>()
 
 DwarfElephantRBProblem::DwarfElephantRBProblem(const InputParameters & params):
   FEProblemBase(params),
-  _nl_sys((new DwarfElephantSystem(*this, "rb0")))
-//  _kernel_names(getParam<std::vector<std::string>>("kernels"))
+  _nl_sys(std::make_shared<DwarfElephantSystem>(*this, "rb0"))
 
 {
     _nl = _nl_sys;
-    _aux = new AuxiliarySystem(*this, "aux0");
+    _aux = std::make_shared<AuxiliarySystem>(*this, "aux0");
 
     //_assembly = _rb_assembly;
 
@@ -38,10 +37,6 @@ DwarfElephantRBProblem::DwarfElephantRBProblem(const InputParameters & params):
 DwarfElephantRBProblem::~DwarfElephantRBProblem()
 {
   FEProblemBase::deleteAssemblyArray();
-
-  delete _nl;
-
-  delete _aux;
 }
 
 void

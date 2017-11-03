@@ -1,5 +1,5 @@
 [Mesh]
- file = RB_mesh_3layers.e
+ file = meshs/CG/NoFaultModel/no_fault_model_refinement_0-1.e
 []
 
 [Variables]
@@ -26,15 +26,14 @@
 [../]
 
 [./RBbottom]
-  type = DwarfElephantRBNeumannBC
+  type = DwarfElephantRBDirichletBC
   boundary = 1
-  value = 40
+  value = 3
 [../]
 []
 
 [Problem]
   type = DwarfElephantRBProblem
- # kernels = RBConduction
 []
 
 [Executioner]
@@ -42,41 +41,34 @@
   solve_type = 'Newton'
   l_tol = 1.0e-8
   nl_rel_tol = 1.0e-8
+  petsc_options_iname = '-pc_type -pc_hypre_type -ksp_gmres_restart'
+  petsc_options_value = 'hypre    boomeramg      101'
 []
 
 [UserObjects]
 [./initializeRBSystem]
   type = DwarfElephantInitializeRBSystemSteadyState
   execute_on = 'initial'
-  N_max = 20
-  n_training_samples = 100
+  N_max = 5
+  n_training_samples = 5
   rel_training_tolerance = 1.e-5
   parameter_names = 'mu_0 mu_1 mu_2'    #Please name them mu_0 , mu_1 , ..., mu_n for the reusability
-  parameter_min_values = '1.0 1.0 1.0'
-  parameter_max_values = '5.15 7.15 5.15'
+  parameter_min_values = '0.50 0.50 0.50'
+  parameter_max_values = '5.00 7.00 5.00'
 [../]
 [./performRBSystem ]
   type = DwarfElephantOfflineOnlineStageSteadyState
-  online_mu = '1.05 2.5 1.05'
+  online_mu = '1.00 2.38 1.00'
   execute_on = 'timestep_end'
 [../]
 []
 
-[Postprocessors]
-  [./average]
-    type = ElementAverageValue
-    variable = temperature
-    execute_on = 'custom'
-  [../]
-[]
-
 [Outputs]
 exodus = true
-csv = true
-print_perf_log = false
+print_perf_log = true
+execute_on = 'timestep_end'
   [./console]
     type = Console
     outlier_variable_norms = false
-    #output_postprocessors = false
   [../]
 []
