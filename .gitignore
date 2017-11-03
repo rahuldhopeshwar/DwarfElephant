@@ -7,6 +7,8 @@
 *-opt
 *-dbg
 *-oprof
+*-prof
+*-devel
 *.e
 *.nav
 *.log
@@ -16,7 +18,7 @@
 *.csv
 *.dylib
 *.so
-*.gitignore*
+*.so.*
 *.vrb
 *.jou
 *.pyc
@@ -35,6 +37,7 @@
 *.spl
 *.idx
 traceout*.txt
+temp_print_trace.*
 *.xda
 *.xda.*
 *.xdr
@@ -64,8 +67,24 @@ traceout*.txt
 *.out
 *.vtk
 *.vtu
+*.pvtu
 .depend
+*.png
+*.gif
+*.tif
+*.jpg
+*.tiff
+*.ps
+*.bmp
+*.html
+*.xyz
+*Revision.h
+*.json
+*.bak
+*.processor.*
 .clang_complete
+.failed_tests
+compile_commands.json
 
 # Allow certain files in gold directories
 !**/gold/*.e
@@ -73,9 +92,17 @@ traceout*.txt
 !**/gold/*.csv
 !**/gold/*.vtk
 !**/gold/*.vtu
+!**/gold/*.pvtu
 
 peacock_run_tmp.i
 yaml_dump*
+test/tests/outputs/format/dump.i
+
+# Generated header file
+MooseRevision.h
+
+# Precompiled headers
+moose/include/base/Precompiled.h.gch
 
 # test garbagge
 *.FAILED.txt
@@ -92,12 +119,15 @@ yaml_dump*
 .*.swp
 .*.swo
 
+framework/contrib/exodiff/exodiff
+
 # Mac garbage
 .DS_Store
 *.dSYM
 
 # Unit testing stuff
 moose_unit/test_results.xml
+!unit/data/csv/*.csv
 
 # gcov code coverage files
 *.gcno
@@ -136,15 +166,40 @@ framework/contrib/asio/
 *.cpa-*
 *.cpr-*
 
-# Revision files
-include/base/*Revision.h
-
 # phase_field/tests/solution_rasterizer
 out.xyz
 
-# ignore GMSH files
-*.msh
+# JIT and automatic differentiation cache files
+.jitcache/
+.jitdir/
 
-# ignore the inputfile folder and the mesh folder
-inputfiles/*
-meshs/*
+# Do not store ipython notebook checkpoints
+*-checkpoint.ipynb*
+
+# MooseDocs
+site
+*.moose.md
+*.moose.yml
+*.moose.svg
+tmp_*.dot
+docs/.moosedocs
+docs/examples/*.tex
+!docs/index.html
+!docs/templates/**/*.html
+!docs/content/media/**/*.png
+!docs/content/media/**/*.gif
+!python/MooseDocs/tests/**/gold/*.html
+
+# Chigger
+!python/chigger/tests/**/gold/*.png
+!python/chigger/tests/input/*.e*
+!python/chigger/logos/*.png
+!python/chigger/contrib/*.xml
+
+# Peacock
+python/peacock/tests/exodus_tab/TestOutputPlugin_repr.py
+python/peacock/tests/input_tab/InputFileEditor/fsp_test.i
+python/peacock/tests/postprocessor_tab/TestPostprocessorPluginManager_test_script.py
+!python/peacock/tests/**/gold/*.png
+!python/peacock/icons/**/*.*
+!python/peacock/tests/**/input/*.*
