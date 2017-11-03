@@ -27,8 +27,6 @@
 // libMesh includes (RB package)
 #include "libmesh/transient_rb_evaluation.h"
 #include "libmesh/transient_rb_construction.h"
-#include "libmesh/rb_scm_construction.h"
-#include "libmesh/rb_scm_evaluation.h"
 
 ///-------------------------------------------------------------------------
 // MOOSE includes (DwarfElephant package)

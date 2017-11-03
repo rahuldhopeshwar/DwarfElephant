@@ -27,8 +27,6 @@
 // libMesh includes (RB package)
 #include "libmesh/rb_evaluation.h"
 #include "libmesh/rb_construction.h"
-#include "libmesh/rb_scm_construction.h"
-#include "libmesh/rb_scm_evaluation.h"
 
 // MOOSE includes
 #include "FEProblemBase.h"
