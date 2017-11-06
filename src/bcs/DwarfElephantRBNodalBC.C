@@ -123,7 +123,8 @@ DwarfElephantRBNodalBC::computeOutput()
 
         if(_initialize_rb_system._offline_stage)
           if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
-          _rb_problem->rbAssembly(_ID_Oq).cacheOutput(dof_idx, -res);
+          _rb_problem->rbAssembly(_ID_Oq).cacheOutput(_var.nodalDofIndex(), -res);
+	  //_rb_problem->rbAssembly(_ID_Oq).cacheOutput(dof_idx, -res);
       }
 
       else if (_simulation_type == "transient")
@@ -162,12 +163,12 @@ DwarfElephantRBNodalBC::computeJacobian()
       {
         if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0 )
         {
-          // external mesh
+          
           if (_matrix_seperation_according_to_subdomains)
           {
           const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
           for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
-               it != _node_boundary_list.end(); ++it)
+             it != _node_boundary_list.end(); ++it)
             _rb_problem->rbAssembly(*it).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
            }
            else
