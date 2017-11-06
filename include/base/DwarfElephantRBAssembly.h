@@ -38,6 +38,8 @@ public:
 
   void clearCachedStiffnessMatrixContributions();
   void clearCachedMassMatrixContributions();
+  void clearCachedResidualContributions();
+  void clearCachedOutputContributions();
 
 
 protected:

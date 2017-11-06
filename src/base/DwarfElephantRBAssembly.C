@@ -32,6 +32,8 @@ DwarfElephantRBAssembly::setCachedResidual(NumericVector<Number> & _residual)
 
   for (unsigned int i = 0; i < _cached_residual_contribution_vals.size(); ++i)
     _residual.set(_cached_residual_contribution_rows[i], _cached_residual_contribution_vals[i]);
+
+  clearCachedResidualContributions();
 }
 
 void
@@ -41,6 +43,8 @@ DwarfElephantRBAssembly::setCachedOutput(NumericVector<Number> & _output)
 
   for (unsigned int i = 0; i < _cached_output_contribution_vals.size(); ++i)
     _output.set(_cached_output_contribution_rows[i], _cached_output_contribution_vals[i]);
+
+  clearCachedOutputContributions();
 }
 
 void
@@ -71,7 +75,7 @@ DwarfElephantRBAssembly::setCachedStiffnessMatrixContributions(SparseMatrix<Numb
                   _cached_jacobian_contribution_cols[i],
                   _cached_jacobian_contribution_vals[i]);
 
-//  clearCachedStiffnessMatrixContributions();
+  clearCachedStiffnessMatrixContributions();
 }
 
 void
@@ -85,7 +89,7 @@ DwarfElephantRBAssembly::setCachedMassMatrixContributions(SparseMatrix<Number> &
               _cached_mass_contribution_cols[i],
               _cached_mass_contribution_vals[i]);
 
-//  clearCachedMassMatrixContributions();
+  clearCachedMassMatrixContributions();
 }
 
 void
@@ -128,4 +132,42 @@ DwarfElephantRBAssembly::clearCachedMassMatrixContributions()
     _cached_mass_contribution_rows.reserve(1.2 * orig_size);
     _cached_mass_contribution_cols.reserve(1.2 * orig_size);
     _cached_mass_contribution_vals.reserve(1.2 * orig_size);
+}
+
+void
+DwarfElephantRBAssembly::clearCachedResidualContributions()
+{
+    unsigned int orig_size = _cached_residual_contribution_rows.size();
+
+    _cached_residual_contribution_rows.clear();
+    _cached_residual_contribution_vals.clear();
+
+    // It's possible (though massively unlikely) that clear() will
+    // change the capacity of the vectors, so let's be paranoid and
+    // explicitly reserve() the same amount of memory to avoid multiple
+    // push_back() induced allocations.  We reserve 20% more than the
+    // original size that was cached to account for variations in the
+    // number of BCs assigned to each thread (for when the Jacobian
+    // contributions are computed threaded).
+    _cached_residual_contribution_rows.reserve(1.2 * orig_size);
+    _cached_residual_contribution_vals.reserve(1.2 * orig_size);
+}
+
+void
+DwarfElephantRBAssembly::clearCachedOutputContributions()
+{
+    unsigned int orig_size = _cached_output_contribution_rows.size();
+
+    _cached_output_contribution_rows.clear();
+    _cached_output_contribution_vals.clear();
+
+    // It's possible (though massively unlikely) that clear() will
+    // change the capacity of the vectors, so let's be paranoid and
+    // explicitly reserve() the same amount of memory to avoid multiple
+    // push_back() induced allocations.  We reserve 20% more than the
+    // original size that was cached to account for variations in the
+    // number of BCs assigned to each thread (for when the Jacobian
+    // contributions are computed threaded).
+    _cached_output_contribution_rows.reserve(1.2 * orig_size);
+    _cached_output_contribution_vals.reserve(1.2 * orig_size);
 }
