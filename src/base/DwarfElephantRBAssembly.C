@@ -1,9 +1,9 @@
 #include "DwarfElephantRBAssembly.h"
 
-//DwarfElephantRBAssembly::DwarfElephantRBAssembly(int subdomain_id)
-//  : _subdomain_id(subdomain_id)
-//  {}
-DwarfElephantRBAssembly::DwarfElephantRBAssembly()
+DwarfElephantRBAssembly::DwarfElephantRBAssembly(SystemBase & sys, THREAD_ID tid)
+  : //Assembly(sys, tid),
+    _sys(sys),
+    _tid(tid)
 {
 }
 
@@ -16,13 +16,6 @@ DwarfElephantRBAssembly::cacheResidual(numeric_index_type i, Real value)
 {
   _cached_residual_contribution_rows.push_back(i);
   _cached_residual_contribution_vals.push_back(value);
-}
-
-void
-DwarfElephantRBAssembly::cacheResidual(numeric_index_type i, Real value, int subdomain)
-{
-  _cached_residual_contribution_rows_sub[subdomain].push_back(i);
-  _cached_residual_contribution_vals_sub[subdomain].push_back(value);
 }
 
 void
@@ -44,17 +37,6 @@ DwarfElephantRBAssembly::setCachedResidual(NumericVector<Number> & _residual)
 }
 
 void
-DwarfElephantRBAssembly::setCachedResidual(NumericVector<Number> & _residual, int subdomain)
-{
-  _residual.close();
-
-  for (unsigned int i = 0; i < _cached_residual_contribution_vals_sub[subdomain].size(); ++i)
-    _residual.set(_cached_residual_contribution_rows_sub[subdomain][i], _cached_residual_contribution_vals_sub[subdomain][i]);
-
-//  clearCachedResidualContributions();
-}
-
-void
 DwarfElephantRBAssembly::setCachedOutput(NumericVector<Number> & _output)
 {
   _output.close();
@@ -71,14 +53,6 @@ DwarfElephantRBAssembly::cacheStiffnessMatrixContribution(numeric_index_type i, 
   _cached_jacobian_contribution_rows.push_back(i);
   _cached_jacobian_contribution_cols.push_back(j);
   _cached_jacobian_contribution_vals.push_back(value);
-}
-
-void
-DwarfElephantRBAssembly::cacheStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value, int subdomain)
-{
-  _cached_jacobian_contribution_rows_sub[subdomain].push_back(i);
-  _cached_jacobian_contribution_cols_sub[subdomain].push_back(j);
-  _cached_jacobian_contribution_vals_sub[subdomain].push_back(value);
 }
 
 void
@@ -102,20 +76,6 @@ DwarfElephantRBAssembly::setCachedStiffnessMatrixContributions(SparseMatrix<Numb
                   _cached_jacobian_contribution_vals[i]);
 
   clearCachedStiffnessMatrixContributions();
-}
-
-void
-DwarfElephantRBAssembly::setCachedStiffnessMatrixContributions(SparseMatrix<Number> & _jacobian, int subdomain)
-{
-  _jacobian.close();
-  _jacobian.zero_rows(_cached_jacobian_contribution_rows_sub[subdomain]);
-
-  for (unsigned int i = 0; i < _cached_jacobian_contribution_vals_sub[subdomain].size(); ++i)
-    _jacobian.set(_cached_jacobian_contribution_rows_sub[subdomain][i],
-                  _cached_jacobian_contribution_cols_sub[subdomain][i],
-                  _cached_jacobian_contribution_vals_sub[subdomain][i]);
-
-//  clearCachedStiffnessMatrixContributions();
 }
 
 void
@@ -210,19 +170,4 @@ DwarfElephantRBAssembly::clearCachedOutputContributions()
     // contributions are computed threaded).
     _cached_output_contribution_rows.reserve(1.2 * orig_size);
     _cached_output_contribution_vals.reserve(1.2 * orig_size);
-}
-
-void
-DwarfElephantRBAssembly::resizeStiffnessMatrix(int subdomain)
-{
-  _cached_jacobian_contribution_rows_sub.resize(subdomain);
-  _cached_jacobian_contribution_cols_sub.resize(subdomain);
-  _cached_jacobian_contribution_vals_sub.resize(subdomain);
-}
-
-void
-DwarfElephantRBAssembly::resizeResidual(int subdomain)
-{
-  _cached_residual_contribution_rows_sub.resize(subdomain);
-  _cached_residual_contribution_vals_sub.resize(subdomain);
 }

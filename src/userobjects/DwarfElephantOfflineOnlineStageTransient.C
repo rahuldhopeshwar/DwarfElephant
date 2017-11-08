@@ -58,46 +58,46 @@ DwarfElephantOfflineOnlineStageTransient::DwarfElephantOfflineOnlineStageTransie
 void
 DwarfElephantOfflineOnlineStageTransient::setAffineMatrices()
 {
-//   _initialize_rb_system._inner_product_matrix -> close();
-//    for(unsigned int _q=0; _q<_initialize_rb_system._qa; _q++)
-//    {
-//      _rb_problem->rbAssembly(_q).setCachedStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
-//      _initialize_rb_system._jacobian_subdomain[_q] ->close();
-//      _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
-//    }
-//
-//    _initialize_rb_system._L2_matrix -> close();
-//    for(unsigned int _q=0; _q<_initialize_rb_system._qm; _q++)
-//    {
-//      _rb_problem->rbAssembly(_q).setCachedMassMatrixContributions(*_initialize_rb_system._mass_matrix_subdomain[_q]);
-//      _initialize_rb_system._mass_matrix_subdomain[_q] ->close();
-//      _initialize_rb_system._L2_matrix->add(_mu_bar, *_initialize_rb_system._mass_matrix_subdomain[_q]);
-//    }
+   _initialize_rb_system._inner_product_matrix -> close();
+    for(unsigned int _q=0; _q<_initialize_rb_system._qa; _q++)
+    {
+      _rb_problem->rbAssembly(_q).setCachedStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
+      _initialize_rb_system._jacobian_subdomain[_q] ->close();
+      _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
+    }
+
+    _initialize_rb_system._L2_matrix -> close();
+    for(unsigned int _q=0; _q<_initialize_rb_system._qm; _q++)
+    {
+      _rb_problem->rbAssembly(_q).setCachedMassMatrixContributions(*_initialize_rb_system._mass_matrix_subdomain[_q]);
+      _initialize_rb_system._mass_matrix_subdomain[_q] ->close();
+      _initialize_rb_system._L2_matrix->add(_mu_bar, *_initialize_rb_system._mass_matrix_subdomain[_q]);
+    }
 }
 
 void
 DwarfElephantOfflineOnlineStageTransient::transferAffineVectors()
 {
-//  // Transfer the vectors
-//  // Transfer the data for the F vectors.
-// for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
-//  {
-//    _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q]);
-//    _initialize_rb_system._residuals[_q]->close();
-//  }
-//
-//  // Transfer the data for the output vectors.
-//  if(_compute_output)
-//  {
-//    for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
-//    {
-//      for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
-//      {
-//        _rb_problem->rbAssembly(_q).setCachedOutput(*_initialize_rb_system._outputs[i][_q]);
-//        _initialize_rb_system._outputs[i][_q]->close();
-//      }
-//    }
-//  }
+  // Transfer the vectors
+  // Transfer the data for the F vectors.
+ for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
+  {
+    _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q]);
+    _initialize_rb_system._residuals[_q]->close();
+  }
+
+  // Transfer the data for the output vectors.
+  if(_compute_output)
+  {
+    for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
+    {
+      for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
+      {
+        _rb_problem->rbAssembly(_q).setCachedOutput(*_initialize_rb_system._outputs[i][_q]);
+        _initialize_rb_system._outputs[i][_q]->close();
+      }
+    }
+  }
 }
 
 void
