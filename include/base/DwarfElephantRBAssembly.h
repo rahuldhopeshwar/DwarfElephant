@@ -16,14 +16,14 @@ namespace libMesh
 }
 
 // MOOSE Forward Declares
-class SystemBase;
+//class SystemBase;
 //class Assembly;
 
 
 class DwarfElephantRBAssembly //: public Assembly
 {
 public:
-  DwarfElephantRBAssembly(SystemBase & sys, THREAD_ID tid);
+  DwarfElephantRBAssembly(int subdomain_id);
   virtual ~DwarfElephantRBAssembly();
 
   void cacheStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value);
@@ -43,8 +43,7 @@ public:
 
 
 protected:
-  SystemBase & _sys;
-  THREAD_ID _tid;
+  int _subdomain_id;
 
   std::vector <numeric_index_type> _cached_jacobian_contribution_rows;
   std::vector <numeric_index_type> _cached_jacobian_contribution_cols;

@@ -34,7 +34,7 @@ class DwarfElephantRBProblem :
 
     virtual DwarfElephantRBAssembly & rbAssembly(unsigned int subdomain_id) { return *_rb_assembly[subdomain_id]; }
 
-    virtual void newRBAssemblyArray(NonlinearSystemBase & nl);
+    virtual void newRBAssemblyArray();
 
     virtual MooseVariable & getVariable(THREAD_ID tid, const std::string & var_name) override;
 

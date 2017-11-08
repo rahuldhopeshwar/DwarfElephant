@@ -1,9 +1,7 @@
 #include "DwarfElephantRBAssembly.h"
 
-DwarfElephantRBAssembly::DwarfElephantRBAssembly(SystemBase & sys, THREAD_ID tid)
-  : //Assembly(sys, tid),
-    _sys(sys),
-    _tid(tid)
+DwarfElephantRBAssembly::DwarfElephantRBAssembly(int subdomain_id)
+  : _subdomain_id(subdomain_id)
 {
 }
 

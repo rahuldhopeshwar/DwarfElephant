@@ -26,7 +26,7 @@ DwarfElephantRBProblem::DwarfElephantRBProblem(const InputParameters & params):
 
     //_assembly = _rb_assembly;
 
-    newRBAssemblyArray(*_nl_sys);
+    newRBAssemblyArray();
 
     newAssemblyArray(*_nl_sys);
 //    initNullSpaceVectors(parameters, *_nl_sys);
@@ -67,12 +67,12 @@ DwarfElephantRBProblem::solve()
 }
 
 void
-DwarfElephantRBProblem::newRBAssemblyArray(NonlinearSystemBase & nl)
+DwarfElephantRBProblem::newRBAssemblyArray()
 {
   unsigned int subdomains = mesh().meshSubdomains().size();
   _rb_assembly.resize(subdomains);
   for (unsigned int i = 0; i < subdomains; i++)
-    _rb_assembly[i] = new DwarfElephantRBAssembly(nl, i);
+    _rb_assembly[i] = new DwarfElephantRBAssembly(i);
 }
 
 MooseVariable &
