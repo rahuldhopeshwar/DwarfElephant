@@ -32,7 +32,8 @@ class DwarfElephantRBProblem :
 
     NonlinearSystem & getNonlinearSystem() override { return *_nl_sys; }
 
-    virtual DwarfElephantRBAssembly & rbAssembly(unsigned int subdomain_id) { return *_rb_assembly[subdomain_id]; }
+//    virtual DwarfElephantRBAssembly & rbAssembly(unsigned int subdomain_id) { return *_rb_assembly[subdomain_id]; }
+    virtual DwarfElephantRBAssembly & rbAssembly() { return *_rb_assembly; }
 
     virtual void newRBAssemblyArray();
 
@@ -44,7 +45,8 @@ class DwarfElephantRBProblem :
     std::shared_ptr<NonlinearSystem> _nl_sys;
 
 //    std::vector<std::string> _kernel_names;
-    std::vector<DwarfElephantRBAssembly *> _rb_assembly;
+//    std::vector<DwarfElephantRBAssembly *> _rb_assembly;
+    DwarfElephantRBAssembly * _rb_assembly;
 
 };
 ///-------------------------------------------------------------------------

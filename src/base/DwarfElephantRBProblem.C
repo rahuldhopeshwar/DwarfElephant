@@ -66,13 +66,22 @@ DwarfElephantRBProblem::solve()
   Moose::perf_log.pop("constructRB()", "Execution");
 }
 
+//void
+//DwarfElephantRBProblem::newRBAssemblyArray()
+//{
+//  unsigned int subdomains = mesh().meshSubdomains().size();
+//  _rb_assembly.resize(subdomains);
+//  for (unsigned int i = 0; i < subdomains; i++)
+//    _rb_assembly[i] = new DwarfElephantRBAssembly(i);
+//}
+
 void
 DwarfElephantRBProblem::newRBAssemblyArray()
 {
   unsigned int subdomains = mesh().meshSubdomains().size();
-  _rb_assembly.resize(subdomains);
-  for (unsigned int i = 0; i < subdomains; i++)
-    _rb_assembly[i] = new DwarfElephantRBAssembly(i);
+  _rb_assembly = new DwarfElephantRBAssembly();
+  _rb_assembly->resizeStiffnessMatrix(subdomains);
+  _rb_assembly->resizeResidual(subdomains);
 }
 
 MooseVariable &

@@ -77,7 +77,8 @@ DwarfElephantRBNodalBC::computeResidual(NumericVector<Number> & residual)
         if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         {
 
-          _rb_problem->rbAssembly(_ID_Fq).cacheResidual(dof_idx, -res);
+//          _rb_problem->rbAssembly(_ID_Fq).cacheResidual(dof_idx, -res);
+          _rb_problem->rbAssembly().cacheResidual(dof_idx, -res, _ID_Fq);
         }
       }
     }
@@ -88,7 +89,8 @@ DwarfElephantRBNodalBC::computeResidual(NumericVector<Number> & residual)
 
       if(_initialize_rb_system._offline_stage)
         if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
-          _rb_problem->rbAssembly(_ID_Fq).cacheResidual(dof_idx, -res);
+        {}
+//          _rb_problem->rbAssembly(_ID_Fq).cacheResidual(dof_idx, -res);
     }
 
     if (_has_save_in)
@@ -123,7 +125,8 @@ DwarfElephantRBNodalBC::computeOutput()
 
         if(_initialize_rb_system._offline_stage)
           if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
-          _rb_problem->rbAssembly(_ID_Oq).cacheOutput(_var.nodalDofIndex(), -res);
+          {}
+//          _rb_problem->rbAssembly(_ID_Oq).cacheOutput(_var.nodalDofIndex(), -res);
 	  //_rb_problem->rbAssembly(_ID_Oq).cacheOutput(dof_idx, -res);
       }
 
@@ -133,7 +136,8 @@ DwarfElephantRBNodalBC::computeOutput()
 
         if(_initialize_rb_system._offline_stage)
           if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
-            _rb_problem->rbAssembly(_ID_Oq).cacheOutput(dof_idx, -res);
+          {}
+//            _rb_problem->rbAssembly(_ID_Oq).cacheOutput(dof_idx, -res);
       }
     }
   }
@@ -163,16 +167,18 @@ DwarfElephantRBNodalBC::computeJacobian()
       {
         if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0 )
         {
-          
+
           if (_matrix_seperation_according_to_subdomains)
           {
           const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
           for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
              it != _node_boundary_list.end(); ++it)
-            _rb_problem->rbAssembly(*it).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
+            _rb_problem->rbAssembly().cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val, *it);
+//            _rb_problem->rbAssembly(*it).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
            }
            else
-	        _rb_problem->rbAssembly(_ID_Aq).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
+	        _rb_problem->rbAssembly().cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val, _ID_Aq);
+//	        _rb_problem->rbAssembly(_ID_Aq).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
         }
       }
     }
@@ -184,8 +190,8 @@ DwarfElephantRBNodalBC::computeJacobian()
       if(_initialize_rb_system._offline_stage)
         if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
         {
-          _rb_problem->rbAssembly(_ID_Aq).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
-          _rb_problem->rbAssembly(_ID_Mq).cacheMassMatrixContribution(cached_row, cached_row, cached_val);
+//          _rb_problem->rbAssembly(_ID_Aq).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
+//          _rb_problem->rbAssembly(_ID_Mq).cacheMassMatrixContribution(cached_row, cached_row, cached_val);
         }
     }
 

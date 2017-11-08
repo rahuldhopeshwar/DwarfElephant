@@ -61,7 +61,8 @@ DwarfElephantOfflineOnlineStageSteadyState::setAffineMatrices()
    _initialize_rb_system._inner_product_matrix -> close();
     for(unsigned int _q=0; _q<_initialize_rb_system._qa; _q++)
     {
-      _rb_problem->rbAssembly(_q).setCachedStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
+//      _rb_problem->rbAssembly(_q).setCachedStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
+      _rb_problem->rbAssembly().setCachedStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q],_q);
       _initialize_rb_system._jacobian_subdomain[_q] ->close();
       _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
     }
@@ -74,21 +75,22 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
     // Transfer the data for the F vectors.
     for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
     {
-      _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q]);
+//      _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q]);
+      _rb_problem->rbAssembly().setCachedResidual(*_initialize_rb_system._residuals[_q],_q);
       _initialize_rb_system._residuals[_q]->close();
     }
 
     if(_compute_output)
     {
-      // Transfer the data for the output vectors.
-      for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
-      {
-        for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
-        {
-          _rb_problem->rbAssembly(_q).setCachedOutput(*_initialize_rb_system._outputs[i][_q]);
-          _initialize_rb_system._outputs[i][_q]->close();
-        }
-      }
+//      // Transfer the data for the output vectors.
+//      for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
+//      {
+//        for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
+//        {
+//          _rb_problem->rbAssembly(_q).setCachedOutput(*_initialize_rb_system._outputs[i][_q]);
+//          _initialize_rb_system._outputs[i][_q]->close();
+//        }
+//      }
     }
 }
 
