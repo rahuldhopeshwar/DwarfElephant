@@ -58,8 +58,6 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
 void
 DwarfElephantOfflineOnlineStageSteadyState::setAffineMatrices()
 {
-  PARALLEL_TRY
-  {
    _initialize_rb_system._inner_product_matrix -> close();
     for(unsigned int _q=0; _q<_initialize_rb_system._qa; _q++)
     {
@@ -67,15 +65,11 @@ DwarfElephantOfflineOnlineStageSteadyState::setAffineMatrices()
       _initialize_rb_system._jacobian_subdomain[_q] ->close();
       _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
     }
-  }
-  PARALLEL_CATCH;
 }
 
 void
 DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
 {
-  PARALLEL_TRY
-  {
     // Transfer the vectors
     // Transfer the data for the F vectors.
     for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
@@ -96,8 +90,6 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
         }
       }
     }
-  }
-  PARALLEL_CATCH;
 }
 
 void
