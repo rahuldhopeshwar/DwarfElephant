@@ -61,8 +61,8 @@ public:
 protected:
 
   /* Methods */
-  virtual Real computeQpResidual();
-  virtual Real computeQpJacobian();
+  virtual Real computeQpResidual() override;
+  virtual Real computeQpJacobian() override;
   virtual Real computeQpOutput();
 
   /*Attributes*/

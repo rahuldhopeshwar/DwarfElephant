@@ -11,7 +11,6 @@ template<>
 InputParameters validParams<DwarfElephantRBIntegratedBC>()
 {
   InputParameters params = validParams<IntegratedBC>();
-  params += validParams<BlockRestrictable>();
 
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system");
@@ -34,7 +33,6 @@ InputParameters validParams<DwarfElephantRBIntegratedBC>()
 
 DwarfElephantRBIntegratedBC::DwarfElephantRBIntegratedBC(const InputParameters & parameters) :
     IntegratedBC(parameters),
-    BlockRestrictable(parameters),
     _use_displaced(getParam<bool>("use_displaced")),
     _matrix_seperation_according_to_subdomains(getParam<bool>("matrix_seperation_according_to_subdomains")),
     _compute_output(getParam<bool>("compute_output")),
