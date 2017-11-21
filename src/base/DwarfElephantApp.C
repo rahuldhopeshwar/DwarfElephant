@@ -15,6 +15,7 @@
 #include "DwarfElephantRBNodalBC.h"
 #include "DwarfElephantRBDirichletBC.h"
 #include "DwarfElephantRBFunctionDirichletBC.h"
+#include "DwarfElephantRBPenaltyDirichletBC.h"
 #include "DwarfElephantRBPresetNodalBC.h"
 #include "DwarfElephantRBPresetBC.h"
 #include "DwarfElephantRBFunctionPresetBC.h"
@@ -31,7 +32,6 @@
 //#include "DwarfElephantRBKernel.h"
 #include "DwarfElephantRBDiffusion.h"
 #include "DwarfElephantRBDiffusionND.h"
-#include "DwarfElephantRBDarcy.h"
 #include "DwarfElephantRBDiffusionLiftingFunction.h"
 #include "DwarfElephantRBTimeDerivative.h"
 #include "ExtractQpPointsKernel.h"
@@ -102,6 +102,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerBoundaryCondition(DwarfElephantRBNodalBC);
   registerBoundaryCondition(DwarfElephantRBDirichletBC);
   registerBoundaryCondition(DwarfElephantRBFunctionDirichletBC);
+  registerBoundaryCondition(DwarfElephantRBPenaltyDirichletBC);
   registerBoundaryCondition(DwarfElephantRBPresetNodalBC);
   registerBoundaryCondition(DwarfElephantRBPresetBC);
   registerBoundaryCondition(DwarfElephantRBFunctionPresetBC);
@@ -118,7 +119,6 @@ DwarfElephantApp::registerObjects(Factory & factory)
 //  registerKernel(DwarfElephantRBKernel);
   registerKernel(DwarfElephantRBDiffusion);
   registerKernel(DwarfElephantRBDiffusionND);
-  registerKernel(DwarfElephantRBDarcy);
   registerKernel(DwarfElephantRBDiffusionLiftingFunction);
   registerKernel(DwarfElephantRBTimeDerivative);
   registerKernel(ExtractQpPointsKernel);

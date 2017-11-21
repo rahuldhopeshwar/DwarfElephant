@@ -15,17 +15,14 @@ InputParameters validParams<DwarfElephantFEDarcy>()
   InputParameters params = validParams<Diffusion>();
 
   params.addClassDescription("The class implements a darcy flow problem.");
-
+  params.addRequiredParam<Real>("permeability", "Defines the rock permeability in relationship to a certain reference permeability.");
   return params;
 }
 
 ///-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantFEDarcy::DwarfElephantFEDarcy(const InputParameters & parameters) :
   Diffusion(parameters),
-  _permeability(getMaterialProperty<Real>("permeability")),
-  _dynamic_viscosity(getMaterialProperty<Real>("dynamic_viscosity")),
-  _fluid_density(getMaterialProperty<Real>("fluid_density")),
-  _gravity(getMaterialProperty<RealVectorValue>("gravity"))
+  _permeability(getParam<Real>("permeability"))
 {
 }
 
@@ -34,11 +31,11 @@ DwarfElephantFEDarcy::DwarfElephantFEDarcy(const InputParameters & parameters) :
 Real
 DwarfElephantFEDarcy::computeQpResidual()
 {
-  return (_permeability[_qp]/_dynamic_viscosity[_qp]) * (Diffusion::computeQpResidual() - ((_fluid_density[_qp] * _gravity[_qp]) * _grad_test[_i][_qp]));
+  return _permeability * Diffusion::computeQpResidual();
 }
 
 Real
 DwarfElephantFEDarcy::computeQpJacobian()
 {
-  return (_permeability[_qp]/_dynamic_viscosity[_qp]) * Diffusion::computeQpJacobian();
+  return _permeability * Diffusion::computeQpJacobian();
 }

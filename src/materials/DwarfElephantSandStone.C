@@ -55,5 +55,6 @@ DwarfElephantSandStone::computeQpProperties()
   _permeability[_qp] = 1.e-6;                        // [m²]
   _dynamic_viscosity[_qp] =  0.001145;               // [Pa s]
   _fluid_density[_qp] = 1000;                        // [kg/m³]
-  _gravity[_qp] = RealVectorValue(0, -9.81, 0);       // [m/s²]
+//  _gravity[_qp] = RealVectorValue(0, -9.81, 0);       // [m/s²]
+ _gravity[_qp] = RealVectorValue(0, 0, -0.00981);       // [m/s²]
 }

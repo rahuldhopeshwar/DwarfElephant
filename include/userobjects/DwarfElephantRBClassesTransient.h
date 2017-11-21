@@ -30,7 +30,6 @@
 
 ///-------------------------------------------------------------------------
 // MOOSE includes (DwarfElephant package)
-#include "CacheBoundaries.h"
 #include "DwarfElephantRBStructuresP1T1EqualF1O1Transient.h"
 #include "DwarfElephantRBStructuresP1T2EqualF1O1Transient.h"
 
