@@ -198,6 +198,7 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 //          _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
 //          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
 
+      Moose::perf_log.push("DataTransfer()", "Execution");
       if(_output_file)
       {
          _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
