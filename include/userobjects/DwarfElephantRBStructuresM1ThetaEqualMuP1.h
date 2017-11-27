@@ -1,6 +1,6 @@
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTRBSTRUCTURESA0THETAEQUALMUOVERSCALARP1_H
-#define DWARFELEPHANTRBSTRUCTURESA0THETAEQUALMUOVERSCALARP1_H
+#ifndef DWARFELEPHANTRBSTRUCTURESM1THETAEQUALMUP1_H
+#define DWARFELEPHANTRBSTRUCTURESM1THETAEQUALMUP1_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
@@ -21,18 +21,13 @@ namespace libMesh
  * account to ensure a gernal useability of your class.
  */
 
-struct DwarfElephantThetaA0OverScalar : RBTheta
+struct DwarfElephantThetaM1 : RBTheta
 {
   virtual Number evaluate (const RBParameters & _mu)
   {
-    Number _mu = _mu.get_value("mu_0");
-    Number _scalar = 0.001145;
-
-    Number _theta = _mu/_scalar;
-
-    return _theta;
+    return 0. * _mu.get_value("mu_1");
   }
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTRBSTRUCTURESA0THETAEQUALMUOVERSCALARP1_H
+#endif // DWARFELEPHANTRBSTRUCTURESM1THETAEQUALMUP1_H

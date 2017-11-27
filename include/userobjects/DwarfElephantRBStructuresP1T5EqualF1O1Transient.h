@@ -1,7 +1,7 @@
  /**
-  * The structures are defined for an elliptic PDE with the following restrictions:
+  * The structures are defined for an parabolic PDE with the following restrictions:
   *  1. The parameter dimension p is equal to one (P1).
-  *  2. The number of thetas is equal to three (T3).
+  *  2. The number of thetas is equal to five (T5).
   *  3. Theta is equal to mu (for implementing other relationships,please
   *     follow the structure of these implementation for a general usability)
   *     (Equal).
@@ -11,28 +11,27 @@
   * 1. Theta --> parameter-dependent part of the PDE
   * 2. RBThetaExpansion
   */
-
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTRBSTRUCTURESP1T3EQUALF1O1STEADYSTATE_H
-#define DWARFELEPHANTRBSTRUCTURESP1T3EQUALF1O1STEADYSTATE_H
+#ifndef DWARFELEPHANTRBSTRUCTURESP1T5EQUALF1O1TRANSIENT_H
+#define DWARFELEPHANTRBSTRUCTURESP1T5EQUALF1O1TRANSIENT_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
-#include "libmesh/rb_theta.h"
-#include "libmesh/rb_assembly_expansion.h"
+#include "libmesh/transient_rb_theta_expansion.h"
+#include "libmesh/transient_rb_assembly_expansion.h"
 
 #include "DwarfElephantRBStructuresA00ThetaIsConstantP1.h"
 #include "DwarfElephantRBStructuresA0ThetaEqualMuP1.h"
 #include "DwarfElephantRBStructuresA1ThetaEqualMuP1.h"
 #include "DwarfElephantRBStructuresA2ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA3ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA4ThetaEqualMuP1.h"
 
 
 // Forward Declarations
 namespace libMesh
 {
- // class RBParameters;
- // class RBTheta;
-  class RBThetaExpansion;
+  class RBTransientBThetaExpansion;
 }
 
 ///----------------------------RBTHETAEXPANSION-----------------------------
@@ -42,25 +41,32 @@ namespace libMesh
  *
  */
 
-struct DwarfElephantRBP1T3EqualF1O1SteadyStateExpansion : RBThetaExpansion
+struct DwarfElephantRBP1T5EqualF1O1TransientExpansion : TransientRBThetaExpansion
 {
-  DwarfElephantRBP1T3EqualF1O1SteadyStateExpansion()
+  DwarfElephantRBP1T5EqualF1O1TransientExpansion()
   {
     // Setting up the RBThetaExpansion object
-    attach_A_theta(&_rb_theta);
-    attach_A_theta(&_rb_theta);
-    attach_A_theta(&_rb_theta);
+    attach_M_theta(&_rb_theta);
+
+    attach_A_theta(&_theta_a_0);
+    attach_A_theta(&_theta_a_1);
+    attach_A_theta(&_theta_a_2);
+    attach_A_theta(&_theta_a_3);
+    attach_A_theta(&_theta_a_4);
 
     attach_F_theta(&_rb_theta);
 
     attach_output_theta(&_rb_theta);
+
   }
   // Member Variables
   DwarfElephantThetaA0 _theta_a_0;
   DwarfElephantThetaA1 _theta_a_1;
   DwarfElephantThetaA2 _theta_a_2;
+  DwarfElephantThetaA3 _theta_a_3;
+  DwarfElephantThetaA4 _theta_a_4;
   RBTheta _rb_theta;         // Default RBTheta object, simply returns one.
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTRBSTRUCTURESP1T3EQUALF1O1STEADYSTATE_H
+#endif // DWARFELEPHANTRBSTRUCTURESP1T4EQUALF1O1Transient_H

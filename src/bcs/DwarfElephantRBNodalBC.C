@@ -76,8 +76,8 @@ DwarfElephantRBNodalBC::computeResidual(NumericVector<Number> & residual)
       {
         if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         {
-
           _rb_problem->rbAssembly(_ID_Fq).cacheResidual(dof_idx, -res);
+//          _initialize_rb_system._residuals[_ID_Fq]->set(dof_idx, -res);
         }
       }
     }
@@ -158,19 +158,20 @@ DwarfElephantRBNodalBC::computeJacobian()
     if (_simulation_type == "steady")
     {
       const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
-
+//
       if(_initialize_rb_system._offline_stage)
       {
         if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0 )
         {
-
           if (_matrix_seperation_according_to_subdomains)
           {
-          const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_current_node);
+          const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_var.node());
           for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
-             it != _node_boundary_list.end(); ++it)
+             it != _node_boundary_list.end(); it++)
             _rb_problem->rbAssembly(*it).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
-           }
+
+//         const Node * _previous_node = _current_node;
+          }
            else
 	        _rb_problem->rbAssembly(_ID_Aq).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
         }
@@ -184,9 +185,22 @@ DwarfElephantRBNodalBC::computeJacobian()
       if(_initialize_rb_system._offline_stage)
         if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
         {
+          if (_matrix_seperation_according_to_subdomains)
+          {
+            const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_var.node());
+            for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
+               it != _node_boundary_list.end(); it++)
+            {
+              _rb_problem->rbAssembly(*it).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
+//              _rb_problem->rbAssembly(*it).cacheMassMatrixContribution(cached_row, cached_row, cached_val);
+             _rb_problem->rbAssembly(_ID_Mq).cacheMassMatrixContribution(cached_row, cached_row, cached_val);
+            }
+          }
+          else
+          {
           _rb_problem->rbAssembly(_ID_Aq).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
-          _rb_problem->rbAssembly(_ID_Mq).cacheMassMatrixContribution(cached_row, cached_row, cached_val);
-        }
+          }
+       }
     }
 
 

@@ -1,13 +1,21 @@
+/**
+ * This Assembly class is required to cache the matrix and vector entries
+ * introdued by the Dirichlet BCs with respect to the desired separation.
+ */
+
+///-------------------------------------------------------------------------
 #ifndef DWARFELEPHANTRBASSEMBLY_H
 #define DWARFELEPHANTRBASSEMBLY_H
 
+///---------------------------------INCLUDES--------------------------------
 // libMesh includes
 #include "libmesh/sparse_matrix.h"
 #include "libmesh/numeric_vector.h"
 
-//#include "Assembly.h"
+// MOOSE includes
 #include "MooseTypes.h"
 
+///-------------------------------------------------------------------------
 // Forward Declarations
 namespace libMesh
 {
@@ -15,17 +23,17 @@ namespace libMesh
   template <typename T> class NumericVector;
 }
 
-// MOOSE Forward Declares
 class SystemBase;
-//class Assembly;
 
-
-class DwarfElephantRBAssembly //: public Assembly
+///-------------------------------------------------------------------------
+class DwarfElephantRBAssembly
 {
+//----------------------------------PUBLIC----------------------------------
 public:
   DwarfElephantRBAssembly(SystemBase & sys, THREAD_ID tid);
   virtual ~DwarfElephantRBAssembly();
 
+  /* Methods */
   void cacheStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value);
   void cacheMassMatrixContribution(numeric_index_type i, numeric_index_type j, Real value);
   void cacheResidual(numeric_index_type i, Real value);
@@ -41,8 +49,9 @@ public:
   void clearCachedResidualContributions();
   void clearCachedOutputContributions();
 
-
+//--------------------------------PROTECTED---------------------------------
 protected:
+  /* Attributes */
   SystemBase & _sys;
   THREAD_ID _tid;
 

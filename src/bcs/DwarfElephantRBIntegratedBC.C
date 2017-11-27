@@ -15,12 +15,17 @@ InputParameters validParams<DwarfElephantRBIntegratedBC>()
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system");
   params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
-  params.addParam<unsigned int>("ID_Aq", 0, "ID of the current stiffness matrix");
-  params.addParam<unsigned int>("ID_Mq", 0, "ID of the current mass matrix");
-  params.addParam<unsigned int>("ID_Fq", 0, "ID of the current load vector");
-  params.addParam<unsigned int>("ID_Oq", 0, "ID of the current output vector");
+  params.addParam<unsigned int>("ID_Aq", 0, "ID of the current stiffness matrix.");
+  params.addParam<unsigned int>("ID_Aq_split", 0, "ID of the current stiffness matrix.");
+  params.addParam<std::vector<unsigned int>>("subdomain_split", "ID of the current stiffness matrix.");
+  params.addParam<unsigned int>("ID_Mq", 0, "ID of the current mass matrix.");
+  params.addParam<unsigned int>("ID_Mq_split", 0, "Defines the number that has to be added to the subdomain ID to get the correct mass matrix ID. This is only required when the boundary is splitted into the subdomains.");
+  params.addParam<unsigned int>("ID_Fq", 0, "ID of the current load vector.");
+  params.addParam<unsigned int>("ID_Fq_split", 0, "Defines the number that has to be added to the subdomain ID to get the correct load vector ID. This is only required when the boundary is splitted into the subdomains.");
+  params.addParam<unsigned int>("ID_Oq", 0, "ID of the current output vector.");
   params.addParam<bool>("matrix_seperation_according_to_subdomains", true, "Tells whether the stiffness matrix is separated according to the subdomain_ids");
   params.addParam<bool>("compute_output",false,"Determines whether an output function is used or not");
+  params.addParam<bool>("split_boundary_according_to_subdomains", false, "Determines whether boundary will be splitted or not.");
   params.addParam<Real>("max_x", 0.,"Maximum extension of the volume of interest in x-direction.");
   params.addParam<Real>("min_x", 0.,"Minimum extension of the volume of interest in x-direction.");
   params.addParam<Real>("max_y", 0.,"Maximum extension of the volume of interest in y-direction.");
@@ -36,11 +41,16 @@ DwarfElephantRBIntegratedBC::DwarfElephantRBIntegratedBC(const InputParameters &
     _use_displaced(getParam<bool>("use_displaced")),
     _matrix_seperation_according_to_subdomains(getParam<bool>("matrix_seperation_according_to_subdomains")),
     _compute_output(getParam<bool>("compute_output")),
+    _split_boundary_according_to_subdomains(getParam<bool>("split_boundary_according_to_subdomains")),
     _simulation_type(getParam<std::string>("simulation_type")),
     _ID_first_block(*_fe_problem.mesh().meshSubdomains().begin()),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
+    _ID_Aq_split(getParam<unsigned int>("ID_Aq_split")),
+    _subdomain_split(getParam<std::vector<unsigned int>>("subdomain_split")),
     _ID_Mq(getParam<unsigned int>("ID_Mq")),
+    _ID_Mq_split(getParam<unsigned int>("ID_Mq_split")),
     _ID_Fq(getParam<unsigned int>("ID_Fq")),
+    _ID_Fq_split(getParam<unsigned int>("ID_Fq_split")),
     _ID_Oq(getParam<unsigned int>("ID_Oq")),
     _max_x(getParam<Real>("max_x")),
     _min_x(getParam<Real>("min_x")),
@@ -66,6 +76,13 @@ DwarfElephantRBIntegratedBC::initialSetup()
 void
 DwarfElephantRBIntegratedBC::computeResidual()
 {
+  if(_split_boundary_according_to_subdomains)
+  {
+    unsigned int _ID_inter = _current_elem->subdomain_id();
+    if (_ID_inter >= _subdomain_split[0] && _ID_inter <= _subdomain_split[_subdomain_split.size()-1])
+      _ID_Aq_split = _ID_inter - _ID_first_block;
+  }
+
   DenseVector<Number> & re = _assembly.residualBlock(_var.number());
   _local_re.resize(re.size());
   _local_re.zero();
@@ -82,8 +99,12 @@ DwarfElephantRBIntegratedBC::computeResidual()
     if(_initialize_rb_system._offline_stage)
       // Add the calculated vectors to the vectors from the RB system.
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
-        _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
-
+      {
+//        if (!_split_boundary_according_to_subdomains)
+//          _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
+//        else
+            _initialize_rb_system._residuals[_ID_Aq_split + _ID_Fq_split] -> add_vector(_local_re, _var.dofIndices());
+      }
   }
 
   else if (_simulation_type == "transient") // Transient
@@ -91,8 +112,15 @@ DwarfElephantRBIntegratedBC::computeResidual()
     const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
     if(_initialize_rb_system._offline_stage)
       // Add the calculated vectors to the vectors from the RB system.
-      if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
+    if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
+    {
+      if (!_split_boundary_according_to_subdomains)
         _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
+      else
+      {
+        _initialize_rb_system._residuals[_ID_Aq_split + _ID_Fq_split] -> add_vector(_local_re, _var.dofIndices());
+      }
+    }
   }
 
 
@@ -153,7 +181,13 @@ void
 DwarfElephantRBIntegratedBC::computeJacobian()
 {
   if(_matrix_seperation_according_to_subdomains)
+  {
     _ID_Aq = _current_elem->subdomain_id() - _ID_first_block;
+
+    unsigned int _ID_inter = _current_elem->subdomain_id();
+    if (_ID_inter >= _subdomain_split[0] && _ID_inter <= _subdomain_split[_subdomain_split.size()-1])
+      _ID_Aq_split = _ID_inter - _ID_first_block;
+  }
 
   DenseMatrix<Number> & ke = _assembly.jacobianBlock(_var.number(), _var.number());
   _local_ke.resize(ke.m(), ke.n());
@@ -182,8 +216,12 @@ DwarfElephantRBIntegratedBC::computeJacobian()
     // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
     {
-        _initialize_rb_system._jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
+      _initialize_rb_system._jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
+
+//      if (!_split_boundary_according_to_subdomains)
         _initialize_rb_system._mass_matrix_subdomain[_ID_Mq] -> add_matrix(_local_ke, _var.dofIndices());
+//      else
+//        _initialize_rb_system._mass_matrix_subdomain[_ID_Aq_split + _ID_Mq_split] -> add_matrix(_local_ke, _var.dofIndices());
     }
   }
 

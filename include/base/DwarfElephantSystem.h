@@ -1,6 +1,13 @@
+/**
+ * This System class is required to use the RB system instead of the FE
+ * system. Furthermore, it prevents an additional solve.
+ */
+
+///-------------------------------------------------------------------------
 #ifndef DWARFELEPHANTSYSTEM_H
 #define DWARFELEPHANTSYSTEM_H
 
+///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
 #include "libmesh/rb_construction.h"
 
@@ -11,11 +18,10 @@
 #include "KernelBase.h"
 
 // MOOSE includes (DwarfElephant package)
-//#include "RBStructuresP1Theta3ThetaEqualMuSteadyState.h"
-//#include "RBStructuresP1Theta5ThetaEqualMuSteadyState.h"
 #include "DwarfElephantRBClassesSteadyState.h"
 #include "DwarfElephantRBKernel.h"
 
+///-------------------------------------------------------------------------
 // Forward Declarations
 namespace libMesh
 {
@@ -26,9 +32,11 @@ class FEProblemBase;
 class KernelBase;
 class DwarfElephantRBConstructionSteadyState;
 
+///-------------------------------------------------------------------------
 class DwarfElephantSystem : public NonlinearSystem
 
 {
+//----------------------------------PUBLIC----------------------------------
 public:
   DwarfElephantSystem(FEProblemBase & problem, const std::string & name);
 

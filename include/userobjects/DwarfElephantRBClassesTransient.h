@@ -32,6 +32,11 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBStructuresP1T1EqualF1O1Transient.h"
 #include "DwarfElephantRBStructuresP1T2EqualF1O1Transient.h"
+#include "DwarfElephantRBStructuresP1T3EqualF1O1Transient.h"
+#include "DwarfElephantRBStructuresP1T3EqualF3O1Transient.h"
+#include "DwarfElephantRBStructuresP1T4EqualF1O1Transient.h"
+#include "DwarfElephantRBStructuresP1T5EqualF1O1Transient.h"
+#include "DwarfElephantRBStructuresP1T5EqualF3O1Transient.h"
 
 #include "FEProblemBase.h"
 
@@ -81,6 +86,24 @@ public:
 
     Parent::init_data();
   }
+
+//  void initialize_truth ()
+//{
+////  if (nonzero_initialization)
+////    {
+////      // Use System::read_serialized_data to read the initial condition
+////      // into this->solution
+////      Xdr IC_data(init_filename, READ);
+////      read_serialized_data(IC_data, false);
+////    }
+////  else
+////    {
+////      // Otherwise zero out the solution as a default
+////      this->solution->zero();
+//////    }
+////  this->solution->close();
+////  this->update();
+//}
 
 //  Real compute_residual_dual_norm(const unsigned int N)
 //{
@@ -374,8 +397,10 @@ Real rb_solve(unsigned int N)
     }
 }
 
+//  FEProblemBase & get_fe_problem {return fe_problem;}
+
   FEProblemBase & fe_problem;
-  DwarfElephantRBP1T2EqualF1O1TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBP1T5EqualF3O1TransientExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------

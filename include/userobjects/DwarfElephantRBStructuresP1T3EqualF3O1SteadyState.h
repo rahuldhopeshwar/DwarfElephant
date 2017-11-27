@@ -5,7 +5,7 @@
   *  3. Theta is equal to mu (for implementing other relationships,please
   *     follow the structure of these implementation for a general usability)
   *     (Equal).
-  *  4. The problem contains one load vector (F1) and one output (O1).
+  *  4. The problem contains four load vector (F4) and one output (O1).
   *
   * The structures defined are:
   * 1. Theta --> parameter-dependent part of the PDE
@@ -13,8 +13,8 @@
   */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTRBSTRUCTURESP1T3EQUALF1O1STEADYSTATE_H
-#define DWARFELEPHANTRBSTRUCTURESP1T3EQUALF1O1STEADYSTATE_H
+#ifndef DWARFELEPHANTRBSTRUCTURESP1T3EQUALF3O1STEADYSTATE_H
+#define DWARFELEPHANTRBSTRUCTURESP1T3EQUALF3O1STEADYSTATE_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
@@ -42,16 +42,18 @@ namespace libMesh
  *
  */
 
-struct DwarfElephantRBP1T3EqualF1O1SteadyStateExpansion : RBThetaExpansion
+struct DwarfElephantRBP1T3EqualF3O1SteadyStateExpansion : RBThetaExpansion
 {
-  DwarfElephantRBP1T3EqualF1O1SteadyStateExpansion()
+  DwarfElephantRBP1T3EqualF3O1SteadyStateExpansion()
   {
     // Setting up the RBThetaExpansion object
-    attach_A_theta(&_rb_theta);
-    attach_A_theta(&_rb_theta);
-    attach_A_theta(&_rb_theta);
+    attach_A_theta(&_theta_a_0);
+    attach_A_theta(&_theta_a_1);
+    attach_A_theta(&_theta_a_2);
 
-    attach_F_theta(&_rb_theta);
+    attach_F_theta(&_theta_a_0);
+    attach_F_theta(&_theta_a_1);
+    attach_F_theta(&_theta_a_2);
 
     attach_output_theta(&_rb_theta);
   }
@@ -63,4 +65,4 @@ struct DwarfElephantRBP1T3EqualF1O1SteadyStateExpansion : RBThetaExpansion
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTRBSTRUCTURESP1T3EQUALF1O1STEADYSTATE_H
+#endif // DWARFELEPHANTRBSTRUCTURESP1T3EQUALF3O1STEADYSTATE_H

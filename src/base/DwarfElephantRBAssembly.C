@@ -70,7 +70,7 @@ DwarfElephantRBAssembly::setCachedStiffnessMatrixContributions(SparseMatrix<Numb
   _jacobian.close();
   _jacobian.zero_rows(_cached_jacobian_contribution_rows);
 
-  for (unsigned int i = 0; i < _cached_jacobian_contribution_vals.size(); ++i)
+  for (unsigned int i = 0; i < _cached_jacobian_contribution_vals.size(); i++)
     _jacobian.set(_cached_jacobian_contribution_rows[i],
                   _cached_jacobian_contribution_cols[i],
                   _cached_jacobian_contribution_vals[i]);

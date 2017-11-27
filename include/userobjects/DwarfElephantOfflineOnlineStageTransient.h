@@ -57,7 +57,7 @@ class DwarfElephantOfflineOnlineStageTransient :
     void offlineStage();
     void setOnlineParameters();
     void transferAffineVectors();
-//    std::string getFileName();
+    std::string getFileName();
     void endStep(Real input_time);
 
     virtual void initialize() override;

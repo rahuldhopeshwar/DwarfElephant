@@ -146,7 +146,6 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
        if(_skip_vector_assembly_in_rb_system)
         transferAffineVectors();
 
-
       // Transfer the affine matrices to the RB system.
       if(_skip_matrix_assembly_in_rb_system)
         setAffineMatrices();
@@ -155,6 +154,8 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       _console << std::endl;
       offlineStage();
       _console << std::endl;
+
+      _initialize_rb_system._residuals[0]->print_matlab("R0");
     }
 
     if(_online_stage)
