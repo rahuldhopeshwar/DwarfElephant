@@ -331,25 +331,13 @@ public:
     Parent::init_data();
   }
 
-  void initialize_truth ()
-{
-  DwarfElephantRBEvaluationTransient & _trans_rb_eval = cast_ref<DwarfElephantRBEvaluationTransient &>(get_rb_evaluation());
-//  if (nonzero_initialization)
-//    {
-//      // Use System::read_serialized_data to read the initial condition
-//      // into this->solution
-//      Xdr IC_data(init_filename, READ);
-//      read_serialized_data(IC_data, false);
-//    }
-//  else
-//    {
-//      // Otherwise zero out the solution as a default
-//      this->solution->zero();
-////    }
-//  get_system<DwarfElephantRBSystem>solution;
-  this->solution->close();
-  this->update();
-}
+//  void initialize_truth ()
+//{
+//  DwarfElephantRBEvaluationTransient & _trans_rb_eval = cast_ref<DwarfElephantRBEvaluationTransient &>(get_rb_evaluation());
+//  *this->solution = *_trans_rb_eval.get_fe_problem().es().get_system<TransientNonlinearImplicitSystem>("rb0").solution;
+//  this->solution->close();
+//  this->update();
+//}
 
 //  Real compute_residual_dual_norm(const unsigned int N)
 //{
