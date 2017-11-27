@@ -54,110 +54,6 @@ namespace libMesh
 //using libMesh::RBSCMConstruction;
 //using libMesh::RBSCMEvaluation;
 
-//class DwarfElephantInitializeRBSystemSteadyState;
-
-///-----------------------DWARFELEPHANTRBCONSTRUCTION-----------------------
-class DwarfElephantRBConstructionTransient : public TransientRBConstruction
-{
-
-//---------------------------------PUBLIC-----------------------------------
-public:
-
-  // Constructor
-  DwarfElephantRBConstructionTransient (EquationSystems & es,
-                        const std::string & name_in,
-                        const unsigned int number_in)
-    : Parent(es, name_in, number_in)
-  {}
-
-  // Destructor
-  virtual ~DwarfElephantRBConstructionTransient () { }
-
-  // Type of the system
-  typedef DwarfElephantRBConstructionTransient _sys_type;
-
-  // Type of the parent
-  typedef TransientRBConstruction Parent;
-
-  // Initialize data structure
-  virtual void init_data()
-  {
-    u_var = this->add_variable (get_equation_systems().get_system(0).variable_name(0) + "(RB)", libMesh::FIRST);
-
-    Parent::init_data();
-  }
-
-//  void initialize_truth ()
-//{
-////  if (nonzero_initialization)
-////    {
-////      // Use System::read_serialized_data to read the initial condition
-////      // into this->solution
-////      Xdr IC_data(init_filename, READ);
-////      read_serialized_data(IC_data, false);
-////    }
-////  else
-////    {
-////      // Otherwise zero out the solution as a default
-////      this->solution->zero();
-//////    }
-////  this->solution->close();
-////  this->update();
-//}
-
-//  Real compute_residual_dual_norm(const unsigned int N)
-//{
-//   LOG_SCOPE("compute_residual_dual_norm()", "RBConstruction");
-//
-//   // Put the residual in rhs in order to compute the norm of the Riesz representor
-//   // Note that this only works in serial since otherwise each processor will
-//   // have a different parameter value during the Greedy training.
-//
-//   UniquePtr< NumericVector<Number> > RB_sol = NumericVector<Number>::build(this->comm());
-//   RB_sol->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
-//
-//   UniquePtr< NumericVector<Number> > temp = NumericVector<Number>::build(this->comm());
-//   temp->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
-//
-//   for(unsigned int i=0; i<N; i++)
-//   {
-//     RB_sol->add(get_rb_evaluation().RB_solution(i), get_rb_evaluation().get_basis_function(i));
-//   }
-//
-//   this->truth_assembly();
-//   matrix->vector_mult(*temp, *RB_sol);
-//   rhs->add(-1., *temp);
-//
-//   // Then solve to get the Reisz representor
-//   matrix->zero();
-//   matrix->add(1., *inner_product_matrix);
-////   if(constrained_problem)
-////     matrix->add(1., *constraint_matrix);
-//
-//   solution->zero();
-//   solve();
-//   // Make sure we didn't max out the number of iterations
-//   if( (this->n_linear_iterations() >=
-//        this->get_equation_systems().parameters.get<unsigned int>("linear solver maximum iterations")) &&
-//       (this->final_linear_residual() >
-//        this->get_equation_systems().parameters.get<Real>("linear solver tolerance")) )
-//   {
-//     libmesh_error_msg("Warning: Linear solver may not have converged! Final linear residual = "
-//                       << this->final_linear_residual() << ", number of iterations = "
-//                       << this->n_linear_iterations());
-//   }
-//
-//   inner_product_matrix->vector_mult(*inner_product_storage_vector, *solution);
-//
-//   Real slow_residual_norm_sq = solution->dot(*inner_product_storage_vector);
-//
-//   return std::sqrt( libmesh_real(slow_residual_norm_sq) );
-//}
-
-  unsigned int u_var;
-
-};
-
 ///------------------------DWARFELEPHANTRBEVALUATION------------------------
 class DwarfElephantRBEvaluationTransient : public TransientRBEvaluation
 {
@@ -397,11 +293,115 @@ Real rb_solve(unsigned int N)
     }
 }
 
-//  FEProblemBase & get_fe_problem {return fe_problem;}
+  FEProblemBase & get_fe_problem() {return fe_problem;}
 
   FEProblemBase & fe_problem;
   DwarfElephantRBP1T5EqualF3O1TransientExpansion _rb_theta_expansion;
 };
 
+
+///-----------------------DWARFELEPHANTRBCONSTRUCTION-----------------------
+class DwarfElephantRBConstructionTransient : public TransientRBConstruction
+{
+
+//---------------------------------PUBLIC-----------------------------------
+public:
+
+  // Constructor
+  DwarfElephantRBConstructionTransient (EquationSystems & es,
+                        const std::string & name_in,
+                        const unsigned int number_in)
+    : Parent(es, name_in, number_in)
+  {}
+
+  // Destructor
+  virtual ~DwarfElephantRBConstructionTransient () { }
+
+  // Type of the system
+  typedef DwarfElephantRBConstructionTransient _sys_type;
+
+  // Type of the parent
+  typedef TransientRBConstruction Parent;
+
+  // Initialize data structure
+  virtual void init_data()
+  {
+    u_var = this->add_variable (get_equation_systems().get_system(0).variable_name(0) + "(RB)", libMesh::FIRST);
+
+    Parent::init_data();
+  }
+
+  void initialize_truth ()
+{
+  DwarfElephantRBEvaluationTransient & _trans_rb_eval = cast_ref<DwarfElephantRBEvaluationTransient &>(get_rb_evaluation());
+//  if (nonzero_initialization)
+//    {
+//      // Use System::read_serialized_data to read the initial condition
+//      // into this->solution
+//      Xdr IC_data(init_filename, READ);
+//      read_serialized_data(IC_data, false);
+//    }
+//  else
+//    {
+//      // Otherwise zero out the solution as a default
+//      this->solution->zero();
+////    }
+//  get_system<DwarfElephantRBSystem>solution;
+  this->solution->close();
+  this->update();
+}
+
+//  Real compute_residual_dual_norm(const unsigned int N)
+//{
+//   LOG_SCOPE("compute_residual_dual_norm()", "RBConstruction");
+//
+//   // Put the residual in rhs in order to compute the norm of the Riesz representor
+//   // Note that this only works in serial since otherwise each processor will
+//   // have a different parameter value during the Greedy training.
+//
+//   UniquePtr< NumericVector<Number> > RB_sol = NumericVector<Number>::build(this->comm());
+//   RB_sol->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+//
+//   UniquePtr< NumericVector<Number> > temp = NumericVector<Number>::build(this->comm());
+//   temp->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+//
+//   for(unsigned int i=0; i<N; i++)
+//   {
+//     RB_sol->add(get_rb_evaluation().RB_solution(i), get_rb_evaluation().get_basis_function(i));
+//   }
+//
+//   this->truth_assembly();
+//   matrix->vector_mult(*temp, *RB_sol);
+//   rhs->add(-1., *temp);
+//
+//   // Then solve to get the Reisz representor
+//   matrix->zero();
+//   matrix->add(1., *inner_product_matrix);
+////   if(constrained_problem)
+////     matrix->add(1., *constraint_matrix);
+//
+//   solution->zero();
+//   solve();
+//   // Make sure we didn't max out the number of iterations
+//   if( (this->n_linear_iterations() >=
+//        this->get_equation_systems().parameters.get<unsigned int>("linear solver maximum iterations")) &&
+//       (this->final_linear_residual() >
+//        this->get_equation_systems().parameters.get<Real>("linear solver tolerance")) )
+//   {
+//     libmesh_error_msg("Warning: Linear solver may not have converged! Final linear residual = "
+//                       << this->final_linear_residual() << ", number of iterations = "
+//                       << this->n_linear_iterations());
+//   }
+//
+//   inner_product_matrix->vector_mult(*inner_product_storage_vector, *solution);
+//
+//   Real slow_residual_norm_sq = solution->dot(*inner_product_storage_vector);
+//
+//   return std::sqrt( libmesh_real(slow_residual_norm_sq) );
+//}
+
+  unsigned int u_var;
+
+};
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBCLASSESTRANSIENT_H

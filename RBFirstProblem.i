@@ -34,7 +34,6 @@
 
 [Problem]
   type = DwarfElephantRBProblem
- # kernels = RBConduction
 []
 
 [Executioner]
@@ -62,21 +61,20 @@
 [../]
 []
 
-[Postprocessors]
-  [./average]
-    type = ElementAverageValue
-    variable = temperature
-    execute_on = 'custom'
-  [../]
-[]
+#[Postprocessors]
+#  [./average]
+#    type = ElementAverageValue
+#    variable = temperature
+#    execute_on = 'custom'
+#  [../]
+#[]
 
 [Outputs]
 exodus = true
-csv = true
+# csv = true   # only required for the PostProcessors
 print_perf_log = false
   [./console]
     type = Console
     outlier_variable_norms = false
-    #output_postprocessors = false
   [../]
 []

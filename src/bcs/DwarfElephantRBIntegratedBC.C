@@ -100,9 +100,9 @@ DwarfElephantRBIntegratedBC::computeResidual()
       // Add the calculated vectors to the vectors from the RB system.
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
       {
-//        if (!_split_boundary_according_to_subdomains)
-//          _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
-//        else
+        if (!_split_boundary_according_to_subdomains)
+          _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
+        else
             _initialize_rb_system._residuals[_ID_Aq_split + _ID_Fq_split] -> add_vector(_local_re, _var.dofIndices());
       }
   }
@@ -184,9 +184,9 @@ DwarfElephantRBIntegratedBC::computeJacobian()
   {
     _ID_Aq = _current_elem->subdomain_id() - _ID_first_block;
 
-    unsigned int _ID_inter = _current_elem->subdomain_id();
-    if (_ID_inter >= _subdomain_split[0] && _ID_inter <= _subdomain_split[_subdomain_split.size()-1])
-      _ID_Aq_split = _ID_inter - _ID_first_block;
+//    unsigned int _ID_inter = _current_elem->subdomain_id();
+//    if (_ID_inter >= _subdomain_split[0] && _ID_inter <= _subdomain_split[_subdomain_split.size()-1])
+//      _ID_Aq_split = _ID_inter - _ID_first_block;
   }
 
   DenseMatrix<Number> & ke = _assembly.jacobianBlock(_var.number(), _var.number());
