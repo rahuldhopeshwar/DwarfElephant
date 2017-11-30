@@ -84,214 +84,214 @@ public:
 
     return min_mu;
   }
-
-Real rb_solve(unsigned int N)
-{
-  LOG_SCOPE("rb_solve()", "TransientRBEvaluation");
-
-  if (N > get_n_basis_functions())
-    libmesh_error_msg("ERROR: N cannot be larger than the number of basis functions in rb_solve");
-
-  const RBParameters & mu = get_parameters();
-
-  TransientRBThetaExpansion & trans_theta_expansion =
-    cast_ref<TransientRBThetaExpansion &>(get_rb_theta_expansion());
-  const unsigned int Q_m = trans_theta_expansion.get_n_M_terms();
-  const unsigned int Q_a = trans_theta_expansion.get_n_A_terms();
-  const unsigned int Q_f = trans_theta_expansion.get_n_F_terms();
-
-  const unsigned int n_time_steps = get_n_time_steps();
-  const Real dt                   = get_delta_t();
-  const Real euler_theta          = get_euler_theta();
-
-  // Resize the RB and error bound vectors
-  error_bound_all_k.resize(n_time_steps+1);
-  RB_outputs_all_k.resize(trans_theta_expansion.get_n_outputs());
-  RB_output_error_bounds_all_k.resize(trans_theta_expansion.get_n_outputs());
-  for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
-    {
-      RB_outputs_all_k[n].resize(n_time_steps+1, 0.);
-      RB_output_error_bounds_all_k[n].resize(n_time_steps+1, 0.);
-    }
-
-  // First assemble the mass matrix
-  DenseMatrix<Number> RB_mass_matrix_N(N,N);
-  RB_mass_matrix_N.zero();
-  DenseMatrix<Number> RB_M_q_m;
-  for (unsigned int q_m=0; q_m<Q_m; q_m++)
-    {
-      RB_M_q_vector[q_m].get_principal_submatrix(N, RB_M_q_m);
-      RB_mass_matrix_N.add(trans_theta_expansion.eval_M_theta(q_m, mu), RB_M_q_m);
-    }
-
-  RB_LHS_matrix.resize(N,N);
-  RB_LHS_matrix.zero();
-
-  RB_RHS_matrix.resize(N,N);
-  RB_RHS_matrix.zero();
-
-  RB_LHS_matrix.add(1./dt, RB_mass_matrix_N);
-  RB_RHS_matrix.add(1./dt, RB_mass_matrix_N);
-
-  DenseMatrix<Number> RB_Aq_a;
-  for (unsigned int q_a=0; q_a<Q_a; q_a++)
-    {
-      RB_Aq_vector[q_a].get_principal_submatrix(N, RB_Aq_a);
-
-      RB_LHS_matrix.add(       euler_theta*trans_theta_expansion.eval_A_theta(q_a,mu), RB_Aq_a);
-      RB_RHS_matrix.add( -(1.-euler_theta)*trans_theta_expansion.eval_A_theta(q_a,mu), RB_Aq_a);
-    }
-
-  // Add forcing terms
-  DenseVector<Number> RB_Fq_f;
-  RB_RHS_save.resize(N);
-  RB_RHS_save.zero();
-  for (unsigned int q_f=0; q_f<Q_f; q_f++)
-    {
-      RB_Fq_vector[q_f].get_principal_subvector(N, RB_Fq_f);
-      RB_RHS_save.add(trans_theta_expansion.eval_F_theta(q_f,mu), RB_Fq_f);
-    }
-
-  // Set system time level to 0
-  set_time_step(0);
-
-  // Resize/clear the solution vector
-  RB_solution.resize(N);
-
-  // Load the initial condition into RB_solution
-  if (N > 0)
-    {
-      RB_solution = RB_initial_condition_all_N[N-1];
-    }
-
-  // Resize/clear the old solution vector
-  old_RB_solution.resize(N);
-
-  // Initialize the RB rhs
-  DenseVector<Number> RB_rhs(N);
-  RB_rhs.zero();
-
-  // Initialize the vectors storing solution data
-  RB_temporal_solution_data.resize(n_time_steps+1);
-  for (unsigned int time_level=0; time_level<=n_time_steps; time_level++)
-    {
-      RB_temporal_solution_data[time_level].resize(N);
-    }
-  // and load the initial data
-  RB_temporal_solution_data[0] = RB_solution;
-
-  // Set outputs at initial time
-  {
-    DenseVector<Number> RB_output_vector_N;
-    for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
-      {
-        RB_outputs_all_k[n][0] = 0.;
-        for (unsigned int q_l=0; q_l<trans_theta_expansion.get_n_output_terms(n); q_l++)
-          {
-            RB_output_vectors[n][q_l].get_principal_subvector(N, RB_output_vector_N);
-            RB_outputs_all_k[n][0] += trans_theta_expansion.eval_output_theta(n,q_l,mu)*RB_output_vector_N.dot(RB_solution);
-          }
-      }
-  }
-
-  // Initialize error bounds, if necessary
-  Real error_bound_sum = 0.;
-  Real alpha_LB = 0.;
-  if (evaluate_RB_error_bound)
-    {
-      if (N > 0)
-        {
-          error_bound_sum += pow( initial_L2_error_all_N[N-1], 2.);
-        }
-
-      // Set error bound at the initial time
-      error_bound_all_k[get_time_step()] = std::sqrt(error_bound_sum);
-
-      // Compute the outputs and associated error bounds at the initial time
-      DenseVector<Number> RB_output_vector_N;
-      for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
-        {
-          RB_outputs_all_k[n][0] = 0.;
-          for (unsigned int q_l=0; q_l<trans_theta_expansion.get_n_output_terms(n); q_l++)
-            {
-              RB_output_vectors[n][q_l].get_principal_subvector(N, RB_output_vector_N);
-              RB_outputs_all_k[n][0] += trans_theta_expansion.eval_output_theta(n,q_l,mu)*RB_output_vector_N.dot(RB_solution);
-            }
-
-          RB_output_error_bounds_all_k[n][0] = error_bound_all_k[0] * eval_output_dual_norm(n,mu);
-        }
-
-      alpha_LB = get_stability_lower_bound();
-
-      // Precompute time-invariant parts of the dual norm of the residual.
-      cache_online_residual_terms(N);
-    }
-
-  for (unsigned int time_level=1; time_level<=n_time_steps; time_level++)
-    {
-      set_time_step(time_level);
-      old_RB_solution = RB_solution;
-
-      // Compute RB_rhs, as RB_LHS_matrix x old_RB_solution
-      RB_RHS_matrix.vector_mult(RB_rhs, old_RB_solution);
-
-      // Add forcing terms
-      RB_rhs.add(get_control(time_level), RB_RHS_save);
-
-      if (N > 0)
-        {
-          RB_LHS_matrix.lu_solve(RB_rhs, RB_solution);
-        }
-
-      // Save RB_solution for current time level
-      RB_temporal_solution_data[time_level] = RB_solution;
-
-      // Evaluate outputs
-      DenseVector<Number> RB_output_vector_N;
-      for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
-        {
-          RB_outputs_all_k[n][time_level] = 0.;
-          for (unsigned int q_l=0; q_l<trans_theta_expansion.get_n_output_terms(n); q_l++)
-            {
-              RB_output_vectors[n][q_l].get_principal_subvector(N, RB_output_vector_N);
-              RB_outputs_all_k[n][time_level] += trans_theta_expansion.eval_output_theta(n,q_l,mu)*
-                RB_output_vector_N.dot(RB_solution);
-            }
-        }
-
-      // Calculate RB error bounds
-      if (evaluate_RB_error_bound)
-        {
-          // Evaluate the dual norm of the residual for RB_solution_vector
-          // Real epsilon_N = uncached_compute_residual_dual_norm(N);
-          Real epsilon_N = compute_residual_dual_norm(N);
-
-          error_bound_sum += residual_scaling_numer(alpha_LB) * pow(epsilon_N, 2.);
-
-          // store error bound at time-level _k
-          error_bound_all_k[time_level] = std::sqrt(error_bound_sum/residual_scaling_denom(alpha_LB));
-
-          // Now evaluated output error bounds
-          for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
-            {
-              RB_output_error_bounds_all_k[n][time_level] = error_bound_all_k[time_level] *
-                eval_output_dual_norm(n,mu);
-            }
-        }
-    }
-
-  _rb_solve_data_cached = true ;
-
-  if (evaluate_RB_error_bound) // Calculate the error bounds
-    {
-      return error_bound_all_k[n_time_steps];
-    }
-  else // Don't calculate the error bounds
-    {
-      // Just return -1. if we did not compute the error bound
-      return -1.;
-    }
-}
+//
+//Real rb_solve(unsigned int N)
+//{
+//  LOG_SCOPE("rb_solve()", "TransientRBEvaluation");
+//
+//  if (N > get_n_basis_functions())
+//    libmesh_error_msg("ERROR: N cannot be larger than the number of basis functions in rb_solve");
+//
+//  const RBParameters & mu = get_parameters();
+//
+//  TransientRBThetaExpansion & trans_theta_expansion =
+//    cast_ref<TransientRBThetaExpansion &>(get_rb_theta_expansion());
+//  const unsigned int Q_m = trans_theta_expansion.get_n_M_terms();
+//  const unsigned int Q_a = trans_theta_expansion.get_n_A_terms();
+//  const unsigned int Q_f = trans_theta_expansion.get_n_F_terms();
+//
+//  const unsigned int n_time_steps = get_n_time_steps();
+//  const Real dt                   = get_delta_t();
+//  const Real euler_theta          = get_euler_theta();
+//
+//  // Resize the RB and error bound vectors
+//  error_bound_all_k.resize(n_time_steps+1);
+//  RB_outputs_all_k.resize(trans_theta_expansion.get_n_outputs());
+//  RB_output_error_bounds_all_k.resize(trans_theta_expansion.get_n_outputs());
+//  for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
+//    {
+//      RB_outputs_all_k[n].resize(n_time_steps+1, 0.);
+//      RB_output_error_bounds_all_k[n].resize(n_time_steps+1, 0.);
+//    }
+//
+//  // First assemble the mass matrix
+//  DenseMatrix<Number> RB_mass_matrix_N(N,N);
+//  RB_mass_matrix_N.zero();
+//  DenseMatrix<Number> RB_M_q_m;
+//  for (unsigned int q_m=0; q_m<Q_m; q_m++)
+//    {
+//      RB_M_q_vector[q_m].get_principal_submatrix(N, RB_M_q_m);
+//      RB_mass_matrix_N.add(trans_theta_expansion.eval_M_theta(q_m, mu), RB_M_q_m);
+//    }
+//
+//  RB_LHS_matrix.resize(N,N);
+//  RB_LHS_matrix.zero();
+//
+//  RB_RHS_matrix.resize(N,N);
+//  RB_RHS_matrix.zero();
+//
+//  RB_LHS_matrix.add(1./dt, RB_mass_matrix_N);
+//  RB_RHS_matrix.add(1./dt, RB_mass_matrix_N);
+//
+//  DenseMatrix<Number> RB_Aq_a;
+//  for (unsigned int q_a=0; q_a<Q_a; q_a++)
+//    {
+//      RB_Aq_vector[q_a].get_principal_submatrix(N, RB_Aq_a);
+//
+//      RB_LHS_matrix.add(       euler_theta*trans_theta_expansion.eval_A_theta(q_a,mu), RB_Aq_a);
+//      RB_RHS_matrix.add( -(1.-euler_theta)*trans_theta_expansion.eval_A_theta(q_a,mu), RB_Aq_a);
+//    }
+//
+//  // Add forcing terms
+//  DenseVector<Number> RB_Fq_f;
+//  RB_RHS_save.resize(N);
+//  RB_RHS_save.zero();
+//  for (unsigned int q_f=0; q_f<Q_f; q_f++)
+//    {
+//      RB_Fq_vector[q_f].get_principal_subvector(N, RB_Fq_f);
+//      RB_RHS_save.add(trans_theta_expansion.eval_F_theta(q_f,mu), RB_Fq_f);
+//    }
+//
+//  // Set system time level to 0
+//  set_time_step(0);
+//
+//  // Resize/clear the solution vector
+//  RB_solution.resize(N);
+//
+//  // Load the initial condition into RB_solution
+//  if (N > 0)
+//    {
+//      RB_solution = RB_initial_condition_all_N[N-1];
+//    }
+//
+//  // Resize/clear the old solution vector
+//  old_RB_solution.resize(N);
+//
+//  // Initialize the RB rhs
+//  DenseVector<Number> RB_rhs(N);
+//  RB_rhs.zero();
+//
+//  // Initialize the vectors storing solution data
+//  RB_temporal_solution_data.resize(n_time_steps+1);
+//  for (unsigned int time_level=0; time_level<=n_time_steps; time_level++)
+//    {
+//      RB_temporal_solution_data[time_level].resize(N);
+//    }
+//  // and load the initial data
+//  RB_temporal_solution_data[0] = RB_solution;
+//
+//  // Set outputs at initial time
+//  {
+//    DenseVector<Number> RB_output_vector_N;
+//    for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
+//      {
+//        RB_outputs_all_k[n][0] = 0.;
+//        for (unsigned int q_l=0; q_l<trans_theta_expansion.get_n_output_terms(n); q_l++)
+//          {
+//            RB_output_vectors[n][q_l].get_principal_subvector(N, RB_output_vector_N);
+//            RB_outputs_all_k[n][0] += trans_theta_expansion.eval_output_theta(n,q_l,mu)*RB_output_vector_N.dot(RB_solution);
+//          }
+//      }
+//  }
+//
+//  // Initialize error bounds, if necessary
+//  Real error_bound_sum = 0.;
+//  Real alpha_LB = 0.;
+//  if (evaluate_RB_error_bound)
+//    {
+//      if (N > 0)
+//        {
+//          error_bound_sum += pow( initial_L2_error_all_N[N-1], 2.);
+//        }
+//
+//      // Set error bound at the initial time
+//      error_bound_all_k[get_time_step()] = std::sqrt(error_bound_sum);
+//
+//      // Compute the outputs and associated error bounds at the initial time
+//      DenseVector<Number> RB_output_vector_N;
+//      for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
+//        {
+//          RB_outputs_all_k[n][0] = 0.;
+//          for (unsigned int q_l=0; q_l<trans_theta_expansion.get_n_output_terms(n); q_l++)
+//            {
+//              RB_output_vectors[n][q_l].get_principal_subvector(N, RB_output_vector_N);
+//              RB_outputs_all_k[n][0] += trans_theta_expansion.eval_output_theta(n,q_l,mu)*RB_output_vector_N.dot(RB_solution);
+//            }
+//
+//          RB_output_error_bounds_all_k[n][0] = error_bound_all_k[0] * eval_output_dual_norm(n,mu);
+//        }
+//
+//      alpha_LB = get_stability_lower_bound();
+//
+//      // Precompute time-invariant parts of the dual norm of the residual.
+//      cache_online_residual_terms(N);
+//    }
+//
+//  for (unsigned int time_level=1; time_level<=n_time_steps; time_level++)
+//    {
+//      set_time_step(time_level);
+//      old_RB_solution = RB_solution;
+//
+//      // Compute RB_rhs, as RB_LHS_matrix x old_RB_solution
+//      RB_RHS_matrix.vector_mult(RB_rhs, old_RB_solution);
+//
+//      // Add forcing terms
+//      RB_rhs.add(get_control(time_level), RB_RHS_save);
+//
+//      if (N > 0)
+//        {
+//          RB_LHS_matrix.lu_solve(RB_rhs, RB_solution);
+//        }
+//
+//      // Save RB_solution for current time level
+//      RB_temporal_solution_data[time_level] = RB_solution;
+//
+//      // Evaluate outputs
+//      DenseVector<Number> RB_output_vector_N;
+//      for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
+//        {
+//          RB_outputs_all_k[n][time_level] = 0.;
+//          for (unsigned int q_l=0; q_l<trans_theta_expansion.get_n_output_terms(n); q_l++)
+//            {
+//              RB_output_vectors[n][q_l].get_principal_subvector(N, RB_output_vector_N);
+//              RB_outputs_all_k[n][time_level] += trans_theta_expansion.eval_output_theta(n,q_l,mu)*
+//                RB_output_vector_N.dot(RB_solution);
+//            }
+//        }
+//
+//      // Calculate RB error bounds
+//      if (evaluate_RB_error_bound)
+//        {
+//          // Evaluate the dual norm of the residual for RB_solution_vector
+//          // Real epsilon_N = uncached_compute_residual_dual_norm(N);
+//          Real epsilon_N = compute_residual_dual_norm(N);
+//
+//          error_bound_sum += residual_scaling_numer(alpha_LB) * pow(epsilon_N, 2.);
+//
+//          // store error bound at time-level _k
+//          error_bound_all_k[time_level] = std::sqrt(error_bound_sum/residual_scaling_denom(alpha_LB));
+//
+//          // Now evaluated output error bounds
+//          for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
+//            {
+//              RB_output_error_bounds_all_k[n][time_level] = error_bound_all_k[time_level] *
+//                eval_output_dual_norm(n,mu);
+//            }
+//        }
+//    }
+//
+//  _rb_solve_data_cached = true ;
+//
+//  if (evaluate_RB_error_bound) // Calculate the error bounds
+//    {
+//      return error_bound_all_k[n_time_steps];
+//    }
+//  else // Don't calculate the error bounds
+//    {
+//      // Just return -1. if we did not compute the error bound
+//      return -1.;
+//    }
+//}
 
   FEProblemBase & get_fe_problem() {return fe_problem;}
 

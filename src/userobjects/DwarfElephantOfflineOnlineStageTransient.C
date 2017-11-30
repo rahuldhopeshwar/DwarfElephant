@@ -208,6 +208,7 @@ DwarfElephantOfflineOnlineStageTransient::execute()
           _initialize_rb_system._rb_con_ptr->pull_temporal_discretization_data(_rb_eval);
           _initialize_rb_system._rb_con_ptr->set_time_step(_time_step);
           _initialize_rb_system._rb_con_ptr->load_rb_solution();
+//           Moose::perf_log.push("DataTransfer()", "Execution");
           *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
           _fe_problem.getNonlinearSystemBase().update();
           _fe_problem.timeStep()=_time_step;

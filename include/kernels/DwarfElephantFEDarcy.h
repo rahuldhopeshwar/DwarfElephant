@@ -10,7 +10,7 @@
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
-#include "Diffusion.h"
+#include "Kernel.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
@@ -21,7 +21,7 @@ template<>
 InputParameters validParams<DwarfElephantFEDarcy>();
 
 ///-------------------------------------------------------------------------
-class DwarfElephantFEDarcy : public Diffusion
+class DwarfElephantFEDarcy : public Kernel
 {
 //----------------------------------PUBLIC----------------------------------
 public:
