@@ -96,6 +96,7 @@ DwarfElephantRBKernel::computeResidual()
   if(_vector_seperation_according_to_subdomains)
     _ID_Fq = _current_elem->subdomain_id() - _ID_first_block;
 
+
   DenseVector<Number> & re = _assembly.residualBlock(_var.number());
   _local_re.resize(re.size());
   _local_re.zero();

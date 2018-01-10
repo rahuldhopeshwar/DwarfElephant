@@ -70,10 +70,17 @@ void
 DwarfElephantRBProblem::newRBAssemblyArray(NonlinearSystemBase & nl)
 {
   unsigned int subdomains = mesh().meshSubdomains().size();
-//  _rb_assembly.resize(subdomains);
-  _rb_assembly.resize(10);
-//  for (unsigned int i = 0; i < subdomains; i++)
-  for (unsigned int i = 0; i < 10; i++)
+  unsigned int boundaries = mesh().meshBoundaryIds().size();
+  unsigned int size = 0;
+
+  if (subdomains > boundaries)
+    size = subdomains;
+  else
+    size = boundaries;
+
+  _rb_assembly.resize(size);
+
+  for (unsigned int i = 0; i < size; i++)
     _rb_assembly[i] = new DwarfElephantRBAssembly(nl, i);
 }
 
