@@ -11,6 +11,7 @@
 #define DWARFELEPHANTRBFUNCTIONDIRICHLETBC_H
 
 ///---------------------------------INCLUDES--------------------------------
+// MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBNodalBC.h"
 
 ///-------------------------------------------------------------------------

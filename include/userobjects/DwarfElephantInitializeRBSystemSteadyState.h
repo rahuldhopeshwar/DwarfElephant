@@ -1,3 +1,7 @@
+/* This UserObject is required to initialitze the RB system structure
+ * and transfer for the steady state case.
+ */
+
 ///-------------------------------------------------------------------------
 #ifndef DWARFELEPHANTINITIALIZERBSYSTEMSTEADYSTATE_H
 #define DWARFELEPHANTINITIALIZERBSYSTEMSTEADYSTATE_H
@@ -18,16 +22,12 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantSystem.h"
 #include "DwarfElephantRBClassesSteadyState.h"
-//#include "DwarfElephantRBConstructionSteadyState.h"
-//#include "DwarfElephantRBClassesTransient.h"
-
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
 namespace libMesh
 {
   class EquationSystems;
-//  class RBConstruction;
   template <typename T> class SparseMatrix;
   template <typename T> class PetscMatrix;
   template <typename T> class PetscVector;
@@ -112,7 +112,7 @@ class DwarfElephantInitializeRBSystemSteadyState :
 
     const std::vector<ExecFlagType> & _exec_flags;
 
-
+    /*Friend Classes*/
     friend class DwarfElephantRBKernel;
     friend class DwarfElephantRBNodalBC;
     friend class DwarfElephantRBIntegratedBC;

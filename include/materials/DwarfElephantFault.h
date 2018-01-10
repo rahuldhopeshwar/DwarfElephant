@@ -1,7 +1,7 @@
 /**
- * SandStone inherits from the MOOSE class Material and overrides
+ * Fault inherits from the MOOSE class Material and overrides
  * computeQpProperties.
- * Within the Class SandStone the typical rock properties of a sandstone are
+ * Within the Class Fault the typical properties of a fault are
  * stored.
  */
 

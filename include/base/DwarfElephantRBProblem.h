@@ -8,7 +8,6 @@
 #define DWARFELEPHANTRBPROBLEM_H
 
 ///---------------------------------INCLUDES--------------------------------
-
 // MOOSE includes
 #include "FEProblemBase.h"
 #include "DwarfElephantSystem.h"
@@ -20,9 +19,11 @@
 class DwarfElephantRBProblem;
 class NonlinearSystem;
 
+///----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantRBProblem>();
 
+///-------------------------------------------------------------------------
 class DwarfElephantRBProblem :
   public FEProblemBase
 {

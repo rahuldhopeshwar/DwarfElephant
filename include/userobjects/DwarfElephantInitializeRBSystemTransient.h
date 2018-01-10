@@ -1,3 +1,7 @@
+/* This UserObject is required to initialitze the RB system structure
+ * and transfer for the transient case.
+ */
+
 ///-------------------------------------------------------------------------
 #ifndef DWARFELEPHANTINITIALIZERBSYSTEMTRANSIENT_H
 #define DWARFELEPHANTINITIALIZERBSYSTEMTRANSIENT_H
@@ -120,7 +124,7 @@ class DwarfElephantInitializeRBSystemTransient :
 
     const std::vector<ExecFlagType> & _exec_flags;
 
-
+    /*Friend Classes*/
     friend class DwarfElephantRBKernel;
     friend class DwarfElephantRBTimeKernel;
     friend class DwarfElephantRBNodalBC;

@@ -42,6 +42,7 @@ public:
 
   ~DwarfElephantSystem();
 
+  /* Methods */
   // Initialize data structure
   virtual void 	solve () override;
 };

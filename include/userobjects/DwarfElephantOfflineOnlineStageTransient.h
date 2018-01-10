@@ -1,5 +1,6 @@
 /**
- * This UserObject implements the Offline and Online stage of the RB method.
+ * This UserObject implements the Offline and Online stage of the RB method
+ * for the transient case.
  */
 
 ///-------------------------------------------------------------------------
