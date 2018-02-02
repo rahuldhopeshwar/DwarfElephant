@@ -29,6 +29,7 @@
 #include "DwarfElephantFEConductionLiftingFunction.h"
 #include "DwarfElephantFEElectricalConduction.h"
 #include "DwarfElephantFEDarcy.h"
+#include "DwarfElephantFEDarcyOpenDA.h"
 //#include "DwarfElephantRBKernel.h"
 #include "DwarfElephantRBDiffusion.h"
 #include "DwarfElephantRBDiffusionND.h"
@@ -58,6 +59,9 @@
 // Outputs
 #include "DwarfElephantDakotaOutput.h"
 #include "DwarfElephantRBOutput.h"
+
+//VectorPostprocessors
+#include "DwarfElephantElementalVariableValuesAlongLine.h"
 
 template<>
 InputParameters validParams<DwarfElephantApp>()
@@ -116,6 +120,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerKernel(DwarfElephantFEConductionLiftingFunction);
   registerKernel(DwarfElephantFEElectricalConduction);
   registerKernel(DwarfElephantFEDarcy);
+  registerKernel(DwarfElephantFEDarcyOpenDA);
 //  registerKernel(DwarfElephantRBKernel);
   registerKernel(DwarfElephantRBDiffusion);
   registerKernel(DwarfElephantRBDiffusionND);
@@ -145,6 +150,9 @@ DwarfElephantApp::registerObjects(Factory & factory)
   // Outputs
   registerOutput(DwarfElephantDakotaOutput);
   registerOutput(DwarfElephantRBOutput);
+
+  // VectorPostprocessors
+  registerVectorPostprocessor(DwarfElephantElementalVariableValuesAlongLine);
 
 }
 

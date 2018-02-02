@@ -1,4 +1,12 @@
+/**
+ * This Assembly class is required to cache the matrix and vector entries
+ * introdued by the Dirichlet BCs with respect to the desired separation.
+ */
+
+///---------------------------------INCLUDES--------------------------------
+// MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBAssembly.h"
+
 
 DwarfElephantRBAssembly::DwarfElephantRBAssembly(SystemBase & sys, THREAD_ID tid)
   : //Assembly(sys, tid),
@@ -7,10 +15,14 @@ DwarfElephantRBAssembly::DwarfElephantRBAssembly(SystemBase & sys, THREAD_ID tid
 {
 }
 
+///-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantRBAssembly::~DwarfElephantRBAssembly()
 {
 }
 
+///-------------------------------------------------------------------------
+// The boundary entries of the residuals need to be cached to be set after
+// multiplication of the parameter independent and dependent part are completed.
 void
 DwarfElephantRBAssembly::cacheResidual(numeric_index_type i, Real value)
 {
@@ -18,6 +30,8 @@ DwarfElephantRBAssembly::cacheResidual(numeric_index_type i, Real value)
   _cached_residual_contribution_vals.push_back(value);
 }
 
+// The boundary entries of the outputs need to be cached to be set after
+// multiplication of the parameter independent and dependent part are completed.
 void
 DwarfElephantRBAssembly::cacheOutput(numeric_index_type i, Real value)
 {
@@ -47,6 +61,9 @@ DwarfElephantRBAssembly::setCachedOutput(NumericVector<Number> & _output)
   clearCachedOutputContributions();
 }
 
+// The boundary entries of the stiffness matrices need to be cached to be set
+// after multiplication of the parameter independent and dependent part are
+// completed.
 void
 DwarfElephantRBAssembly::cacheStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value)
 {
@@ -55,6 +72,9 @@ DwarfElephantRBAssembly::cacheStiffnessMatrixContribution(numeric_index_type i, 
   _cached_jacobian_contribution_vals.push_back(value);
 }
 
+// The boundary entries of the mass matrices need to be cached to be set
+// after multiplication of the parameter independent and dependent part are
+// completed.
 void
 DwarfElephantRBAssembly::cacheMassMatrixContribution(numeric_index_type i, numeric_index_type j, Real value)
 {
