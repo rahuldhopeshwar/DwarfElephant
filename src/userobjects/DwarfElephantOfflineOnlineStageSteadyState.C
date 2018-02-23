@@ -154,8 +154,6 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       _console << std::endl;
       offlineStage();
       _console << std::endl;
-
-      _initialize_rb_system._residuals[0]->print_matlab("R0");
     }
 
     if(_online_stage)
