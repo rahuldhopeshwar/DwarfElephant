@@ -166,11 +166,11 @@ DwarfElephantRBNodalBC::computeJacobian()
           if (_matrix_seperation_according_to_subdomains)
           {
           const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_var.node());
+
+          cached_val = cached_val/_node_boundary_list.size();
           for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
              it != _node_boundary_list.end(); it++)
             _rb_problem->rbAssembly(*it).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
-
-//         const Node * _previous_node = _current_node;
           }
            else
 	        _rb_problem->rbAssembly(_ID_Aq).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
@@ -188,6 +188,8 @@ DwarfElephantRBNodalBC::computeJacobian()
           if (_matrix_seperation_according_to_subdomains)
           {
             const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_var.node());
+
+            cached_val = cached_val/_node_boundary_list.size();
             for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
                it != _node_boundary_list.end(); it++)
             {

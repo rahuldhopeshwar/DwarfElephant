@@ -2,7 +2,7 @@
 #include "Moose.h"
 #include "AppFactory.h"
 #include "ActionFactory.h"
-#include "ModulesApp.h"
+#include "ModulesApp.h"   // remove for use in OpenDA
 #include "MooseSyntax.h"
 
 /// MOOSE includes (DwarfElephant package)
@@ -74,11 +74,11 @@ DwarfElephantApp::DwarfElephantApp(InputParameters parameters) :
     MooseApp(parameters)
 {
   Moose::registerObjects(_factory);
-  ModulesApp::registerObjects(_factory);
+  ModulesApp::registerObjects(_factory); // remove for use in OpenDA
   DwarfElephantApp::registerObjects(_factory);
 
   Moose::associateSyntax(_syntax, _action_factory);
-  ModulesApp::associateSyntax(_syntax, _action_factory);
+  ModulesApp::associateSyntax(_syntax, _action_factory); // remove for use in OpenDA
   DwarfElephantApp::associateSyntax(_syntax, _action_factory);
 }
 

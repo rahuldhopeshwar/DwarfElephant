@@ -23,7 +23,6 @@ InputParameters validParams<DwarfElephantFEElectricalConduction>()
 ///-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantFEElectricalConduction::DwarfElephantFEElectricalConduction(const InputParameters & parameters) :
   Diffusion(parameters),
-  // gets the thermal conductivity directly from the corresponding material file
   _resistivity(getParam<Real>("resistivity"))
 {
 }
