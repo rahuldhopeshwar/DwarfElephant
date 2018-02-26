@@ -9,8 +9,6 @@ InputParameters
 validParams<DwarfElephantDakotaOutput>()
 {
   InputParameters params = validParams<FileOutput>();
-  params.addParam<std::string>("result_file_name", "results", "Defines the name of the result file.");
-  params.addParam<std::string>("file_path", "" , "Defines the path where the file should be saved.");
   params.addRequiredParam<PostprocessorName>("postprocessor", "Defines the name of the postprocessor you want to use.");
 
   return params;
@@ -18,8 +16,6 @@ validParams<DwarfElephantDakotaOutput>()
 
 DwarfElephantDakotaOutput::DwarfElephantDakotaOutput(const InputParameters & parameters) :
     FileOutput(parameters),
-    _result_file_name(getParam<std::string>("result_file_name")),
-    _file_path(getParam<std::string>("file_path")),
     _postprocessor_name(getParam<PostprocessorName>("postprocessor"))
 {
 }
@@ -34,7 +30,7 @@ DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
 //  if (type == EXEC_TIMESTEP_END)
 //  {
     std::ofstream dakota_file;
-    dakota_file.open(_file_path + _result_file_name + ".out", std::ios::app);
+    dakota_file.open(filename() + ".out", std::ios::app);
     dakota_file << _problem_ptr->getPostprocessorValue(_postprocessor_name) << " f"<< std::endl;
 //  }
 //  std::string deleteline = "0 f";

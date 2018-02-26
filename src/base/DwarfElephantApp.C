@@ -62,6 +62,7 @@
 
 //VectorPostprocessors
 #include "DwarfElephantElementalVariableValuesAlongLine.h"
+#include "DwarfElephantAllElementalVariableValues.h"
 
 template<>
 InputParameters validParams<DwarfElephantApp>()
@@ -153,6 +154,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // VectorPostprocessors
   registerVectorPostprocessor(DwarfElephantElementalVariableValuesAlongLine);
+  registerVectorPostprocessor(DwarfElephantAllElementalVariableValues);
 
 }
 

@@ -1,12 +1,11 @@
 /**
  * This Output is required to couple the DwarfElephant package over a fork
- * interface to the multitool kit DAKOTA (developed by Sandia National
- * Labratories).
+ * interface to the OpenDA framework.
  */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTDAKOTAOUTPUT_H
-#define DWARFELEPHANTDAKOTAOUTPUT_H
+#ifndef DWARFELEPHANTOPENDAOUTPUT_H
+#define DWARFELEPHANTOPENDAOUTPUT_H
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
@@ -14,18 +13,18 @@
 
 ///-------------------------------------------------------------------------
 // Forward declerations
-class DwarfElephantDakotaOutput;
+class DwarfElephantOpenDAOutput;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template <>
-InputParameters validParams<DwarfElephantDakotaOutput>();
+InputParameters validParams<DwarfElephantOpenDAOutput>();
 
 ///-------------------------------------------------------------------------
-class DwarfElephantDakotaOutput : public FileOutput
+class DwarfElephantOpenDAOutput : public FileOutput
 {
 //----------------------------------PUBLIC----------------------------------
 public:
-  DwarfElephantDakotaOutput(const InputParameters & parameters);
+  DwarfElephantOpenDAOutput(const InputParameters & parameters);
 
   /*Methods*/
   virtual void output(const ExecFlagType & type) override;
@@ -33,8 +32,11 @@ public:
 //--------------------------------PROTECTED---------------------------------
 protected:
   /*Attributes*/
+  std::string _system_name;
+  VariableName _var_name;
+  THREAD_ID _tid;
   PostprocessorName _postprocessor_name;
 };
 
 ///-------------------------------------------------------------------------
-#endif /* DWARFELEPHANTDAKOTAOUTPUT_H */
+#endif /* DWARFELEPHANTOPENDAOUTPUT_H */
