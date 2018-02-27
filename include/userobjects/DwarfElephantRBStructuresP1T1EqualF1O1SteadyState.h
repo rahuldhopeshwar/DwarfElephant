@@ -14,7 +14,7 @@
 
 ///-------------------------------------------------------------------------
 #ifndef DWARFELEPHANTRBSTRUCTURESP1T1EQUALF1O1STEADYSTATE_H
-#define DWARFELPHANTRBSTRUCTURESP1T1EQUALF1O1STEADYSTATE_H
+#define DWARFELEPHANTRBSTRUCTURESP1T1EQUALF1O1STEADYSTATE_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)

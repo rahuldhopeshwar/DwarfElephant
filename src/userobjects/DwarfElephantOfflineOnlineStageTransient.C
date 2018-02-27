@@ -72,7 +72,9 @@ DwarfElephantOfflineOnlineStageTransient::setAffineMatrices()
       _rb_problem->rbAssembly(_q).setCachedMassMatrixContributions(*_initialize_rb_system._mass_matrix_subdomain[_q]);
       _initialize_rb_system._mass_matrix_subdomain[_q] ->close();
       _initialize_rb_system._L2_matrix->add(_mu_bar, *_initialize_rb_system._mass_matrix_subdomain[_q]);
+      _initialize_rb_system._mass_matrix_subdomain[_q]->print_matlab("Mq"+std::to_string(_q));
     }
+    _initialize_rb_system._L2_matrix->print_matlab("L2");
 }
 
 void
@@ -255,9 +257,9 @@ DwarfElephantOfflineOnlineStageTransient::finalize()
 }
 
 void
-DwarfElephantOfflineOnlineStageTransient::endStep(Real input_time)
+DwarfElephantOfflineOnlineStageTransient::endStep(Real /*input_time*/)
 {
-    Real _time = input_time;
+    // Real _time = input_time;
 
     // Compute the Error Indicators and Markers
     _fe_problem.computeIndicators();
@@ -269,6 +271,6 @@ DwarfElephantOfflineOnlineStageTransient::endStep(Real input_time)
     _fe_problem.outputStep(EXEC_TIMESTEP_END);
 
     // output
-//    if (_time_interval && (_time + _timestep_tolerance >= _next_interval_output_time))
-//      _next_interval_output_time += _time_interval_output_interval;
+   // if (_time_interval && (_time + _timestep_tolerance >= _next_interval_output_time))
+   //   _next_interval_output_time += _time_interval_output_interval;
 }

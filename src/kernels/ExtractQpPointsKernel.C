@@ -18,7 +18,7 @@ ExtractQpPointsKernel::ExtractQpPointsKernel(const InputParameters & parameters)
 void
 ExtractQpPointsKernel::initialSetup()
 {
-  NonlinearSystemBase & _nl_sys = _fe_problem.getNonlinearSystemBase();
+  // NonlinearSystemBase & _nl_sys = _fe_problem.getNonlinearSystemBase();
   _qp_file.open("QpPoints.txt", std::ios::app);
 }
 

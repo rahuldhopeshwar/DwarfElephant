@@ -122,8 +122,6 @@ class DwarfElephantInitializeRBSystemTransient :
     std::vector<NumericVector <Number> *> _residuals;
     std::vector<std::vector<NumericVector <Number> *> > _outputs;
 
-    const std::vector<ExecFlagType> & _exec_flags;
-
     /*Friend Classes*/
     friend class DwarfElephantRBKernel;
     friend class DwarfElephantRBTimeKernel;

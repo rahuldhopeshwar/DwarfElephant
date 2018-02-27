@@ -84,13 +84,13 @@ DwarfElephantRBProblem::newRBAssemblyArray(NonlinearSystemBase & nl)
     _rb_assembly[i] = new DwarfElephantRBAssembly(nl, i);
 }
 
-MooseVariable &
-DwarfElephantRBProblem::getVariable(THREAD_ID tid, const std::string & var_name)
-{
-  if (_nl->hasVariable(var_name))
-    return _nl->getVariable(tid, var_name);
-  else if (!_aux->hasVariable(var_name))
-    mooseError("Unknown variable " + var_name);
-
-  return _aux->getVariable(tid, var_name);
-}
+// MooseVariable &
+// DwarfElephantRBProblem::getVariable(THREAD_ID tid, const std::string & var_name)
+// {
+//   if (_nl->hasVariable(var_name))
+//     return _nl->getVariable(tid, var_name);
+//   else if (!_aux->hasVariable(var_name))
+//     mooseError("Unknown variable " + var_name);
+//
+//   return _aux->getVariable(tid, var_name);
+// }

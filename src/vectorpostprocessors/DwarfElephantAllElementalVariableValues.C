@@ -42,7 +42,11 @@ DwarfElephantAllElementalVariableValues::execute()
     Elem * _element = _fe_problem.mesh().getMesh().query_elem_ptr(i);
     _subproblem.prepare(_element, _tid);
     _subproblem.reinitElem(_element, _tid);
-    MooseVariable & var = _subproblem.getVariable(_tid, _var_name);
+
+    // In case your are using a MOOSE version older than Feb 20, 2018
+    // use the following line
+    //MooseVariable & var = _subproblem.getVariable(_tid, _var_name);
+    MooseVariable & var = _subproblem.getStandardVariable(_tid, _var_name);
     const VariableValue & u = var.sln();
 
     unsigned int n = u.size();

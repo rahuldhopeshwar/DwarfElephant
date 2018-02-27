@@ -6,7 +6,7 @@
  */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPAHNTRBNEUMANNBC_H
+#ifndef DWARFELEPHANTRBNEUMANNBC_H
 #define DWARFELEPHANTRBNEUMANNBC_H
 
 ///---------------------------------INCLUDES--------------------------------

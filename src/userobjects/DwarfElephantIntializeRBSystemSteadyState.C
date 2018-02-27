@@ -54,8 +54,7 @@ DwarfElephantInitializeRBSystemSteadyState::DwarfElephantInitializeRBSystemStead
   _discrete_parameters(getParam<std::vector<std::string>>("discrete_parameter_names")),
   _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
   _mesh_ptr(&_fe_problem.mesh()),
-  _sys(&_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
-  _exec_flags(this->execFlags())
+  _sys(&_es.get_system<TransientNonlinearImplicitSystem>(_system_name))
 {
 }
 
@@ -171,38 +170,35 @@ DwarfElephantInitializeRBSystemSteadyState::initializeOfflineStage()
 void
 DwarfElephantInitializeRBSystemSteadyState::initialize()
 {
-  if (_exec_flags[0]==EXEC_INITIAL)
+  // Define the parameter file for the libMesh functions.
+  // In our case not required, because the read-in is done via the MOOSE inputfile.
+  // GetPot infile (_parameters_filename);
+
+  // Add a new equation system for the RB construction.
+  _rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionSteadyState> ("RBSystem");
+
+  // Intialization of the added equation system
+  _rb_con_ptr->init();
+  _es.update();
+
+  DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm(), _fe_problem);
+  // Pass a pointer of the RBEvaluation object to the
+  // RBConstruction object
+  _rb_con_ptr->set_rb_evaluation(_rb_eval);
+
+  // Get number of attached parameters.
+  _n_outputs = _rb_con_ptr->get_rb_theta_expansion().get_n_outputs();
+  _ql.resize(_n_outputs);
+  _qa = _rb_con_ptr->get_rb_theta_expansion().get_n_A_terms();
+  _qf = _rb_con_ptr->get_rb_theta_expansion().get_n_F_terms();
+
+  for(unsigned int i=0; i < _n_outputs; i++)
+    _ql[i] = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(i);
+
+  // Initialize required matrices and vectors.
+  if (_offline_stage)
   {
-    // Define the parameter file for the libMesh functions.
-    // In our case not required, because the read-in is done via the MOOSE inputfile.
-    // GetPot infile (_parameters_filename);
-
-    // Add a new equation system for the RB construction.
-    _rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionSteadyState> ("RBSystem");
-
-    // Intialization of the added equation system
-    _rb_con_ptr->init();
-    _es.update();
-
-    DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm(), _fe_problem);
-    // Pass a pointer of the RBEvaluation object to the
-    // RBConstruction object
-    _rb_con_ptr->set_rb_evaluation(_rb_eval);
-
-    // Get number of attached parameters.
-    _n_outputs = _rb_con_ptr->get_rb_theta_expansion().get_n_outputs();
-    _ql.resize(_n_outputs);
-    _qa = _rb_con_ptr->get_rb_theta_expansion().get_n_A_terms();
-    _qf = _rb_con_ptr->get_rb_theta_expansion().get_n_F_terms();
-
-    for(unsigned int i=0; i < _n_outputs; i++)
-     _ql[i] = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(i);
-
-    // Initialize required matrices and vectors.
-    if (_offline_stage)
-    {
-      initializeOfflineStage();
-    }
+    initializeOfflineStage();
   }
 }
 

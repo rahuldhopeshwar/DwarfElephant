@@ -70,8 +70,7 @@ DwarfElephantInitializeRBSystemTransient::DwarfElephantInitializeRBSystemTransie
   _discrete_parameters(getParam<std::vector<std::string>>("discrete_parameter_names")),
   _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
   _mesh_ptr(&_fe_problem.mesh()),
-  _sys(&_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
-  _exec_flags(this->execFlags())
+  _sys(&_es.get_system<TransientNonlinearImplicitSystem>(_system_name))
 {
 }
 
@@ -150,7 +149,7 @@ DwarfElephantInitializeRBSystemTransient::initializeOfflineStage()
 {
   // Get and process the necessary input parameters for the
   // offline stage
-//  _rb_con_ptr->process_parameters_file(_parameters_filename);
+  //  _rb_con_ptr->process_parameters_file(_parameters_filename);
   processParameters();
 
   // Print the system informations for the RBConstruction system.
@@ -160,103 +159,98 @@ DwarfElephantInitializeRBSystemTransient::initializeOfflineStage()
   // assembly, since this is already done by MOOSE.
   _rb_con_ptr->initialize_rb_construction(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
 
-   // Save the A's, F's and output vectors from the RBConstruction class in pointers.
-   // This additional saving of the pointers is required because otherwise a the RBEvaluation object has
-   // to be set again in the RBKernel.
+  // Save the A's, F's and output vectors from the RBConstruction class in pointers.
+  // This additional saving of the pointers is required because otherwise a the RBEvaluation object has
+  // to be set again in the RBKernel.
 
-   // Define size of all new parameters.
-   _jacobian_subdomain.resize(_qa);
-   _mass_matrix_subdomain.resize(_qm);
-   _residuals.resize(_qf);
-   _outputs.resize(_n_outputs);
+  // Define size of all new parameters.
+  _jacobian_subdomain.resize(_qa);
+  _mass_matrix_subdomain.resize(_qm);
+  _residuals.resize(_qf);
+  _outputs.resize(_n_outputs);
+
+  for (unsigned int i=0; i < _n_outputs; i++)
+    _outputs[i].resize(_ql[i]);
+
+  // Get the correct matrices from the RB System.
+
+  // Eliminates error message for the initialization of new non-zero entries
+  // For the future: change SparseMatrix pattern (increases efficency)
+  _inner_product_matrix = _rb_con_ptr->get_inner_product_matrix();
+  PetscMatrix<Number> * _petsc_inner_matrix = dynamic_cast<PetscMatrix<Number>* > (_inner_product_matrix);
+  MatSetOption(_petsc_inner_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
+
+  // Eliminates error message for the initialization of new non-zero entries
+  // For the future: change SparseMatrix pattern (increases efficency)
+  _L2_matrix = _rb_con_ptr->L2_matrix.get();
+  PetscMatrix<Number> * _petsc_L2_matrix = dynamic_cast<PetscMatrix<Number>* > (_L2_matrix);
+  MatSetOption(_petsc_L2_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
+
+  for (unsigned int _q=0; _q < _qa; _q++)
+  {
+    _jacobian_subdomain[_q] = _rb_con_ptr->get_Aq(_q);
+
+    // Eliminates error message for the initialization of new non-zero entries
+    // For the future: change SparseMatrix pattern (increases efficency)
+    PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_jacobian_subdomain[_q]);
+    MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
+  }
+
+  for (unsigned int _q=0; _q < _qm; _q++)
+  {
+    // in case you are using a libMesh version older than Dec 6, 2017 use the following
+    // line
+    // _mass_matrix_subdomain[_q] = _rb_con_ptr->M_q_vector[_q];
+    _mass_matrix_subdomain[_q] = _rb_con_ptr->get_M_q(_q);
+
+    // Eliminates error message for the initialization of new non-zero entries
+    // For the future: change SparseMatrix pattern (increases efficency)
+    PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_mass_matrix_subdomain[_q]);
+    MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
+   }
+
+   // Get the correct vectors from the RB System.
+   for (unsigned int _q=0; _q < _qf; _q++)
+     _residuals[_q] = _rb_con_ptr->get_Fq(_q);
 
    for (unsigned int i=0; i < _n_outputs; i++)
-     _outputs[i].resize(_ql[i]);
-
-    // Get the correct matrices from the RB System.
-
-   // Eliminates error message for the initialization of new non-zero entries
-   // For the future: change SparseMatrix pattern (increases efficency)
-   _inner_product_matrix = _rb_con_ptr->get_inner_product_matrix();
-   PetscMatrix<Number> * _petsc_inner_matrix = dynamic_cast<PetscMatrix<Number>* > (_inner_product_matrix);
-   MatSetOption(_petsc_inner_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
-
-   // Eliminates error message for the initialization of new non-zero entries
-   // For the future: change SparseMatrix pattern (increases efficency)
-   _L2_matrix = _rb_con_ptr->L2_matrix.get();
-   PetscMatrix<Number> * _petsc_L2_matrix = dynamic_cast<PetscMatrix<Number>* > (_L2_matrix);
-   MatSetOption(_petsc_L2_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
-
-   for (unsigned int _q=0; _q < _qa; _q++)
-   {
-     _jacobian_subdomain[_q] = _rb_con_ptr->get_Aq(_q);
-
-     // Eliminates error message for the initialization of new non-zero entries
-     // For the future: change SparseMatrix pattern (increases efficency)
-     PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_jacobian_subdomain[_q]);
-     MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
-    }
-
-    for (unsigned int _q=0; _q < _qm; _q++)
-    {
-      _mass_matrix_subdomain[_q] = _rb_con_ptr->M_q_vector[_q];
-
-      // Eliminates error message for the initialization of new non-zero entries
-      // For the future: change SparseMatrix pattern (increases efficency)
-      PetscMatrix<Number> * _petsc_matrix = dynamic_cast<PetscMatrix<Number>* > (_mass_matrix_subdomain[_q]);
-      MatSetOption(_petsc_matrix->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
-     }
-
-    // Get the correct vectors from the RB System.
-    for (unsigned int _q=0; _q < _qf; _q++)
-      _residuals[_q] = _rb_con_ptr->get_Fq(_q);
-
-    for (unsigned int i=0; i < _n_outputs; i++)
-      for (unsigned int _q=0; _q < _ql[i]; _q++)
-        _outputs[i][_q] = _rb_con_ptr->get_output_vector(i,_q);
+     for (unsigned int _q=0; _q < _ql[i]; _q++)
+       _outputs[i][_q] = _rb_con_ptr->get_output_vector(i,_q);
 }
 
 void
 DwarfElephantInitializeRBSystemTransient::initialize()
 {
-  if (_exec_flags[0]==EXEC_INITIAL)
-  {
-    //#if !defined(LIBMESH_HAVE_SLEPC)
-    //  libmesh_example_requires(false, "--enable");
+  // Define the parameter file for the libMesh functions.
+  // GetPot infile (_parameters_filename);
 
-    // Define the parameter file for the libMesh functions.
-//    GetPot infile (_parameters_filename);
+  // Add a new equation system for the RB construction.
+  _rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionTransient> ("RBSystem");
 
-    // Add a new equation system for the RB construction.
-    _rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionTransient> ("RBSystem");
+  // Intialization of the added equation system
+  _rb_con_ptr->init();
+  _es.update();
 
-    // Intialization of the added equation system
-    _rb_con_ptr->init();
-    _es.update();
+  DwarfElephantRBEvaluationTransient _rb_eval(_mesh_ptr->comm(), _fe_problem);
+  // Pass a pointer of the RBEvaluation object to the
+  // RBConstruction object
+  _rb_con_ptr->set_rb_evaluation(_rb_eval);
 
-    DwarfElephantRBEvaluationTransient _rb_eval(_mesh_ptr->comm(), _fe_problem);
-    // Pass a pointer of the RBEvaluation object to the
-    // RBConstruction object
-    _rb_con_ptr->set_rb_evaluation(_rb_eval);
+  TransientRBThetaExpansion & _trans_theta_expansion = cast_ref<TransientRBThetaExpansion &>(_rb_con_ptr->get_rb_theta_expansion());
 
-    TransientRBThetaExpansion & _trans_theta_expansion = cast_ref<TransientRBThetaExpansion &>(_rb_con_ptr->get_rb_theta_expansion());
+  // Get number of attached parameters.
+  _n_outputs = _rb_con_ptr->get_rb_theta_expansion().get_n_outputs();
+  _ql.resize(_n_outputs);
+  _qa = _rb_con_ptr->get_rb_theta_expansion().get_n_A_terms();
+  _qm = _trans_theta_expansion.get_n_M_terms();
+  _qf = _rb_con_ptr->get_rb_theta_expansion().get_n_F_terms();
 
-    // Get number of attached parameters.
-    _n_outputs = _rb_con_ptr->get_rb_theta_expansion().get_n_outputs();
-    _ql.resize(_n_outputs);
-    _qa = _rb_con_ptr->get_rb_theta_expansion().get_n_A_terms();
-    _qm = _trans_theta_expansion.get_n_M_terms();
-    _qf = _rb_con_ptr->get_rb_theta_expansion().get_n_F_terms();
+  for(unsigned int i=0; i < _n_outputs; i++)
+   _ql[i] = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(i);
 
-    for(unsigned int i=0; i < _n_outputs; i++)
-     _ql[i] = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(i);
-
-    // Initialize required matrices and vectors.
-    if (_offline_stage)
-      initializeOfflineStage();
-
-    //#endif
-  }
+  // Initialize required matrices and vectors.
+  if (_offline_stage)
+    initializeOfflineStage();
 }
 
 void

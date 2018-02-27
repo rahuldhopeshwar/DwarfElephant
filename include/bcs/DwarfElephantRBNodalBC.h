@@ -59,8 +59,8 @@ public:
 protected:
 
   /* Methods */
-  virtual Real computeQpResidual();
-  virtual Real computeQpJacobian();
+  virtual Real computeQpResidual() override;
+  virtual Real computeQpJacobian() override;
 
   /* Attributes */
   bool _matrix_seperation_according_to_subdomains;

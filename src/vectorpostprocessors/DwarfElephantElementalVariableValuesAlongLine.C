@@ -66,7 +66,10 @@ DwarfElephantElementalVariableValuesAlongLine::execute()
     _subproblem.prepare(intersected_elems[i], _tid);
     _subproblem.reinitElem(intersected_elems[i], _tid);
 
-    MooseVariable & var = _subproblem.getVariable(_tid, _var_name);
+    // In case your are using a MOOSE version older than Feb 20, 2018
+    // use the following line
+    //MooseVariable & var = _subproblem.getVariable(_tid, _var_name);
+    MooseVariable & var = _subproblem.getStandardVariable(_tid, _var_name);
     const VariableValue & u = var.sln();
 
     unsigned int n = u.size();

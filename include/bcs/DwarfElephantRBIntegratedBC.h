@@ -45,7 +45,7 @@ public:
   virtual void computeJacobian() override;
   virtual void computeOutput();
   virtual void computeJacobianBlock(unsigned int jvar) override;
-  void computeJacobianBlockScalar(unsigned int jvar);
+  void computeJacobianBlockScalar(unsigned int jvar) override;
   virtual void computeNonlocalJacobian() override {}
   virtual void computeNonlocalOffDiagJacobian(unsigned int /* jvar */) override {}
   virtual void initialSetup() override;

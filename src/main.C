@@ -16,14 +16,19 @@ int main(int argc, char *argv[])
   // Register this application's MooseApp and any it depends on
   DwarfElephantApp::registerApps();
 
-  // This creates dynamic memory that we're responsible for deleting
-  MooseApp * app = AppFactory::createApp("DwarfElephantApp", argc, argv);
+  // In case our are using a MOOSE version older than Jan 24, 2018
+  // use the following line
+  // MooseApp * app = AppFactory::createApp("DwarfElephantApp", argc, argv);
+
+  // Create an instance of the application and store it in a smart pointer for easy cleanup
+  std::shared_ptr<MooseApp> app = AppFactory::createAppShared("DwarfElephantApp", argc, argv);
 
   // Execute the application
   app->run();
 
-  // Free up the memory we created earlier
-  delete app;
+  // In case our are using a MOOSE version older than Jan 24, 2018
+  // use the following line
+  // delete app;
 
   return 0;
 }

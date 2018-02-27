@@ -20,7 +20,7 @@ class DwarfElephantRBTimeKernel;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template <>
-InputParameters validParams<TimeKernel>();
+InputParameters validParams<DwarfElephantRBTimeKernel>();
 
 ///-------------------------------------------------------------------------
 /**

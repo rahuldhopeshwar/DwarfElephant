@@ -44,7 +44,7 @@ class DwarfElephantRBProblem :
 
     virtual void newRBAssemblyArray(NonlinearSystemBase & nl);
 
-    virtual MooseVariable & getVariable(THREAD_ID tid, const std::string & var_name) override;
+    // virtual MooseVariable & getVariable(THREAD_ID tid, const std::string & var_name) override;
 
 //--------------------------------PROTECTED---------------------------------
   protected:
