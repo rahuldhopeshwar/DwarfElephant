@@ -112,6 +112,7 @@ class DwarfElephantInitializeRBSystemSteadyState :
 
     /*Friend Classes*/
     friend class DwarfElephantRBKernel;
+    friend class DwarfElephantRBDiracKernel;
     friend class DwarfElephantRBNodalBC;
     friend class DwarfElephantRBIntegratedBC;
     friend class DwarfElephantOfflineOnlineStageSteadyState;

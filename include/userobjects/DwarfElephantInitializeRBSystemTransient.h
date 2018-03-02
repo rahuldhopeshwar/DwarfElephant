@@ -124,6 +124,7 @@ class DwarfElephantInitializeRBSystemTransient :
 
     /*Friend Classes*/
     friend class DwarfElephantRBKernel;
+    friend class DwarfElephantRBDiracKernel;
     friend class DwarfElephantRBTimeKernel;
     friend class DwarfElephantRBNodalBC;
     friend class DwarfElephantRBIntegratedBC;

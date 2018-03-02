@@ -114,25 +114,25 @@ DwarfElephantRBKernel::computeResidual()
   {
     const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
 
-    if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
-    mooseError("The UserObject 'DwarfElephantInitializeRBSystemSteadyState' has to be executed on 'initial'. "
-               "You defined a wrong state in your 'execute_on' line in the input file. "
-               "Please, correct your settings.");
+    // if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
+    // mooseError("The UserObject 'DwarfElephantInitializeRBSystemSteadyState' has to be executed on 'initial'. "
+    //            "You defined a wrong state in your 'execute_on' line in the input file. "
+    //            "Please, correct your settings.");
 
 
     if(_initialize_rb_system._offline_stage)
       // Add the calculated vectors to the vectors from the RB system.
-      //if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
+      if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
   }
   else if (_simulation_type == "transient") // Transient
   {
     const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
 
-    if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
-    mooseError("The UserObject 'DwarfElephantInitializeRBSystemTransient' has to be executed on 'initial'. "
-               "You defined a wrong state in your 'execute_on' line in the input file. "
-               "Please, correct your settings.");
+    // if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
+    // mooseError("The UserObject 'DwarfElephantInitializeRBSystemTransient' has to be executed on 'initial'. "
+    //            "You defined a wrong state in your 'execute_on' line in the input file. "
+    //            "Please, correct your settings.");
 
     if(_initialize_rb_system._offline_stage)
       // Add the calculated vectors to the vectors from the RB system.

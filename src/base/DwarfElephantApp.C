@@ -37,6 +37,9 @@
 #include "DwarfElephantRBTimeDerivative.h"
 #include "ExtractQpPointsKernel.h"
 
+// DiracKernels
+#include "DwarfElephantRBConstantPointSource.h"
+
 // Materials
 #include "DwarfElephantSandStone.h"
 #include "DwarfElephantShale.h"
@@ -128,6 +131,9 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerKernel(DwarfElephantRBDiffusionLiftingFunction);
   registerKernel(DwarfElephantRBTimeDerivative);
   registerKernel(ExtractQpPointsKernel);
+
+  //DiracKernels
+  registerDiracKernel(DwarfElephantRBConstantPointSource);
 
   // Materials
   registerMaterial(DwarfElephantSandStone);
