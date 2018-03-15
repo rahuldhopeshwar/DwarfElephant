@@ -197,4 +197,3 @@ DwarfElephantRBEvaluationSteadyState::get_stability_lower_bound()
 
   return min_mu;
 }
-

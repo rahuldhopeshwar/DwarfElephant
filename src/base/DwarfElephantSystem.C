@@ -28,6 +28,7 @@ DwarfElephantSystem::solve()
 
   // Initialize the solution vector
   setInitialSolution();
+  // setRBInitialSolution();
 
   if(_use_finite_differenced_preconditioner)
     setupFiniteDifferencedPreconditioner();
@@ -47,4 +48,10 @@ DwarfElephantSystem::solve()
 //    _console << _kernel_names[i] << std::endl;
 //    _rb_kernel_ptr->computeOutput();
 //  }
+}
+
+void
+DwarfElephantSystem::setRBInitialSolution()
+{
+  *_fe_problem.es().get_system("RBSystem").solution = *_fe_problem.es().get_system(_name).solution;
 }

@@ -45,6 +45,7 @@ public:
   /* Methods */
   // Initialize data structure
   virtual void 	solve () override;
+  void setRBInitialSolution();
 };
 
 #endif /* DWARFELEPHANTSYSTEM_H */

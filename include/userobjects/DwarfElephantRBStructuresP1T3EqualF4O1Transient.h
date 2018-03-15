@@ -12,8 +12,8 @@
   * 2. RBThetaExpansion
   */
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTRBSTRUCTURESP1T3EQUALF3O1TRANSIENT_H
-#define DWARFELEPHANTRBSTRUCTURESP1T3EQUALF3O1TRANSIENT_H
+#ifndef DWARFELEPHANTRBSTRUCTURESP1T4EQUALF3O1TRANSIENT_H
+#define DWARFELEPHANTRBSTRUCTURESP1T4EQUALF3O1TRANSIENT_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
@@ -42,9 +42,9 @@ namespace libMesh
  *
  */
 
-struct DwarfElephantRBP1T3EqualF3O1TransientExpansion : TransientRBThetaExpansion
+struct DwarfElephantRBP1T3EqualF4O1TransientExpansion : TransientRBThetaExpansion
 {
-  DwarfElephantRBP1T3EqualF3O1TransientExpansion()
+  DwarfElephantRBP1T3EqualF4O1TransientExpansion()
   {
     // Setting up the RBThetaExpansion object
     attach_M_theta(&_theta_a_00);
@@ -71,4 +71,4 @@ struct DwarfElephantRBP1T3EqualF3O1TransientExpansion : TransientRBThetaExpansio
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTRBSTRUCTURESP1T3EQUALF3O1Transient_H
+#endif // DWARFELEPHANTRBSTRUCTURESP1T3EQUALF4O1Transient_H

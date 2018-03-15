@@ -105,7 +105,7 @@ DwarfElephantOfflineOnlineStageTransient::offlineStage()
 {
     _initialize_rb_system._rb_con_ptr->train_reduced_basis();
    #if defined(LIBMESH_HAVE_CAPNPROTO)
-      RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
+      RBDataSerialization::TransientRBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
      _rb_eval_writer.write_to_file("trans_rb_eval.bin");
     #else
       // Write the offline data to file (xdr format).
@@ -171,7 +171,7 @@ DwarfElephantOfflineOnlineStageTransient::execute()
     {
       Moose::perf_log.push("onlineStage()", "Execution");
       #if defined(LIBMESH_HAVE_CAPNPROTO)
-      RBDataDeserialization::RBEvaluationDeserialization _rb_eval_reader(_rb_eval);
+      RBDataDeserialization::TrasientRBEvaluationDeserialization _rb_eval_reader(_rb_eval);
       _rb_eval_reader.read_from_file("trans_rb_eval.bin", /*read_error_bound_data*/ true);
       #else
       _rb_eval.legacy_read_offline_data_from_files();
@@ -202,13 +202,12 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       if(_output_file)
       {
          _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
-//
+
          for (unsigned int _time_step = 0; _time_step <= _initialize_rb_system._rb_con_ptr->get_n_time_steps(); _time_step++)
         {
           _initialize_rb_system._rb_con_ptr->pull_temporal_discretization_data(_rb_eval);
           _initialize_rb_system._rb_con_ptr->set_time_step(_time_step);
           _initialize_rb_system._rb_con_ptr->load_rb_solution();
-//           Moose::perf_log.push("DataTransfer()", "Execution");
           *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
           _fe_problem.getNonlinearSystemBase().update();
           _fe_problem.timeStep()=_time_step;

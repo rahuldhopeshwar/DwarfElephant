@@ -24,6 +24,9 @@
 #include "DwarfElephantRBNeumannBCND.h"
 #include "DwarfElephantRBFunctionNeumannBC.h"
 
+//ICs
+#include "DwarfElephantFileIC.h"
+
 // Kernels
 #include "DwarfElephantFEThermalConduction.h"
 #include "DwarfElephantFEConductionLiftingFunction.h"
@@ -54,7 +57,7 @@
 #include "DwarfElephantERTPreCalculations.h"
 
 // Functions
-#include "CacheBoundaries.h"
+#include "DwarfElephantInitialConditionFileReader.h"
 
 // Executioners
 #include "DwarfElephantRBExecutioner.h"
@@ -119,6 +122,9 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerBoundaryCondition(DwarfElephantRBNeumannBCND);
   registerBoundaryCondition(DwarfElephantRBFunctionNeumannBC);
 
+  //ICs
+  registerInitialCondition(DwarfElephantFileIC);
+
   // Kernels
   registerKernel(DwarfElephantFEThermalConduction);
   registerKernel(DwarfElephantFEConductionLiftingFunction);
@@ -149,7 +155,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerUserObject(DwarfElephantERTPreCalculations);
 
   // Functions
-  registerFunction(CacheBoundaries);
+  registerFunction(DwarfElephantInitialConditionFileReader);
 
   // Executioners
   registerExecutioner(DwarfElephantRBExecutioner);
