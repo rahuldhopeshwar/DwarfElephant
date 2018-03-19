@@ -9,14 +9,16 @@ InputParameters
 validParams<DwarfElephantDakotaOutput>()
 {
   InputParameters params = validParams<FileOutput>();
-  params.addRequiredParam<PostprocessorName>("postprocessor", "Defines the name of the postprocessor you want to use.");
-
+  // params.addRequiredParam<std::string>("postprocessor", "Defines the name of the postprocessor(s) you want to use.");
+  params.addRequiredParam<std::vector<PostprocessorName>>("postprocessor", "Defines the name of the postprocessor(s) you want to use.");
+  params.addParam<std::string>("delimiter", "   ", "Defines the delimiter.");
   return params;
 }
 
 DwarfElephantDakotaOutput::DwarfElephantDakotaOutput(const InputParameters & parameters) :
     FileOutput(parameters),
-    _postprocessor_name(getParam<PostprocessorName>("postprocessor"))
+    _postprocessor_name(getParam<std::vector<PostprocessorName>>("postprocessor")),
+    _delimiter(getParam<std::string>("delimiter"))
 {
 }
 
@@ -31,7 +33,12 @@ DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
 //  {
     std::ofstream dakota_file;
     dakota_file.open(filename() + ".out", std::ios::app);
-    dakota_file << _problem_ptr->getPostprocessorValue(_postprocessor_name) << " f"<< std::endl;
+
+    for(unsigned int i = 0; i < _postprocessor_name.size(); i++)
+      if(i < _postprocessor_name.size()-1)
+        dakota_file << _problem_ptr->getPostprocessorValue(_postprocessor_name[i]) << " f"<< _delimiter;
+      else
+        dakota_file << _problem_ptr->getPostprocessorValue(_postprocessor_name[i]) << " f"<< std::endl;
 //  }
 //  std::string deleteline = "0 f";
 //  std::string line;

@@ -33,7 +33,8 @@ public:
 //--------------------------------PROTECTED---------------------------------
 protected:
   /*Attributes*/
-  PostprocessorName _postprocessor_name;
+  std::vector<PostprocessorName> _postprocessor_name;
+  std::string _delimiter;
 };
 
 ///-------------------------------------------------------------------------
