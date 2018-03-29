@@ -36,6 +36,7 @@ protected:
 
   /* Attributes */
   Real _permeability;
+  Real _norm_value;
 };
 
 ///-------------------------------------------------------------------------

@@ -29,8 +29,10 @@
 #include "libmesh/transient_rb_construction.h"
 
 ///-------------------------------------------------------------------------
+#include "FEProblemBase.h"
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantInitializeRBSystemTransient.h"
+#include "DwarfElephantOfflineOnlineStageTransient.h"
 
 #include "DwarfElephantRBStructuresP1T1EqualF1O1Transient.h"
 #include "DwarfElephantRBStructuresP1T2EqualF1O1Transient.h"
@@ -39,8 +41,6 @@
 #include "DwarfElephantRBStructuresP1T4EqualF1O1Transient.h"
 #include "DwarfElephantRBStructuresP1T5EqualF1O1Transient.h"
 #include "DwarfElephantRBStructuresP1T5EqualF4O1Transient.h"
-
-#include "FEProblemBase.h"
 
 // Forward Declarations
 namespace libMesh

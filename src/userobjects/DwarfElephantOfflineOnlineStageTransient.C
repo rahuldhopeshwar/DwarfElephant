@@ -22,6 +22,8 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageTransient>()
     params.addParam<bool>("offline_error_bound", false, "Determines which error bound is used.");
     params.addParam<bool>("output_file", true, "Determines whether an output file is generated or not.");
     params.addParam<bool>("compute_output", false, "Determines whether an output of interest is computed or not.");
+    params.addParam<bool>("norm_online_values", false, "Determines wether online parameters are normed.");
+    params.addParam<unsigned int>("norm_id", 0, "Defines the id of the parameter that will be used for the normalization.");
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
     params.addParam<Real>("mu_bar", 1., "Value for mu-bar");
@@ -43,6 +45,8 @@ DwarfElephantOfflineOnlineStageTransient::DwarfElephantOfflineOnlineStageTransie
     _offline_error_bound(getParam<bool>("offline_error_bound")),
     _output_file(getParam<bool>("output_file")),
     _compute_output(getParam<bool>("compute_output")),
+    _norm_online_values(getParam<bool>("norm_online_values")),
+    _norm_id(getParam<unsigned int>("norm_id")),
     _system_name(getParam<std::string>("system")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
@@ -124,11 +128,16 @@ DwarfElephantOfflineOnlineStageTransient::offlineStage()
 void
 DwarfElephantOfflineOnlineStageTransient::setOnlineParameters()
 {
-    for (unsigned int  _q = 0; _q != _online_mu_parameters.size(); _q++)
-    {
-        std::string  _mu_name = "mu_" + std::to_string(_q);
+  for (unsigned int  _q = 0; _q < _online_mu_parameters.size(); _q++)
+  {
+      std::string  _mu_name = "mu_" + std::to_string(_q);
+      _online_mu_parameters[_q] = _online_mu_parameters[_q];
+
+      if (_norm_online_values)
+        _rb_online_mu.set_value(_mu_name, _online_mu_parameters[_q]/_online_mu_parameters[_norm_id]);
+      else
         _rb_online_mu.set_value(_mu_name, _online_mu_parameters[_q]);
-    }
+  }
 }
 
 void
@@ -197,6 +206,7 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 ////        for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
 //          _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
 //          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
+      Moose::perf_log.pop("onlineStage()", "Execution");
 
       Moose::perf_log.push("DataTransfer()", "Execution");
       if(_output_file)
@@ -213,7 +223,6 @@ DwarfElephantOfflineOnlineStageTransient::execute()
           _fe_problem.timeStep()=_time_step;
           endStep(_time_step);
         }
-
 
 //        // Plot the solution
 //        Moose::perf_log.push("write_exodus()", "Output");
@@ -236,6 +245,7 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 //          exo.write_timestep(getFileName(), _es, _time_step, _time_step * _initialize_rb_system._rb_con_ptr->get_delta_t());
 //        }
       }
+      Moose::perf_log.pop("DataTransfer()", "Execution");
     }
 }
 

@@ -10,6 +10,8 @@
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
+// #include "CSV.h"
+// #include "DwarfElephantFormattedTable.h"
 #include "FileOutput.h"
 
 ///-------------------------------------------------------------------------
@@ -21,6 +23,7 @@ template <>
 InputParameters validParams<DwarfElephantDakotaOutput>();
 
 ///-------------------------------------------------------------------------
+// class DwarfElephantDakotaOutput : public CSV
 class DwarfElephantDakotaOutput : public FileOutput
 {
 //----------------------------------PUBLIC----------------------------------
@@ -29,12 +32,22 @@ public:
 
   /*Methods*/
   virtual void output(const ExecFlagType & type) override;
+  // virtual void outputVectorPostprocessors() override;
+  // virtual void outputPostprocessors() override;
+  virtual std::string filename() override;
+  // virtual void initialSetup() override;
 
 //--------------------------------PROTECTED---------------------------------
 protected:
   /*Attributes*/
-  std::vector<PostprocessorName> _postprocessor_name;
+  // bool _write_all_table;
+  // bool _write_vector_table;
+  // bool _align;
+  // unsigned int _precision;
   std::string _delimiter;
+  // bool _sort_columns;
+  std::vector<PostprocessorName> _postprocessor_name;
+
 };
 
 ///-------------------------------------------------------------------------

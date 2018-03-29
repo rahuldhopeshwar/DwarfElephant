@@ -16,13 +16,15 @@ InputParameters validParams<DwarfElephantFEDarcy>()
 
   params.addClassDescription("The class implements a darcy flow problem.");
   params.addRequiredParam<Real>("permeability", "Defines the rock permeability in relationship to a certain reference permeability.");
+  params.addParam<Real>("norm_value", 1.0, "Defines the normalization value.");
   return params;
 }
 
 ///-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantFEDarcy::DwarfElephantFEDarcy(const InputParameters & parameters) :
   Kernel(parameters),
-  _permeability(getParam<Real>("permeability"))
+  _permeability(getParam<Real>("permeability")),
+  _norm_value(getParam<Real>("norm_value"))
 {
 }
 
@@ -31,11 +33,11 @@ DwarfElephantFEDarcy::DwarfElephantFEDarcy(const InputParameters & parameters) :
 Real
 DwarfElephantFEDarcy::computeQpResidual()
 {
-  return _permeability * _grad_u[_qp] * _grad_test[_i][_qp];
+  return (_permeability/_norm_value) * _grad_u[_qp] * _grad_test[_i][_qp];
 }
 
 Real
 DwarfElephantFEDarcy::computeQpJacobian()
 {
-  return _permeability * _grad_phi[_j][_qp] * _grad_test[_i][_qp];
+  return (_permeability/_norm_value) * _grad_phi[_j][_qp] * _grad_test[_i][_qp];
 }

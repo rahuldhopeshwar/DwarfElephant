@@ -38,6 +38,8 @@ class MooseMesh;
 class NonlinearSystemBase;
 class Assembly;
 class DwarfElephantOfflineOnlineStageTransient;
+class DwarfElephantInitializeRBSystemTransient;
+class DwarfElephantRBProblem;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
@@ -51,7 +53,6 @@ class DwarfElephantOfflineOnlineStageTransient :
 //----------------------------------PUBLIC----------------------------------
   public:
     DwarfElephantOfflineOnlineStageTransient(const InputParameters & params);
-
 
     /* Methods */
     void setAffineMatrices();
@@ -79,6 +80,9 @@ class DwarfElephantOfflineOnlineStageTransient :
     bool _offline_error_bound;
     bool _output_file;
     bool _compute_output;
+    bool _norm_online_values;
+
+    unsigned int _norm_id;
 
     std::string _system_name;
 //    std::string _exodus_file_name;
@@ -98,6 +102,8 @@ class DwarfElephantOfflineOnlineStageTransient :
     RBParameters _rb_online_mu;
 
     DwarfElephantRBProblem * _rb_problem;
+
+    friend class DwarfElephantRBEvaluationTransient;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTOFFLINEONLINESTAGETRANSIENT_H

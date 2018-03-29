@@ -238,19 +238,20 @@ DwarfElephantInitializeRBSystemTransient::initialize()
 
   TransientRBThetaExpansion & _trans_theta_expansion = cast_ref<TransientRBThetaExpansion &>(_rb_con_ptr->get_rb_theta_expansion());
 
-  // Get number of attached parameters.
-  _n_outputs = _rb_con_ptr->get_rb_theta_expansion().get_n_outputs();
-  _ql.resize(_n_outputs);
-  _qa = _rb_con_ptr->get_rb_theta_expansion().get_n_A_terms();
-  _qm = _trans_theta_expansion.get_n_M_terms();
-  _qf = _rb_con_ptr->get_rb_theta_expansion().get_n_F_terms();
+  if (_offline_stage){
+    // Get number of attached parameters.
+    _n_outputs = _rb_con_ptr->get_rb_theta_expansion().get_n_outputs();
+    _ql.resize(_n_outputs);
+    _qa = _rb_con_ptr->get_rb_theta_expansion().get_n_A_terms();
+    _qm = _trans_theta_expansion.get_n_M_terms();
+    _qf = _rb_con_ptr->get_rb_theta_expansion().get_n_F_terms();
 
-  for(unsigned int i=0; i < _n_outputs; i++)
-   _ql[i] = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(i);
+    for(unsigned int i=0; i < _n_outputs; i++)
+    _ql[i] = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(i);
 
-  // Initialize required matrices and vectors.
-  if (_offline_stage)
-    initializeOfflineStage();
+    // Initialize required matrices and vectors.
+      initializeOfflineStage();
+  }
 }
 
 void

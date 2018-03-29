@@ -22,10 +22,25 @@
 
 #include "DwarfElephantRBStructuresA00ThetaIsConstantP1.h"
 #include "DwarfElephantRBStructuresA0ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA0ThetaNormMu0P1.h"
+#include "DwarfElephantRBStructuresA0ThetaNormMu1P1.h"
+#include "DwarfElephantRBStructuresA0ThetaNormMu3P1.h"
 #include "DwarfElephantRBStructuresA1ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA1ThetaNormMu0P1.h"
+#include "DwarfElephantRBStructuresA1ThetaNormMu1P1.h"
+#include "DwarfElephantRBStructuresA1ThetaNormMu3P1.h"
 #include "DwarfElephantRBStructuresA2ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA2ThetaNormMu0P1.h"
+#include "DwarfElephantRBStructuresA2ThetaNormMu1P1.h"
+#include "DwarfElephantRBStructuresA2ThetaNormMu3P1.h"
 #include "DwarfElephantRBStructuresA3ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA3ThetaNormMu0P1.h"
+#include "DwarfElephantRBStructuresA3ThetaNormMu1P1.h"
+#include "DwarfElephantRBStructuresA3ThetaNormMu3P1.h"
 #include "DwarfElephantRBStructuresA4ThetaEqualMuP1.h"
+#include "DwarfElephantRBStructuresA4ThetaNormMu0P1.h"
+#include "DwarfElephantRBStructuresA4ThetaNormMu1P1.h"
+#include "DwarfElephantRBStructuresA4ThetaNormMu3P1.h"
 
 
 // Forward Declarations
@@ -65,11 +80,11 @@ struct DwarfElephantRBP1T5EqualF4O1TransientExpansion : TransientRBThetaExpansio
   }
   // Member Variables
   DwarfElephantThetaA00Constant _theta_a_00;
-  DwarfElephantThetaA0 _theta_a_0;
-  DwarfElephantThetaA1 _theta_a_1;
-  DwarfElephantThetaA2 _theta_a_2;
-  DwarfElephantThetaA3 _theta_a_3;
-  DwarfElephantThetaA4 _theta_a_4;
+  DwarfElephantThetaA0NormMu3 _theta_a_0;
+  DwarfElephantThetaA1NormMu3 _theta_a_1;
+  DwarfElephantThetaA2NormMu3 _theta_a_2;
+  DwarfElephantThetaA3NormMu3 _theta_a_3;
+  DwarfElephantThetaA4NormMu3 _theta_a_4;
   RBTheta _rb_theta;         // Default RBTheta object, simply returns one.
 };
 

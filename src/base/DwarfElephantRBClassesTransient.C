@@ -327,13 +327,24 @@ DwarfElephantRBConstructionTransient::init_data()
   DwarfElephantRBEvaluationTransient::get_stability_lower_bound()
   {
     const RBParameters & mu = get_parameters();
+    bool norm_values = fe_problem.getUserObject<DwarfElephantOfflineOnlineStageTransient>("performRBSystem")._norm_online_values;
+    unsigned int norm_id = fe_problem.getUserObject<DwarfElephantOfflineOnlineStageTransient>("performRBSystem")._norm_id;
 
-    Real min_mu = mu.get_value("mu_0");
+    Real min_mu;
+    Real min_mu_i;
+
+    min_mu = mu.get_value("mu_0");
+
+    if(norm_values)
+      min_mu = min_mu/mu.get_value("mu_"+ std::to_string(norm_id));
 
     for (unsigned int  i = 1; i != mu.n_parameters(); i++)
     {
       const std::string mu_name = "mu_" + std::to_string(i);
-      Real min_mu_i = std::min(min_mu, mu.get_value(mu_name));
+      if(norm_values)
+        min_mu_i = std::min(min_mu, mu.get_value(mu_name)/mu.get_value(mu_name));
+      else
+        min_mu_i = std::min(min_mu, mu.get_value(mu_name));
 
       if (min_mu_i < min_mu)
         min_mu = min_mu_i;

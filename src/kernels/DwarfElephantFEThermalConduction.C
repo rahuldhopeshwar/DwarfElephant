@@ -16,6 +16,7 @@ InputParameters validParams<DwarfElephantFEThermalConduction>()
   params.addClassDescription("The class implements a thermal conduction \
                               problem.");
   params.addRequiredParam<Real>("thermal_conductivity", "Defines the value of the thermal conductivity");
+  params.addParam<Real>("norm_value", 1.0, "Defines the normalization value.");
   return params;
 }
 
@@ -24,7 +25,8 @@ DwarfElephantFEThermalConduction::DwarfElephantFEThermalConduction(const InputPa
   Diffusion(parameters),
   // gets the thermal conductivity directly from the corresponding material file for future use in case of varying parameters
 //  _lambda(getMaterialProperty<Real>("thermal_conductivity"))
-  _lambda(getParam<Real>("thermal_conductivity"))
+  _lambda(getParam<Real>("thermal_conductivity")),
+  _norm_value(getParam<Real>("norm_value"))
 {
 }
 
@@ -34,12 +36,12 @@ Real
 DwarfElephantFEThermalConduction::computeQpResidual()
 {
 //  return _lambda[_qp] * Diffusion::computeQpResidual(); // in case of getting lambda from the material property class
-  return _lambda * Diffusion::computeQpResidual();
+  return (_lambda/_norm_value) * Diffusion::computeQpResidual();
 }
 
 Real
 DwarfElephantFEThermalConduction::computeQpJacobian()
 {
 //  return _lambda[_qp] * Diffusion::computeQpJacobian(); // in case of getting lambda from the material property class
-  return _lambda * Diffusion::computeQpJacobian();
+  return (_lambda/_norm_value) * Diffusion::computeQpJacobian();
 }

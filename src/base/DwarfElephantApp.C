@@ -29,17 +29,17 @@
 
 // Kernels
 #include "DwarfElephantFEThermalConduction.h"
-#include "DwarfElephantFEThermalConductionNormalized.h"
 #include "DwarfElephantFEConductionLiftingFunction.h"
 #include "DwarfElephantFEElectricalConduction.h"
 #include "DwarfElephantFEDarcy.h"
-#include "DwarfElephantFEDarcyNormalized.h"
 #include "DwarfElephantFEDarcyOpenDA.h"
 //#include "DwarfElephantRBKernel.h"
 #include "DwarfElephantRBDiffusion.h"
 #include "DwarfElephantRBDiffusionND.h"
 #include "DwarfElephantRBDiffusionLiftingFunction.h"
+#include "DwarfElephantZeroKernel.h"
 #include "DwarfElephantRBTimeDerivative.h"
+
 #include "ExtractQpPointsKernel.h"
 
 // DiracKernels
@@ -129,16 +129,15 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // Kernels
   registerKernel(DwarfElephantFEThermalConduction);
-  registerKernel(DwarfElephantFEThermalConductionNormalized);
   registerKernel(DwarfElephantFEConductionLiftingFunction);
   registerKernel(DwarfElephantFEElectricalConduction);
   registerKernel(DwarfElephantFEDarcy);
-  registerKernel(DwarfElephantFEDarcyNormalized);
   registerKernel(DwarfElephantFEDarcyOpenDA);
 //  registerKernel(DwarfElephantRBKernel);
   registerKernel(DwarfElephantRBDiffusion);
   registerKernel(DwarfElephantRBDiffusionND);
   registerKernel(DwarfElephantRBDiffusionLiftingFunction);
+  registerKernel(DwarfElephantZeroKernel);
   registerKernel(DwarfElephantRBTimeDerivative);
   registerKernel(ExtractQpPointsKernel);
 

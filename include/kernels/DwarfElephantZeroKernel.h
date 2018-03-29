@@ -1,31 +1,27 @@
-/**
- * This Kernel is implements a darcy flow problem using the full
- * Finite Element solution. It is included in this package for validation
- * purposes.
- */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTFEDARCYNORMALIZED_H
-#define DWARFELEPHANTFEDARCYNORMALIZED_H
+#ifndef DWARFELEPHANTZEROKERNEL_H
+#define DWARFELEPHANTZEROKERNEL_H
 
 ///---------------------------------INCLUDES--------------------------------
-// MOOSE includes
-#include "DwarfElephantFEDarcy.h"
+// MOOSE includes (DwarfElephant package)
+#include "Kernel.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
-class DwarfElephantFEDarcyNormalized;
+class DwarfElephantZeroKernel;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<DwarfElephantFEDarcyNormalized>();
+InputParameters validParams<DwarfElephantZeroKernel>();
 
 ///-------------------------------------------------------------------------
-class DwarfElephantFEDarcyNormalized : public DwarfElephantFEDarcy
+class DwarfElephantZeroKernel : public Kernel
 {
+
 //----------------------------------PUBLIC----------------------------------
 public:
-  DwarfElephantFEDarcyNormalized(const InputParameters & parameters);
+  DwarfElephantZeroKernel(const InputParameters & parameters);
 
 //--------------------------------PROTECTED---------------------------------
 protected:
@@ -33,10 +29,7 @@ protected:
   /* Methods */
   virtual Real computeQpResidual() override;
   virtual Real computeQpJacobian() override;
-
-  /* Attributes */
-  Real _norm_value;
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTFEDARCYNORMALIZED_H
+#endif // DWARFELEPHANTZEROKERNEL_H

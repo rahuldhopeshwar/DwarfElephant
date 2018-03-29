@@ -11,7 +11,6 @@ template<>
 InputParameters validParams<DwarfElephantRBProblem>()
 {
   InputParameters params = validParams<FEProblemBase>();
-//  params.addRequiredParam<std::vector<std::string>>("kernels","Name of the used Kernel");
 
   return params;
 }
