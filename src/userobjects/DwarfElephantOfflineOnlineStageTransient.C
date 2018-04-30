@@ -200,12 +200,12 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       Real _error_bound_final_time = _rb_eval.rb_solve(_online_N);
 
       _console << "Error bound at the final time is " << _error_bound_final_time << std::endl << std::endl;
-//
-//       if(_compute_output)
-//            for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
-////        for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
-//          _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
-//          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
+
+      if(_compute_output)
+           for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
+//        for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
+         _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
+         << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
       Moose::perf_log.pop("onlineStage()", "Execution");
 
       Moose::perf_log.push("DataTransfer()", "Execution");

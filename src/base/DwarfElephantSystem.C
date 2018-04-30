@@ -17,7 +17,10 @@ DwarfElephantSystem::solve()
   {
     // set the boundaries for the FEM solutions
     _computing_initial_residual = true;
-    _fe_problem.computeResidual(_transient_sys, *_current_solution, *_transient_sys.rhs);
+    // In case your are using a MOOSE version older than April 19th 2018 uncomment the following line
+    // _fe_problem.computeResidual(_transient_sys, *_current_solution, *_transient_sys.rhs);
+    _fe_problem.computeResidualSys(_transient_sys, *_current_solution, *_transient_sys.rhs);
+
     _computing_initial_residual = false;
     _transient_sys.rhs->close();
   }
@@ -35,8 +38,11 @@ DwarfElephantSystem::solve()
 
 //  system().solve();
 
-  // calculate the stiffness matrices
-  _fe_problem.computeJacobian(_transient_sys, *_current_solution, *_transient_sys.matrix);
+// calculate the stiffness matrices
+// In case your are using a MOOSE version older than April 19th 2018 uncomment the following line
+// _fe_problem.computeJacobian(_transient_sys, *_current_solution, *_transient_sys.matrix);
+
+_fe_problem.computeJacobianSys(_transient_sys, *_current_solution, *_transient_sys.matrix);
 
 //  DwarfElephantRBProblem & _rb_problem = cast_ref<DwarfElephantRBProblem &>(_fe_problem);
 

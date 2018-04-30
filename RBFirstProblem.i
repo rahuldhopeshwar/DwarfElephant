@@ -53,6 +53,7 @@
   parameter_names = 'mu_0 mu_1 mu_2'    #Please name them mu_0 , mu_1 , ..., mu_n for the reusability
   parameter_min_values = '1.0 1.0 1.0'
   parameter_max_values = '5.15 7.15 5.15'
+  normalize_rb_bound_in_greedy = true
 [../]
 [./performRBSystem ]
   type = DwarfElephantOfflineOnlineStageSteadyState
