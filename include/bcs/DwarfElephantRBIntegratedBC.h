@@ -56,6 +56,7 @@ protected:
   /*Methods*/
   virtual Real computeQpResidual() override;
   virtual Real computeQpJacobian() override;
+  virtual Real computeQpOutput();
   virtual Real computeQpOffDiagJacobian(unsigned int jvar) override;
 
   /*Attributes*/
@@ -76,12 +77,6 @@ protected:
   unsigned int _ID_Fq_split;
   unsigned int _ID_Oq;
 
-  Real _max_x;
-  Real _min_x;
-  Real _max_y;
-  Real _min_y;
-  Real _max_z;
-  Real _min_z;
   Real _output_volume;
 
   DenseVector<Number> _local_out;

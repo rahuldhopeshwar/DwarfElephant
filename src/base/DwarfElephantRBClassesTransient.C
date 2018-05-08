@@ -29,104 +29,104 @@ DwarfElephantRBConstructionTransient::init_data()
     Parent::init_data();
   }
 
-  Real
-  DwarfElephantRBConstructionTransient::truth_solve(int write_interval)
-  {
-    LOG_SCOPE("truth_solve()", "TransientRBConstruction");
-
-    const RBParameters & mu = get_parameters();
-    const unsigned int n_time_steps = get_n_time_steps();
-
-    //   // NumericVector for computing true L2 error
-    //   std::unique_ptr<NumericVector<Number>> temp = NumericVector<Number>::build();
-    //   temp->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
-
-    // Apply initial condition again.
-    initialize_truth();
-    set_time_step(0);
-
-    // Now compute the truth outputs
-    for (unsigned int n=0; n<get_rb_theta_expansion().get_n_outputs(); n++)
-      {
-        truth_outputs_all_k[n][0] = 0.;
-        for (unsigned int q_l=0; q_l<get_rb_theta_expansion().get_n_output_terms(n); q_l++)
-          {
-            truth_outputs_all_k[n][0] += get_rb_theta_expansion().eval_output_theta(n,q_l,mu)*
-              get_output_vector(n,q_l)->dot(*solution);
-          }
-      }
-
-    // Load initial projection error into temporal_data dense matrix
-    if (compute_truth_projection_error)
-      set_error_temporal_data();
-
-    for (unsigned int time_level=1; time_level<=n_time_steps; time_level++)
-      {
-        set_time_step(time_level);
-
-        *old_local_solution = *current_local_solution;
-
-        // We assume that the truth assembly has been attached to the system
-        truth_assembly();
-
-        // truth_assembly assembles into matrix and rhs, so use those for the solve
-        solve_for_matrix_and_rhs(*get_linear_solver(), *matrix, *rhs);
-
-        // The matrix doesn't change at each timestep, so we
-        // can set reuse_preconditioner == true
-        linear_solver->reuse_preconditioner(true);
-
-        if (assert_convergence)
-          {
-            check_convergence(*get_linear_solver());
-          }
-
-        // Now compute the truth outputs
-        for (unsigned int n=0; n<get_rb_theta_expansion().get_n_outputs(); n++)
-          {
-            truth_outputs_all_k[n][time_level] = 0.;
-            for (unsigned int q_l=0; q_l<get_rb_theta_expansion().get_n_output_terms(n); q_l++)
-              {
-                truth_outputs_all_k[n][time_level] +=
-                  get_rb_theta_expansion().eval_output_theta(n,q_l,mu)*get_output_vector(n,q_l)->dot(*solution);
-              }
-          }
-
-        // load projection error into column _k of temporal_data matrix
-        if (compute_truth_projection_error)
-          set_error_temporal_data();
-
-        if ((write_interval > 0) && (time_level%write_interval == 0))
-          {
-            libMesh::out << std::endl << "Truth solve, plotting time step " << time_level << std::endl;
-
-            std::ostringstream file_name;
-
-            file_name << "truth.e.";
-            file_name << std::setw(3)
-                      << std::setprecision(0)
-                      << std::setfill('0')
-                      << std::right
-                      << time_level;
-
-  #ifdef LIBMESH_HAVE_EXODUS_API
-            ExodusII_IO(get_mesh()).write_equation_systems (file_name.str(),
-                                                            this->get_equation_systems());
-  #endif
-          }
-      }
-
-    // Set reuse_preconditioner back to false for subsequent solves.
-    linear_solver->reuse_preconditioner(false);
-
-    // Get the L2 norm of the truth solution at time-level _K
-    // Useful for normalizing our true error data
-    L2_matrix->vector_mult(*inner_product_storage_vector, *solution);
-    Real final_truth_L2_norm = libmesh_real(std::sqrt(inner_product_storage_vector->dot(*solution)));
-
-
-    return final_truth_L2_norm;
-  }
+  // Real
+  // DwarfElephantRBConstructionTransient::truth_solve(int write_interval)
+  // {
+  //   LOG_SCOPE("truth_solve()", "TransientRBConstruction");
+  //
+  //   const RBParameters & mu = get_parameters();
+  //   const unsigned int n_time_steps = get_n_time_steps();
+  //
+  //   //   // NumericVector for computing true L2 error
+  //   //   std::unique_ptr<NumericVector<Number>> temp = NumericVector<Number>::build();
+  //   //   temp->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+  //
+  //   // Apply initial condition again.
+  //   initialize_truth();
+  //   set_time_step(0);
+  //
+  //   // Now compute the truth outputs
+  //   for (unsigned int n=0; n<get_rb_theta_expansion().get_n_outputs(); n++)
+  //     {
+  //       truth_outputs_all_k[n][0] = 0.;
+  //       for (unsigned int q_l=0; q_l<get_rb_theta_expansion().get_n_output_terms(n); q_l++)
+  //         {
+  //           truth_outputs_all_k[n][0] += get_rb_theta_expansion().eval_output_theta(n,q_l,mu)*
+  //             get_output_vector(n,q_l)->dot(*solution);
+  //         }
+  //     }
+  //
+  //   // Load initial projection error into temporal_data dense matrix
+  //   if (compute_truth_projection_error)
+  //     set_error_temporal_data();
+  //
+  //   for (unsigned int time_level=1; time_level<=n_time_steps; time_level++)
+  //     {
+  //       set_time_step(time_level);
+  //
+  //       *old_local_solution = *current_local_solution;
+  //
+  //       // We assume that the truth assembly has been attached to the system
+  //       truth_assembly();
+  //
+  //       // truth_assembly assembles into matrix and rhs, so use those for the solve
+  //       solve_for_matrix_and_rhs(*get_linear_solver(), *matrix, *rhs);
+  //
+  //       // The matrix doesn't change at each timestep, so we
+  //       // can set reuse_preconditioner == true
+  //       linear_solver->reuse_preconditioner(true);
+  //
+  //       if (assert_convergence)
+  //         {
+  //           check_convergence(*get_linear_solver());
+  //         }
+  //
+  //       // Now compute the truth outputs
+  //       for (unsigned int n=0; n<get_rb_theta_expansion().get_n_outputs(); n++)
+  //         {
+  //           truth_outputs_all_k[n][time_level] = 0.;
+  //           for (unsigned int q_l=0; q_l<get_rb_theta_expansion().get_n_output_terms(n); q_l++)
+  //             {
+  //               truth_outputs_all_k[n][time_level] +=
+  //                 get_rb_theta_expansion().eval_output_theta(n,q_l,mu)*get_output_vector(n,q_l)->dot(*solution);
+  //             }
+  //         }
+  //
+  //       // load projection error into column _k of temporal_data matrix
+  //       if (compute_truth_projection_error)
+  //         set_error_temporal_data();
+  //
+  //       if ((write_interval > 0) && (time_level%write_interval == 0))
+  //         {
+  //           libMesh::out << std::endl << "Truth solve, plotting time step " << time_level << std::endl;
+  //
+  //           std::ostringstream file_name;
+  //
+  //           file_name << "truth.e.";
+  //           file_name << std::setw(3)
+  //                     << std::setprecision(0)
+  //                     << std::setfill('0')
+  //                     << std::right
+  //                     << time_level;
+  //
+  // #ifdef LIBMESH_HAVE_EXODUS_API
+  //           ExodusII_IO(get_mesh()).write_equation_systems (file_name.str(),
+  //                                                           this->get_equation_systems());
+  // #endif
+  //         }
+  //     }
+  //
+  //   // Set reuse_preconditioner back to false for subsequent solves.
+  //   linear_solver->reuse_preconditioner(false);
+  //
+  //   // Get the L2 norm of the truth solution at time-level _K
+  //   // Useful for normalizing our true error data
+  //   L2_matrix->vector_mult(*inner_product_storage_vector, *solution);
+  //   Real final_truth_L2_norm = libmesh_real(std::sqrt(inner_product_storage_vector->dot(*solution)));
+  //
+  //
+  //   return final_truth_L2_norm;
+  // }
 
   // void
   // DwarfElephantRBConstructionTransient::print_info()
@@ -190,11 +190,36 @@ DwarfElephantRBConstructionTransient::init_data()
   // DwarfElephantRBConstructionTransient::train_reduced_basis(const bool resize_rb_eval_data)
   // {
   //   compute_truth_projection_error = true;
-  //   Real value = RBConstruction::train_reduced_basis(resize_rb_eval_data);
+  //   libMesh::out << "Normalize? " << get_normalize_rb_bound_in_greedy () << std::endl;
+  //   Real value = train_reduced_basis_steady(resize_rb_eval_data);
   //   compute_truth_projection_error = false;
   //
   //   return value;
   // }
+
+  Real DwarfElephantRBConstructionTransient::get_RB_error_bound()
+  {
+    get_rb_evaluation().set_parameters( get_parameters() );
+
+    Real error_bound = get_rb_evaluation().rb_solve(get_rb_evaluation().get_n_basis_functions());
+
+    if (get_normalize_rb_bound_in_greedy())
+      {
+        Real error_bound_normalization = get_rb_evaluation().rb_solve(0);
+
+        if ((error_bound < get_abs_training_tolerance ()) ||
+            (error_bound_normalization < get_abs_training_tolerance ()))
+          {
+            // We don't want to normalize this error bound if the bound or the
+            // normalization value are below the absolute tolerance. Hence do nothing
+            // in this case.
+          }
+        else
+          error_bound /= error_bound_normalization;
+      }
+
+    return error_bound;
+  }
 
   // void
   // DwarfElephantRBConstructionTransient::add_IC_to_RB_space()

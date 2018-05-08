@@ -77,7 +77,7 @@ public:
   // Initialize data structure
   virtual void init_data() override;
 
-  virtual Real truth_solve(int write_interval) libmesh_override;
+  // virtual Real truth_solve(int write_interval) libmesh_override;
 
   // virtual void print_info() override;
   //
@@ -88,6 +88,8 @@ public:
   // void update_RB_initial_condition_all_N();
 
   // virtual void update_system() override;
+
+  virtual Real get_RB_error_bound() override;
 
   // virtual Real train_reduced_basis(const bool resize_rb_eval_data=true) override;
 

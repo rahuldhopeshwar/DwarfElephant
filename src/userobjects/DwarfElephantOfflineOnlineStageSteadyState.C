@@ -82,18 +82,17 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
       _initialize_rb_system._residuals[_q]->close();
     }
 
-    if(_compute_output)
-    {
-      // Transfer the data for the output vectors.
-      for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
-      {
-        for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
-        {
-          _rb_problem->rbAssembly(_q).setCachedOutput(*_initialize_rb_system._outputs[i][_q]);
-          _initialize_rb_system._outputs[i][_q]->close();
-        }
-      }
-    }
+    // if(_compute_output)
+    // {
+    //   // Transfer the data for the output vectors.
+    //   for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
+    //   {
+    //     for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
+    //     {
+    //       _initialize_rb_system._outputs[i][_q]->close();
+    //     }
+    //   }
+    // }
 }
 
 void
@@ -223,6 +222,7 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 void
 DwarfElephantOfflineOnlineStageSteadyState::finalize()
 {
+  _initialize_rb_system._outputs[0][0]->print_matlab("Output0");
 }
 
 //std::string

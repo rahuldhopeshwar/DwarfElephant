@@ -40,12 +40,6 @@ InputParameters validParams<DwarfElephantRBKernel>()
   params.addParam<bool>("time_matrix_seperation_according_to_subdomains", true, "Tells whether the mass matrix is separated according to the subdomain_ids");
   params.addParam<bool>("vector_seperation_according_to_subdomains", false, "Tells whether the load vector is separated according to the subdomain_ids");
   params.addParam<bool>("compute_output",false,"Determines whether an output function is used or not");
-  params.addParam<Real>("max_x", 0.,"Maximum extension of the volume of interest in x-direction.");
-  params.addParam<Real>("min_x", 0.,"Minimum extension of the volume of interest in x-direction.");
-  params.addParam<Real>("max_y", 0.,"Maximum extension of the volume of interest in y-direction.");
-  params.addParam<Real>("min_y", 0.,"Minimum extension of the volume of interest in y-direction.");
-  params.addParam<Real>("max_z", 0.,"Maximum extension of the volume of interest in z-direction.");
-  params.addParam<Real>("min_z", 0.,"Minimum extension of the volume of interest in z-direction.");
 
   return params;
 }
@@ -64,12 +58,6 @@ DwarfElephantRBKernel::DwarfElephantRBKernel(const InputParameters & parameters)
     _ID_Mq(getParam<unsigned int>("ID_Mq")),
     _ID_Fq(getParam<unsigned int>("ID_Fq")),
     _ID_Oq(getParam<unsigned int>("ID_Oq")),
-    _max_x(getParam<Real>("max_x")),
-    _min_x(getParam<Real>("min_x")),
-    _max_y(getParam<Real>("max_y")),
-    _min_y(getParam<Real>("min_y")),
-    _max_z(getParam<Real>("max_z")),
-    _min_z(getParam<Real>("min_z")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es())
 
 {
@@ -85,9 +73,6 @@ DwarfElephantRBKernel::initialSetup()
             "setting seperates the matrices into the subdomain contributions. By performing the "
             "Kernels block wise and specify the ID in the inputfile any other seperation is also possible. Due to the seperation the occurence of segmentation faults is likely. If "
             "a segementation fault occurs right after 'quiet mode?' check whether you: used the correct RBStructures header file in the RBClasses class.");
-
-  if(_compute_output)
-    _output_volume = (_max_x - _min_x) * (_max_y - _min_y) * (_max_z - _min_z);
 }
 
 void
@@ -114,10 +99,10 @@ DwarfElephantRBKernel::computeResidual()
   {
     const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
 
-    // if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
-    // mooseError("The UserObject 'DwarfElephantInitializeRBSystemSteadyState' has to be executed on 'initial'. "
-    //            "You defined a wrong state in your 'execute_on' line in the input file. "
-    //            "Please, correct your settings.");
+    if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
+    mooseError("The UserObject 'DwarfElephantInitializeRBSystemSteadyState' has to be executed on 'initial'. "
+               "You defined a wrong state in your 'execute_on' line in the input file. "
+               "Please, correct your settings.");
 
 
     if(_initialize_rb_system._offline_stage)
@@ -129,10 +114,10 @@ DwarfElephantRBKernel::computeResidual()
   {
     const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
 
-    // if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
-    // mooseError("The UserObject 'DwarfElephantInitializeRBSystemTransient' has to be executed on 'initial'. "
-    //            "You defined a wrong state in your 'execute_on' line in the input file. "
-    //            "Please, correct your settings.");
+    if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
+    mooseError("The UserObject 'DwarfElephantInitializeRBSystemTransient' has to be executed on 'initial'. "
+               "You defined a wrong state in your 'execute_on' line in the input file. "
+               "Please, correct your settings.");
 
     if(_initialize_rb_system._offline_stage)
       // Add the calculated vectors to the vectors from the RB system.
@@ -161,20 +146,13 @@ DwarfElephantRBKernel::computeOutput()
   _local_out.resize(out.size());
   _local_out.zero();
 
-  Point _centroid = _current_elem->centroid();
-
-  if ((_min_x <= _centroid(0)) && (_centroid(0) <= _max_x) &&
-      (_min_y <= _centroid(1)) && (_centroid(1) <= _max_y) &&
-      (_min_z <= _centroid(2)) && (_centroid(2) <= _max_z))
-  {
-    precalculateResidual();
-    for (_i = 0; _i < _test.size(); _i++)
-      for (_qp = 0; _qp < _qrule->n_points(); _qp++)
+  precalculateResidual();
+  for (_i = 0; _i < _test.size(); _i++)
+    for (_qp = 0; _qp < _qrule->n_points(); _qp++)
       _local_out(_i) += _JxW[_qp] * _coord[_qp] * computeQpOutput();
 
+  out += _local_out;
 
-    out += _local_out;
-  }
 
   if(_simulation_type == "steady")  // SteadyState
   {

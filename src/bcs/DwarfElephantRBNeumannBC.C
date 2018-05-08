@@ -18,5 +18,3 @@ DwarfElephantRBNeumannBC::computeQpResidual()
 {
   return _test[_i][_qp]*_value;
 }
-
-

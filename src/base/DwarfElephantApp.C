@@ -57,6 +57,9 @@
 #include "DwarfElephantOfflineOnlineStageSteadyState.h"
 #include "DwarfElephantOfflineOnlineStageTransient.h"
 #include "DwarfElephantERTPreCalculations.h"
+#include "DwarfElephantRBNodalVariableValue.h"
+#include "DwarfElephantRBElementalVariableValue.h"
+#include "DwarfElephantRBPointValue.h"
 
 // Functions
 #include "DwarfElephantInitialConditionFileReader.h"
@@ -68,7 +71,7 @@
 #include "DwarfElephantDakotaOutput.h"
 #include "DwarfElephantRBOutput.h"
 
-//VectorPostprocessors
+// VectorPostprocessors
 #include "DwarfElephantElementalVariableValuesAlongLine.h"
 #include "DwarfElephantAllElementalVariableValues.h"
 
@@ -156,6 +159,9 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerUserObject(DwarfElephantOfflineOnlineStageSteadyState);
   registerUserObject(DwarfElephantOfflineOnlineStageTransient);
   registerUserObject(DwarfElephantERTPreCalculations);
+  registerUserObject(DwarfElephantRBNodalVariableValue);
+  registerUserObject(DwarfElephantRBElementalVariableValue);
+  registerUserObject(DwarfElephantRBPointValue);
 
   // Functions
   registerFunction(DwarfElephantInitialConditionFileReader);

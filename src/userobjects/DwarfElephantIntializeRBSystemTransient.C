@@ -72,6 +72,7 @@ DwarfElephantInitializeRBSystemTransient::DwarfElephantInitializeRBSystemTransie
   _mesh_ptr(&_fe_problem.mesh()),
   _sys(&_es.get_system<TransientNonlinearImplicitSystem>(_system_name))
 {
+   _rb_con_ptr_steady = dynamic_cast<DwarfElephantRBConstructionSteadyState* > (_rb_con_ptr);
 }
 
 void
@@ -80,7 +81,6 @@ DwarfElephantInitializeRBSystemTransient::processParameters()
   /// Set the non-temporal data
   // Set the random seed for the RNG. By default -1 is set, meaning that std::time is used as a seed for the RNG.
   _rb_con_ptr->set_training_random_seed(_training_parameters_random_seed);
-
   // Set quiet mode.
   _rb_con_ptr->set_quiet_mode(_quiet_mode);
 
@@ -91,6 +91,7 @@ DwarfElephantInitializeRBSystemTransient::processParameters()
   _rb_con_ptr->set_abs_training_tolerance(_abs_training_tolerance);
 
   _rb_con_ptr->set_normalize_rb_bound_in_greedy(_normalize_rb_bound_in_greedy);
+  // _rb_con_ptr_steady->set_normalize_rb_bound_in_greedy(_normalize_rb_bound_in_greedy);
 
   RBParameters _mu_min;
   RBParameters _mu_max;
@@ -262,4 +263,10 @@ DwarfElephantInitializeRBSystemTransient::execute()
 void
 DwarfElephantInitializeRBSystemTransient::finalize()
 {
+}
+
+std::vector<std::vector<NumericVector <Number> *> >
+DwarfElephantInitializeRBSystemTransient::getOutputs() const
+{
+  return _outputs;
 }

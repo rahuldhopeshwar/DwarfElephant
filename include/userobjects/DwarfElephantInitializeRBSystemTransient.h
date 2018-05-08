@@ -21,8 +21,7 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantSystem.h"
 #include "DwarfElephantRBClassesTransient.h"
-
-
+#include "DwarfElephantRBClassesSteadyState.h"
 ///-------------------------------------------------------------------------
 // Forward Declarations
 namespace libMesh
@@ -37,6 +36,7 @@ namespace libMesh
 class MooseMesh;
 class DwarfElephantSystem;
 class DwarfElephantRBConstructionTransient;
+class DwarfElephantRBConstructionSteadyState;
 class DwarfElephantInitializeRBSystemTransient;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
@@ -60,13 +60,18 @@ class DwarfElephantInitializeRBSystemTransient :
     void initializeOfflineStage();
 
     // Initializes the RB System.
-    virtual void initialize() override;
+    // virtual void initialize() override;
+    void initialize();
 
     // Method not used in this UserObject.
-    virtual void execute() override;
+    // virtual void execute() override;
+    void execute();
 
     // Method not used in this UserObject.
-    virtual void finalize() override;
+    // virtual void finalize() override;
+    void finalize();
+
+    std::vector<std::vector<NumericVector <Number> *> > getOutputs() const;
 
 //--------------------------------PROTECTED---------------------------------
   protected:
@@ -114,6 +119,7 @@ class DwarfElephantInitializeRBSystemTransient :
     MooseMesh * _mesh_ptr;
     TransientNonlinearImplicitSystem * _sys;
     DwarfElephantRBConstructionTransient * _rb_con_ptr;
+    DwarfElephantRBConstructionSteadyState * _rb_con_ptr_steady;
 
     SparseMatrix <Number> * _inner_product_matrix;
     SparseMatrix <Number> * _L2_matrix;

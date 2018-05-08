@@ -80,12 +80,6 @@ protected:
   unsigned int _ID_Fq;
   unsigned int _ID_Oq;
 
-  Real _max_x;
-  Real _min_x;
-  Real _max_y;
-  Real _min_y;
-  Real _max_z;
-  Real _min_z;
   Real _output_volume;
 
   DenseVector<Number> _local_out;

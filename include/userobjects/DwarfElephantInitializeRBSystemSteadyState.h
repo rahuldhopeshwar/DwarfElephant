@@ -67,6 +67,8 @@ class DwarfElephantInitializeRBSystemSteadyState :
     // Method not used in this UserObject.
     virtual void finalize() override;
 
+    std::vector<std::vector<NumericVector <Number> *> > getOutputs() const;
+
 //--------------------------------PROTECTED---------------------------------
   protected:
 

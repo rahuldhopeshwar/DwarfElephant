@@ -91,17 +91,17 @@ DwarfElephantOfflineOnlineStageTransient::transferAffineVectors()
   }
 
   // Transfer the data for the output vectors.
-  if(_compute_output)
-  {
-    for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
-    {
-      for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
-      {
-        _rb_problem->rbAssembly(_q).setCachedOutput(*_initialize_rb_system._outputs[i][_q]);
-        _initialize_rb_system._outputs[i][_q]->close();
-      }
-    }
-  }
+  // if(_compute_output)
+  // {
+  //   for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
+  //   {
+  //     for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
+  //     {
+  //       _rb_problem->rbAssembly(_q).setCachedOutput(*_initialize_rb_system._outputs[i][_q]);
+  //       _initialize_rb_system._outputs[i][_q]->close();
+  //     }
+  //   }
+  // }
 }
 
 void
@@ -202,10 +202,16 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       _console << "Error bound at the final time is " << _error_bound_final_time << std::endl << std::endl;
 
       if(_compute_output)
-           for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
+      {
+        TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
+        for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
+        {
 //        for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
-         _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
-         << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
+          _console << "Output " << std::to_string(i) << ": value = " << trans_rb_eval.RB_outputs[i]
+          << ", error bound = " << trans_rb_eval.RB_output_error_bounds[i] << std::endl;
+        }
+      }
+
       Moose::perf_log.pop("onlineStage()", "Execution");
 
       Moose::perf_log.push("DataTransfer()", "Execution");
@@ -261,6 +267,7 @@ DwarfElephantOfflineOnlineStageTransient::getFileName()
 void
 DwarfElephantOfflineOnlineStageTransient::finalize()
 {
+  _initialize_rb_system._outputs[0][0]->print_matlab("Output0");
 }
 
 void
