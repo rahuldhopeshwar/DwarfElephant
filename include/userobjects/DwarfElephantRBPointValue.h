@@ -11,6 +11,7 @@ class MooseMesh;
 namespace libMesh
 {
 class Elem;
+class FEInterface;
 }
 
 
@@ -25,11 +26,13 @@ public:
   virtual void initialize() override {}
   virtual void execute() override;
   virtual void finalize() override {}
-  void assignPoint(const std::vector<std::vector<NumericVector <Number> *> > _outputs);
+  void assignPoint(const std::vector<std::vector<NumericVector <Number> *> > _outputs,
+    unsigned int _outputid, Point _point ,bool _insistOnSuccess = false);
 
 protected:
   MooseMesh & _mesh;
   Point _point;
+  const unsigned int _var_number;
   unsigned int _outputid;
   std::string _simulation_type;
 };

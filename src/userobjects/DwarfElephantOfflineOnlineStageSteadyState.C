@@ -222,7 +222,6 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 void
 DwarfElephantOfflineOnlineStageSteadyState::finalize()
 {
-  _initialize_rb_system._outputs[0][0]->print_matlab("Output0");
 }
 
 //std::string
