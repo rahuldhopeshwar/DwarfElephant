@@ -73,12 +73,12 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     bool _store_basis_functions;
     bool _skip_matrix_assembly_in_rb_system;
     bool _skip_vector_assembly_in_rb_system;
-    bool _compliant;
     bool _offline_stage;
     bool _online_stage;
     bool _offline_error_bound;
     bool _output_file;
-    bool _compute_output;
+    bool _output_console;
+    bool _output_csv;
     bool _norm_online_values;
 
     unsigned int _norm_id;
@@ -92,6 +92,7 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     MooseMesh * _mesh_ptr;
 
     const std::set<SubdomainID> & _subdomain_ids;
+    std::vector<Number> _RB_outputs;
 
     Real _mu_bar;
     unsigned int _online_N;
@@ -100,6 +101,8 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     RBParameters _rb_online_mu;
 
     DwarfElephantRBProblem * _rb_problem;
+
+    friend class DwarfElephantDakotaOutput;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTOFFLINEONLINESTAGESTEADYSTATE_H

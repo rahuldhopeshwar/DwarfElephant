@@ -81,7 +81,6 @@ class DwarfElephantInitializeRBSystemTransient :
     bool _skip_matrix_assembly_in_rb_system;
     bool _skip_vector_assembly_in_rb_system;
     bool _offline_stage;
-    bool _compliant;
     bool _deterministic_training;
     bool _quiet_mode;
     bool _normalize_rb_bound_in_greedy;
@@ -101,7 +100,7 @@ class DwarfElephantInitializeRBSystemTransient :
 
     Real _rel_training_tolerance;
     Real _abs_training_tolerance;
-    Real _delta_t;
+    Real _delta_time;
     Real _euler_theta;
     Real _POD_tol;
     std::vector<Real> _continuous_parameter_min_values;
@@ -119,7 +118,6 @@ class DwarfElephantInitializeRBSystemTransient :
     MooseMesh * _mesh_ptr;
     TransientNonlinearImplicitSystem * _sys;
     DwarfElephantRBConstructionTransient * _rb_con_ptr;
-    DwarfElephantRBConstructionSteadyState * _rb_con_ptr_steady;
 
     SparseMatrix <Number> * _inner_product_matrix;
     SparseMatrix <Number> * _L2_matrix;
@@ -135,7 +133,8 @@ class DwarfElephantInitializeRBSystemTransient :
     friend class DwarfElephantRBNodalBC;
     friend class DwarfElephantRBIntegratedBC;
     friend class DwarfElephantOfflineOnlineStageTransient;
-    friend class DwarfElephantRBExecutionerSteady;
+    friend class DwarfElephantRBExecutioner;
+    friend class DwarfElephantDakotaOutput;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTINITIALIZERBSYSTEMTRANSIENT_H

@@ -77,7 +77,6 @@ class DwarfElephantInitializeRBSystemSteadyState :
     bool _skip_matrix_assembly_in_rb_system;
     bool _skip_vector_assembly_in_rb_system;
     bool _offline_stage;
-    bool _compliant;
     bool _deterministic_training;
     bool _quiet_mode;
     bool _normalize_rb_bound_in_greedy;
@@ -119,6 +118,7 @@ class DwarfElephantInitializeRBSystemSteadyState :
     friend class DwarfElephantRBIntegratedBC;
     friend class DwarfElephantOfflineOnlineStageSteadyState;
     friend class DwarfElephantRBEvaluationSteadyState;
+    friend class DwarfElephantDakotaOutput;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTINITIALIZERBSYSTEMSTEADYSTATE_H

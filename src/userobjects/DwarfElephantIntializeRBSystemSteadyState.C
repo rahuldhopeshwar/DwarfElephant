@@ -8,7 +8,6 @@ InputParameters validParams<DwarfElephantInitializeRBSystemSteadyState>()
   InputParameters params = validParams<GeneralUserObject>();
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
   params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
-  params.addParam<bool>("compliant", true, "Determines whether F is equal to the output vector or not.");
   params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
   params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
   params.addParam<bool>("deterministic_training", false, "Determines whether the training set is generated deterministically or randomly.");
@@ -36,7 +35,6 @@ DwarfElephantInitializeRBSystemSteadyState::DwarfElephantInitializeRBSystemStead
   _skip_matrix_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
   _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
   _offline_stage(getParam<bool>("offline_stage")),
-  _compliant(getParam<bool>("compliant")),
   _deterministic_training(getParam<bool>("deterministic_training")),
   _quiet_mode(getParam<bool>("quiet_mode")),
   _normalize_rb_bound_in_greedy(getParam<bool>("normalize_rb_bound_in_greedy")),

@@ -14,14 +14,14 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageTransient>()
 
     params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
     params.addParam<bool>("store_basis_functions", true, "Determines whether the basis functions are stored or not.");
-    params.addParam<bool>("compliant", true, "Determines whether F is equal to the output vector or not.");
     params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
     params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
     params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
     params.addParam<bool>("online_stage", true, "Determines whether the Online stage will be calculated or not.");
     params.addParam<bool>("offline_error_bound", false, "Determines which error bound is used.");
     params.addParam<bool>("output_file", true, "Determines whether an output file is generated or not.");
-    params.addParam<bool>("compute_output", false, "Determines whether an output of interest is computed or not.");
+    params.addParam<bool>("output_console", false, "Determines whether an output of interest is computed or not.");
+    params.addParam<bool>("output_csv", false, "Determines whether an output of interest is passed to the CSV file.");
     params.addParam<bool>("norm_online_values", false, "Determines wether online parameters are normed.");
     params.addParam<unsigned int>("norm_id", 0, "Defines the id of the parameter that will be used for the normalization.");
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
@@ -39,12 +39,12 @@ DwarfElephantOfflineOnlineStageTransient::DwarfElephantOfflineOnlineStageTransie
     _store_basis_functions(getParam<bool>("store_basis_functions")),
     _skip_matrix_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
     _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
-    _compliant(getParam<bool>("compliant")),
     _offline_stage(getParam<bool>("offline_stage")),
     _online_stage(getParam<bool>("online_stage")),
     _offline_error_bound(getParam<bool>("offline_error_bound")),
     _output_file(getParam<bool>("output_file")),
-    _compute_output(getParam<bool>("compute_output")),
+    _output_console(getParam<bool>("output_console")),
+    _output_csv(getParam<bool>("output_csv")),
     _norm_online_values(getParam<bool>("norm_online_values")),
     _norm_id(getParam<unsigned int>("norm_id")),
     _system_name(getParam<std::string>("system")),
@@ -91,7 +91,7 @@ DwarfElephantOfflineOnlineStageTransient::transferAffineVectors()
   }
 
   // Transfer the data for the output vectors.
-  // if(_compute_output)
+  // if(_output_console)
   // {
   //   for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
   //   {
@@ -201,14 +201,31 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 
       _console << "Error bound at the final time is " << _error_bound_final_time << std::endl << std::endl;
 
-      if(_compute_output)
+      if(_output_console)
       {
         TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
         for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
+          for (unsigned int _time_step = 0; _time_step <= _initialize_rb_system._rb_con_ptr->get_n_time_steps(); _time_step++)
+            _console << "Output " << std::to_string(i) << " at timestep "
+                     << std::to_string(_time_step) << ": value = "
+                     << trans_rb_eval.RB_outputs_all_k[i][_time_step]
+                     << ", error bound = "
+                     << trans_rb_eval.RB_output_error_bounds_all_k[i][_time_step]
+                     << std::endl;
+      }
+
+      if (_output_csv)
+      {
+        TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
+        unsigned int _n_time_steps = _initialize_rb_system._rb_con_ptr->get_n_time_steps();
+        _RB_outputs_all_timesteps.resize(_n_time_steps+1);
+
+        for (unsigned int _t = 0; _t <= _n_time_steps; _t++)
         {
-//        for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
-          _console << "Output " << std::to_string(i) << ": value = " << trans_rb_eval.RB_outputs[i]
-          << ", error bound = " << trans_rb_eval.RB_output_error_bounds[i] << std::endl;
+          _RB_outputs_all_timesteps[_t].resize(_initialize_rb_system._n_outputs);
+
+          for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
+            _RB_outputs_all_timesteps[_t][i] = trans_rb_eval.RB_outputs_all_k[i][_t];
         }
       }
 
@@ -227,7 +244,7 @@ DwarfElephantOfflineOnlineStageTransient::execute()
           *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
           _fe_problem.getNonlinearSystemBase().update();
           _fe_problem.timeStep()=_time_step;
-          endStep(_time_step);
+          endStep(0);
         }
 
 //        // Plot the solution

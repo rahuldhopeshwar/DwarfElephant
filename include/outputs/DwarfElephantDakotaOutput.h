@@ -10,9 +10,11 @@
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
-// #include "CSV.h"
-// #include "DwarfElephantFormattedTable.h"
 #include "FileOutput.h"
+#include "DwarfElephantInitializeRBSystemSteadyState.h"
+#include "DwarfElephantInitializeRBSystemTransient.h"
+#include "DwarfElephantOfflineOnlineStageSteadyState.h"
+#include "DwarfElephantOfflineOnlineStageTransient.h"
 
 ///-------------------------------------------------------------------------
 // Forward declerations
@@ -32,21 +34,19 @@ public:
 
   /*Methods*/
   virtual void output(const ExecFlagType & type) override;
-  // virtual void outputVectorPostprocessors() override;
-  // virtual void outputPostprocessors() override;
   virtual std::string filename() override;
   // virtual void initialSetup() override;
 
 //--------------------------------PROTECTED---------------------------------
 protected:
   /*Attributes*/
-  // bool _write_all_table;
-  // bool _write_vector_table;
-  // bool _align;
-  // unsigned int _precision;
   std::string _delimiter;
-  // bool _sort_columns;
+  std::string _simulation_type;
   std::vector<PostprocessorName> _postprocessor_name;
+  UserObjectName _initialize_rb_system_name;
+  UserObjectName _offline_online_rb_system_name;
+
+  bool _use_rb;
 
 };
 

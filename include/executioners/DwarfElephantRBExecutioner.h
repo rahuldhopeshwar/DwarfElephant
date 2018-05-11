@@ -32,7 +32,7 @@ class DwarfElephantRBExecutioner :
 //--------------------------------PROTECTED---------------------------------
   protected:
     /*Attributes*/
-    bool _transient;
+    std::string _simulation_type;
     bool _offline_stage;
 };
 ///-------------------------------------------------------------------------

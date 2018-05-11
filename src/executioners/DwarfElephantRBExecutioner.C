@@ -6,14 +6,14 @@ template<>
 InputParameters validParams<DwarfElephantRBExecutioner>()
 {
   InputParameters params = validParams<Steady>();
-  params.addParam<bool>("transient", false, "Determines whether the system is steady or transient.");
+    params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
   params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
   return params;
 }
 
 DwarfElephantRBExecutioner::DwarfElephantRBExecutioner(const InputParameters & params):
   Steady(params),
-  _transient(getParam<bool>("transient")),
+  _simulation_type(getParam<std::string>("simulation_type")),
   _offline_stage(getParam<bool>("offline_stage"))
 {
 }
@@ -59,13 +59,12 @@ DwarfElephantRBExecutioner::execute()
     _problem.onTimestepEnd();
     _problem.execute(EXEC_TIMESTEP_END);
 
-    if(!_transient)
+    if(_simulation_type == "steady")
     {
       _problem.computeIndicators();
       _problem.computeMarkers();
 
       _problem.execute(EXEC_CUSTOM);
-
       _problem.outputStep(EXEC_TIMESTEP_END);
     }
 
@@ -75,8 +74,8 @@ DwarfElephantRBExecutioner::execute()
       _problem.adaptMesh();
     }
 
-    _time_step++;
-    _time = _time_step;                 // need to keep _time in sync with _time_step to get correct output
+    // _time_step++;
+    // _time = _time_step;                 // need to keep _time in sync with _time_step to get correct output
   }
 #endif
 

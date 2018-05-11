@@ -8,7 +8,6 @@ InputParameters validParams<DwarfElephantInitializeRBSystemTransient>()
   InputParameters params = validParams<GeneralUserObject>();
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
   params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
-  params.addParam<bool>("compliant", true, "Determines whether F is equal to the output vector or not.");
   params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
   params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
   params.addParam<bool>("deterministic_training", false, "Determines whether the training set is generated deterministically or randomly.");
@@ -44,7 +43,6 @@ DwarfElephantInitializeRBSystemTransient::DwarfElephantInitializeRBSystemTransie
   _skip_matrix_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
   _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
   _offline_stage(getParam<bool>("offline_stage")),
-  _compliant(getParam<bool>("compliant")),
   _deterministic_training(getParam<bool>("deterministic_training")),
   _quiet_mode(getParam<bool>("quiet_mode")),
   _normalize_rb_bound_in_greedy(getParam<bool>("normalize_rb_bound_in_greedy")),
@@ -57,7 +55,7 @@ DwarfElephantInitializeRBSystemTransient::DwarfElephantInitializeRBSystemTransie
   _delta_N(getParam<unsigned int>("delta_N")),
   _rel_training_tolerance(getParam<Real>("rel_training_tolerance")),
   _abs_training_tolerance(getParam<Real>("abs_training_tolerance")),
-  _delta_t(getParam<Real>("delta_t")),
+  _delta_time(getParam<Real>("delta_t")),
   _euler_theta(getParam<Real>("euler_theta")),
   _POD_tol(getParam<Real>("POD_tol")),
   _continuous_parameter_min_values(getParam<std::vector<Real>>("parameter_min_values")),
@@ -72,7 +70,6 @@ DwarfElephantInitializeRBSystemTransient::DwarfElephantInitializeRBSystemTransie
   _mesh_ptr(&_fe_problem.mesh()),
   _sys(&_es.get_system<TransientNonlinearImplicitSystem>(_system_name))
 {
-   _rb_con_ptr_steady = dynamic_cast<DwarfElephantRBConstructionSteadyState* > (_rb_con_ptr);
 }
 
 void
@@ -91,7 +88,6 @@ DwarfElephantInitializeRBSystemTransient::processParameters()
   _rb_con_ptr->set_abs_training_tolerance(_abs_training_tolerance);
 
   _rb_con_ptr->set_normalize_rb_bound_in_greedy(_normalize_rb_bound_in_greedy);
-  // _rb_con_ptr_steady->set_normalize_rb_bound_in_greedy(_normalize_rb_bound_in_greedy);
 
   RBParameters _mu_min;
   RBParameters _mu_max;
@@ -130,7 +126,7 @@ DwarfElephantInitializeRBSystemTransient::processParameters()
 
   /// Set the temporal data
   _rb_con_ptr->set_n_time_steps(_n_time_steps);
-  _rb_con_ptr->set_delta_t(_delta_t);
+  _rb_con_ptr->set_delta_t(_delta_time);
   _rb_con_ptr->set_euler_theta(_euler_theta);
   _rb_con_ptr->set_time_step(0);
 

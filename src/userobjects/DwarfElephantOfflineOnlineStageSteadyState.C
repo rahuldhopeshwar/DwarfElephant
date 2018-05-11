@@ -14,14 +14,14 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
 
     params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
     params.addParam<bool>("store_basis_functions", true, "Determines whether the basis functions are stored or not.");
-    params.addParam<bool>("compliant", true, "Determines whether F is equal to the output vector or not.");
     params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
     params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
     params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
     params.addParam<bool>("online_stage", true, "Determines whether the Online stage will be calculated or not.");
     params.addParam<bool>("offline_error_bound", false, "Determines which error bound is used.");
     params.addParam<bool>("output_file", true, "Determines whether an output file is generated or not.");
-    params.addParam<bool>("compute_output", false, "Determines whether an output of interest is computed or not.");
+    params.addParam<bool>("output_console", false, "Determines whether an output of interest is computed or not.");
+    params.addParam<bool>("output_csv",false, "Determines whether an output of interest is passed to the CSV file.");
     params.addParam<bool>("norm_online_values", false, "Determines wether online parameters are normed.");
     params.addParam<unsigned int>("norm_id", 0, "Defines the id of the parameter that will be used for the normalization.");
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
@@ -39,12 +39,12 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     _store_basis_functions(getParam<bool>("store_basis_functions")),
     _skip_matrix_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
     _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
-    _compliant(getParam<bool>("compliant")),
     _offline_stage(getParam<bool>("offline_stage")),
     _online_stage(getParam<bool>("online_stage")),
     _offline_error_bound(getParam<bool>("offline_error_bound")),
     _output_file(getParam<bool>("output_file")),
-    _compute_output(getParam<bool>("compute_output")),
+    _output_console(getParam<bool>("output_console")),
+    _output_csv(getParam<bool>("output_csv")),
     _norm_online_values(getParam<bool>("norm_online_values")),
     _norm_id(getParam<unsigned int>("norm_id")),
     _system_name(getParam<std::string>("system")),
@@ -82,7 +82,7 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
       _initialize_rb_system._residuals[_q]->close();
     }
 
-    // if(_compute_output)
+    // if(_output_console)
     // {
     //   // Transfer the data for the output vectors.
     //   for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
@@ -184,11 +184,17 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
       _rb_eval.rb_solve(_online_N);
 
-      if (_compute_output)
+      if (_output_console)
         for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
-          for (unsigned int _q = 0; _q != _initialize_rb_system._ql[i]; _q++)
-            _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
-            << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
+          _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
+          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
+
+      if (_output_csv)
+       _RB_outputs.resize(_initialize_rb_system._n_outputs);
+       for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
+       {
+        _RB_outputs[i] = _rb_eval.RB_outputs[i];
+       }
 
       Moose::perf_log.pop("onlineStage()", "Execution");
       // Back transfer of the data to use MOOSE Postprocessor and Output classes
