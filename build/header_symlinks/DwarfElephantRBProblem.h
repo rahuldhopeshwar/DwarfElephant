@@ -1,1 +1,1 @@
-/Users/denise/projects/DwarfElephant/include/base/DwarfElephantRBProblem.h
+/Users/denise/projects/DwarfElephant/include/problems/DwarfElephantRBProblem.h

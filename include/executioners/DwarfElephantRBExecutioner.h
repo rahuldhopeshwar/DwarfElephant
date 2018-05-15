@@ -29,6 +29,7 @@ class DwarfElephantRBExecutioner :
 
     /*Methods*/
     void execute() override;
+
 //--------------------------------PROTECTED---------------------------------
   protected:
     /*Attributes*/

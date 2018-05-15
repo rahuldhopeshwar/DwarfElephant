@@ -179,6 +179,9 @@ DwarfElephantOfflineOnlineStageTransient::execute()
     if(_online_stage)
     {
       Moose::perf_log.push("onlineStage()", "Execution");
+
+      _n_outputs = _initialize_rb_system._rb_con_ptr->get_rb_theta_expansion().get_n_outputs();
+
       #if defined(LIBMESH_HAVE_CAPNPROTO)
       RBDataDeserialization::TrasientRBEvaluationDeserialization _rb_eval_reader(_rb_eval);
       _rb_eval_reader.read_from_file("trans_rb_eval.bin", /*read_error_bound_data*/ true);
@@ -199,13 +202,16 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 
       Real _error_bound_final_time = _rb_eval.rb_solve(_online_N);
 
+      _initialize_rb_system._rb_con_ptr->pull_temporal_discretization_data(_rb_eval);
+      _n_time_steps = _initialize_rb_system._rb_con_ptr->get_n_time_steps();
+
       _console << "Error bound at the final time is " << _error_bound_final_time << std::endl << std::endl;
 
       if(_output_console)
       {
         TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
-        for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
-          for (unsigned int _time_step = 0; _time_step <= _initialize_rb_system._rb_con_ptr->get_n_time_steps(); _time_step++)
+        for (unsigned int i = 0; i != _n_outputs; i++)
+          for (unsigned int _time_step = 0; _time_step <= _n_time_steps; _time_step++)
             _console << "Output " << std::to_string(i) << " at timestep "
                      << std::to_string(_time_step) << ": value = "
                      << trans_rb_eval.RB_outputs_all_k[i][_time_step]
@@ -217,16 +223,17 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       if (_output_csv)
       {
         TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
-        unsigned int _n_time_steps = _initialize_rb_system._rb_con_ptr->get_n_time_steps();
         _RB_outputs_all_timesteps.resize(_n_time_steps+1);
 
         for (unsigned int _t = 0; _t <= _n_time_steps; _t++)
         {
-          _RB_outputs_all_timesteps[_t].resize(_initialize_rb_system._n_outputs);
+          _RB_outputs_all_timesteps[_t].resize(_n_outputs);
 
-          for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
+          for (unsigned int i = 0; i != _n_outputs; i++)
             _RB_outputs_all_timesteps[_t][i] = trans_rb_eval.RB_outputs_all_k[i][_t];
         }
+
+          _fe_problem.outputStep(EXEC_TIMESTEP_END);
       }
 
       Moose::perf_log.pop("onlineStage()", "Execution");
@@ -236,9 +243,10 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       {
          _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
 
-         for (unsigned int _time_step = 0; _time_step <= _initialize_rb_system._rb_con_ptr->get_n_time_steps(); _time_step++)
+         for (unsigned int _time_step = 0; _time_step <= _n_time_steps; _time_step++)
         {
-          _initialize_rb_system._rb_con_ptr->pull_temporal_discretization_data(_rb_eval);
+          // TODO: Check whether this line is really not needed
+          // _initialize_rb_system._rb_con_ptr->pull_temporal_discretization_data(_rb_eval);
           _initialize_rb_system._rb_con_ptr->set_time_step(_time_step);
           _initialize_rb_system._rb_con_ptr->load_rb_solution();
           *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
@@ -246,7 +254,6 @@ DwarfElephantOfflineOnlineStageTransient::execute()
           _fe_problem.timeStep()=_time_step;
           endStep(0);
         }
-
 //        // Plot the solution
 //        Moose::perf_log.push("write_exodus()", "Output");
 //

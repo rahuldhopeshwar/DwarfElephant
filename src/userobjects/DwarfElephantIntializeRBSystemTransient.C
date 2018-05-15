@@ -224,18 +224,18 @@ DwarfElephantInitializeRBSystemTransient::initialize()
   // Add a new equation system for the RB construction.
   _rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionTransient> ("RBSystem");
 
-  // Intialization of the added equation system
-  _rb_con_ptr->init();
-  _es.update();
-
-  DwarfElephantRBEvaluationTransient _rb_eval(_mesh_ptr->comm(), _fe_problem);
-  // Pass a pointer of the RBEvaluation object to the
-  // RBConstruction object
-  _rb_con_ptr->set_rb_evaluation(_rb_eval);
-
-  TransientRBThetaExpansion & _trans_theta_expansion = cast_ref<TransientRBThetaExpansion &>(_rb_con_ptr->get_rb_theta_expansion());
-
   if (_offline_stage){
+    // Intialization of the added equation system
+    _rb_con_ptr->init();
+    _es.update();
+
+    DwarfElephantRBEvaluationTransient _rb_eval(_mesh_ptr->comm(), _fe_problem);
+    // Pass a pointer of the RBEvaluation object to the
+    // RBConstruction object
+    _rb_con_ptr->set_rb_evaluation(_rb_eval);
+
+    TransientRBThetaExpansion & _trans_theta_expansion = cast_ref<TransientRBThetaExpansion &>(_rb_con_ptr->get_rb_theta_expansion());
+
     // Get number of attached parameters.
     _n_outputs = _rb_con_ptr->get_rb_theta_expansion().get_n_outputs();
     _ql.resize(_n_outputs);

@@ -62,11 +62,16 @@ DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
     } else {
       if(_simulation_type == "steady")
       {
-        const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = _problem_ptr->getUserObject<DwarfElephantInitializeRBSystemSteadyState>(_initialize_rb_system_name);
         const DwarfElephantOfflineOnlineStageSteadyState & _offline_online_rb_system = _problem_ptr->getUserObject<DwarfElephantOfflineOnlineStageSteadyState>(_offline_online_rb_system_name);
 
-        for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
-          if(i < _initialize_rb_system._n_outputs-1)
+        if (_offline_online_rb_system._output_file)
+         mooseError("This Output class using the RB method is specifically designed to work efficiently for repetitive forward simulations. Therefore the output of Exodus files is not desired and the combination of outputting Exodus files and DakotaOutputs is therefore not supported.");
+
+        if (!_offline_online_rb_system._output_csv)
+          mooseError("In order to use this Output class you have to set 'output_csv' in the " + _offline_online_rb_system_name + " UserObject to true.");
+
+        for (unsigned int i = 0; i != _offline_online_rb_system._n_outputs; i++)
+          if(i < _offline_online_rb_system._n_outputs-1)
             dakota_file << _offline_online_rb_system._RB_outputs[i] << " f"<< _delimiter;
           else
             dakota_file << _offline_online_rb_system._RB_outputs[i] << " f"<< std::endl;
@@ -74,18 +79,22 @@ DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
         const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = _problem_ptr->getUserObject<DwarfElephantInitializeRBSystemTransient>(_initialize_rb_system_name);
         const DwarfElephantOfflineOnlineStageTransient & _offline_online_rb_system = _problem_ptr->getUserObject<DwarfElephantOfflineOnlineStageTransient>(_offline_online_rb_system_name);
 
+        if (_offline_online_rb_system._output_file)
+         mooseError("This Output class using the RB method is specifically designed to work efficiently for repetitive forward simulations. Therefore the output of Exodus files is not desired and the combination of outputting Exodus files and DakotaOutputs is therefore not supported.");
+
+        if (!_offline_online_rb_system._output_csv)
+          mooseError("In order to use this Output class you have to set 'output_csv' in the " + _offline_online_rb_system_name + " UserObject to true.");
+
         for (unsigned int _time_step = 0; _time_step <= _initialize_rb_system._rb_con_ptr->get_n_time_steps(); _time_step++)
         {
-          for (unsigned int i = 0; i < _initialize_rb_system._n_outputs; i++)
+          for (unsigned int i = 0; i < _offline_online_rb_system._n_outputs; i++)
           {
-            if(i < _initialize_rb_system._n_outputs-1)
+            if(i < _offline_online_rb_system._n_outputs-1)
               dakota_file << _offline_online_rb_system._RB_outputs_all_timesteps[_time_step][i] << " f"<< _delimiter;
             else
               dakota_file << _offline_online_rb_system._RB_outputs_all_timesteps[_time_step][i] << " f"<< std::endl;
             }
          }
-         if (_offline_online_rb_system._output_file)
-          mooseError("This Output class using the RB method is specifically designed to work efficiently for repetitive forward simulations. Therefore the output of Exodus files is not desired and the combination of outputting Exodus files and DakotaOutputs is therefore not supported.");
       }
     }
  // }

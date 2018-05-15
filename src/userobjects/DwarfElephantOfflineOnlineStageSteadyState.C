@@ -146,6 +146,9 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
     // RBConstruction object
     _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
 
+    // if(_online_stage)
+    //   _rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionSteadyState> ("RBSystem");
+
     if (_offline_stage)
     {
        // Transfer the affine vectors to the RB system.
@@ -165,6 +168,9 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
     if(_online_stage)
     {
       Moose::perf_log.push("onlineStage()", "Execution");
+
+      _n_outputs = _initialize_rb_system._rb_con_ptr->get_rb_theta_expansion().get_n_outputs();
+
       #if defined(LIBMESH_HAVE_CAPNPROTO)
       RBDataDeserialization::RBEvaluationDeserialization _rb_eval_reader(_rb_eval);
       #else
@@ -185,20 +191,24 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       _rb_eval.rb_solve(_online_N);
 
       if (_output_console)
-        for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
+        for (unsigned int i = 0; i != _n_outputs; i++)
           _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
           << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
 
+
       if (_output_csv)
-       _RB_outputs.resize(_initialize_rb_system._n_outputs);
-       for (unsigned int i = 0; i != _initialize_rb_system._n_outputs; i++)
-       {
-        _RB_outputs[i] = _rb_eval.RB_outputs[i];
-       }
+      {
+        _RB_outputs.resize(_n_outputs);
+        for (unsigned int i = 0; i != _n_outputs; i++)
+        {
+          _RB_outputs[i] = _rb_eval.RB_outputs[i];
+        }
+      }
 
       Moose::perf_log.pop("onlineStage()", "Execution");
       // Back transfer of the data to use MOOSE Postprocessor and Output classes
       Moose::perf_log.push("DataTransfer()", "Execution");
+
       if(_output_file)
       {
         _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);

@@ -10,6 +10,8 @@
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
 #include "FEProblemBase.h"
+
+// MOOSE includes (DwarfElephant package)
 #include "DwarfElephantSystem.h"
 #include "DwarfElephantRBAssembly.h"
 

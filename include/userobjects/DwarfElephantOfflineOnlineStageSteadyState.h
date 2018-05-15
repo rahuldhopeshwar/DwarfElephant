@@ -82,6 +82,7 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     bool _norm_online_values;
 
     unsigned int _norm_id;
+    unsigned int _n_outputs;
 
     std::string _system_name;
 

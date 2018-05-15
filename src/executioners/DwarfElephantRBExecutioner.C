@@ -32,13 +32,13 @@ DwarfElephantRBExecutioner::execute()
   _time_step = 1;
   _time = _time_step;                 // need to keep _time in sync with _time_step to get correct output
 
-#ifdef LIBMESH_ENABLE_AMR
-
-  // Define the refinement loop
-  unsigned int steps = _problem.adaptivity().getSteps();
-  for (unsigned int r_step=0; r_step<=steps; r_step++)
-  {
-#endif //LIBMESH_ENABLE_AMR
+// #ifdef LIBMESH_ENABLE_AMR
+//
+//   // Define the refinement loop
+//   unsigned int steps = _problem.adaptivity().getSteps();
+//   for (unsigned int r_step=0; r_step<=steps; r_step++)
+//   {
+// #endif //LIBMESH_ENABLE_AMR
     preSolve();
     _problem.timestepSetup();
     _problem.execute(EXEC_TIMESTEP_BEGIN);
@@ -51,11 +51,6 @@ DwarfElephantRBExecutioner::execute()
       _problem.solve();
     postSolve();
 
-//    if (!lastSolveConverged())
-//    {
-//      _console << "Aborting as solve did not converge\n";
-//      break;
-//    }
     _problem.onTimestepEnd();
     _problem.execute(EXEC_TIMESTEP_END);
 
@@ -68,16 +63,13 @@ DwarfElephantRBExecutioner::execute()
       _problem.outputStep(EXEC_TIMESTEP_END);
     }
 
-#ifdef LIBMESH_ENABLE_AMR
-    if (r_step != steps)
-    {
-      _problem.adaptMesh();
-    }
+// #ifdef LIBMESH_ENABLE_AMR
+//     if (r_step != steps)
+//     {
+//       _problem.adaptMesh();
+//     }
+//   }
+// #endif
 
-    // _time_step++;
-    // _time = _time_step;                 // need to keep _time in sync with _time_step to get correct output
-  }
-#endif
-
-  postExecute();
+  // postExecute();
 }
