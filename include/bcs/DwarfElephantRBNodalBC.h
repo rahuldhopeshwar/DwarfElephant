@@ -51,7 +51,9 @@ public:
   DwarfElephantRBNodalBC(const InputParameters & parameters);
 
   /* Methods */
-  virtual void computeResidual(NumericVector<Number> & residual) override;
+  virtual void computeResidual() override;
+  // for older Moose versions that still need the residual vector as an input
+  // virtual void computeResidual(NumericVector<Number> & residual) override;
   virtual void computeJacobian() override;
   virtual void initialSetup() override;
 

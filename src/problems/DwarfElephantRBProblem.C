@@ -44,7 +44,7 @@ DwarfElephantRBProblem::setInputParametersFEProblem(InputParameters & parameters
   // set _fe_problem
   FEProblemBase::setInputParametersFEProblem(parameters);
   // set _fe_problem
-  parameters.set<DwarfElephantRBProblem *>("_fe_problem") = this;
+  // parameters.set<DwarfElephantRBProblem *>("_fe_problem") = this;
 }
 
 void

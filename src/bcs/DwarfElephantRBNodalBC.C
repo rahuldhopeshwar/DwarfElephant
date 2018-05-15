@@ -53,14 +53,14 @@ DwarfElephantRBNodalBC::initialSetup()
 }
 
 void
-DwarfElephantRBNodalBC::computeResidual(NumericVector<Number> & residual)
+DwarfElephantRBNodalBC::computeResidual() // DwarfElephantRBNodalBC::computeResidual(NumericVector<Number> & residual)
 {
   if (_var.isNodalDefined())
   {
     dof_id_type & dof_idx = _var.nodalDofIndex();
     _qp = 0;
     Real res = computeQpResidual();
-    residual.set(dof_idx, res);
+    // residual.set(dof_idx, res);
 
     if (_simulation_type == "steady")  // Steady State
     {
