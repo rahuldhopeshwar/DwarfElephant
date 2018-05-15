@@ -34,14 +34,14 @@
 #include "DwarfElephantInitializeRBSystemTransient.h"
 #include "DwarfElephantOfflineOnlineStageTransient.h"
 
-#include "DwarfElephantRBStructuresP1T1EqualF1O1Transient.h"
-#include "DwarfElephantRBStructuresP1T2EqualF1O1Transient.h"
-#include "DwarfElephantRBStructuresP1T3EqualF1O1Transient.h"
-#include "DwarfElephantRBStructuresP1T3EqualF1O3Transient.h"
-#include "DwarfElephantRBStructuresP1T3EqualF4O1Transient.h"
-#include "DwarfElephantRBStructuresP1T4EqualF1O1Transient.h"
-#include "DwarfElephantRBStructuresP1T5EqualF1O1Transient.h"
-#include "DwarfElephantRBStructuresP1T5EqualF4O1Transient.h"
+#include "DwarfElephantRBStructuresT1F1O1M1Transient.h"
+#include "DwarfElephantRBStructuresT2F1O1M1Transient.h"
+#include "DwarfElephantRBStructuresT3F1O1M1Transient.h"
+#include "DwarfElephantRBStructuresT3F4O1M2Transient.h"
+#include "DwarfElephantRBStructuresT3F1O3M1Transient.h"
+#include "DwarfElephantRBStructuresT4F1O1M1Transient.h"
+#include "DwarfElephantRBStructuresT5F1O1M1Transient.h"
+#include "DwarfElephantRBStructuresT5F4O1M2Transient.h"
 
 // Forward Declarations
 namespace libMesh
@@ -111,7 +111,7 @@ public:
   FEProblemBase & get_fe_problem() {return fe_problem;}
 
   FEProblemBase & fe_problem;
-  DwarfElephantRBP1T3EqualF1O3TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT3F1O3M1TransientExpansion _rb_theta_expansion;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBCLASSESTRANSIENT_H

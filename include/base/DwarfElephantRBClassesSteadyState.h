@@ -34,15 +34,15 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
 
-#include "DwarfElephantRBStructuresP1T1EqualF1O1SteadyState.h"
-#include "DwarfElephantRBStructuresP1T2EqualF1O1SteadyState.h"
-#include "DwarfElephantRBStructuresP1T3EqualF1O1SteadyState.h"
-#include "DwarfElephantRBStructuresP1T3EqualF3O1SteadyState.h"
-#include "DwarfElephantRBStructuresP1T3EqualF1O3SteadyState.h"
-#include "DwarfElephantRBStructuresP1T4EqualF1O1SteadyState.h"
-#include "DwarfElephantRBStructuresP1T5EqualF1O1SteadyState.h"
-#include "DwarfElephantRBStructuresP1T5EqualF3O1SteadyState.h"
-#include "DwarfElephantRBStructuresP1T6EqualF1O1SteadyState.h"
+#include "DwarfElephantRBStructuresT1F1O1SteadyState.h"
+#include "DwarfElephantRBStructuresT2F1O1SteadyState.h"
+#include "DwarfElephantRBStructuresT3F1O1SteadyState.h"
+#include "DwarfElephantRBStructuresT3F3O1SteadyState.h"
+#include "DwarfElephantRBStructuresT3F1O3SteadyState.h"
+#include "DwarfElephantRBStructuresT4F1O1SteadyState.h"
+#include "DwarfElephantRBStructuresT5F1O1SteadyState.h"
+#include "DwarfElephantRBStructuresT5F3O1SteadyState.h"
+#include "DwarfElephantRBStructuresT6F1O1SteadyState.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
@@ -256,7 +256,7 @@ public:
   FEProblemBase & get_fe_problem(){return fe_problem;}
 
   FEProblemBase & fe_problem;
-  DwarfElephantRBP1T3EqualF1O3SteadyStateExpansion _rb_theta_expansion;
+  DwarfElephantRBT3F1O3SteadyStateExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------
