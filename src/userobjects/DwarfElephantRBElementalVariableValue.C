@@ -68,7 +68,7 @@ DwarfElephantRBElementalVariableValue::assignElement(const std::vector<std::vect
         for(unsigned int _n=0; _n < _element->n_nodes(); _n++)
         {
           _outputs[i][_q]->set(node[_n]->id(),_value);
-          _outputs[i][_q]->close();
+          // _outputs[i][_q]->close();
         }
       }
     }

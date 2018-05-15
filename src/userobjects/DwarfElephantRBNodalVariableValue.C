@@ -79,7 +79,7 @@ DwarfElephantRBNodalVariableValue::assignNode(const std::vector<std::vector<Nume
       for(unsigned int _q=0; _q < _outputs[i].size(); _q++)
       {
         _outputs[i][_q]->set(_nodeid[i],_value);
-        _outputs[i][_q]->close();
+        // _outputs[i][_q]->close();
       }
     }
   }

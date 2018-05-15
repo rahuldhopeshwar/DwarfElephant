@@ -13,7 +13,6 @@ validParams<DwarfElephantDakotaOutput>()
   params.addParam<std::string>("delimiter", "   ", "Defines the delimiter.");
   params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
   params.addParam<bool>("use_rb", false, "Defines whether the RB or FE method is used.");
-  params.addParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system");
   params.addParam<UserObjectName>("offline_online_rb_userobject", "Name of the UserObject for the  offline and online stage of the RB system");
 
   return params;
@@ -26,12 +25,9 @@ DwarfElephantDakotaOutput::DwarfElephantDakotaOutput(const InputParameters & par
     _use_rb(getParam<bool>("use_rb"))
 {
   if(_use_rb)
-  {
-    _initialize_rb_system_name = getParam<UserObjectName>("initial_rb_userobject");
     _offline_online_rb_system_name = getParam<UserObjectName>("offline_online_rb_userobject");
-  } else {
+  else
     _postprocessor_name = getParam<std::vector<PostprocessorName>>("postprocessor");
-  }
 }
 
 // void
@@ -76,7 +72,6 @@ DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
           else
             dakota_file << _offline_online_rb_system._RB_outputs[i] << " f"<< std::endl;
       } else{
-        const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = _problem_ptr->getUserObject<DwarfElephantInitializeRBSystemTransient>(_initialize_rb_system_name);
         const DwarfElephantOfflineOnlineStageTransient & _offline_online_rb_system = _problem_ptr->getUserObject<DwarfElephantOfflineOnlineStageTransient>(_offline_online_rb_system_name);
 
         if (_offline_online_rb_system._output_file)
@@ -85,7 +80,7 @@ DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
         if (!_offline_online_rb_system._output_csv)
           mooseError("In order to use this Output class you have to set 'output_csv' in the " + _offline_online_rb_system_name + " UserObject to true.");
 
-        for (unsigned int _time_step = 0; _time_step <= _initialize_rb_system._rb_con_ptr->get_n_time_steps(); _time_step++)
+        for (unsigned int _time_step = 0; _time_step <= _offline_online_rb_system._n_time_steps; _time_step++)
         {
           for (unsigned int i = 0; i < _offline_online_rb_system._n_outputs; i++)
           {

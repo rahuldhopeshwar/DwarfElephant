@@ -100,8 +100,8 @@ DwarfElephantRBPointValue::assignPoint(const std::vector<std::vector<NumericVect
       for(unsigned int _n=0; _n < dof_indices.size(); _n++)
       {
         _outputs[_outputid][_q]->set(dof_indices[_n],fe_data.shape[_n]);
-        _outputs[_outputid][_q]->close();
       }
+      // _outputs[_outputid][_q]->close();
     }
   }
 }

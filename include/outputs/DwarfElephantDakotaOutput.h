@@ -43,7 +43,6 @@ protected:
   std::string _delimiter;
   std::string _simulation_type;
   std::vector<PostprocessorName> _postprocessor_name;
-  UserObjectName _initialize_rb_system_name;
   UserObjectName _offline_online_rb_system_name;
 
   bool _use_rb;
