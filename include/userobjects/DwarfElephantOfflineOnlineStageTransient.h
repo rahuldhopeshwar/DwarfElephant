@@ -80,6 +80,7 @@ class DwarfElephantOfflineOnlineStageTransient :
     bool _output_file;
     bool _output_console;
     bool _output_csv;
+    bool _compliant;
     bool _norm_online_values;
 
     unsigned int _norm_id;

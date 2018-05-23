@@ -125,10 +125,10 @@ DwarfElephantRBNodalBC::computeJacobian()
           cached_val = cached_val/_node_boundary_list.size();
           for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
              it != _node_boundary_list.end(); it++)
-            _rb_problem->rbAssembly(*it).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
+            _rb_problem->rbAssembly(*it).cacheJacobianContribution(cached_row, cached_row, cached_val);
           }
            else
-	        _rb_problem->rbAssembly(_ID_Aq).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
+	        _rb_problem->rbAssembly(_ID_Aq).cacheJacobianContribution(cached_row, cached_row, cached_val);
         }
       }
     }
@@ -148,15 +148,14 @@ DwarfElephantRBNodalBC::computeJacobian()
             for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
                it != _node_boundary_list.end(); it++)
             {
-              _rb_problem->rbAssembly(*it).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
-//              _rb_problem->rbAssembly(*it).cacheMassMatrixContribution(cached_row, cached_row, cached_val);
-             _rb_problem->rbAssembly(_ID_Mq).cacheMassMatrixContribution(cached_row, cached_row, cached_val);
+              _rb_problem->rbAssembly(*it).cacheJacobianContribution(cached_row, cached_row, cached_val);
             }
           }
           else
           {
-          _rb_problem->rbAssembly(_ID_Aq).cacheStiffnessMatrixContribution(cached_row, cached_row, cached_val);
+          _rb_problem->rbAssembly(_ID_Aq).cacheJacobianContribution(cached_row, cached_row, cached_val);
           }
+          _rb_problem->rbAssembly(_ID_Mq).cacheMassMatrixContribution(cached_row, cached_row, cached_val);
        }
     }
 

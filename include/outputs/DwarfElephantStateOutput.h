@@ -4,8 +4,8 @@
  */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTOPENDAOUTPUT_H
-#define DWARFELEPHANTOPENDAOUTPUT_H
+#ifndef DWARFELEPHANTSTATEOUTPUT_H
+#define DWARFELEPHANTSTATEOUTPUT_H
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
@@ -13,30 +13,32 @@
 
 ///-------------------------------------------------------------------------
 // Forward declerations
-class DwarfElephantOpenDAOutput;
+class DwarfElephantStateOutput;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template <>
-InputParameters validParams<DwarfElephantOpenDAOutput>();
+InputParameters validParams<DwarfElephantStateOutput>();
 
 ///-------------------------------------------------------------------------
-class DwarfElephantOpenDAOutput : public FileOutput
+class DwarfElephantStateOutput : public FileOutput
 {
 //----------------------------------PUBLIC----------------------------------
 public:
-  DwarfElephantOpenDAOutput(const InputParameters & parameters);
+  DwarfElephantStateOutput(const InputParameters & parameters);
 
   /*Methods*/
   virtual void output(const ExecFlagType & type) override;
 
+  std::string filename() override;
+
 //--------------------------------PROTECTED---------------------------------
 protected:
   /*Attributes*/
+  bool _use_rb;
+
   std::string _system_name;
   VariableName _var_name;
-  THREAD_ID _tid;
-  PostprocessorName _postprocessor_name;
 };
 
 ///-------------------------------------------------------------------------
-#endif /* DWARFELEPHANTOPENDAOUTPUT_H */
+#endif /* DWARFELEPHANTSTATEOUTPUT_H */

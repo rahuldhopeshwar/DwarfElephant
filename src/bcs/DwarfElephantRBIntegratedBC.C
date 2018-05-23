@@ -26,6 +26,7 @@ InputParameters validParams<DwarfElephantRBIntegratedBC>()
   params.addParam<bool>("matrix_seperation_according_to_subdomains", true, "Tells whether the stiffness matrix is separated according to the subdomain_ids");
   params.addParam<bool>("compute_output",false,"Determines whether an output function is used or not");
   params.addParam<bool>("split_boundary_according_to_subdomains", false, "Determines whether boundary will be splitted or not.");
+  params.addParam<bool>("compliant", false, "Specifies if you have a compliant or non-compliant case.");
 
   return params;
 }
@@ -35,6 +36,7 @@ DwarfElephantRBIntegratedBC::DwarfElephantRBIntegratedBC(const InputParameters &
     _use_displaced(getParam<bool>("use_displaced")),
     _matrix_seperation_according_to_subdomains(getParam<bool>("matrix_seperation_according_to_subdomains")),
     _compute_output(getParam<bool>("compute_output")),
+    _compliant(getParam<bool>("compliant")),
     _split_boundary_according_to_subdomains(getParam<bool>("split_boundary_according_to_subdomains")),
     _simulation_type(getParam<std::string>("simulation_type")),
     _ID_first_block(*_fe_problem.mesh().meshSubdomains().begin()),
@@ -89,9 +91,17 @@ DwarfElephantRBIntegratedBC::computeResidual()
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
       {
         if (!_split_boundary_according_to_subdomains)
+        {
           _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
-        else
+
+          if (_compliant)
+            _initialize_rb_system._outputs[_ID_Fq][0] -> add_vector(_local_re, _var.dofIndices());
+        } else {
             _initialize_rb_system._residuals[_ID_Aq_split + _ID_Fq_split] -> add_vector(_local_re, _var.dofIndices());
+
+            if(_compliant)
+              _initialize_rb_system._outputs[_ID_Aq_split + _ID_Fq_split][0] -> add_vector(_local_re, _var.dofIndices());
+        }
       }
   }
 
@@ -103,13 +113,19 @@ DwarfElephantRBIntegratedBC::computeResidual()
     if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
     {
       if (!_split_boundary_according_to_subdomains)
-        _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
-      else
       {
-        _initialize_rb_system._residuals[_ID_Aq_split + _ID_Fq_split] -> add_vector(_local_re, _var.dofIndices());
+        _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
+
+        if (_compliant)
+          _initialize_rb_system._outputs[_ID_Fq][0] -> add_vector(_local_re, _var.dofIndices());
+        } else {
+          _initialize_rb_system._residuals[_ID_Aq_split + _ID_Fq_split] -> add_vector(_local_re, _var.dofIndices());
+
+          if(_compliant)
+            _initialize_rb_system._outputs[_ID_Aq_split + _ID_Fq_split][0] -> add_vector(_local_re, _var.dofIndices());
+        }
       }
     }
-  }
 
 
   if (_has_save_in)
@@ -143,7 +159,7 @@ DwarfElephantRBIntegratedBC::computeOutput()
       // Add the calculated vectors to the vectors from the RB system.
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
       {
-        _initialize_rb_system._outputs[0][_ID_Oq] -> add_vector(_local_out, _var.dofIndices());
+        _initialize_rb_system._outputs[_ID_Oq][0] -> add_vector(_local_out, _var.dofIndices());
      }
   }
 

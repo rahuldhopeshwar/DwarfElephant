@@ -34,17 +34,17 @@ public:
   virtual ~DwarfElephantRBAssembly();
 
   /* Methods */
-  void cacheStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value);
+  void cacheJacobianContribution(numeric_index_type i, numeric_index_type j, Real value);
   void cacheMassMatrixContribution(numeric_index_type i, numeric_index_type j, Real value);
   void cacheResidual(numeric_index_type i, Real value);
   void cacheOutput(numeric_index_type i, Real value);
 
   void setCachedResidual(NumericVector<Number> & _residual);
   void setCachedOutput(NumericVector<Number> & _output);
-  void setCachedStiffnessMatrixContributions(SparseMatrix<Number> & _jacobian);
+  void setCachedJacobianContributions(SparseMatrix<Number> & _jacobian);
   void setCachedMassMatrixContributions(SparseMatrix<Number> & _mass);
 
-  void clearCachedStiffnessMatrixContributions();
+  void clearCachedJacobianContributions();
   void clearCachedMassMatrixContributions();
   void clearCachedResidualContributions();
   void clearCachedOutputContributions();

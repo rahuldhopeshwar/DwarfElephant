@@ -24,16 +24,18 @@ DwarfElephantDakotaOutput::DwarfElephantDakotaOutput(const InputParameters & par
     _simulation_type(getParam<std::string>("simulation_type")),
     _use_rb(getParam<bool>("use_rb"))
 {
+  std::ifstream input_file(filename());
+
+  if (input_file)
+  {
+    remove(filename().c_str());
+  }
+
   if(_use_rb)
     _offline_online_rb_system_name = getParam<UserObjectName>("offline_online_rb_userobject");
   else
     _postprocessor_name = getParam<std::vector<PostprocessorName>>("postprocessor");
 }
-
-// void
-// DwarfElephantDakotaOutput::initialSetup(){
-//   CSV::initialSetup();
-// }
 
 void
 DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
@@ -42,11 +44,9 @@ DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
   // This result file enables the use of MOOSE as a forward simulator within Dakota.
   // Which output parameters are printed to the result file can be controlled over the MOOSE input file.
 
-//  if (type == EXEC_TIMESTEP_END)
-//  {
   if(processor_id() == 0){
     std::ofstream dakota_file;
-    dakota_file.open(filename(), std::ios::app);
+    dakota_file.open(filename().c_str(), std::ios::app);
 
     if(!_use_rb)
     {
@@ -92,27 +92,8 @@ DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
          }
       }
     }
- // }
- // std::string deleteline = "0 f";
- // std::string line;
- //
- // std::ifstream dakota_file_rb;
- // dakota_file_rb.open(_file_path + _result_file_name + ".out", std::ios::app);
- //
- // while (std::getline(dakota_file_rb,line))
- // {
- //   line.replace(line.find(deleteline),deleteline.length(),"");
- //   dakota_file << line << std::endl;
- // }
+
     dakota_file.close();
   }
   Moose::perf_log.pop("DakotaOutput()", "Output");
-}
-
-
-
-std::string
-DwarfElephantDakotaOutput::filename()
-{
-  return _file_base;
 }

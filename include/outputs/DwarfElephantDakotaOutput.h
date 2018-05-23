@@ -34,8 +34,6 @@ public:
 
   /*Methods*/
   virtual void output(const ExecFlagType & type) override;
-  virtual std::string filename() override;
-  // virtual void initialSetup() override;
 
 //--------------------------------PROTECTED---------------------------------
 protected:

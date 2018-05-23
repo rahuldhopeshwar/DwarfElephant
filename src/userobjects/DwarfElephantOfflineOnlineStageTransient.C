@@ -22,6 +22,7 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageTransient>()
     params.addParam<bool>("output_file", true, "Determines whether an output file is generated or not.");
     params.addParam<bool>("output_console", false, "Determines whether an output of interest is computed or not.");
     params.addParam<bool>("output_csv", false, "Determines whether an output of interest is passed to the CSV file.");
+    params.addParam<bool>("compliant", false, "Specifies if you have a compliant or non-compliant case.");
     params.addParam<bool>("norm_online_values", false, "Determines wether online parameters are normed.");
     params.addParam<unsigned int>("norm_id", 0, "Defines the id of the parameter that will be used for the normalization.");
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
@@ -45,6 +46,7 @@ DwarfElephantOfflineOnlineStageTransient::DwarfElephantOfflineOnlineStageTransie
     _output_file(getParam<bool>("output_file")),
     _output_console(getParam<bool>("output_console")),
     _output_csv(getParam<bool>("output_csv")),
+    _compliant(getParam<bool>("compliant")),
     _norm_online_values(getParam<bool>("norm_online_values")),
     _norm_id(getParam<unsigned int>("norm_id")),
     _system_name(getParam<std::string>("system")),
@@ -65,7 +67,7 @@ DwarfElephantOfflineOnlineStageTransient::setAffineMatrices()
    _initialize_rb_system._inner_product_matrix -> close();
     for(unsigned int _q=0; _q<_initialize_rb_system._qa; _q++)
     {
-      _rb_problem->rbAssembly(_q).setCachedStiffnessMatrixContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
+      _rb_problem->rbAssembly(_q).setCachedJacobianContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
       _initialize_rb_system._jacobian_subdomain[_q] ->close();
       _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
     }
@@ -90,14 +92,16 @@ DwarfElephantOfflineOnlineStageTransient::transferAffineVectors()
     _initialize_rb_system._residuals[_q]->close();
   }
 
-  // Transfer the data for the output vectors.
-  // if(_output_console)
+  // The RB code runs into problems for non-homogeneous boundary conditions
+  // and the following lines are only needed in case of Nodal BCs
+  // if(_compliant)
   // {
+  //   // Transfer the data for the output vectors.
   //   for(unsigned int i=0; i < _initialize_rb_system._n_outputs; i++)
   //   {
   //     for(unsigned int _q=0; _q < _initialize_rb_system._ql[i]; _q++)
   //     {
-  //       _rb_problem->rbAssembly(_q).setCachedOutput(*_initialize_rb_system._outputs[i][_q]);
+  //       _rb_problem->rbAssembly(i).setCachedResidual(*_initialize_rb_system._outputs[i][_q]);
   //       _initialize_rb_system._outputs[i][_q]->close();
   //     }
   //   }

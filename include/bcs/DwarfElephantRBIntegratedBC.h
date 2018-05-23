@@ -63,6 +63,7 @@ protected:
   bool _use_displaced;
   bool _matrix_seperation_according_to_subdomains;
   bool _compute_output;
+  bool _compliant;
   bool _split_boundary_according_to_subdomains;
 
   std::string _simulation_type;

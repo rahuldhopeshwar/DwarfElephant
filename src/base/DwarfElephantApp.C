@@ -33,7 +33,6 @@
 #include "DwarfElephantFEElectricalConduction.h"
 #include "DwarfElephantFEDarcy.h"
 #include "DwarfElephantFEDarcyOpenDA.h"
-//#include "DwarfElephantRBKernel.h"
 #include "DwarfElephantRBDiffusion.h"
 #include "DwarfElephantRBDiffusionND.h"
 #include "DwarfElephantRBDiffusionLiftingFunction.h"
@@ -69,6 +68,7 @@
 
 // Outputs
 #include "DwarfElephantDakotaOutput.h"
+#include "DwarfElephantStateOutput.h"
 #include "DwarfElephantRBOutput.h"
 
 // VectorPostprocessors
@@ -136,7 +136,6 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerKernel(DwarfElephantFEElectricalConduction);
   registerKernel(DwarfElephantFEDarcy);
   registerKernel(DwarfElephantFEDarcyOpenDA);
-//  registerKernel(DwarfElephantRBKernel);
   registerKernel(DwarfElephantRBDiffusion);
   registerKernel(DwarfElephantRBDiffusionND);
   registerKernel(DwarfElephantRBDiffusionLiftingFunction);
@@ -171,6 +170,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // Outputs
   registerOutput(DwarfElephantDakotaOutput);
+  registerOutput(DwarfElephantStateOutput);
   registerOutput(DwarfElephantRBOutput);
 
   // VectorPostprocessors

@@ -44,8 +44,9 @@ DwarfElephantRBAssembly::setCachedResidual(NumericVector<Number> & _residual)
 {
   _residual.close();
 
-  for (unsigned int i = 0; i < _cached_residual_contribution_vals.size(); ++i)
+  for (unsigned int i = 0; i < _cached_residual_contribution_vals.size(); ++i){
     _residual.set(_cached_residual_contribution_rows[i], _cached_residual_contribution_vals[i]);
+  }
 
   clearCachedResidualContributions();
 }
@@ -65,7 +66,7 @@ DwarfElephantRBAssembly::setCachedOutput(NumericVector<Number> & _output)
 // after multiplication of the parameter independent and dependent part are
 // completed.
 void
-DwarfElephantRBAssembly::cacheStiffnessMatrixContribution(numeric_index_type i, numeric_index_type j, Real value)
+DwarfElephantRBAssembly::cacheJacobianContribution(numeric_index_type i, numeric_index_type j, Real value)
 {
   _cached_jacobian_contribution_rows.push_back(i);
   _cached_jacobian_contribution_cols.push_back(j);
@@ -85,7 +86,7 @@ DwarfElephantRBAssembly::cacheMassMatrixContribution(numeric_index_type i, numer
 
 
 void
-DwarfElephantRBAssembly::setCachedStiffnessMatrixContributions(SparseMatrix<Number> & _jacobian)
+DwarfElephantRBAssembly::setCachedJacobianContributions(SparseMatrix<Number> & _jacobian)
 {
   _jacobian.close();
   _jacobian.zero_rows(_cached_jacobian_contribution_rows);
@@ -95,7 +96,7 @@ DwarfElephantRBAssembly::setCachedStiffnessMatrixContributions(SparseMatrix<Numb
                   _cached_jacobian_contribution_cols[i],
                   _cached_jacobian_contribution_vals[i]);
 
-  clearCachedStiffnessMatrixContributions();
+  clearCachedJacobianContributions();
 }
 
 void
@@ -113,7 +114,7 @@ DwarfElephantRBAssembly::setCachedMassMatrixContributions(SparseMatrix<Number> &
 }
 
 void
-DwarfElephantRBAssembly::clearCachedStiffnessMatrixContributions()
+DwarfElephantRBAssembly::clearCachedJacobianContributions()
 {
     unsigned int orig_size = _cached_jacobian_contribution_rows.size();
 
