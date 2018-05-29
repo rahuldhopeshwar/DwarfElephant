@@ -226,6 +226,7 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       if (_output_csv)
       {
         TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
+
         _RB_outputs_all_timesteps.resize(_n_time_steps+1);
 
         for (unsigned int _t = 0; _t <= _n_time_steps; _t++)

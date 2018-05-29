@@ -128,42 +128,42 @@ DwarfElephantRBConstructionTransient::init_data()
   //   return final_truth_L2_norm;
   // }
 
-  // void
-  // DwarfElephantRBConstructionTransient::print_info()
-  // {
-  //   RBConstruction::print_info();
-  //
-  //   libMesh::out << std::endl << "TransientRBConstruction parameters:" << std::endl;
-  //
-  //   if (is_rb_eval_initialized())
-  //     {
-  //       // Print out info that describes the current setup
-  //       TransientRBThetaExpansion & trans_theta_expansion =
-  //         cast_ref<TransientRBThetaExpansion &>(get_rb_theta_expansion());
-  //       libMesh::out << "Q_m: " << trans_theta_expansion.get_n_M_terms() << std::endl;
-  //     }
-  //   else
-  //     {
-  //       libMesh::out << "RBThetaExpansion member is not set yet" << std::endl;
-  //     }
-  //   libMesh::out << "Number of time-steps: " << get_n_time_steps() << std::endl;
-  //   libMesh::out << "dt: " << get_delta_t() << std::endl;
-  //   libMesh::out << "euler_theta (time discretization parameter): " << get_euler_theta() << std::endl;
-  //   if (get_POD_tol() > 0.)
-  //     libMesh::out << "POD_tol: " << get_POD_tol() << std::endl;
-  //   if (max_truth_solves > 0)
-  //     libMesh::out << "Maximum number of truth solves: " << max_truth_solves << std::endl;
-  //   libMesh::out << "delta_N (number of basis functions to add each POD-Greedy step): " << get_delta_N() << std::endl;
-  //   if (nonzero_initialization)
-  //     {
-  //       libMesh::out << "Using initial conditions provided by MOOSE." << std::endl;
-  //     }
-  //   else
-  //     {
-  //       libMesh::out << "Using zero initial condition" << std::endl;
-  //     }
-  //   libMesh::out << std::endl;
-  // }
+  void
+  DwarfElephantRBConstructionTransient::print_info()
+  {
+    RBConstruction::print_info();
+
+    libMesh::out << std::endl << "TransientRBConstruction parameters:" << std::endl;
+
+    if (is_rb_eval_initialized())
+      {
+        // Print out info that describes the current setup
+        TransientRBThetaExpansion & trans_theta_expansion =
+          cast_ref<TransientRBThetaExpansion &>(get_rb_theta_expansion());
+        libMesh::out << "Q_m: " << trans_theta_expansion.get_n_M_terms() << std::endl;
+      }
+    else
+      {
+        libMesh::out << "RBThetaExpansion member is not set yet" << std::endl;
+      }
+    libMesh::out << "Number of time-steps: " << get_n_time_steps() << std::endl;
+    libMesh::out << "dt: " << get_delta_t() << std::endl;
+    libMesh::out << "euler_theta (time discretization parameter): " << get_euler_theta() << std::endl;
+    if (get_POD_tol() > 0.)
+      libMesh::out << "POD_tol: " << get_POD_tol() << std::endl;
+    if (max_truth_solves > 0)
+      libMesh::out << "Maximum number of truth solves: " << max_truth_solves << std::endl;
+    libMesh::out << "delta_N (number of basis functions to add each POD-Greedy step): " << get_delta_N() << std::endl;
+    if (nonzero_initialization)
+      {
+        libMesh::out << "Using initial conditions provided by MOOSE." << std::endl;
+      }
+    else
+      {
+        libMesh::out << "Using zero initial condition" << std::endl;
+      }
+    libMesh::out << std::endl;
+  }
   //
   // void
   // DwarfElephantRBConstructionTransient::initialize_truth()
@@ -186,16 +186,107 @@ DwarfElephantRBConstructionTransient::init_data()
   //
   // }
 
-  // Real
-  // DwarfElephantRBConstructionTransient::train_reduced_basis(const bool resize_rb_eval_data)
-  // {
-  //   compute_truth_projection_error = true;
-  //   libMesh::out << "Normalize? " << get_normalize_rb_bound_in_greedy () << std::endl;
-  //   Real value = train_reduced_basis_steady(resize_rb_eval_data);
-  //   compute_truth_projection_error = false;
-  //
-  //   return value;
-  // }
+  Real
+  DwarfElephantRBConstructionTransient::train_reduced_basis(const bool resize_rb_eval_data)
+  {
+    compute_truth_projection_error = true;
+    Real value = train_reduced_basis_steady(resize_rb_eval_data);
+    compute_truth_projection_error = false;
+
+    return value;
+  }
+
+  Real DwarfElephantRBConstructionTransient::train_reduced_basis_steady(const bool resize_rb_eval_data)
+{
+  LOG_SCOPE("train_reduced_basis()", "RBConstruction");
+
+  int count = 0;
+
+  // initialize rb_eval's parameters
+  get_rb_evaluation().initialize_parameters(*this);
+
+  // possibly resize data structures according to Nmax
+  if (resize_rb_eval_data)
+    {
+      get_rb_evaluation().resize_data_structures(get_Nmax());
+    }
+
+  // Clear the Greedy param list
+  for (std::size_t i=0; i<get_rb_evaluation().greedy_param_list.size(); i++)
+    get_rb_evaluation().greedy_param_list[i].clear();
+
+  get_rb_evaluation().greedy_param_list.clear();
+
+  Real training_greedy_error;
+
+
+  // If we are continuing from a previous training run,
+  // we might already be at the max number of basis functions.
+  // If so, we can just return.
+  if (get_rb_evaluation().get_n_basis_functions() >= get_Nmax())
+    {
+      libMesh::out << "Maximum number of basis functions reached: Nmax = "
+                   << get_Nmax() << std::endl;
+      return 0.;
+    }
+
+
+  // Compute the dual norms of the outputs if we haven't already done so
+  compute_output_dual_innerprods();
+
+  // Compute the Fq Riesz representor dual norms if we haven't already done so
+  compute_Fq_representor_innerprods();
+
+  libMesh::out << std::endl << "---- Performing Greedy basis enrichment ----" << std::endl;
+  Real initial_greedy_error = 0.;
+  bool initial_greedy_error_initialized = false;
+  while (true)
+    {
+      libMesh::out << std::endl << "---- Basis dimension: "
+                   << get_rb_evaluation().get_n_basis_functions() << " ----" << std::endl;
+
+      if (count > 0 || (count==0 && use_empty_rb_solve_in_greedy))
+        {
+          libMesh::out << "Performing RB solves on training set" << std::endl;
+          training_greedy_error = compute_max_error_bound();
+
+          libMesh::out << "Maximum error bound is " << training_greedy_error << std::endl << std::endl;
+
+          // record the initial error
+          if (!initial_greedy_error_initialized)
+            {
+              initial_greedy_error = training_greedy_error;
+              initial_greedy_error_initialized = true;
+            }
+
+          // Break out of training phase if we have reached Nmax
+          // or if the training_tolerance is satisfied.
+          if (greedy_termination_test(training_greedy_error, initial_greedy_error, count))
+            break;
+        }
+
+      libMesh::out << "Performing truth solve at parameter:" << std::endl;
+      print_parameters();
+
+      // Update the list of Greedily selected parameters
+      this->update_greedy_param_list();
+
+      // Perform an Offline truth solve for the current parameter
+      truth_solve(-1);
+
+      // Add orthogonal part of the snapshot to the RB space
+      libMesh::out << "Enriching the RB space" << std::endl;
+      enrich_RB_space();
+
+      update_system();
+
+      // Increment counter
+      count++;
+    }
+  this->update_greedy_param_list();
+
+  return training_greedy_error;
+}
 
   Real DwarfElephantRBConstructionTransient::get_RB_error_bound()
   {
@@ -267,76 +358,76 @@ DwarfElephantRBConstructionTransient::init_data()
   //   update_RB_initial_condition_all_N();
   // }
 
-  // void
-  // DwarfElephantRBConstructionTransient::update_RB_initial_condition_all_N()
-  // {
-  //   LOG_SCOPE("update_RB_initial_condition_all_N()", "TransientRBConstruction");
-  //
-  //   libMesh::out << "Start Update RB initial conditions" << std::endl;
-  //
-  //   TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(get_rb_evaluation());
-  //
-  //   libMesh::out << "Start Initialize truth" << std::endl;
-  //   // Load the initial condition into the solution vector
-  //   initialize_truth();
-  //   libMesh::out << "End Initialize truth" << std::endl;
-  //
-  //   std::unique_ptr<NumericVector<Number>> temp1 = NumericVector<Number>::build(this->comm());
-  //   temp1->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
-  //
-  //   std::unique_ptr<NumericVector<Number>> temp2 = NumericVector<Number>::build(this->comm());
-  //   temp2->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
-  //
-  //
-  //   unsigned int RB_size = get_rb_evaluation().get_n_basis_functions();
-  //
-  //   // First compute the right-hand side vector for the L2 projection
-  //   L2_matrix->vector_mult(*temp1, *solution);
-  //
-  //   for (unsigned int i=(RB_size-delta_N); i<RB_size; i++)
-  //     {
-  //       RB_ic_proj_rhs_all_N(i) = temp1->dot(get_rb_evaluation().get_basis_function(i));
-  //     }
-  //
-  //
-  //   // Now compute the projection for each N
-  //   DenseMatrix<Number> RB_L2_matrix_N;
-  //   DenseVector<Number> RB_rhs_N;
-  //   for (unsigned int N=(RB_size-delta_N); N<RB_size; N++)
-  //     {
-  //       // We have to index here by N+1 since the loop index is zero-based.
-  //       trans_rb_eval.RB_L2_matrix.get_principal_submatrix(N+1, RB_L2_matrix_N);
-  //
-  //       RB_ic_proj_rhs_all_N.get_principal_subvector(N+1, RB_rhs_N);
-  //
-  //       DenseVector<Number> RB_ic_N(N+1);
-  //
-  //       // Now solve the linear system
-  //       RB_L2_matrix_N.lu_solve(RB_rhs_N, RB_ic_N);
-  //
-  //       // Load RB_ic_N into RB_initial_condition_all_N
-  //       trans_rb_eval.RB_initial_condition_all_N[N] = RB_ic_N;
-  //
-  //       // Compute the L2 error for the RB initial condition
-  //       // This part is dependent on the truth space.
-  //
-  //       // load the RB solution into temp1
-  //       temp1->zero();
-  //       for (unsigned int i=0; i<N+1; i++)
-  //         {
-  //           temp1->add(RB_ic_N(i), get_rb_evaluation().get_basis_function(i));
-  //         }
-  //
-  //       // subtract truth initial condition from RB_ic_N
-  //       temp1->add(-1., *solution);
-  //
-  //       // Compute L2 norm error, i.e. sqrt(M(solution,solution))
-  //       temp2->zero();
-  //       L2_matrix->vector_mult(*temp2, *temp1);
-  //
-  //       trans_rb_eval.initial_L2_error_all_N[N] = libmesh_real(std::sqrt(temp2->dot(*temp1)));
-  //     }
-  // }
+  void
+  DwarfElephantRBConstructionTransient::update_RB_initial_condition_all_N()
+  {
+    LOG_SCOPE("update_RB_initial_condition_all_N()", "TransientRBConstruction");
+
+    libMesh::out << "Start Update RB initial conditions" << std::endl;
+
+    TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(get_rb_evaluation());
+
+    libMesh::out << "Start Initialize truth" << std::endl;
+    // Load the initial condition into the solution vector
+    initialize_truth();
+    libMesh::out << "End Initialize truth" << std::endl;
+
+    std::unique_ptr<NumericVector<Number>> temp1 = NumericVector<Number>::build(this->comm());
+    temp1->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+
+    std::unique_ptr<NumericVector<Number>> temp2 = NumericVector<Number>::build(this->comm());
+    temp2->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+
+
+    unsigned int RB_size = get_rb_evaluation().get_n_basis_functions();
+
+    // First compute the right-hand side vector for the L2 projection
+    L2_matrix->vector_mult(*temp1, *solution);
+
+    for (unsigned int i=(RB_size-delta_N); i<RB_size; i++)
+      {
+        RB_ic_proj_rhs_all_N(i) = temp1->dot(get_rb_evaluation().get_basis_function(i));
+      }
+
+
+    // Now compute the projection for each N
+    DenseMatrix<Number> RB_L2_matrix_N;
+    DenseVector<Number> RB_rhs_N;
+    for (unsigned int N=(RB_size-delta_N); N<RB_size; N++)
+      {
+        // We have to index here by N+1 since the loop index is zero-based.
+        trans_rb_eval.RB_L2_matrix.get_principal_submatrix(N+1, RB_L2_matrix_N);
+
+        RB_ic_proj_rhs_all_N.get_principal_subvector(N+1, RB_rhs_N);
+
+        DenseVector<Number> RB_ic_N(N+1);
+
+        // Now solve the linear system
+        RB_L2_matrix_N.lu_solve(RB_rhs_N, RB_ic_N);
+
+        // Load RB_ic_N into RB_initial_condition_all_N
+        trans_rb_eval.RB_initial_condition_all_N[N] = RB_ic_N;
+
+        // Compute the L2 error for the RB initial condition
+        // This part is dependent on the truth space.
+
+        // load the RB solution into temp1
+        temp1->zero();
+        for (unsigned int i=0; i<N+1; i++)
+          {
+            temp1->add(RB_ic_N(i), get_rb_evaluation().get_basis_function(i));
+          }
+
+        // subtract truth initial condition from RB_ic_N
+        temp1->add(-1., *solution);
+
+        // Compute L2 norm error, i.e. sqrt(M(solution,solution))
+        temp2->zero();
+        L2_matrix->vector_mult(*temp2, *temp1);
+
+        trans_rb_eval.initial_L2_error_all_N[N] = libmesh_real(std::sqrt(temp2->dot(*temp1)));
+      }
+  }
 
 
 

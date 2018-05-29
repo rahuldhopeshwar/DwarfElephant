@@ -81,19 +81,20 @@ public:
 
   // virtual Real truth_solve(int write_interval) libmesh_override;
 
-  // virtual void print_info() override;
+  virtual void print_info() override;
   //
   // virtual void initialize_truth() override;
 
   // void add_IC_to_RB_space();
 
-  // void update_RB_initial_condition_all_N();
+  void update_RB_initial_condition_all_N();
 
   // virtual void update_system() override;
 
   virtual Real get_RB_error_bound() override;
 
-  // virtual Real train_reduced_basis(const bool resize_rb_eval_data=true) override;
+  virtual Real train_reduced_basis(const bool resize_rb_eval_data=true) override;
+  virtual Real train_reduced_basis_steady(const bool resize_rb_eval_data=true);
 
   unsigned int u_var;
 
@@ -107,12 +108,12 @@ class DwarfElephantRBEvaluationTransient : public TransientRBEvaluation
 public:
   DwarfElephantRBEvaluationTransient(const libMesh::Parallel::Communicator & comm, FEProblemBase & fe_problem);
 
-  virtual Real get_stability_lower_bound();
+  virtual Real get_stability_lower_bound() override;
 
   FEProblemBase & get_fe_problem() {return fe_problem;}
 
   FEProblemBase & fe_problem;
-  DwarfElephantRBT3F1O3M1TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT3F4O1M2TransientExpansion _rb_theta_expansion;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBCLASSESTRANSIENT_H
