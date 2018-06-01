@@ -40,18 +40,21 @@ struct DwarfElephantRBT3F1O1M1TransientExpansion : TransientRBThetaExpansion
   DwarfElephantRBT3F1O1M1TransientExpansion()
   {
     // Setting up the RBThetaExpansion object
+    attach_M_theta(&_theta_a_00);
     attach_M_theta(&_rb_theta);
 
     attach_A_theta(&_theta_a_0);
     attach_A_theta(&_theta_a_1);
     attach_A_theta(&_theta_a_2);
 
+    attach_F_theta(&_theta_a_0);
     attach_F_theta(&_rb_theta);
 
     attach_output_theta(&_rb_theta);
 
   }
   // Member Variables
+  DwarfElephantThetaA00Constant _theta_a_00;
   DwarfElephantThetaA0EqualMu0 _theta_a_0;
   DwarfElephantThetaA1EqualMu1 _theta_a_1;
   DwarfElephantThetaA2EqualMu2 _theta_a_2;
