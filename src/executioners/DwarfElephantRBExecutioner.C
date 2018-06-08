@@ -61,6 +61,7 @@ DwarfElephantRBExecutioner::execute()
 
       _problem.execute(EXEC_CUSTOM);
       _problem.outputStep(EXEC_TIMESTEP_END);
+      _problem.outputStep(EXEC_CUSTOM);
     }
 
 // #ifdef LIBMESH_ENABLE_AMR
@@ -71,5 +72,5 @@ DwarfElephantRBExecutioner::execute()
 //   }
 // #endif
 
-  // postExecute();
+  postExecute();
 }

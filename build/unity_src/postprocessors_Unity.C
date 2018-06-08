@@ -1,2 +1,2 @@
 
-#include"/Users/denise/projects/DwarfElephant/src/postprocessors/DwarfElephantRBNodalVariableValue.C"
+#include"/Users/denise/projects/DwarfElephant/src/postprocessors/DwarfElephantNodalDifference.C"

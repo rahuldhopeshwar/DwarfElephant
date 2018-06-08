@@ -62,6 +62,7 @@ DwarfElephantRBNodalBC::computeResidual() // DwarfElephantRBNodalBC::computeResi
     Real res = computeQpResidual();
     // residual.set(dof_idx, res);
 
+
     if (_simulation_type == "steady")  // Steady State
     {
       const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
@@ -120,15 +121,16 @@ DwarfElephantRBNodalBC::computeJacobian()
         {
           if (_matrix_seperation_according_to_subdomains)
           {
-          const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_var.node());
+            unsigned int _ID_first_block = *_fe_problem.mesh().meshSubdomains().begin();
+            const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_var.node());
 
-          cached_val = cached_val/_node_boundary_list.size();
-          for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
-             it != _node_boundary_list.end(); it++)
-            _rb_problem->rbAssembly(*it).cacheJacobianContribution(cached_row, cached_row, cached_val);
-          }
+            cached_val = cached_val/_node_boundary_list.size();
+            for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
+              it != _node_boundary_list.end(); it++)
+              _rb_problem->rbAssembly(*it-_ID_first_block).cacheJacobianContribution(cached_row, cached_row, cached_val);
+           }
            else
-	        _rb_problem->rbAssembly(_ID_Aq).cacheJacobianContribution(cached_row, cached_row, cached_val);
+	          _rb_problem->rbAssembly(_ID_Aq).cacheJacobianContribution(cached_row, cached_row, cached_val);
         }
       }
     }

@@ -13,8 +13,11 @@ DwarfElephantSystem::~DwarfElephantSystem()
 void
 DwarfElephantSystem::solve()
 {
-  NumericVector<Number> * _current_rb_solution = _sys.current_local_solution.get();
+  NumericVector<Number> * _current_rb_solution;
+
+  _current_rb_solution = _sys.current_local_solution.get();
   _current_rb_solution->zero();
+
 
   if (_fe_problem.solverParams()._type != Moose::ST_LINEAR)
   {
@@ -22,6 +25,7 @@ DwarfElephantSystem::solve()
     _computing_initial_residual = true;
     // In case your are using a MOOSE version older than April 19th 2018 uncomment the following line
     // _fe_problem.computeResidual(_transient_sys, *_current_solution, *_transient_sys.rhs);
+
     _fe_problem.computeResidualSys(_transient_sys, *_current_rb_solution, *_transient_sys.rhs);
 
     _computing_initial_residual = false;
@@ -44,7 +48,7 @@ DwarfElephantSystem::solve()
 // calculate the stiffness matrices
 // In case your are using a MOOSE version older than April 19th 2018 uncomment the following line
 // _fe_problem.computeJacobian(_transient_sys, *_current_solution, *_transient_sys.matrix);
-_fe_problem.computeJacobianSys(_transient_sys, *_current_rb_solution, *_transient_sys.matrix);
+  _fe_problem.computeJacobianSys(_transient_sys, *_current_rb_solution, *_transient_sys.matrix);
 
 //  DwarfElephantRBProblem & _rb_problem = cast_ref<DwarfElephantRBProblem &>(_fe_problem);
 

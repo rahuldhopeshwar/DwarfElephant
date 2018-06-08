@@ -41,7 +41,7 @@ DwarfElephantInitializeRBSystemTransient::DwarfElephantInitializeRBSystemTransie
   GeneralUserObject(params),
   _use_displaced(getParam<bool>("use_displaced")),
   _skip_matrix_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
-  _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
+  _skip_vector_assembly_in_rb_system(getParam<bool>("skip_vector_assembly_in_rb_system")),
   _offline_stage(getParam<bool>("offline_stage")),
   _deterministic_training(getParam<bool>("deterministic_training")),
   _quiet_mode(getParam<bool>("quiet_mode")),
