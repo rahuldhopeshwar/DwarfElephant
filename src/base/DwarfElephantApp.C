@@ -59,6 +59,7 @@
 #include "DwarfElephantRBNodalVariableValue.h"
 #include "DwarfElephantRBElementalVariableValue.h"
 #include "DwarfElephantRBPointValue.h"
+#include "DwarfElephantReducedToFullState.h"
 
 // Functions
 #include "DwarfElephantInitialConditionFileReader.h"
@@ -162,6 +163,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerUserObject(DwarfElephantRBNodalVariableValue);
   registerUserObject(DwarfElephantRBElementalVariableValue);
   registerUserObject(DwarfElephantRBPointValue);
+  registerUserObject(DwarfElephantReducedToFullState);
 
   // Functions
   registerFunction(DwarfElephantInitialConditionFileReader);

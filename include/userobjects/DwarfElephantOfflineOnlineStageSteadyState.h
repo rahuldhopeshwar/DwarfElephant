@@ -84,6 +84,7 @@ class DwarfElephantOfflineOnlineStageSteadyState :
 
     unsigned int _norm_id;
     unsigned int _n_outputs;
+    unsigned int _online_N;
 
     std::string _system_name;
 
@@ -97,7 +98,6 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     std::vector<Number> _RB_outputs;
 
     Real _mu_bar;
-    unsigned int _online_N;
     std::vector<Real> _online_mu_parameters;
 
     RBParameters _rb_online_mu;

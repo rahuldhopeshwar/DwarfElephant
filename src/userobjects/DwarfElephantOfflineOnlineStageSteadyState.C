@@ -20,11 +20,14 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     params.addParam<bool>("online_stage", true, "Determines whether the Online stage will be calculated or not.");
     params.addParam<bool>("offline_error_bound", false, "Determines which error bound is used.");
     params.addParam<bool>("output_file", true, "Determines whether an output file is generated or not.");
+    params.addParam<bool>("store_basis_functions", true, "Determines whether the basis functions are stored for visualization purposes.");
     params.addParam<bool>("output_console", false, "Determines whether an output of interest is computed or not.");
     params.addParam<bool>("output_csv",false, "Determines whether an output of interest is passed to the CSV file.");
     params.addParam<bool>("compliant", false, "Specifies if you have a compliant or non-compliant case.");
     params.addParam<bool>("norm_online_values", false, "Determines wether online parameters are normed.");
     params.addParam<unsigned int>("norm_id", 0, "Defines the id of the parameter that will be used for the normalization.");
+    params.addParam<unsigned int>("n_outputs", 1, "Defines the number of outputs.");
+    params.addParam<unsigned int>("online_N", 0, "Defines the dimension of the online stage.");
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
     params.addParam<Real>("mu_bar", 1., "Value for mu-bar");
@@ -49,6 +52,8 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     _compliant(getParam<bool>("compliant")),
     _norm_online_values(getParam<bool>("norm_online_values")),
     _norm_id(getParam<unsigned int>("norm_id")),
+    _n_outputs(getParam<unsigned int>("n_outputs")),
+    _online_N(getParam<unsigned int>("online_N")),
     _system_name(getParam<std::string>("system")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
@@ -149,7 +154,13 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
     DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm() , _fe_problem);
     // Pass a pointer of the RBEvaluation object to the
     // RBConstruction object
-    _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
+
+    if(!_offline_stage && _output_file)
+      _initialize_rb_system._rb_con_ptr->init();
+
+    if(_offline_stage || _output_file || _offline_error_bound || _online_N == 0)
+      _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
+
 
     // if(_online_stage)
     //   _rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionSteadyState> ("RBSystem");
@@ -174,21 +185,21 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
     {
       Moose::perf_log.push("onlineStage()", "Execution");
 
-      _n_outputs = _initialize_rb_system._rb_con_ptr->get_rb_theta_expansion().get_n_outputs();
-
       #if defined(LIBMESH_HAVE_CAPNPROTO)
-      RBDataDeserialization::RBEvaluationDeserialization _rb_eval_reader(_rb_eval);
+        RBDataDeserialization::RBEvaluationDeserialization _rb_eval_reader(_rb_eval);
       #else
-      _rb_eval.legacy_read_offline_data_from_files();
+        _rb_eval.legacy_read_offline_data_from_files();
       #endif
+
+      if(_online_N==0)
+        _online_N = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
+
 
       setOnlineParameters();
       _rb_eval.set_parameters(_rb_online_mu);
 
       _console << "---- Online Stage ----" << std::endl;
       _rb_eval.print_parameters();
-
-      _online_N = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
 
       if(_offline_error_bound)
        _initialize_rb_system._rb_con_ptr->get_rb_evaluation().evaluate_RB_error_bound = false;

@@ -43,5 +43,5 @@ DwarfElephantNodalDifference::execute()
 void
 DwarfElephantNodalDifference::finalize()
 {
-  // _nodal_solution->print_matlab("solution");
+  _nodal_solution->print_matlab("solution");
 }

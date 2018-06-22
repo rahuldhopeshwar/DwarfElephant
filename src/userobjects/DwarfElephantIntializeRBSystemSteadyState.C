@@ -168,6 +168,11 @@ DwarfElephantInitializeRBSystemSteadyState::initializeOfflineStage()
 void
 DwarfElephantInitializeRBSystemSteadyState::initialize()
 {
+}
+
+void
+DwarfElephantInitializeRBSystemSteadyState::execute()
+{
   // Define the parameter file for the libMesh functions.
   // In our case not required, because the read-in is done via the MOOSE inputfile.
   // GetPot infile (_parameters_filename);
@@ -197,11 +202,6 @@ DwarfElephantInitializeRBSystemSteadyState::initialize()
 
     initializeOfflineStage();
   }
-}
-
-void
-DwarfElephantInitializeRBSystemSteadyState::execute()
-{
 }
 
 void

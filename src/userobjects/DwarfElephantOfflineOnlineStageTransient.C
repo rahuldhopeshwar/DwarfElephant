@@ -20,6 +20,7 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageTransient>()
     params.addParam<bool>("online_stage", true, "Determines whether the Online stage will be calculated or not.");
     params.addParam<bool>("offline_error_bound", false, "Determines which error bound is used.");
     params.addParam<bool>("output_file", true, "Determines whether an output file is generated or not.");
+    params.addParam<bool>("store_basis_functions", true, "Determines whether the basis functions are stored for visualization purposes.");
     params.addParam<bool>("output_console", false, "Determines whether an output of interest is computed or not.");
     params.addParam<bool>("output_csv", false, "Determines whether an output of interest is passed to the CSV file.");
     params.addParam<bool>("compliant", false, "Specifies if you have a compliant or non-compliant case.");
@@ -114,6 +115,7 @@ void
 DwarfElephantOfflineOnlineStageTransient::offlineStage()
 {
     _initialize_rb_system._rb_con_ptr->train_reduced_basis();
+
    #if defined(LIBMESH_HAVE_CAPNPROTO)
       RBDataSerialization::TransientRBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
      _rb_eval_writer.write_to_file("trans_rb_eval.bin");
@@ -124,9 +126,8 @@ DwarfElephantOfflineOnlineStageTransient::offlineStage()
 
     // If desired, store the basis functions (xdr format).
     if (_store_basis_functions)
-    {
-        _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr);
-    }
+      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr);
+
 
 //    _initialize_rb_system._rb_con_ptr->print_basis_function_orthogonality();
 }
@@ -189,10 +190,10 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       _n_outputs = _initialize_rb_system._rb_con_ptr->get_rb_theta_expansion().get_n_outputs();
 
       #if defined(LIBMESH_HAVE_CAPNPROTO)
-      RBDataDeserialization::TrasientRBEvaluationDeserialization _rb_eval_reader(_rb_eval);
-      _rb_eval_reader.read_from_file("trans_rb_eval.bin", /*read_error_bound_data*/ true);
+        RBDataDeserialization::TrasientRBEvaluationDeserialization _rb_eval_reader(_rb_eval);
+        _rb_eval_reader.read_from_file("trans_rb_eval.bin", /*read_error_bound_data*/ true);
       #else
-      _rb_eval.legacy_read_offline_data_from_files();
+        _rb_eval.legacy_read_offline_data_from_files();
       #endif
 
       setOnlineParameters();
@@ -248,6 +249,8 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       if(_output_file)
       {
          _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
+
+         _console << _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_basis_function(0) << std::endl;
 
          for (unsigned int _time_step = 0; _time_step <= _n_time_steps; _time_step++)
         {

@@ -36,6 +36,8 @@
 
 #include "DwarfElephantRBStructuresT1F1O1M1Transient.h"
 #include "DwarfElephantRBStructuresT2F1O1M1Transient.h"
+#include "DwarfElephantRBStructuresT2F3O1M2Transient.h"
+#include "DwarfElephantRBStructuresT2F3O3M2Transient.h"
 #include "DwarfElephantRBStructuresT3F1O1M1Transient.h"
 #include "DwarfElephantRBStructuresT3F1O3M1Transient.h"
 #include "DwarfElephantRBStructuresT3F4O1M2Transient.h"
@@ -102,7 +104,7 @@ public:
   FEProblemBase & get_fe_problem() {return fe_problem;}
 
   FEProblemBase & fe_problem;
-  DwarfElephantRBT3F4O3M2TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT2F3O3M2TransientExpansion _rb_theta_expansion;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBCLASSESTRANSIENT_H
