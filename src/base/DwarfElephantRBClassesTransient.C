@@ -18,8 +18,38 @@
 DwarfElephantRBConstructionTransient::DwarfElephantRBConstructionTransient (EquationSystems & es,
                       const std::string & name_in,
                       const unsigned int number_in)
-  : Parent(es, name_in, number_in)
+  : Parent(es, name_in, number_in),
+  parameter_dependent_IC(false)
 {}
+
+void
+DwarfElephantRBConstructionTransient::clear()
+{
+  Parent::clear();
+
+  // clear the initial conditions
+  IC_q_vector.clear();
+}
+
+void
+DwarfElephantRBConstructionTransient::allocate_data_structures()
+{
+  Parent::allocate_data_structures();
+
+  DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
+    cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
+
+  IC_q_vector.resize(dwarf_elephant_trans_theta_expansion.get_n_IC_terms());
+
+  // Initialize the intial conditions
+  for (unsigned int q=0; q<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q++)
+    {
+      // Initialize the memory for the vectors
+      IC_q_vector[q] = NumericVector<Number>::build(this->comm());
+      IC_q_vector[q]->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+    }
+
+}
 
 void
 DwarfElephantRBConstructionTransient::init_data()
@@ -71,8 +101,24 @@ DwarfElephantRBConstructionTransient::init_data()
   {
     if (nonzero_initialization)
       {
-        DwarfElephantRBEvaluationTransient & trans_rb_eval = cast_ref<DwarfElephantRBEvaluationTransient &>(get_rb_evaluation());
-        *this->solution.get() = *trans_rb_eval.get_fe_problem().es().get_system("rb0").solution.get();
+        const RBParameters & mu = get_parameters();
+
+        DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
+          cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
+
+        if (!parameter_dependent_IC){
+          DwarfElephantRBEvaluationTransient & trans_rb_eval = cast_ref<DwarfElephantRBEvaluationTransient &>(get_rb_evaluation());
+          *this->solution.get() = *trans_rb_eval.get_fe_problem().es().get_system("rb0").solution.get();
+        }
+        else
+        {
+          this->solution->zero();
+
+          for (unsigned int q_ic=0; q_ic<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q_ic++)
+          {
+            this->solution.get()->add(dwarf_elephant_trans_theta_expansion.eval_IC_theta(q_ic, mu), *get_IC_q(q_ic));
+          }
+        }
       }
     else
       {
@@ -105,6 +151,24 @@ DwarfElephantRBConstructionTransient::init_data()
       }
 
     return error_bound;
+  }
+
+  NumericVector<Number> *
+  DwarfElephantRBConstructionTransient::get_IC_q(unsigned int q)
+  {
+    DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
+      cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
+
+    if (q >= dwarf_elephant_trans_theta_expansion.get_n_IC_terms())
+      libmesh_error_msg("Error: We must have q < Q_ic in get_IC_q.");
+
+    return IC_q_vector[q].get();
+  }
+
+  void
+  DwarfElephantRBConstructionTransient::set_parameter_dependent_IC(bool parameter_dependent_IC_in)
+  {
+    this->parameter_dependent_IC = parameter_dependent_IC_in;
   }
 
 

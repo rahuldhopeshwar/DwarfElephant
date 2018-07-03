@@ -19,16 +19,16 @@
 []
 
 [BCs]
-[./RBtop]
+[./top]
   type = DwarfElephantRBDirichletBC
   boundary = 2
   value = 0.00
 [../]
 
-[./RBbottom]
+[./bottom]
   type = DwarfElephantRBNeumannBC
   boundary = 1
-  value = 40
+  value = 3.71
 [../]
 []
 

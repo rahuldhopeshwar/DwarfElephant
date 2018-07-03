@@ -86,17 +86,25 @@ DwarfElephantRBIntegratedBC::computeResidual()
   if(_simulation_type == "steady")  // SteadyState
   {
     const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
+
     if(_initialize_rb_system._offline_stage)
       // Add the calculated vectors to the vectors from the RB system.
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
       {
         if (!_split_boundary_according_to_subdomains)
         {
+          if (_ID_Fq >= _initialize_rb_system._qf)
+            mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
+
           _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
 
           if (_compliant)
             _initialize_rb_system._outputs[_ID_Fq][0] -> add_vector(_local_re, _var.dofIndices());
         } else {
+
+          if (_ID_Aq_split + _ID_Fq_split >= _initialize_rb_system._qf)
+            mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
+
             _initialize_rb_system._residuals[_ID_Aq_split + _ID_Fq_split] -> add_vector(_local_re, _var.dofIndices());
 
             if(_compliant)
@@ -114,11 +122,17 @@ DwarfElephantRBIntegratedBC::computeResidual()
     {
       if (!_split_boundary_according_to_subdomains)
       {
+        if (_ID_Fq >= _initialize_rb_system._qf)
+          mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
+
         _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
 
         if (_compliant)
           _initialize_rb_system._outputs[_ID_Fq][0] -> add_vector(_local_re, _var.dofIndices());
         } else {
+          if (_ID_Aq_split + _ID_Fq_split >= _initialize_rb_system._qf)
+            mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
+
           _initialize_rb_system._residuals[_ID_Aq_split + _ID_Fq_split] -> add_vector(_local_re, _var.dofIndices());
 
           if(_compliant)
@@ -199,6 +213,10 @@ DwarfElephantRBIntegratedBC::computeJacobian()
   if(_simulation_type == "steady")  // Steady State
   {
     const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
+
+    if (_ID_Aq >= _initialize_rb_system._qa)
+      mooseError("The number of stiffness matrices you defined here is not matching the number of stiffness matrices you specified in the RBClasses Class.");
+
     if(_initialize_rb_system._offline_stage)
     // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
@@ -208,6 +226,13 @@ DwarfElephantRBIntegratedBC::computeJacobian()
   else if(_simulation_type == "transient") // Transient
   {
     const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
+
+    if (_ID_Aq >= _initialize_rb_system._qa)
+      mooseError("The number of stiffness matrices you defined here is not matching the number of stiffness matrices you specified in the RBClasses Class.");
+
+    if (_ID_Mq >= _initialize_rb_system._qm)
+      mooseError("The number of mass matrices you defined here is not matching the number of mass matrices you specified in the RBClasses Class.");
+
     if(_initialize_rb_system._offline_stage)
     // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)

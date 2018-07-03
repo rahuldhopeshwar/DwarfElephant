@@ -7,4 +7,5 @@
 #include"/Users/denise/projects/DwarfElephant/src/userobjects/DwarfElephantRBElementalVariableValue.C"
 #include"/Users/denise/projects/DwarfElephant/src/userobjects/DwarfElephantRBNodalVariableValue.C"
 #include"/Users/denise/projects/DwarfElephant/src/userobjects/DwarfElephantRBPointValue.C"
+#include"/Users/denise/projects/DwarfElephant/src/userobjects/DwarfElephantRBTransientThetaExpansion.C"
 #include"/Users/denise/projects/DwarfElephant/src/userobjects/DwarfElephantReducedToFullState.C"

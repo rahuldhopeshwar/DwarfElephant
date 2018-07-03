@@ -151,7 +151,7 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
     // Build the RBEvaluation object
     // Required for both the Offline and Online stage.
-    DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm() , _fe_problem);
+    DwarfElephantRBEvaluationSteadyState _rb_eval(comm() , _fe_problem);
     // Pass a pointer of the RBEvaluation object to the
     // RBConstruction object
 

@@ -67,6 +67,9 @@ DwarfElephantRBNodalBC::computeResidual() // DwarfElephantRBNodalBC::computeResi
     {
       const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
 
+      if (_ID_Fq >= _initialize_rb_system._qf)
+        mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
+
       if(_initialize_rb_system._offline_stage)
       {
         if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
@@ -80,6 +83,9 @@ DwarfElephantRBNodalBC::computeResidual() // DwarfElephantRBNodalBC::computeResi
     else if (_simulation_type == "transient")
     {
       const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
+
+      if (_ID_Fq >= _initialize_rb_system._qf)
+        mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
 
       if(_initialize_rb_system._offline_stage)
         if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
@@ -127,10 +133,19 @@ DwarfElephantRBNodalBC::computeJacobian()
             cached_val = cached_val/_node_boundary_list.size();
             for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
               it != _node_boundary_list.end(); it++)
+            {
+              if (*it-_ID_first_block >= _initialize_rb_system._qa)
+               mooseError("The number of stiffness matrices you defined here is not matching the number of stiffness matrices you specified in the RBClasses Class.");
+
               _rb_problem->rbAssembly(*it-_ID_first_block).cacheJacobianContribution(cached_row, cached_row, cached_val);
+            }
            }
-           else
-	          _rb_problem->rbAssembly(_ID_Aq).cacheJacobianContribution(cached_row, cached_row, cached_val);
+           else{
+             if (_ID_Aq >= _initialize_rb_system._qa)
+              mooseError("The number of stiffness matrices you defined here is not matching the number of stiffness matrices you specified in the RBClasses Class.");
+
+	           _rb_problem->rbAssembly(_ID_Aq).cacheJacobianContribution(cached_row, cached_row, cached_val);
+          }
         }
       }
     }
@@ -144,19 +159,29 @@ DwarfElephantRBNodalBC::computeJacobian()
         {
           if (_matrix_seperation_according_to_subdomains)
           {
+            unsigned int _ID_first_block = *_fe_problem.mesh().meshSubdomains().begin();
             const std::set< SubdomainID > & _node_boundary_list = _mesh.getNodeBlockIds(*_var.node());
 
             cached_val = cached_val/_node_boundary_list.size();
             for (std::set<SubdomainID>::const_iterator it = _node_boundary_list.begin();
                it != _node_boundary_list.end(); it++)
             {
-              _rb_problem->rbAssembly(*it).cacheJacobianContribution(cached_row, cached_row, cached_val);
+              if (*it-_ID_first_block >= _initialize_rb_system._qa)
+                mooseError("The number of stiffness matrices you defined here is not matching the number of stiffness matrices you specified in the RBClasses Class.");
+
+              _rb_problem->rbAssembly(*it-_ID_first_block).cacheJacobianContribution(cached_row, cached_row, cached_val);
             }
           }
           else
           {
-          _rb_problem->rbAssembly(_ID_Aq).cacheJacobianContribution(cached_row, cached_row, cached_val);
+            if (_ID_Aq >= _initialize_rb_system._qa)
+             mooseError("The number of stiffness matrices you defined here is not matching the number of stiffness matrices you specified in the RBClasses Class.");
+
+            _rb_problem->rbAssembly(_ID_Aq).cacheJacobianContribution(cached_row, cached_row, cached_val);
           }
+          if (_ID_Mq >= _initialize_rb_system._qm)
+           mooseError("The number of mass matrices you defined here is not matching the number of mass matrices you specified in the RBClasses Class.");
+
           _rb_problem->rbAssembly(_ID_Mq).cacheMassMatrixContribution(cached_row, cached_row, cached_val);
        }
     }

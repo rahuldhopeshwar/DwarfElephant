@@ -14,6 +14,7 @@ InputParameters validParams<DwarfElephantInitializeRBSystemTransient>()
   params.addParam<bool>("quiet_mode", true, "Determines the what is printed to the console.");
   params.addParam<bool>("normalize_rb_bound_in_greedy", false, "Determines whether the normalized RB bound is used in the Greedy or not.");
   params.addParam<bool>("nonzero_initialization", false, "Determines whether zero is taken as initial condition or not.");
+  params.addParam<bool>("parameter_dependent_IC", false, "Determines whether the initial conditions are parameter dependent.");
   params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
 //  params.addRequiredParam<std::string>("parameters_filename","Path to the input file. Required for the libMesh functions");
   params.addParam<std::string>("init_filename", "", "Name of the file containing the inital conditions.");
@@ -47,6 +48,7 @@ DwarfElephantInitializeRBSystemTransient::DwarfElephantInitializeRBSystemTransie
   _quiet_mode(getParam<bool>("quiet_mode")),
   _normalize_rb_bound_in_greedy(getParam<bool>("normalize_rb_bound_in_greedy")),
   _nonzero_initialization(getParam<bool>("nonzero_initialization")),
+  _parameter_dependent_IC(getParam<bool>("parameter_dependent_IC")),
   _max_truth_solves(getParam<int>("max_truth_solves")),
   _n_training_samples(getParam<unsigned int>("n_training_samples")),
   _training_parameters_random_seed(getParam<unsigned int>("training_parameters_random_seed")),
@@ -139,6 +141,8 @@ DwarfElephantInitializeRBSystemTransient::processParameters()
 
   TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_rb_con_ptr->get_rb_evaluation());
   trans_rb_eval.pull_temporal_discretization_data(*_rb_con_ptr);
+
+  _rb_con_ptr->set_parameter_dependent_IC(_parameter_dependent_IC);
 }
 
 void
@@ -218,6 +222,11 @@ DwarfElephantInitializeRBSystemTransient::initializeOfflineStage()
 void
 DwarfElephantInitializeRBSystemTransient::initialize()
 {
+}
+
+void
+DwarfElephantInitializeRBSystemTransient::execute()
+{
   // Define the parameter file for the libMesh functions.
   // GetPot infile (_parameters_filename);
 
@@ -249,11 +258,6 @@ DwarfElephantInitializeRBSystemTransient::initialize()
     // Initialize required matrices and vectors.
       initializeOfflineStage();
   }
-}
-
-void
-DwarfElephantInitializeRBSystemTransient::execute()
-{
 }
 
 void

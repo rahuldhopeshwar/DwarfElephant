@@ -65,6 +65,10 @@ DwarfElephantRBTimeKernel::computeJacobian()
   else if(_simulation_type == "transient") // Transient
   {
     const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
+
+    if (_ID_Mq >= _initialize_rb_system._qm)
+      mooseError("The number of mass matrices you defined here is not matching the number of mass matrices you specified in the RBClasses Class.");
+
     if(_initialize_rb_system._offline_stage)
     // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)

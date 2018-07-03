@@ -43,6 +43,7 @@
 #include "DwarfElephantRBStructuresT3F4O1M2Transient.h"
 #include "DwarfElephantRBStructuresT3F4O3M2Transient.h"
 #include "DwarfElephantRBStructuresT4F1O1M1Transient.h"
+#include "DwarfElephantRBStructuresT4F1O1M1IC1Transient.h"
 #include "DwarfElephantRBStructuresT5F1O1M1Transient.h"
 #include "DwarfElephantRBStructuresT5F4O1M2Transient.h"
 
@@ -78,6 +79,10 @@ public:
   // Type of the parent
   typedef TransientRBConstruction Parent;
 
+  virtual void clear() override;
+
+  virtual void allocate_data_structures() override;
+
   // Initialize data structure
   virtual void init_data() override;
 
@@ -87,8 +92,22 @@ public:
 
   virtual Real get_RB_error_bound() override;
 
+  NumericVector<Number> * get_IC_q(unsigned int q);
+
   unsigned int u_var;
 
+  unsigned int get_parameter_dependent_IC() const {return parameter_dependent_IC;}
+
+  virtual void set_parameter_dependent_IC(bool parameter_dependent_IC_in);
+
+  bool parameter_dependent_IC;
+
+private:
+  /**
+   * Vector storing the Q_ic vectors in the affine decomposition
+   * of the initial conditions.
+   */
+  std::vector<std::unique_ptr<NumericVector<Number>>> IC_q_vector;
 };
 
 ///------------------------DWARFELEPHANTRBEVALUATION------------------------
@@ -104,7 +123,7 @@ public:
   FEProblemBase & get_fe_problem() {return fe_problem;}
 
   FEProblemBase & fe_problem;
-  DwarfElephantRBT2F3O3M2TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT4F1O1M1IC1TransientExpansion _rb_theta_expansion;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBCLASSESTRANSIENT_H

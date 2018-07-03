@@ -26,9 +26,11 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageTransient>()
     params.addParam<bool>("compliant", false, "Specifies if you have a compliant or non-compliant case.");
     params.addParam<bool>("norm_online_values", false, "Determines wether online parameters are normed.");
     params.addParam<unsigned int>("norm_id", 0, "Defines the id of the parameter that will be used for the normalization.");
+    params.addParam<unsigned int>("online_N", 0, "Defines the dimension of the online stage.");
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
     params.addParam<Real>("mu_bar", 1., "Value for mu-bar");
+    params.addParam<unsigned int>("n_outputs", 1, "Defines the number of outputs.");
     params.addRequiredParam<std::vector<Real>>("online_mu", "Current values of the different layers for which the RB Method is solved.");
 
     return params;
@@ -50,6 +52,7 @@ DwarfElephantOfflineOnlineStageTransient::DwarfElephantOfflineOnlineStageTransie
     _compliant(getParam<bool>("compliant")),
     _norm_online_values(getParam<bool>("norm_online_values")),
     _norm_id(getParam<unsigned int>("norm_id")),
+    _n_outputs(getParam<unsigned int>("n_outputs")),
     _system_name(getParam<std::string>("system")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
@@ -57,6 +60,7 @@ DwarfElephantOfflineOnlineStageTransient::DwarfElephantOfflineOnlineStageTransie
     _mesh_ptr(&_fe_problem.mesh()),
     _subdomain_ids(_mesh_ptr->meshSubdomains()),
     _mu_bar(getParam<Real>("mu_bar")),
+    _online_N(getParam<unsigned int>("online_N")),
     _online_mu_parameters(getParam<std::vector<Real>>("online_mu")),
     _rb_problem(cast_ptr<DwarfElephantRBProblem *>(&_fe_problem))
 {
@@ -157,18 +161,27 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 {
     // Build the RBEvaluation object
     // Required for both the Offline and Online stage.
-    DwarfElephantRBEvaluationTransient _rb_eval(_mesh_ptr->comm() , _fe_problem);
-    // Pass a pointer of the RBEvaluation object to the
-    // RBConstruction object
-    _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
+    DwarfElephantRBEvaluationTransient _rb_eval(comm() , _fe_problem);
 
 //    _initialize_rb_system._rb_con_ptr->process_parameters_file(_initialize_rb_system._parameters_filename);
 
-    TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
-    trans_rb_eval.pull_temporal_discretization_data(*_initialize_rb_system._rb_con_ptr);
+    if (!_offline_stage && _output_file)
+      _initialize_rb_system._rb_con_ptr->init();
+
+    if (_offline_stage || _output_file || _offline_error_bound || _online_N == 0)
+    {
+      // Pass a pointer of the RBEvaluation object to the
+      // RBConstruction object
+      _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
+
+      TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_rb_eval);
+      trans_rb_eval.pull_temporal_discretization_data(*_initialize_rb_system._rb_con_ptr);
+    }
 
     if (_offline_stage)
     {
+      TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_rb_eval);
+      trans_rb_eval.pull_temporal_discretization_data(*_initialize_rb_system._rb_con_ptr);
       // Transfer the affine vectors to the RB system.
       if(_skip_vector_assembly_in_rb_system)
         transferAffineVectors();
@@ -187,8 +200,6 @@ DwarfElephantOfflineOnlineStageTransient::execute()
     {
       Moose::perf_log.push("onlineStage()", "Execution");
 
-      _n_outputs = _initialize_rb_system._rb_con_ptr->get_rb_theta_expansion().get_n_outputs();
-
       #if defined(LIBMESH_HAVE_CAPNPROTO)
         RBDataDeserialization::TrasientRBEvaluationDeserialization _rb_eval_reader(_rb_eval);
         _rb_eval_reader.read_from_file("trans_rb_eval.bin", /*read_error_bound_data*/ true);
@@ -202,7 +213,8 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       _console << "---- Online Stage ----" << std::endl;
       _rb_eval.print_parameters();
 
-      _online_N = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
+      if(_online_N==0)
+        _online_N = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
 
      if(_offline_error_bound)
       _initialize_rb_system._rb_con_ptr->get_rb_evaluation().evaluate_RB_error_bound = false;
@@ -215,7 +227,7 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 
       if(_output_console)
       {
-        TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
+        TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_rb_eval);
         for (unsigned int i = 0; i != _n_outputs; i++)
           for (unsigned int _time_step = 0; _time_step <= _n_time_steps; _time_step++)
             _console << "Output " << std::to_string(i) << " at timestep "
@@ -228,7 +240,7 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 
       if (_output_csv)
       {
-        TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
+        TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_rb_eval);
 
         _RB_outputs_all_timesteps.resize(_n_time_steps+1);
 
@@ -250,12 +262,8 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       {
          _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
 
-         _console << _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_basis_function(0) << std::endl;
-
          for (unsigned int _time_step = 0; _time_step <= _n_time_steps; _time_step++)
         {
-          // TODO: Check whether this line is really not needed
-          // _initialize_rb_system._rb_con_ptr->pull_temporal_discretization_data(_rb_eval);
           _initialize_rb_system._rb_con_ptr->set_time_step(_time_step);
           _initialize_rb_system._rb_con_ptr->load_rb_solution();
           *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;

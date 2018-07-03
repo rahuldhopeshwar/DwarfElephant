@@ -85,6 +85,7 @@ class DwarfElephantInitializeRBSystemTransient :
     bool _quiet_mode;
     bool _normalize_rb_bound_in_greedy;
     bool _nonzero_initialization;
+    bool _parameter_dependent_IC;
 
     int _max_truth_solves;
     unsigned int _n_training_samples;
