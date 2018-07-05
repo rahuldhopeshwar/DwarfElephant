@@ -94,11 +94,25 @@ public:
 
   NumericVector<Number> * get_IC_q(unsigned int q);
 
-  unsigned int u_var;
+  NumericVector<Number> * get_non_dirichlet_IC_q(unsigned int q);
+
+  NumericVector<Number> * get_non_dirichlet_IC_q_if_avail(unsigned int q);
 
   unsigned int get_parameter_dependent_IC() const {return parameter_dependent_IC;}
 
   virtual void set_parameter_dependent_IC(bool parameter_dependent_IC_in);
+
+  void update_RB_initial_condition_all_N();
+
+  virtual void update_system() override;
+
+  virtual Real train_reduced_basis(const bool resize_rb_eval_data=true) override;
+
+  virtual Real train_reduced_basis_steady(const bool resize_rb_eval_data=true);
+
+  void enrich_RB_space_for_initial_conditions();
+
+  unsigned int u_var;
 
   bool parameter_dependent_IC;
 
@@ -108,6 +122,7 @@ private:
    * of the initial conditions.
    */
   std::vector<std::unique_ptr<NumericVector<Number>>> IC_q_vector;
+  std::vector<std::unique_ptr<NumericVector<Number>>> non_dirichlet_IC_q_vector;
 };
 
 ///------------------------DWARFELEPHANTRBEVALUATION------------------------
@@ -120,9 +135,17 @@ public:
 
   virtual Real get_stability_lower_bound() override;
 
+  virtual Real rb_solve(unsigned int N) override;
+
   FEProblemBase & get_fe_problem() {return fe_problem;}
 
+  unsigned int get_parameter_dependent_IC() const {return parameter_dependent_IC;}
+
+  virtual void set_parameter_dependent_IC(bool parameter_dependent_IC_in);
+
+
   FEProblemBase & fe_problem;
+  bool parameter_dependent_IC;
   DwarfElephantRBT4F1O1M1IC1TransientExpansion _rb_theta_expansion;
 };
 ///-------------------------------------------------------------------------

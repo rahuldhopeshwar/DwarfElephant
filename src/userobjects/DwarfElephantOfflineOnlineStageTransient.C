@@ -80,8 +80,6 @@ DwarfElephantOfflineOnlineStageTransient::setAffineMatrices()
     _initialize_rb_system._L2_matrix -> close();
     for(unsigned int _q=0; _q<_initialize_rb_system._qm; _q++)
     {
-      // _initialize_rb_system._mass_matrix_subdomain[_q] ->close();
-      // _initialize_rb_system._L2_matrix->add(_mu_bar, *_initialize_rb_system._mass_matrix_subdomain[_q]);
       _rb_problem->rbAssembly(_q).setCachedMassMatrixContributions(*_initialize_rb_system._mass_matrix_subdomain[_q]);
       _initialize_rb_system._mass_matrix_subdomain[_q] ->close();
       _initialize_rb_system._L2_matrix->add(_mu_bar, *_initialize_rb_system._mass_matrix_subdomain[_q]);
@@ -97,6 +95,11 @@ DwarfElephantOfflineOnlineStageTransient::transferAffineVectors()
   {
     _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q]);
     _initialize_rb_system._residuals[_q]->close();
+  }
+
+  for(unsigned int _q=0; _q<_initialize_rb_system._q_ic; _q++)
+  {
+    *_initialize_rb_system._inital_conditions[_q] = *_fe_problem.es().get_system("rb0").solution;
   }
 
   // The RB code runs into problems for non-homogeneous boundary conditions
@@ -163,7 +166,8 @@ DwarfElephantOfflineOnlineStageTransient::execute()
     // Required for both the Offline and Online stage.
     DwarfElephantRBEvaluationTransient _rb_eval(comm() , _fe_problem);
 
-//    _initialize_rb_system._rb_con_ptr->process_parameters_file(_initialize_rb_system._parameters_filename);
+    DwarfElephantRBEvaluationTransient & _dwarf_elephant_trans_rb_eval = cast_ref<DwarfElephantRBEvaluationTransient &>(_rb_eval);
+    _dwarf_elephant_trans_rb_eval.set_parameter_dependent_IC(_initialize_rb_system._parameter_dependent_IC);
 
     if (!_offline_stage && _output_file)
       _initialize_rb_system._rb_con_ptr->init();

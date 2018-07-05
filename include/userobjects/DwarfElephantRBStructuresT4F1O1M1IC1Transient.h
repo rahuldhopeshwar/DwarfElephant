@@ -49,7 +49,7 @@ struct DwarfElephantRBT4F1O1M1IC1TransientExpansion : DwarfElephantRBTransientTh
 
     attach_output_theta(&_rb_theta);
 
-    attach_IC_theta(&_rb_theta);
+    attach_IC_theta(&_theta_a_3);
 
   }
   // Member Variables
@@ -57,6 +57,7 @@ struct DwarfElephantRBT4F1O1M1IC1TransientExpansion : DwarfElephantRBTransientTh
   DwarfElephantThetaA0EqualMu0 _theta_a_0;
   DwarfElephantThetaA1EqualMu1 _theta_a_1;
   DwarfElephantThetaA2EqualMu2 _theta_a_2;
+  DwarfElephantThetaA3EqualMu3 _theta_a_3;
   RBTheta _rb_theta;         // Default RBTheta object, simply returns one.
 };
 

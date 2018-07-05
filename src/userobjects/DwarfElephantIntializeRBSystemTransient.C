@@ -168,6 +168,7 @@ DwarfElephantInitializeRBSystemTransient::initializeOfflineStage()
   _jacobian_subdomain.resize(_qa);
   _mass_matrix_subdomain.resize(_qm);
   _residuals.resize(_qf);
+  _inital_conditions.resize(_q_ic);
   _outputs.resize(_n_outputs);
 
   for (unsigned int i=0; i < _n_outputs; i++)
@@ -214,9 +215,14 @@ DwarfElephantInitializeRBSystemTransient::initializeOfflineStage()
    for (unsigned int _q=0; _q < _qf; _q++)
      _residuals[_q] = _rb_con_ptr->get_Fq(_q);
 
+
+  DwarfElephantRBConstructionTransient * _dwarf_elephant_rb_con_ptr = dynamic_cast<DwarfElephantRBConstructionTransient * > (_rb_con_ptr);
+  for (unsigned int _q=0; _q < _q_ic; _q++)
+    _inital_conditions[_q] = _rb_con_ptr->get_IC_q(_q);
+
    for (unsigned int i=0; i < _n_outputs; i++)
      for (unsigned int _q=0; _q < _ql[i]; _q++)
-       _outputs[i][_q] = _rb_con_ptr->get_output_vector(i,_q);
+       _outputs[i][_q] = _dwarf_elephant_rb_con_ptr->get_output_vector(i,_q);
 }
 
 void
@@ -251,6 +257,14 @@ DwarfElephantInitializeRBSystemTransient::execute()
     _qa = _rb_con_ptr->get_rb_theta_expansion().get_n_A_terms();
     _qm = _trans_theta_expansion.get_n_M_terms();
     _qf = _rb_con_ptr->get_rb_theta_expansion().get_n_F_terms();
+
+    DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
+      cast_ref<DwarfElephantRBTransientThetaExpansion &>(_rb_con_ptr->get_rb_theta_expansion());
+
+    _q_ic = dwarf_elephant_trans_theta_expansion.get_n_IC_terms();
+
+    if(_q_ic>1)
+      mooseError("Currently, the case of q_ic > 1 is not supported.");
 
     for(unsigned int i=0; i < _n_outputs; i++)
     _ql[i] = _rb_con_ptr->get_rb_theta_expansion().get_n_output_terms(i);

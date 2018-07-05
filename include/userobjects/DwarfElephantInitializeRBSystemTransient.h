@@ -97,6 +97,7 @@ class DwarfElephantInitializeRBSystemTransient :
     unsigned int _qa;
     unsigned int _qm;
     unsigned int _qf;
+    unsigned int _q_ic;
     std::vector<unsigned int> _ql;
 
     Real _rel_training_tolerance;
@@ -125,6 +126,7 @@ class DwarfElephantInitializeRBSystemTransient :
     std::vector<SparseMatrix <Number> *> _jacobian_subdomain;
     std::vector<SparseMatrix <Number> *> _mass_matrix_subdomain;
     std::vector<NumericVector <Number> *> _residuals;
+    std::vector<NumericVector <Number> *> _inital_conditions;
     std::vector<std::vector<NumericVector <Number> *> > _outputs;
 
     /*Friend Classes*/
