@@ -146,7 +146,7 @@ public:
 
   FEProblemBase & fe_problem;
   bool parameter_dependent_IC;
-  DwarfElephantRBT4F1O1M1IC1TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT3F1O1M1TransientExpansion _rb_theta_expansion;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBCLASSESTRANSIENT_H

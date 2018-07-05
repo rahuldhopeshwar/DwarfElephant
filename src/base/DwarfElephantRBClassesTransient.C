@@ -27,13 +27,16 @@ DwarfElephantRBConstructionTransient::clear()
 {
   Parent::clear();
 
-  // clear the initial conditions
-  IC_q_vector.clear();
+  if(parameter_dependent_IC)
+  {
+    // clear the initial conditions
+    IC_q_vector.clear();
 
-  if (store_non_dirichlet_operators)
-    {
-      non_dirichlet_IC_q_vector.clear();
-    }
+    if (store_non_dirichlet_operators)
+      {
+        non_dirichlet_IC_q_vector.clear();
+      }
+  }
 
 }
 
@@ -42,29 +45,32 @@ DwarfElephantRBConstructionTransient::allocate_data_structures()
 {
   Parent::allocate_data_structures();
 
-  DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
-    cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
+  if(parameter_dependent_IC)
+  {
+    DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
+      cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
 
-  IC_q_vector.resize(dwarf_elephant_trans_theta_expansion.get_n_IC_terms());
+      IC_q_vector.resize(dwarf_elephant_trans_theta_expansion.get_n_IC_terms());
 
-  // Initialize the intial conditions
-  for (unsigned int q=0; q<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q++)
-    {
-      // Initialize the memory for the vectors
-      IC_q_vector[q] = NumericVector<Number>::build(this->comm());
-      IC_q_vector[q]->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
-    }
-
-    // We also need to initialize a second set of non-Dirichlet operators
-    if (store_non_dirichlet_operators)
+      // Initialize the intial conditions
+      for (unsigned int q=0; q<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q++)
       {
-        non_dirichlet_IC_q_vector.resize(dwarf_elephant_trans_theta_expansion.get_n_IC_terms());
-        for (unsigned int q=0; q<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q++)
+        // Initialize the memory for the vectors
+        IC_q_vector[q] = NumericVector<Number>::build(this->comm());
+        IC_q_vector[q]->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+      }
+
+      // We also need to initialize a second set of non-Dirichlet operators
+      if (store_non_dirichlet_operators)
+        {
+          non_dirichlet_IC_q_vector.resize(dwarf_elephant_trans_theta_expansion.get_n_IC_terms());
+          for (unsigned int q=0; q<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q++)
           {
             // Initialize the memory for the vectors
             non_dirichlet_IC_q_vector[q] = NumericVector<Number>::build(this->comm());
             non_dirichlet_IC_q_vector[q]->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
           }
+        }
       }
 
 }

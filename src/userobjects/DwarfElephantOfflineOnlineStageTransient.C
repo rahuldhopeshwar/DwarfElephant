@@ -97,10 +97,13 @@ DwarfElephantOfflineOnlineStageTransient::transferAffineVectors()
     _initialize_rb_system._residuals[_q]->close();
   }
 
+if(_initialize_rb_system._parameter_dependent_IC)
+{
   for(unsigned int _q=0; _q<_initialize_rb_system._q_ic; _q++)
   {
     *_initialize_rb_system._inital_conditions[_q] = *_fe_problem.es().get_system("rb0").solution;
   }
+}
 
   // The RB code runs into problems for non-homogeneous boundary conditions
   // and the following lines are only needed in case of Nodal BCs
@@ -166,8 +169,11 @@ DwarfElephantOfflineOnlineStageTransient::execute()
     // Required for both the Offline and Online stage.
     DwarfElephantRBEvaluationTransient _rb_eval(comm() , _fe_problem);
 
-    DwarfElephantRBEvaluationTransient & _dwarf_elephant_trans_rb_eval = cast_ref<DwarfElephantRBEvaluationTransient &>(_rb_eval);
-    _dwarf_elephant_trans_rb_eval.set_parameter_dependent_IC(_initialize_rb_system._parameter_dependent_IC);
+    if(_initialize_rb_system._parameter_dependent_IC)
+    {
+      DwarfElephantRBEvaluationTransient & _dwarf_elephant_trans_rb_eval = cast_ref<DwarfElephantRBEvaluationTransient &>(_rb_eval);
+      _dwarf_elephant_trans_rb_eval.set_parameter_dependent_IC(_initialize_rb_system._parameter_dependent_IC);
+    }
 
     if (!_offline_stage && _output_file)
       _initialize_rb_system._rb_con_ptr->init();
