@@ -68,11 +68,24 @@ DwarfElephantRBKernel::DwarfElephantRBKernel(const InputParameters & parameters)
 void
 DwarfElephantRBKernel::initialSetup()
 {
-  // mooseInfo("For performing the reduced basis method a seperation of the stiffness matrix and the load vector according to "
-  //           "the theta values is necessary. Therefore, the algorithm needs an ID for the matrices and vectors. The default "
-  //           "setting seperates the matrices into the subdomain contributions. By performing the "
-  //           "Kernels block wise and specify the ID in the inputfile any other seperation is also possible. Due to the seperation the occurence of segmentation faults is likely. If "
-  //           "a segementation fault occurs right after 'quiet mode?' check whether you: used the correct RBStructures header file in the RBClasses class.");
+  if(_simulation_type == "steady")  // SteadyState
+  {
+    _initialize_rb_system = &getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
+
+    if(_initialize_rb_system->_exec_flags[0] != EXEC_INITIAL)
+    mooseError("The UserObject 'DwarfElephantInitializeRBSystemSteadyState' has to be executed on 'initial'. "
+               "You defined a wrong state in your 'execute_on' line in the input file. "
+               "Please, correct your settings.");
+  }
+  else
+  {
+    _initialize_rb_system_transient = &getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
+
+    if(_initialize_rb_system_transient->_exec_flags[0] != EXEC_INITIAL)
+    mooseError("The UserObject 'DwarfElephantInitializeRBSystemTransient' has to be executed on 'initial'. "
+               "You defined a wrong state in your 'execute_on' line in the input file. "
+               "Please, correct your settings.");
+  }
 }
 
 void
@@ -96,38 +109,23 @@ DwarfElephantRBKernel::computeResidual()
 
   if(_simulation_type == "steady")  // SteadyState
   {
-    const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
-
-    if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
-    mooseError("The UserObject 'DwarfElephantInitializeRBSystemSteadyState' has to be executed on 'initial'. "
-               "You defined a wrong state in your 'execute_on' line in the input file. "
-               "Please, correct your settings.");
-
-    if (_ID_Fq >= _initialize_rb_system._qf)
+    if (_ID_Fq >= _initialize_rb_system->_qf)
       mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
 
-    if(_initialize_rb_system._offline_stage)
+    if(_initialize_rb_system->_offline_stage)
       // Add the calculated vectors to the vectors from the RB system.
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
-        _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
+        _initialize_rb_system->_residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
   }
   else if (_simulation_type == "transient") // Transient
   {
-    const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
-
-    if(_initialize_rb_system._exec_flags[0] != EXEC_INITIAL)
-    mooseError("The UserObject 'DwarfElephantInitializeRBSystemTransient' has to be executed on 'initial'. "
-               "You defined a wrong state in your 'execute_on' line in the input file. "
-               "Please, correct your settings.");
-
-    if (_ID_Fq >= _initialize_rb_system._qf)
+    if (_ID_Fq >= _initialize_rb_system_transient->_qf)
       mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
 
-
-    if(_initialize_rb_system._offline_stage)
+    if(_initialize_rb_system_transient->_offline_stage)
       // Add the calculated vectors to the vectors from the RB system.
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
-        _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
+        _initialize_rb_system_transient->_residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
   }
 
   if (_has_save_in)
@@ -161,20 +159,16 @@ DwarfElephantRBKernel::computeOutput()
 
   if(_simulation_type == "steady")  // SteadyState
   {
-    const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
-
-    if(_initialize_rb_system._offline_stage)
+    if(_initialize_rb_system->_offline_stage)
       // Add the calculated vectors to the vectors from the RB system.
-        _initialize_rb_system._outputs[0][_ID_Oq] -> add_vector(_local_out, _var.dofIndices());
+        _initialize_rb_system->_outputs[0][_ID_Oq] -> add_vector(_local_out, _var.dofIndices());
   }
   else if (_simulation_type == "transient") // Transient
   {
-    const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
-
-    if(_initialize_rb_system._offline_stage)
+    if(_initialize_rb_system_transient->_offline_stage)
       // Add the calculated vectors to the vectors from the RB system.
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
-        _initialize_rb_system._outputs[0][_ID_Oq] -> add_vector(_local_out, _var.dofIndices());
+        _initialize_rb_system_transient->_outputs[0][_ID_Oq] -> add_vector(_local_out, _var.dofIndices());
   }
 }
 
@@ -198,29 +192,25 @@ DwarfElephantRBKernel::computeJacobian()
 
   if(_simulation_type == "steady")  // Steady State
   {
-    const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
-
-    if (_ID_Aq >= _initialize_rb_system._qa)
+    if (_ID_Aq >= _initialize_rb_system->_qa)
       mooseError("The number of stiffness matrices you defined here is not matching the number of stiffness matrices you specified in the RBClasses Class.");
 
-    if(_initialize_rb_system._offline_stage)
+    if(_initialize_rb_system->_offline_stage)
     // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
-        _initialize_rb_system._jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
+        _initialize_rb_system->_jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
    }
 
   else if(_simulation_type == "transient") // Transient
   {
-    const DwarfElephantInitializeRBSystemTransient & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemTransient>("initial_rb_userobject");
-
-    if (_ID_Aq >= _initialize_rb_system._qa)
+    if (_ID_Aq >= _initialize_rb_system_transient->_qa)
       mooseError("The number of stiffness matrices you defined here is not matching the number of stiffness matrices you specified in the RBClasses Class.");
 
-    if(_initialize_rb_system._offline_stage)
+    if(_initialize_rb_system_transient->_offline_stage)
     // Add the calculated matrices to the Aq matrices from the RB system.
     if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
     {
-        _initialize_rb_system._jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
+        _initialize_rb_system_transient->_jacobian_subdomain[_ID_Aq] -> add_matrix(_local_ke, _var.dofIndices());
     }
   }
 

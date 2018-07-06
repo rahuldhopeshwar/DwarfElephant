@@ -36,6 +36,7 @@ class NonlinearSystemBase;
 class DisplacedProblem;
 
 class DwarfElephantInitializeRBSystemSteadyState;
+class DwarfElephantInitializeRBSystemTransient;
 class DwarfElephantRBKernel;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
@@ -85,6 +86,9 @@ protected:
   DenseVector<Number> _local_out;
 
   EquationSystems & _es;
+
+  const DwarfElephantInitializeRBSystemSteadyState * _initialize_rb_system;
+  const DwarfElephantInitializeRBSystemTransient * _initialize_rb_system_transient;
 };
 
 ///-------------------------------------------------------------------------

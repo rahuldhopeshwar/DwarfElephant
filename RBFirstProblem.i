@@ -57,7 +57,7 @@
 [../]
 [./performRBSystem ]
   type = DwarfElephantOfflineOnlineStageSteadyState
-  online_mu = '1.05 2.5 1.05'
+  online_mu = '1.0 2.38 1.0'
   execute_on = 'timestep_end'
 [../]
 []

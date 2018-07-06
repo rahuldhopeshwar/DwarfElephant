@@ -35,6 +35,7 @@ class MooseMesh;
 class NonlinearSystemBase;
 
 class DwarfElephantInitializeRBSystemSteadyState;
+class DwarfElephantInitializeRBSystemTransient;
 class DwarfElephantRBNodalBC;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
@@ -74,6 +75,9 @@ protected:
   unsigned int _ID_Aq;
   unsigned int _ID_Mq;
   DwarfElephantRBProblem * _rb_problem;
+
+  const DwarfElephantInitializeRBSystemSteadyState * _initialize_rb_system;
+  const DwarfElephantInitializeRBSystemTransient * _initialize_rb_system_transient;
 };
 
 #endif /* DWARFELEPHANTRBNODALBC_H */
