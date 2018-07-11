@@ -101,7 +101,8 @@ if(_initialize_rb_system._parameter_dependent_IC)
 {
   for(unsigned int _q=0; _q<_initialize_rb_system._q_ic; _q++)
   {
-    *_initialize_rb_system._inital_conditions[_q] = *_fe_problem.es().get_system("rb0").solution;
+    _initialize_rb_system._inital_conditions[_q]->close();
+    // *_initialize_rb_system._inital_conditions[_q] = *_fe_problem.es().get_system("rb0").solution;
   }
 }
 
@@ -211,7 +212,7 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       Moose::perf_log.push("onlineStage()", "Execution");
 
       #if defined(LIBMESH_HAVE_CAPNPROTO)
-        RBDataDeserialization::TrasientRBEvaluationDeserialization _rb_eval_reader(_rb_eval);
+        RBDataDeserialization::TransientRBEvaluationDeserialization _rb_eval_reader(_rb_eval);
         _rb_eval_reader.read_from_file("trans_rb_eval.bin", /*read_error_bound_data*/ true);
       #else
         _rb_eval.legacy_read_offline_data_from_files();

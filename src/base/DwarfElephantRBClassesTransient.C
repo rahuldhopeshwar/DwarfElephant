@@ -139,9 +139,7 @@ DwarfElephantRBConstructionTransient::init_data()
           this->solution->zero();
 
           for (unsigned int q_ic=0; q_ic<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q_ic++)
-          {
             this->solution.get()->add(dwarf_elephant_trans_theta_expansion.eval_IC_theta(q_ic, mu), *get_IC_q(q_ic));
-          }
         }
       }
     else
@@ -228,10 +226,13 @@ DwarfElephantRBConstructionTransient::init_data()
     if (get_delta_N() == 0)
       return;
 
-    Parent::update_system();
+    RBConstruction::update_system();
 
     libMesh::out << "Updating RB initial conditions" << std::endl;
-    update_RB_initial_condition_all_N();
+    if (!parameter_dependent_IC)
+      update_RB_initial_condition_all_N();
+    else
+      update_RB_parameterized_initial_condition_all_N();
   }
 
   void
@@ -241,13 +242,8 @@ DwarfElephantRBConstructionTransient::init_data()
 
     TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(get_rb_evaluation());
 
-    // DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
-    //   cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
-
-
     // Load the initial condition into the solution vector
-    if(!parameter_dependent_IC)
-      initialize_truth();
+    initialize_truth();
 
     std::unique_ptr<NumericVector<Number>> temp1 = NumericVector<Number>::build(this->comm());
     temp1->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
@@ -259,10 +255,7 @@ DwarfElephantRBConstructionTransient::init_data()
     unsigned int RB_size = get_rb_evaluation().get_n_basis_functions();
 
     // First compute the right-hand side vector for the L2 projection
-    if(!parameter_dependent_IC)
-      L2_matrix->vector_mult(*temp1, *solution);
-    else
-      L2_matrix->vector_mult(*temp1, *get_IC_q(0));
+    L2_matrix->vector_mult(*temp1, *solution);
 
     for (unsigned int i=(RB_size-delta_N); i<RB_size; i++)
       {
@@ -298,10 +291,99 @@ DwarfElephantRBConstructionTransient::init_data()
           }
 
         // subtract truth initial condition from RB_ic_N
-        if(!parameter_dependent_IC)
-          temp1->add(-1., *solution);
-        else
-          temp1->add(-1., *get_IC_q(0));
+        temp1->add(-1., *solution);
+
+        // Compute L2 norm error, i.e. sqrt(M(solution,solution))
+        temp2->zero();
+        L2_matrix->vector_mult(*temp2, *temp1);
+
+        trans_rb_eval.initial_L2_error_all_N[N] = libmesh_real(std::sqrt(temp2->dot(*temp1)));
+      }
+  }
+
+  void
+  DwarfElephantRBConstructionTransient::update_RB_parameterized_initial_condition_all_N()
+  {
+
+    TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(get_rb_evaluation());
+
+    DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
+      cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
+
+    DwarfElephantRBEvaluationTransient & dwarf_elephant_trans_rb_eval =
+      cast_ref<DwarfElephantRBEvaluationTransient &>(get_rb_evaluation());
+
+    std::unique_ptr<NumericVector<Number>> temp1 = NumericVector<Number>::build(this->comm());
+    temp1->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+
+    std::unique_ptr<NumericVector<Number>> temp2 = NumericVector<Number>::build(this->comm());
+    temp2->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+
+    std::vector<std::unique_ptr<NumericVector<Number>>> temp3;
+    temp3.resize(dwarf_elephant_trans_theta_expansion.get_n_IC_terms());
+
+    for (unsigned int q_ic=0; q_ic<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q_ic++)
+    {
+      temp3[q_ic]= NumericVector<Number>::build(this->comm());
+      temp3[q_ic]->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+    }
+
+    unsigned int RB_size = get_rb_evaluation().get_n_basis_functions();
+
+    // First compute the right-hand side vector for the L2 projection
+    for (unsigned int q_ic=0; q_ic<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q_ic++)
+    {
+      L2_matrix->vector_mult(*temp3[q_ic], *get_IC_q(q_ic));
+    }
+
+    for (unsigned int q_ic=0; q_ic<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q_ic++)
+    {
+      for (unsigned int i=(RB_size-delta_N); i<RB_size; i++)
+      {
+      // RB_ic_proj_rhs_all_N(i) = temp1->dot(get_rb_evaluation().get_basis_function(i));
+        dwarf_elephant_trans_rb_eval.RB_IC_q_vector[q_ic](i) = temp3[q_ic]->dot(get_rb_evaluation().get_basis_function(i));
+      }
+    }
+
+    // Now compute the projection for each N
+    DenseMatrix<Number> RB_L2_matrix_N;
+    DenseVector<Number> RB_rhs_N;
+    DenseVector<Number> RB_IC_q_f;
+
+    const RBParameters & mu = get_parameters();
+
+    for (unsigned int N=(RB_size-delta_N); N<RB_size; N++)
+      {
+        RB_rhs_N.resize(N+1);
+        // We have to index here by N+1 since the loop index is zero-based.
+        trans_rb_eval.RB_L2_matrix.get_principal_submatrix(N+1, RB_L2_matrix_N);
+        // RB_ic_proj_rhs_all_N.get_principal_subvector(N+1, RB_rhs_N);
+
+        for (unsigned int q_ic=0; q_ic<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q_ic++)
+        {
+          dwarf_elephant_trans_rb_eval.RB_IC_q_vector[q_ic].get_principal_subvector(N+1, RB_IC_q_f);
+          RB_rhs_N.add(dwarf_elephant_trans_theta_expansion.eval_IC_theta(q_ic, mu), RB_IC_q_f);
+        }
+
+        DenseVector<Number> RB_ic_N(N+1);
+
+        // Now solve the linear systems
+        RB_L2_matrix_N.lu_solve(RB_rhs_N, RB_ic_N);
+
+        // Compute the L2 error for the RB initial condition
+        // This part is dependent on the truth space.
+
+        // load the RB solution into temp1
+        temp1->zero();
+
+        for (unsigned int i=0; i<N+1; i++)
+        {
+          temp1->add(RB_ic_N(i), get_rb_evaluation().get_basis_function(i));
+        }
+
+        initialize_truth();
+        // subtract truth initial condition from RB_ic_N
+        temp1->add(-1., *solution);
 
         // Compute L2 norm error, i.e. sqrt(M(solution,solution))
         temp2->zero();
@@ -427,7 +509,14 @@ DwarfElephantRBConstructionTransient::init_data()
     // DwarfElephantRBEvaluationTransient & trans_rb_eval = cast_ref<DwarfElephantRBEvaluationTransient &>(get_rb_evaluation());
     auto new_bf = NumericVector<Number>::build(this->comm());
     new_bf->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
-    *new_bf = *get_IC_q(0);
+
+    DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
+      cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
+
+    for (unsigned int q_ic=0; q_ic<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q_ic++)
+    {
+      new_bf->add(1., *get_IC_q(q_ic));
+    }
 
     for (unsigned int index=0; index<get_rb_evaluation().get_n_basis_functions(); index++)
       {
@@ -457,6 +546,8 @@ DwarfElephantRBConstructionTransient::init_data()
 
 
 ///------------------------DWARFELEPHANTRBEVALUATION------------------------
+#include "libmesh/xdr_cxx.h"
+
   DwarfElephantRBEvaluationTransient::DwarfElephantRBEvaluationTransient(const libMesh::Parallel::Communicator & comm, FEProblemBase & fe_problem):
     TransientRBEvaluation(comm),
     fe_problem(fe_problem),
@@ -513,9 +604,6 @@ DwarfElephantRBConstructionTransient::init_data()
 
     TransientRBThetaExpansion & trans_theta_expansion =
       cast_ref<TransientRBThetaExpansion &>(get_rb_theta_expansion());
-
-    DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
-      cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
 
     const unsigned int Q_m = trans_theta_expansion.get_n_M_terms();
     const unsigned int Q_a = trans_theta_expansion.get_n_A_terms();
@@ -582,12 +670,30 @@ DwarfElephantRBConstructionTransient::init_data()
     // Load the initial condition into RB_solution
     if (N > 0)
       {
-        RB_solution = RB_initial_condition_all_N[N-1];
-
         if (parameter_dependent_IC)
         {
-          RB_solution *= dwarf_elephant_trans_theta_expansion.eval_IC_theta(0,mu);
+          DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
+            cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
+
+          DenseVector<Number> RB_rhs_N(N);
+          DenseMatrix<Number> RB_L2_matrix_N;
+
+          DenseVector<Number> RB_IC_q_f;
+          for (unsigned int q_ic=0; q_ic<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q_ic++)
+          {
+            RB_IC_q_vector[q_ic].get_principal_subvector(N, RB_IC_q_f);
+            RB_rhs_N.add(dwarf_elephant_trans_theta_expansion.eval_IC_theta(q_ic,mu),RB_IC_q_f);
+          }
+
+          RB_L2_matrix.get_principal_submatrix(N, RB_L2_matrix_N);
+
+          // DenseVector<Number> RB_ic_N(N+1);
+
+          // Now solve the linear systems
+          RB_L2_matrix_N.lu_solve(RB_rhs_N, RB_solution);
         }
+        else
+          RB_solution = RB_initial_condition_all_N[N-1];
       }
 
     // Resize/clear the old solution vector
@@ -718,3 +824,119 @@ DwarfElephantRBConstructionTransient::init_data()
         return -1.;
       }
   }
+
+void
+DwarfElephantRBEvaluationTransient::resize_data_structures(const unsigned int Nmax,
+                                                     bool resize_error_bound_data)
+{
+  Parent::resize_data_structures(Nmax,resize_error_bound_data);
+
+  if(parameter_dependent_IC)
+  {
+    DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
+      cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
+
+    RB_IC_q_vector.resize(dwarf_elephant_trans_theta_expansion.get_n_IC_terms());
+
+    for (unsigned int q=0; q<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q++)
+    {
+      // Initialize the memory for the RB vectors
+      RB_IC_q_vector[q].resize(Nmax);
+    }
+  }
+}
+
+void
+DwarfElephantRBEvaluationTransient::legacy_write_offline_data_to_files(const std::string & directory_name,
+                                                                       const bool write_binary_data)
+{
+  Parent::legacy_write_offline_data_to_files(directory_name, write_binary_data);
+
+  if(parameter_dependent_IC)
+  {
+    DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
+      cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
+
+    // The writing mode: ENCODE for binary, WRITE for ASCII
+    XdrMODE mode = write_binary_data ? ENCODE : WRITE;
+
+    // The suffix to use for all the files that are written out
+    const std::string suffix = write_binary_data ? ".xdr" : ".dat";
+
+    if (this->processor_id() == 0)
+    {
+      // Next write out the IC_q vectors
+      std::ostringstream file_name;
+      unsigned int n_bfs = this->get_n_basis_functions();
+
+      for (unsigned int q_ic=0; q_ic<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q_ic++)
+        {
+          file_name.str("");
+          file_name << directory_name << "/RB_IC_";
+          file_name << std::setw(3)
+                    << std::setprecision(0)
+                    << std::setfill('0')
+                    << std::right
+                    << q_ic;
+          file_name << suffix;
+          Xdr RB_IC_q_f_out(file_name.str(), mode);
+
+          for (unsigned int i=0; i<n_bfs; i++)
+            {
+              RB_IC_q_f_out << RB_IC_q_vector[q_ic](i);
+            }
+          RB_IC_q_f_out.close();
+        }
+    }
+  }
+}
+
+void
+DwarfElephantRBEvaluationTransient::legacy_read_offline_data_from_files(const std::string & directory_name,
+                                                                        bool read_error_bound_data,
+                                                                        const bool read_binary_data)
+{
+  Parent::legacy_read_offline_data_from_files(directory_name, read_error_bound_data, read_binary_data);
+
+  if(parameter_dependent_IC)
+  {
+    DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
+      cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
+
+    // This was set in RBSystem::read_offline_data_from_files
+    unsigned int n_bfs = this->get_n_basis_functions();
+
+    // The reading mode: DECODE for binary, READ for ASCII
+    XdrMODE mode = read_binary_data ? DECODE : READ;
+
+    // The suffix to use for all the files that are written out
+    const std::string suffix = read_binary_data ? ".xdr" : ".dat";
+
+    // The string stream we'll use to make the file names
+    std::ostringstream file_name;
+
+    // Next read in the IC_q vectors
+    for (unsigned int q_ic=0; q_ic<dwarf_elephant_trans_theta_expansion.get_n_IC_terms(); q_ic++)
+      {
+        file_name.str("");
+        file_name << directory_name << "/RB_IC_";
+        file_name << std::setw(3)
+                  << std::setprecision(0)
+                  << std::setfill('0')
+                  << std::right
+                  << q_ic;
+        file_name << suffix;
+        assert_file_exists(file_name.str());
+
+        Xdr RB_IC_q_f_in(file_name.str(), mode);
+
+        for (unsigned int i=0; i<n_bfs; i++)
+          {
+            Number value;
+            RB_IC_q_f_in >> value;
+            RB_IC_q_vector[q_ic](i) = value;
+          }
+        RB_IC_q_f_in.close();
+      }
+  }
+}

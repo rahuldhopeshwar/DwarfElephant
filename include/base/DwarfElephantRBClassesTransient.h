@@ -46,6 +46,7 @@
 #include "DwarfElephantRBStructuresT4F1O1M1IC1Transient.h"
 #include "DwarfElephantRBStructuresT5F1O1M1Transient.h"
 #include "DwarfElephantRBStructuresT5F4O1M2Transient.h"
+#include "DwarfElephantRBStructuresT6F1O1M1IC3Transient.h"
 
 // Forward Declarations
 namespace libMesh
@@ -104,6 +105,8 @@ public:
 
   void update_RB_initial_condition_all_N();
 
+  void update_RB_parameterized_initial_condition_all_N();
+
   virtual void update_system() override;
 
   virtual Real train_reduced_basis(const bool resize_rb_eval_data=true) override;
@@ -133,6 +136,8 @@ class DwarfElephantRBEvaluationTransient : public TransientRBEvaluation
 public:
   DwarfElephantRBEvaluationTransient(const libMesh::Parallel::Communicator & comm, FEProblemBase & fe_problem);
 
+  typedef TransientRBEvaluation Parent;
+
   virtual Real get_stability_lower_bound() override;
 
   virtual Real rb_solve(unsigned int N) override;
@@ -143,10 +148,23 @@ public:
 
   virtual void set_parameter_dependent_IC(bool parameter_dependent_IC_in);
 
+  virtual void resize_data_structures(const unsigned int Nmax,
+                                      bool resize_error_bound_data=true) override;
+
+  virtual void legacy_write_offline_data_to_files(const std::string & directory_name,
+                                                  const bool write_binary_data) override;
+
+  virtual void legacy_read_offline_data_from_files(const std::string & directory_name = "offline_data",
+                                                   bool read_error_bound_data=true,
+                                                   const bool read_binary_data=true) override;
 
   FEProblemBase & fe_problem;
+
   bool parameter_dependent_IC;
+
   DwarfElephantRBT3F1O1M1TransientExpansion _rb_theta_expansion;
+
+  std::vector<DenseVector<Number>> RB_IC_q_vector;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBCLASSESTRANSIENT_H

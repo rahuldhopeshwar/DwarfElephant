@@ -12,20 +12,19 @@
 #include "DwarfElephantRBProblem.h"
 
 //BCs
-#include "DwarfElephantRBNodalBC.h"
 #include "DwarfElephantRBDirichletBC.h"
 #include "DwarfElephantRBFunctionDirichletBC.h"
 #include "DwarfElephantRBPenaltyDirichletBC.h"
-#include "DwarfElephantRBPresetNodalBC.h"
 #include "DwarfElephantRBPresetBC.h"
 #include "DwarfElephantRBFunctionPresetBC.h"
-#include "DwarfElephantRBIntegratedBC.h"
 #include "DwarfElephantRBNeumannBC.h"
 #include "DwarfElephantRBNeumannBCND.h"
 #include "DwarfElephantRBFunctionNeumannBC.h"
 
 //ICs
 #include "DwarfElephantFileIC.h"
+#include "DwarfElephantRBConstantIC.h"
+#include "DwarfElephantRBFunctionIC.h"
 
 // Kernels
 #include "DwarfElephantFEThermalConduction.h"
@@ -117,20 +116,19 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerProblem(DwarfElephantRBProblem);
 
   // BCs
-  registerBoundaryCondition(DwarfElephantRBNodalBC);
   registerBoundaryCondition(DwarfElephantRBDirichletBC);
   registerBoundaryCondition(DwarfElephantRBFunctionDirichletBC);
   registerBoundaryCondition(DwarfElephantRBPenaltyDirichletBC);
-  registerBoundaryCondition(DwarfElephantRBPresetNodalBC);
   registerBoundaryCondition(DwarfElephantRBPresetBC);
   registerBoundaryCondition(DwarfElephantRBFunctionPresetBC);
-  registerBoundaryCondition(DwarfElephantRBIntegratedBC);
   registerBoundaryCondition(DwarfElephantRBNeumannBC);
   registerBoundaryCondition(DwarfElephantRBNeumannBCND);
   registerBoundaryCondition(DwarfElephantRBFunctionNeumannBC);
 
   //ICs
   registerInitialCondition(DwarfElephantFileIC);
+  registerInitialCondition(DwarfElephantRBConstantIC);
+  registerInitialCondition(DwarfElephantRBFunctionIC);
 
   // Kernels
   registerKernel(DwarfElephantFEThermalConduction);

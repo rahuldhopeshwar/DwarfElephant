@@ -141,6 +141,12 @@ DwarfElephantInitializeRBSystemTransient::processParameters()
 
   TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_rb_con_ptr->get_rb_evaluation());
   trans_rb_eval.pull_temporal_discretization_data(*_rb_con_ptr);
+
+  if(_parameter_dependent_IC)
+  {
+    DwarfElephantRBConstructionTransient * _dwarf_elephant_rb_con_ptr = dynamic_cast<DwarfElephantRBConstructionTransient * > (_rb_con_ptr);
+    _dwarf_elephant_rb_con_ptr->set_parameter_dependent_IC(_parameter_dependent_IC);
+  }
 }
 
 void
@@ -215,7 +221,6 @@ DwarfElephantInitializeRBSystemTransient::initializeOfflineStage()
    for (unsigned int _q=0; _q < _qf; _q++)
      _residuals[_q] = _rb_con_ptr->get_Fq(_q);
 
-
   if(_parameter_dependent_IC)
   {
     DwarfElephantRBConstructionTransient * _dwarf_elephant_rb_con_ptr = dynamic_cast<DwarfElephantRBConstructionTransient * > (_rb_con_ptr);
@@ -267,9 +272,6 @@ DwarfElephantInitializeRBSystemTransient::execute()
         cast_ref<DwarfElephantRBTransientThetaExpansion &>(_rb_con_ptr->get_rb_theta_expansion());
 
         _q_ic = dwarf_elephant_trans_theta_expansion.get_n_IC_terms();
-
-        if(_q_ic>1)
-          mooseError("Currently, the case of q_ic > 1 is not supported.");
     }
 
     for(unsigned int i=0; i < _n_outputs; i++)
