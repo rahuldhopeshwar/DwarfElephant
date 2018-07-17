@@ -39,5 +39,5 @@ Real
 DwarfElephantRBConstantPointSource::computeQpResidual()
 {
   //  This is negative because it's a forcing function that has been brought over to the left side
-  return -_test[_i][_qp] * _value;
+  return _test[_i][_qp] * _value;
 }

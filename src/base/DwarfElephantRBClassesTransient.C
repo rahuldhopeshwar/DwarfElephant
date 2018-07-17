@@ -661,6 +661,7 @@ DwarfElephantRBConstructionTransient::init_data()
         RB_RHS_save.add(trans_theta_expansion.eval_F_theta(q_f,mu), RB_Fq_f);
       }
 
+
     // Set system time level to 0
     set_time_step(0);
 
@@ -725,7 +726,6 @@ DwarfElephantRBConstructionTransient::init_data()
             }
         }
     }
-
     // Initialize error bounds, if necessary
     Real error_bound_sum = 0.;
     Real alpha_LB = 0.;

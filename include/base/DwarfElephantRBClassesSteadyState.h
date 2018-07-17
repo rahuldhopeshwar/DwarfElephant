@@ -40,6 +40,7 @@
 #include "DwarfElephantRBStructuresT3F3O1SteadyState.h"
 #include "DwarfElephantRBStructuresT3F1O3SteadyState.h"
 #include "DwarfElephantRBStructuresT4F1O1SteadyState.h"
+#include "DwarfElephantRBStructuresT4F2O1SteadyState.h"
 #include "DwarfElephantRBStructuresT5F1O1SteadyState.h"
 #include "DwarfElephantRBStructuresT5F3O1SteadyState.h"
 #include "DwarfElephantRBStructuresT6F1O1SteadyState.h"
@@ -256,7 +257,7 @@ public:
   FEProblemBase & get_fe_problem(){return fe_problem;}
 
   FEProblemBase & fe_problem;
-  DwarfElephantRBT4F1O1SteadyStateExpansion _rb_theta_expansion;
+  DwarfElephantRBT4F2O1SteadyStateExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------

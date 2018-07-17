@@ -42,6 +42,7 @@
 #include "DwarfElephantRBStructuresT3F1O3M1Transient.h"
 #include "DwarfElephantRBStructuresT3F4O1M2Transient.h"
 #include "DwarfElephantRBStructuresT3F4O3M2Transient.h"
+#include "DwarfElephantRBStructuresT3F3O3M2IC1Transient.h"
 #include "DwarfElephantRBStructuresT4F1O1M1Transient.h"
 #include "DwarfElephantRBStructuresT4F1O1M1IC1Transient.h"
 #include "DwarfElephantRBStructuresT5F1O1M1Transient.h"
@@ -162,7 +163,7 @@ public:
 
   bool parameter_dependent_IC;
 
-  DwarfElephantRBT3F1O1M1TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT2F3O3M2TransientExpansion _rb_theta_expansion;
 
   std::vector<DenseVector<Number>> RB_IC_q_vector;
 };
