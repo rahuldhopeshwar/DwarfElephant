@@ -16,11 +16,10 @@
   [./RBConduction]
     type = DwarfElephantRBDiffusion
   [../]
-[]
-
-[KernelsEIMFAction]
-  #variable = temperature
-  initialize_rb_system = initializeRBSystem
+  
+  [./EIMF]
+    type = DwarfElephantEIMFKernel
+  [../]
 []
 
 [BCs] # To be changed

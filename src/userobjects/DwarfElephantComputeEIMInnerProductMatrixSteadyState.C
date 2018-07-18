@@ -89,8 +89,7 @@ DwarfElephantComputeEIMInnerProductMatrixSteadyState::execute()
   //const DwarfElephantInitializeRBEIMSystemSteadyState & _initialize_rbeim_system = getUserObject<DwarfElephantInitializeRBEIMSystemSteadyState>("initial_rbeim_userobjet");
 
   if (_initialize_rb_system._offline_stage)
-      //_initialize_rb_system._inner_product_matrix_eim -> add_matrix(_local_ke, _var.dofIndices());
-    std::cout << "EIM inner product matrix initialized: " << _initialize_rb_system._inner_product_matrix_eim -> initialized() << std::endl;
+      _initialize_rb_system._inner_product_matrix_eim -> add_matrix(_local_ke, _var.dofIndices());
   // make provision for modifying diagonal values, if required
 }
 

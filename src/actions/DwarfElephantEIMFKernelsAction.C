@@ -33,7 +33,7 @@ DwarfElephantEIMFKernelsAction::act()
 {
   NonlinearVariableName variable =
       getParam<NonlinearVariableName>("variable");
-  const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = _problem -> getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initialize_rb_system");
+  const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = _problem -> getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
   UserObjectName _initial_rb_system_name = getParam<UserObjectName>("initialize_rb_system");
   unsigned int _n_eim_basis_functions = _initialize_rb_system._eim_con_ptr -> get_rb_evaluation().get_n_basis_functions();
 

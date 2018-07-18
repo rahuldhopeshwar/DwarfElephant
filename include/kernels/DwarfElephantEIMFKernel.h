@@ -28,8 +28,6 @@ class DwarfElephantEIMFKernel : public Kernel
 	virtual Real computeQpJacobian() override;
 	
 	std::vector<Number> _eim_values;
-	const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system;
-	unsigned int _i_eim_basis_function;  
 };
 
 #endif //DWARFELEPHANTEIMFKERNEL_H
