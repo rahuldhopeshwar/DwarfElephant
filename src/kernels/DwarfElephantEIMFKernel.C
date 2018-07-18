@@ -1,0 +1,53 @@
+#include "DwarfElephantEIMFKernel.h"
+
+//libMesh includes
+#include "libmesh/equation_systems.h"
+#include "libmesh/sparse_matrix.h"
+#include "libmesh/petsc_matrix.h"
+#include "libmesh/petsc_vector.h"
+
+template<>
+InputParameters validParams<DwarfElephantEIMFKernel> ()
+{
+	InputParameters params  = validParams<DwarfElephantEIMFKernel>();
+	params.addClassDescription("Implements a non-affine source term for which an affine decomposition will be found using the empirical interpolation method");
+	params.addRequiredParam<UserObjectName>("initialize_rb_system","Object of type DwarfElephantInitializeRBSystemSteadyState");
+	params.addRequiredParam<unsigned int>("eim_basis_function_index","Index of the EIM_F basis functions this kernel has to deal with");
+	return params;
+}
+
+DwarfElephantEIMFKernel::DwarfElephantEIMFKernel(const InputParameters & parameters) :
+    Kernel(parameters),
+    _initialize_rb_system(getParam<DwarfElephantInitializeRBSystemSteadyState>("initialize_rb_system")),
+    _i_eim_basis_function(getParam<unsigned int>("eim_basis_function_index"))
+{
+}
+
+void DwarfElephantEIMFKernel::computeResidual()
+{		
+	DenseVector<Number> 	& re = _assembly.residualBlock(_var.number());
+	_local_re.resize(re.size());
+	_local_re.zero();
+
+        _initialize_rb_system._eim_con_ptr -> _rb_eim_assembly_objects_new[_i_eim_basis_function] -> get_eim_basis_function_values(_assembly.elem(), _qrule, _eim_values);
+	for (_i = 0; _i < _test.size(); _i++)
+		for (_qp = 0; _qp < _qrule -> n_points(); _qp++)
+		{
+			_local_re(_i) += -_JxW[_qp] * _coord[_qp] * _test[_i][_qp] * _eim_values[_qp];
+		}
+	re += _local_re;
+	if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())		
+		_initialize_rb_system._residuals[_i_eim_basis_function] -> add_vector(_local_re, _var.dofIndices()); // the +1 takes into account the contribution to the number of residual vectors by the residual of the bilinear form in the libMesh EIM example
+	
+}
+
+Real DwarfElephantEIMFKernel::computeQpResidual()
+{
+	
+	return 1.0;
+}
+
+Real DwarfElephantEIMFKernel::computeQpJacobian()
+{
+	return 0;
+}

@@ -27,12 +27,15 @@
 // libMesh includes (RB package)
 #include "libmesh/rb_evaluation.h"
 #include "libmesh/rb_construction.h"
+#include "libmesh/rb_eim_construction.h"
+#include "libmesh/rb_eim_evaluation.h"
+#include "libmesh/rb_eim_assembly.h"
+#include "libmesh/auto_ptr.h" // libmesh_make_unique
 
 // MOOSE includes
 #include "FEProblemBase.h"
 
 // MOOSE includes (DwarfElephant package)
-#include "DwarfElephantInitializeRBSystemSteadyState.h"
 
 #include "DwarfElephantRBStructuresT1F1O1SteadyState.h"
 #include "DwarfElephantRBStructuresT2F1O1SteadyState.h"
@@ -43,7 +46,7 @@
 #include "DwarfElephantRBStructuresT5F1O1SteadyState.h"
 #include "DwarfElephantRBStructuresT5F3O1SteadyState.h"
 #include "DwarfElephantRBStructuresT6F1O1SteadyState.h"
-
+#include "DwarfElephantEIMStructures.h"
 ///-------------------------------------------------------------------------
 // Forward Declarations
 namespace libMesh
@@ -54,6 +57,9 @@ namespace libMesh
   class EquationSystems;
   class RBConstruction;
   class RBEvaluation;
+  class RBEIMConstruction;
+  class RBEIMEvaluation;
+  class RBEIMAssembly;
 }
 
 class DwarfElephantInitializeRBSystemSteadyState;
@@ -256,7 +262,56 @@ public:
   FEProblemBase & get_fe_problem(){return fe_problem;}
 
   FEProblemBase & fe_problem;
-  DwarfElephantRBT5F1O1SteadyStateExpansion _rb_theta_expansion;
+  DwarfElephantEIMTestRBThetaExpansion _eim_test_rb_theta_expansion;
+};
+
+
+class DwarfElephantEIMEvaluationSteadyState : public RBEIMEvaluation
+{
+public:
+
+  DwarfElephantEIMEvaluationSteadyState(const libMesh::Parallel::Communicator & comm);
+  
+  ~DwarfElephantEIMEvaluationSteadyState() {}
+
+  ShiftedGaussian sg;
+};
+
+// A simple subclass of RBEIMConstruction.
+class DwarfElephantEIMConstructionSteadyState : public RBEIMConstruction
+{
+public:
+
+  /**
+   * Constructor.
+   */
+  DwarfElephantEIMConstructionSteadyState (EquationSystems & es,
+                         const std::string & name_in,
+                         const unsigned int number_in);
+
+  /**
+   * The type of the parent.
+   */
+  typedef RBEIMConstruction Parent;
+
+  virtual std::unique_ptr<ElemAssembly> build_eim_assembly(unsigned int index);
+
+  /**
+   * Initialize the implicit system that is used to perform L2 projections.
+   */
+  virtual void init_implicit_system();
+
+  /**
+   * Initialize the explicit system that is used to store the basis functions.
+   */
+  virtual void init_explicit_system();
+
+  /**
+   * Variable number for u.
+   */
+  unsigned int u_var;
+
+  std::vector<std::unique_ptr<DwarfElephantEIMFAssembly>> _rb_eim_assembly_objects_new;
 };
 
 ///-------------------------------------------------------------------------

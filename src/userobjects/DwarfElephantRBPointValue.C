@@ -5,6 +5,7 @@
 #include "MooseVariable.h"
 #include "SubProblem.h"
 
+
 #include "libmesh/system.h"
 #include "libmesh/fe_interface.h"
 #include "libmesh/fe_compute_data.h"
@@ -59,6 +60,7 @@ DwarfElephantRBPointValue::assignPoint(const std::vector<std::vector<NumericVect
   parallel_object_only();
 
   //It is important to check that every processor agrees on the point
+/*
   #ifndef NDEBUG
   libmesh_assert(_system->comm().verify(_point(0)));
   #if LIBMESH_DIM > 1
@@ -68,7 +70,7 @@ DwarfElephantRBPointValue::assignPoint(const std::vector<std::vector<NumericVect
   libmesh_assert(_system->comm().verify(_point(2)));
   #endif
   #endif // NDEBUG
-
+*/
   // Use an existing PointLocator or create a new one.
   std::unique_ptr<PointLocatorBase> _locator_ptr = _mesh.getMesh().sub_point_locator();
   PointLocatorBase & _locator = *_locator_ptr;

@@ -177,7 +177,7 @@ DwarfElephantRBEvaluationSteadyState::DwarfElephantRBEvaluationSteadyState(const
     RBEvaluation(comm),
     fe_problem(fe_problem)
 {
-  set_rb_theta_expansion(_rb_theta_expansion);
+  set_rb_theta_expansion(_eim_test_rb_theta_expansion);
 }
 
 Real
@@ -198,3 +198,41 @@ DwarfElephantRBEvaluationSteadyState::get_stability_lower_bound()
 
   return min_mu;
 }
+
+DwarfElephantEIMEvaluationSteadyState::DwarfElephantEIMEvaluationSteadyState(const libMesh::Parallel::Communicator & comm) :
+    RBEIMEvaluation(comm)
+  {
+    attach_parametrized_function(&sg);
+  }
+
+
+  /**
+   * Constructor.
+   */
+  DwarfElephantEIMConstructionSteadyState::DwarfElephantEIMConstructionSteadyState (EquationSystems & es,
+                         const std::string & name_in,
+                         const unsigned int number_in)
+    : Parent(es, name_in, number_in)
+  {
+  }
+
+  std::unique_ptr<ElemAssembly> DwarfElephantEIMConstructionSteadyState::build_eim_assembly(unsigned int index)
+  {
+    DwarfElephantEIMConstructionSteadyState::_rb_eim_assembly_objects_new.push_back(libmesh_make_unique<DwarfElephantEIMFAssembly>(*this, index));
+    return libmesh_make_unique<DwarfElephantEIMFAssembly>(*this, index);
+  }
+  /**
+   * Initialize the implicit system that is used to perform L2 projections.
+   */
+  void DwarfElephantEIMConstructionSteadyState::init_implicit_system()
+  {
+    this->add_variable ("L2_proj_var", libMesh::FIRST);
+  }
+
+  /**
+   * Initialize the explicit system that is used to store the basis functions.
+   */
+  void DwarfElephantEIMConstructionSteadyState::init_explicit_system()
+  {
+    u_var = get_explicit_system().add_variable ("f_EIM", libMesh::FIRST);
+  }

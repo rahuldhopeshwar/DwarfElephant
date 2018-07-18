@@ -8,6 +8,9 @@
 /// MOOSE includes (DwarfElephant package)
 #include "DwarfElephantApp.h"
 
+//Actions
+#include "DwarfElephantEIMFKernelsAction.h"
+
 // Base
 #include "DwarfElephantRBProblem.h"
 
@@ -38,6 +41,7 @@
 #include "DwarfElephantRBDiffusionLiftingFunction.h"
 #include "DwarfElephantZeroKernel.h"
 #include "DwarfElephantRBTimeDerivative.h"
+#include "DwarfElephantEIMFKernel.h"
 
 #include "ExtractQpPointsKernel.h"
 
@@ -60,6 +64,7 @@
 #include "DwarfElephantRBElementalVariableValue.h"
 #include "DwarfElephantRBPointValue.h"
 #include "DwarfElephantReducedToFullState.h"
+#include "DwarfElephantComputeEIMInnerProductMatrixSteadyState.h"
 
 // Functions
 #include "DwarfElephantInitialConditionFileReader.h"
@@ -144,6 +149,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerKernel(DwarfElephantZeroKernel);
   registerKernel(DwarfElephantRBTimeDerivative);
   registerKernel(ExtractQpPointsKernel);
+  registerKernel(DwarfElephantEIMFKernel);
 
   //DiracKernels
   registerDiracKernel(DwarfElephantRBConstantPointSource);
@@ -164,6 +170,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerUserObject(DwarfElephantRBElementalVariableValue);
   registerUserObject(DwarfElephantRBPointValue);
   registerUserObject(DwarfElephantReducedToFullState);
+  registerUserObject(DwarfElephantComputeEIMInnerProductMatrixSteadyState);
 
   // Functions
   registerFunction(DwarfElephantInitialConditionFileReader);
@@ -185,7 +192,26 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
 // External entry point for dynamic syntax association
 extern "C" void DwarfElephantApp__associateSyntax(Syntax & syntax, ActionFactory & action_factory) { DwarfElephantApp::associateSyntax(syntax, action_factory); }
+
 void
-DwarfElephantApp::associateSyntax(Syntax & /*syntax*/, ActionFactory & /*action_factory*/)
+DwarfElephantApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
 {
+  /**
+   * Registering an Action is a little different than registering the other MOOSE
+   * objects.  First, you need to register your Action in the associateSyntax method.
+   * Also, you register your Action class with an "action_name" that can be
+   * satisfied by executing the Action (running the "act" virtual method).
+   */
+  registerAction(DwarfElephantEIMFKernelsAction, "add_kernel");
+
+  /**
+   * We need to tell the parser what new section name to look for and what
+   * Action object to build when it finds it.  This is done directly on the syntax
+   * with the registerActionSyntax method.
+   *
+   * The section name should be the "full path" of the parsed section but should NOT
+   * contain a leading slash.  Wildcard characters can be used to replace a piece of the
+   * path.
+   */
+  registerSyntax("DwarfElephantEIMFKernelsAction", "KernelsEIMFAction"); // AddEIMFKernels will be the name of the action block in the input file
 }
