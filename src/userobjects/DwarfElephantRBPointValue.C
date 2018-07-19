@@ -60,12 +60,12 @@ DwarfElephantRBPointValue::assignPoint(const std::vector<std::vector<NumericVect
 
   //It is important to check that every processor agrees on the point
   #ifndef NDEBUG
-  libmesh_assert(_system->comm().verify(_point(0)));
+  libmesh_assert(comm().verify(_point(0)));
   #if LIBMESH_DIM > 1
-  libmesh_assert(_system->comm().verify(_point(1)));
+  libmesh_assert(comm().verify(_point(1)));
   #endif
   #if LIBMESH_DIM > 2
-  libmesh_assert(_system->comm().verify(_point(2)));
+  libmesh_assert(comm().verify(_point(2)));
   #endif
   #endif // NDEBUG
 

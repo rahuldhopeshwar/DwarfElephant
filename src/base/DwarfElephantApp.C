@@ -30,13 +30,17 @@
 #include "DwarfElephantFEThermalConduction.h"
 #include "DwarfElephantFEConductionLiftingFunction.h"
 #include "DwarfElephantFEElectricalConduction.h"
+#include "DwarfElephantFEConstantRadiogenicHeatProduction.h"
 #include "DwarfElephantFEDarcy.h"
 #include "DwarfElephantFEDarcyOpenDA.h"
 #include "DwarfElephantRBDiffusion.h"
 #include "DwarfElephantRBDiffusionND.h"
 #include "DwarfElephantRBDiffusionLiftingFunction.h"
+#include "DwarfElephantRBThermalConduction.h"
+#include "DwarfElephantRBConstantRadiogenicHeatProduction.h"
 #include "DwarfElephantZeroKernel.h"
 #include "DwarfElephantRBTimeDerivative.h"
+#include "DwarfElephantRBOneKernel.h"
 
 #include "ExtractQpPointsKernel.h"
 
@@ -62,6 +66,7 @@
 
 // Functions
 #include "DwarfElephantInitialConditionFileReader.h"
+#include "DwarfElephantBoundaryConditionFileReader.h"
 
 // Executioners
 #include "DwarfElephantRBExecutioner.h"
@@ -134,13 +139,17 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerKernel(DwarfElephantFEThermalConduction);
   registerKernel(DwarfElephantFEConductionLiftingFunction);
   registerKernel(DwarfElephantFEElectricalConduction);
+  registerKernel(DwarfElephantFEConstantRadiogenicHeatProduction);
   registerKernel(DwarfElephantFEDarcy);
   registerKernel(DwarfElephantFEDarcyOpenDA);
   registerKernel(DwarfElephantRBDiffusion);
   registerKernel(DwarfElephantRBDiffusionND);
   registerKernel(DwarfElephantRBDiffusionLiftingFunction);
+  registerKernel(DwarfElephantRBThermalConduction);
+  registerKernel(DwarfElephantRBConstantRadiogenicHeatProduction);
   registerKernel(DwarfElephantZeroKernel);
   registerKernel(DwarfElephantRBTimeDerivative);
+  registerKernel(DwarfElephantRBOneKernel);
   registerKernel(ExtractQpPointsKernel);
 
   //DiracKernels
@@ -165,6 +174,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // Functions
   registerFunction(DwarfElephantInitialConditionFileReader);
+  registerFunction(DwarfElephantBoundaryConditionFileReader);
 
   // Executioners
   registerExecutioner(DwarfElephantRBExecutioner);
