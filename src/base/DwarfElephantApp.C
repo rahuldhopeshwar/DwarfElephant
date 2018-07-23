@@ -7,6 +7,7 @@
 
 /// MOOSE includes (DwarfElephant package)
 #include "DwarfElephantApp.h"
+#include "DwarfElephantAppTypes.h"
 
 //Actions
 #include "DwarfElephantEIMFKernelsAction.h"
@@ -214,4 +215,14 @@ DwarfElephantApp::associateSyntax(Syntax & syntax, ActionFactory & action_factor
    * path.
    */
   registerSyntax("DwarfElephantEIMFKernelsAction", "KernelsEIMFAction"); // AddEIMFKernels will be the name of the action block in the input file
+}
+extern "C" void
+DwarfElephantApp__registerExecFlags(Factory & factory)
+{
+  DwarfElephantApp::registerExecFlags(factory);
+}
+void
+DwarfElephantApp::registerExecFlags(Factory & factory)
+{
+  registerExecFlag(EXEC_EIM);
 }

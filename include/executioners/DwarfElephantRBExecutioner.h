@@ -28,6 +28,7 @@ class DwarfElephantRBExecutioner :
     DwarfElephantRBExecutioner(const InputParameters & params);
 
     /*Methods*/
+    void init() override;
     void execute() override;
 
 //--------------------------------PROTECTED---------------------------------

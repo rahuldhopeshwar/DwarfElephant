@@ -211,27 +211,29 @@ DwarfElephantInitializeRBSystemSteadyState::initialize()
   // Define the parameter file for the libMesh functions.
   // In our case not required, because the read-in is done via the MOOSE inputfile.
   // GetPot infile (_parameters_filename);
-
+  std::cout << "Starting InitializeRB::initialize()" << std::endl;
   // Add a new equation system for the RB construction.
   _eim_con_ptr = &_es.add_system<DwarfElephantEIMConstructionSteadyState>("EIMSystem");
   _rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionSteadyState> ("RBSystem");
 
-  // Intialization of the added equation system
-  //_rb_con_ptr->init();
-  _es.update();
 
-  //DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm(), _fe_problem);
-  //DwarfElephantEIMEvaluationSteadyState _eim_eval(_mesh_ptr->comm(), _fe_problem);
-  _rb_eval_ptr = new DwarfElephantRBEvaluationSteadyState(_mesh_ptr->comm(), _fe_problem);
-  _eim_eval_ptr = new DwarfElephantEIMEvaluationSteadyState(_mesh_ptr->comm());
-  // Pass a pointer of the RBEvaluation object to the
-  // RBConstruction object
-  _eim_con_ptr->set_rb_evaluation(*_eim_eval_ptr);
-  _rb_con_ptr->set_rb_evaluation(*_rb_eval_ptr);
 
   // Initialize required matrices and vectors.
   if (_offline_stage)
   {
+      // Intialization of the added equation system
+    _eim_con_ptr->init();
+    //_es.init();//update();
+
+    //DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm(), _fe_problem);
+    //DwarfElephantEIMEvaluationSteadyState _eim_eval(_mesh_ptr->comm(), _fe_problem);
+    _rb_eval_ptr = new DwarfElephantRBEvaluationSteadyState(_mesh_ptr->comm(), _fe_problem);
+    _eim_eval_ptr = new DwarfElephantEIMEvaluationSteadyState(_mesh_ptr->comm());
+    // Pass a pointer of the RBEvaluation object to the
+    // RBConstruction object
+    _eim_con_ptr->set_rb_evaluation(*_eim_eval_ptr);
+    _rb_con_ptr->set_rb_evaluation(*_rb_eval_ptr);
+
     initializeOfflineStage();
   }
   std::cout << "Initialized initialize_rb_system object" << std::endl;

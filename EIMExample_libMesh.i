@@ -75,7 +75,7 @@
 
 [./jEIMInnerProductMatrixComputation]
   type = DwarfElephantComputeEIMInnerProductMatrixSteadyState
-  execute_on = 'initial'
+  execute_on = 'EIM'
   n_training_samples_RB = 100
   N_max_RB = 15
   parameter_names_RB = 'center_x center_y'

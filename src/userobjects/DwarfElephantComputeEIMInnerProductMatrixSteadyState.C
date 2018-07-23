@@ -1,5 +1,6 @@
 #include "DwarfElephantComputeEIMInnerProductMatrixSteadyState.h"
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
+#include "DwarfElephantAppTypes.h"
 
 //#include "libmesh/quadrature.h"
 
@@ -34,6 +35,9 @@ validParams<DwarfElephantComputeEIMInnerProductMatrixSteadyState>()
   params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
 
   params.addRequiredParam<UserObjectName>("initialize_rb_userobject","Name of the userobject used to initialize the RBEIM system");
+  ExecFlagEnum & exec = params.set<ExecFlagEnum>("execute_on");
+  exec.addAvailableFlags(EXEC_EIM);
+  params.setDocString("execute_on", exec.getDocString());
 
   return params;
 }
@@ -76,6 +80,7 @@ DwarfElephantComputeEIMInnerProductMatrixSteadyState::initialize()
 void
 DwarfElephantComputeEIMInnerProductMatrixSteadyState::execute()
 {
+  std::cout << "Starting DwarfElephantComputeEIMInnerProductMatrixSteadyState::execute" << std::endl;
   DenseMatrix<Number> & ke = _assembly.jacobianBlock(_var.number(), _var.number());
   _local_ke.resize(ke.m(), ke.n());
   _local_ke.zero();
