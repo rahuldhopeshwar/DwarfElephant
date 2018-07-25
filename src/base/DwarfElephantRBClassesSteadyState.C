@@ -216,6 +216,11 @@ DwarfElephantEIMEvaluationSteadyState::DwarfElephantEIMEvaluationSteadyState(con
   {
   }
 
+  void DwarfElephantEIMConstructionSteadyState::init_data()
+  {
+	  Parent::init_data();
+  }
+  
   std::unique_ptr<ElemAssembly> DwarfElephantEIMConstructionSteadyState::build_eim_assembly(unsigned int index)
   {
     DwarfElephantEIMConstructionSteadyState::_rb_eim_assembly_objects_new.push_back(libmesh_make_unique<DwarfElephantEIMFAssembly>(*this, index));

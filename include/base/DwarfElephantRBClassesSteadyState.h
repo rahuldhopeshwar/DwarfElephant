@@ -295,7 +295,9 @@ public:
   typedef RBEIMConstruction Parent;
 
   virtual std::unique_ptr<ElemAssembly> build_eim_assembly(unsigned int index);
-
+  
+  virtual void init_data();
+  
   /**
    * Initialize the implicit system that is used to perform L2 projections.
    */
