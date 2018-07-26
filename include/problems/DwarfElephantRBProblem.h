@@ -36,6 +36,8 @@ class DwarfElephantRBProblem :
     virtual ~DwarfElephantRBProblem();
 
     /* Methods */
+    virtual void init () override;
+
     virtual void solve () override;
 
     virtual void setInputParametersFEProblem(InputParameters & parameters) override;

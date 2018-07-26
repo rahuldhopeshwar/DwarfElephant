@@ -222,9 +222,9 @@ DwarfElephantInitializeRBSystemSteadyState::initialize()
   if (_offline_stage)
   {
       // Intialization of the added equation system
-    //_eim_con_ptr->init();
-	//_rb_con_ptr->init();
-    //_es.init();//update();
+    _eim_con_ptr->init();
+    _rb_con_ptr->init();
+    _es.update();
 
     //DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm(), _fe_problem);
     //DwarfElephantEIMEvaluationSteadyState _eim_eval(_mesh_ptr->comm(), _fe_problem);

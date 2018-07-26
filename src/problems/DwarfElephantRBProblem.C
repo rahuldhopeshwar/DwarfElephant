@@ -39,6 +39,79 @@ DwarfElephantRBProblem::~DwarfElephantRBProblem()
 }
 
 void
+DwarfElephantRBProblem::init()
+{
+  if (_initialized)
+    return;
+
+  unsigned int n_vars = _nl->nVariables();
+  switch (_coupling)
+  {
+    case Moose::COUPLING_DIAG:
+      _cm = libmesh_make_unique<CouplingMatrix>(n_vars);
+      for (unsigned int i = 0; i < n_vars; i++)
+        for (unsigned int j = 0; j < n_vars; j++)
+          (*_cm)(i, j) = (i == j ? 1 : 0);
+      break;
+
+    // for full jacobian
+    case Moose::COUPLING_FULL:
+      _cm = libmesh_make_unique<CouplingMatrix>(n_vars);
+      for (unsigned int i = 0; i < n_vars; i++)
+        for (unsigned int j = 0; j < n_vars; j++)
+          (*_cm)(i, j) = 1;
+      break;
+
+    case Moose::COUPLING_CUSTOM:
+      // do nothing, _cm was already set through couplingMatrix() call
+      break;
+  }
+
+  _nl->dofMap()._dof_coupling = _cm.get();
+  _nl->dofMap().attach_extra_sparsity_function(&extraSparsity, _nl.get());
+  _nl->dofMap().attach_extra_send_list_function(&extraSendList, _nl.get());
+  _aux->dofMap().attach_extra_send_list_function(&extraSendList, _aux.get());
+
+  if (_solve && n_vars == 0)
+    mooseError("No variables specified in the FEProblemBase '", name(), "'.");
+
+  ghostGhostedBoundaries(); // We do this again right here in case new boundaries have been added
+
+  // do not assemble system matrix for JFNK solve
+  if (solverParams()._type == Moose::ST_JFNK)
+    _nl->turnOffJacobian();
+
+  Moose::perf_log.push("eq.init()", "Setup");
+  //std::cout << "Calling _eq.init()" << std::endl;
+  _eq.init();
+  //std::cout << "Done calling _eq.init()" << std::endl;
+  Moose::perf_log.pop("eq.init()", "Setup");
+
+  Moose::perf_log.push("FEProblemBase::init::meshChanged()", "Setup");
+  _mesh.meshChanged();
+  if (_displaced_problem)
+    _displaced_mesh->meshChanged();
+  Moose::perf_log.pop("FEProblemBase::init::meshChanged()", "Setup");
+
+  Moose::perf_log.push("NonlinearSystem::update()", "Setup");
+  _nl->update();
+  Moose::perf_log.pop("NonlinearSystem::update()", "Setup");
+
+  for (THREAD_ID tid = 0; tid < libMesh::n_threads(); ++tid)
+    _assembly[tid]->init(_cm.get());
+
+  _nl->init();
+
+  if (_displaced_problem)
+    _displaced_problem->init();
+
+  _aux->init();
+
+  _initialized = true;
+}
+
+
+void
 DwarfElephantRBProblem::setInputParametersFEProblem(InputParameters & parameters)
 {
   // set _fe_problem
