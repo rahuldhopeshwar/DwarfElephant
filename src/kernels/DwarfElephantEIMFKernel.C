@@ -11,6 +11,7 @@ InputParameters validParams<DwarfElephantEIMFKernel> ()
 {
 	InputParameters params  = validParams<Kernel>();
 	params.addClassDescription("Implements a non-affine source term for which an affine decomposition will be found using the empirical interpolation method");
+        params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for  initializing the RB system");
 	return params;
 }
 
@@ -22,18 +23,19 @@ DwarfElephantEIMFKernel::DwarfElephantEIMFKernel(const InputParameters & paramet
 
 void DwarfElephantEIMFKernel::computeResidual()
 {		
-        DenseVector<Number> 	& re = _assembly.residualBlock(_var.number());
+	std::vector<Number> & _eim_values_ref = _eim_values;        
+	DenseVector<Number> 	& re = _assembly.residualBlock(_var.number());
 	_local_re.resize(re.size());
 	const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
         for (unsigned int _i_eim_basis_function = 0; _i_eim_basis_function < _initialize_rb_system._eim_con_ptr -> get_rb_evaluation().get_n_basis_functions(); _i_eim_basis_function++)
         {
           _local_re.zero();
 
-          _initialize_rb_system._eim_con_ptr -> _rb_eim_assembly_objects_new[_i_eim_basis_function] -> get_eim_basis_function_values(_assembly.elem(), _qrule, _eim_values);
+          _initialize_rb_system._eim_con_ptr -> _rb_eim_assembly_objects_new[_i_eim_basis_function] -> get_eim_basis_function_values(_assembly.elem(), _qrule, _eim_values_ref);
 	  for (_i = 0; _i < _test.size(); _i++)
 	  	for (_qp = 0; _qp < _qrule -> n_points(); _qp++)
 		{
-			_local_re(_i) += -_JxW[_qp] * _coord[_qp] * _test[_i][_qp] * _eim_values[_qp];
+			_local_re(_i) += -_JxW[_qp] * _coord[_qp] * _test[_i][_qp] * _eim_values_ref[_qp];
 		}
 	  re += _local_re;
 	  if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())		
