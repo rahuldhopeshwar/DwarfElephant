@@ -18,7 +18,7 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
     params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
     params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
-    params.addParam<bool>("online_stage", true, "Determines whether the Online stage will be calculated or not.");
+    params.addParam<bool>("online_stage", false, "Determines whether the Online stage will be calculated or not.");
     params.addParam<bool>("offline_error_bound", false, "Determines which error bound is used.");
     params.addParam<bool>("output_file", true, "Determines whether an output file is generated or not.");
     params.addParam<bool>("compute_output", false, "Determines whether an output of interest is computed or not.");

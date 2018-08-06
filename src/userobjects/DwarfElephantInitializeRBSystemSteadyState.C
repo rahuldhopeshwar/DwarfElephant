@@ -216,13 +216,12 @@ DwarfElephantInitializeRBSystemSteadyState::initialize()
   _eim_con_ptr = &_es.add_system<DwarfElephantEIMConstructionSteadyState>("EIMSystem");
   _rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionSteadyState> ("RBSystem");
 
-
-
   // Initialize required matrices and vectors.
   if (_offline_stage)
   {
       // Intialization of the added equation system
     _eim_con_ptr->init();
+    _eim_con_ptr->get_explicit_system().init();
     _rb_con_ptr->init();
     _es.update();
 
@@ -230,6 +229,7 @@ DwarfElephantInitializeRBSystemSteadyState::initialize()
     //DwarfElephantEIMEvaluationSteadyState _eim_eval(_mesh_ptr->comm(), _fe_problem);
     _rb_eval_ptr = new DwarfElephantRBEvaluationSteadyState(_mesh_ptr->comm(), _fe_problem);
     _eim_eval_ptr = new DwarfElephantEIMEvaluationSteadyState(_mesh_ptr->comm());
+
     // Pass a pointer of the RBEvaluation object to the
     // RBConstruction object
     _eim_con_ptr->set_rb_evaluation(*_eim_eval_ptr);
@@ -243,6 +243,7 @@ DwarfElephantInitializeRBSystemSteadyState::initialize()
 void
 DwarfElephantInitializeRBSystemSteadyState::execute()
 {
+
 }
 
 void

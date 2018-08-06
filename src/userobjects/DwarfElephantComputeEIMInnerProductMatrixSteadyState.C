@@ -80,7 +80,6 @@ DwarfElephantComputeEIMInnerProductMatrixSteadyState::initialize()
 void
 DwarfElephantComputeEIMInnerProductMatrixSteadyState::execute()
 {
-  std::cout << "Starting DwarfElephantComputeEIMInnerProductMatrixSteadyState::execute" << std::endl;
   DenseMatrix<Number> & ke = _assembly.jacobianBlock(_var.number(), _var.number());
   _local_ke.resize(ke.m(), ke.n());
   _local_ke.zero();
@@ -182,23 +181,26 @@ DwarfElephantComputeEIMInnerProductMatrixSteadyState::processRBParameters()
 
 void DwarfElephantComputeEIMInnerProductMatrixSteadyState::finalize()
 {
-  _initialize_rb_system._inner_product_matrix_eim -> close();
-  _initialize_rb_system._eim_con_ptr->train_reduced_basis();
-  #if defined(LIBMESH_HAVE_CAPNPROTO)
-    RBDataSerialization::RBEvaluationSerialization rb_eim_eval_writer(*(_initialize_rb_system._eim_eval_ptr));
-    rb_eim_eval_writer.write_to_file("rb_eim_eval.bin");
-  #else
-    _initialize_rb_system._eim_con_ptr -> get_rb_evaluation().legacy_write_offline_data_to_files("eim_data");
-  #endif
-  processRBParameters();
-  _initialize_rb_system._eim_eval_ptr -> initialize_eim_theta_objects();
-  _initialize_rb_system._rb_eval_ptr -> get_rb_theta_expansion().attach_multiple_F_theta(_initialize_rb_system._eim_eval_ptr -> get_eim_theta_objects());
-  _initialize_rb_system._eim_con_ptr -> initialize_eim_assembly_objects();
-  _initialize_rb_system._rb_con_ptr -> get_rb_assembly_expansion().attach_multiple_F_assembly(_initialize_rb_system._eim_con_ptr -> get_eim_assembly_objects());
-  _initialize_rb_system._rb_con_ptr -> print_info();
+  if (_initialize_rb_system._offline_stage)
+  {
+    _initialize_rb_system._inner_product_matrix_eim -> close();
+    _initialize_rb_system._eim_con_ptr->train_reduced_basis();
+    #if defined(LIBMESH_HAVE_CAPNPROTO)
+      RBDataSerialization::RBEvaluationSerialization rb_eim_eval_writer(*(_initialize_rb_system._eim_eval_ptr));
+      rb_eim_eval_writer.write_to_file("rb_eim_eval.bin");
+    #else
+      _initialize_rb_system._eim_con_ptr -> get_rb_evaluation().legacy_write_offline_data_to_files("eim_data");
+    #endif
+    processRBParameters();
+    _initialize_rb_system._eim_eval_ptr -> initialize_eim_theta_objects();
+    _initialize_rb_system._rb_eval_ptr -> get_rb_theta_expansion().attach_multiple_F_theta(_initialize_rb_system._eim_eval_ptr -> get_eim_theta_objects());
+    _initialize_rb_system._eim_con_ptr -> initialize_eim_assembly_objects();
+    //_initialize_rb_system._rb_con_ptr -> get_rb_assembly_expansion().attach_multiple_F_assembly(_initialize_rb_system._eim_con_ptr -> get_eim_assembly_objects());
+    _initialize_rb_system._rb_con_ptr -> print_info();
   
-  _initialize_rb_system._rb_con_ptr -> initialize_rb_construction(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
-  // Train reduced basis will be called after the kernel assembles the RB affine matrices and vectors
+    _initialize_rb_system._rb_con_ptr -> initialize_rb_construction(_skip_matrix_assembly_in_rb_system, _skip_vector_assembly_in_rb_system);
+    // Train reduced basis will be called after the kernel assembles the RB affine matrices and vectors
   
-  _initialize_rb_system.AssignAffineMatricesAndVectors();
+    _initialize_rb_system.AssignAffineMatricesAndVectors();
+  }
 }
