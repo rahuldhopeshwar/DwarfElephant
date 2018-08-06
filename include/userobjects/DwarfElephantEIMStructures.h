@@ -46,8 +46,8 @@ struct ShiftedGaussian : public RBParametrizedFunction
                           const Point & p,
                           const Elem &)
   {
-    Real center_x = mu.get_value("center_x");
-    Real center_y = mu.get_value("center_y");
+    Real center_x = mu.get_value("mu_0");
+    Real center_y = mu.get_value("mu_1");
     return exp(-2.*(pow(center_x-p(0),2.) + pow(center_y-p(1),2.)));
   }
 };
@@ -77,7 +77,7 @@ struct DwarfElephantEIMFAssembly : RBEIMAssembly
   {
   }
 
-  void get_eim_basis_function_values(const Elem * _elem, const QBase * _qrule,std::vector<Number> eim_values)
+  void get_eim_basis_function_values(const Elem * _elem, const QBase * _qrule,std::vector<Number>  & eim_values)
   {
     evaluate_basis_function(0,*_elem, *_qrule,eim_values);
   }  
