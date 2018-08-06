@@ -25,7 +25,7 @@ DwarfElephantRBProblem::DwarfElephantRBProblem(const InputParameters & params):
 
     //_assembly = _rb_assembly;
 
-    newRBAssemblyArray(*_nl_sys);
+    //newRBAssemblyArray(*_nl_sys); // Edited code 6.8.2018
 
     newAssemblyArray(*_nl_sys);
 //    initNullSpaceVectors(parameters, *_nl_sys);

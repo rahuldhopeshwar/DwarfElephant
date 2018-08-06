@@ -51,7 +51,7 @@ class DwarfElephantRBProblem :
     // virtual MooseVariable & getVariable(THREAD_ID tid, const std::string & var_name) override;
 
 //--------------------------------PROTECTED---------------------------------
-  protected:
+  //protected: // code changed on 6.8.2018
     /* Attributes */
     std::shared_ptr<NonlinearSystem> _nl_sys;
     // In case you are using a MOOSE version that is older than August 11 please replace the
