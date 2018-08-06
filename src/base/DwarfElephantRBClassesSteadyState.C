@@ -21,7 +21,7 @@ DwarfElephantRBConstructionSteadyState::DwarfElephantRBConstructionSteadyState (
                                                                                 const std::string & name_in,
                                                                                 const unsigned int number_in)
     : Parent(es, name_in, number_in)
-  {}
+  { }
 
 void
 DwarfElephantRBConstructionSteadyState::init_data()
@@ -183,6 +183,7 @@ DwarfElephantRBEvaluationSteadyState::DwarfElephantRBEvaluationSteadyState(const
 Real
 DwarfElephantRBEvaluationSteadyState::get_stability_lower_bound()
 {
+  /*
   const RBParameters & mu = get_parameters();
 
   Real min_mu = mu.get_value("mu_0");
@@ -196,7 +197,8 @@ DwarfElephantRBEvaluationSteadyState::get_stability_lower_bound()
       min_mu = min_mu_i;
   }
 
-  return min_mu;
+  return min_mu; */
+  return 1.0;
 }
 
 DwarfElephantEIMEvaluationSteadyState::DwarfElephantEIMEvaluationSteadyState(const libMesh::Parallel::Communicator & comm) :
@@ -218,7 +220,7 @@ DwarfElephantEIMEvaluationSteadyState::DwarfElephantEIMEvaluationSteadyState(con
 
   void DwarfElephantEIMConstructionSteadyState::init_data()
   {
-	  Parent::init_data();
+    Parent::init_data();
   }
   
   std::unique_ptr<ElemAssembly> DwarfElephantEIMConstructionSteadyState::build_eim_assembly(unsigned int index)
@@ -231,7 +233,7 @@ DwarfElephantEIMEvaluationSteadyState::DwarfElephantEIMEvaluationSteadyState(con
    */
   void DwarfElephantEIMConstructionSteadyState::init_implicit_system()
   {
-    this->add_variable ("L2_proj_var", libMesh::FIRST);
+    this->add_variable ("L2_proj_var");//, libMesh::FIRST);
   }
 
   /**
@@ -239,5 +241,5 @@ DwarfElephantEIMEvaluationSteadyState::DwarfElephantEIMEvaluationSteadyState(con
    */
   void DwarfElephantEIMConstructionSteadyState::init_explicit_system()
   {
-    u_var = get_explicit_system().add_variable ("f_EIM", libMesh::FIRST);
+    u_var = get_explicit_system().add_variable ("f_EIM");//, libMesh::FIRST);
   }
