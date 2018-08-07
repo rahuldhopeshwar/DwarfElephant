@@ -28,14 +28,13 @@
 
 // Kernels
 #include "DwarfElephantFEThermalConduction.h"
-#include "DwarfElephantFEConductionLiftingFunction.h"
+#include "DwarfElephantLiftingFunction.h"
 #include "DwarfElephantFEElectricalConduction.h"
 #include "DwarfElephantFEConstantRadiogenicHeatProduction.h"
 #include "DwarfElephantFEDarcy.h"
 #include "DwarfElephantFEDarcyOpenDA.h"
 #include "DwarfElephantRBDiffusion.h"
 #include "DwarfElephantRBDiffusionND.h"
-#include "DwarfElephantRBDiffusionLiftingFunction.h"
 #include "DwarfElephantRBThermalConduction.h"
 #include "DwarfElephantRBConstantRadiogenicHeatProduction.h"
 #include "DwarfElephantZeroKernel.h"
@@ -80,6 +79,7 @@
 #include "DwarfElephantElementalVariableValuesAlongLine.h"
 #include "DwarfElephantAllElementalVariableValues.h"
 #include "DwarfElephantNodalDifference.h"
+#include "DwarfElephantReverseLiftingFunction.h"
 
 template<>
 InputParameters validParams<DwarfElephantApp>()
@@ -137,14 +137,13 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // Kernels
   registerKernel(DwarfElephantFEThermalConduction);
-  registerKernel(DwarfElephantFEConductionLiftingFunction);
+  registerKernel(DwarfElephantLiftingFunction);
   registerKernel(DwarfElephantFEElectricalConduction);
   registerKernel(DwarfElephantFEConstantRadiogenicHeatProduction);
   registerKernel(DwarfElephantFEDarcy);
   registerKernel(DwarfElephantFEDarcyOpenDA);
   registerKernel(DwarfElephantRBDiffusion);
   registerKernel(DwarfElephantRBDiffusionND);
-  registerKernel(DwarfElephantRBDiffusionLiftingFunction);
   registerKernel(DwarfElephantRBThermalConduction);
   registerKernel(DwarfElephantRBConstantRadiogenicHeatProduction);
   registerKernel(DwarfElephantZeroKernel);
@@ -188,6 +187,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerVectorPostprocessor(DwarfElephantElementalVariableValuesAlongLine);
   registerVectorPostprocessor(DwarfElephantAllElementalVariableValues);
   registerVectorPostprocessor(DwarfElephantNodalDifference);
+  registerVectorPostprocessor(DwarfElephantReverseLiftingFunction);
 
 }
 

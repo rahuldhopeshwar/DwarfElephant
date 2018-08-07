@@ -1,12 +1,11 @@
 /**
- * This Kernel is implements a thermal conduction problem using the full
- * Finite Element solution. It is included in this package for validation
- * purposes.
+ * This Kernel is implements the concept of the lifting function to avoid
+ * problems caused by non-homogenous DirichletBC.
  */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTFECONDUCTIONLIFTINGFUNCTION_H
-#define DWARFELEPHANTFECONDUCTIONLIFTINGFUNCTION_H
+#ifndef DWARFELEPHANTLIFTINGFUNCTION_H
+#define DWARFELEPHANTLIFTINGFUNCTION_H
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
@@ -15,18 +14,18 @@
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
-class DwarfElephantFEConductionLiftingFunction;
+class DwarfElephantLiftingFunction;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<DwarfElephantFEConductionLiftingFunction>();
+InputParameters validParams<DwarfElephantLiftingFunction>();
 
 ///-------------------------------------------------------------------------
-class DwarfElephantFEConductionLiftingFunction : public Diffusion
+class DwarfElephantLiftingFunction : public Diffusion
 {
 //----------------------------------PUBLIC----------------------------------
 public:
-  DwarfElephantFEConductionLiftingFunction(const InputParameters & parameters);
+  DwarfElephantLiftingFunction(const InputParameters & parameters);
 
 //--------------------------------PROTECTED---------------------------------
 protected:
@@ -35,12 +34,10 @@ protected:
   virtual Real computeQpResidual() override;
   virtual Real computeQpJacobian() override;
 
-
   /* Attributes */
-  const MaterialProperty<Real> &_lambda;
-
   Function * _lifting_function;
+  Real _scale;
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTFECONDUCTIONLIFTINGFUNCTION_H
+#endif // DWARFELEPHANTLIFTINGFUNCTION_H
