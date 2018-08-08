@@ -79,7 +79,7 @@
 #include "DwarfElephantElementalVariableValuesAlongLine.h"
 #include "DwarfElephantAllElementalVariableValues.h"
 #include "DwarfElephantNodalDifference.h"
-#include "DwarfElephantReverseLiftingFunction.h"
+#include "DwarfElephantReverseLiftingFunctionAndDimensionalize.h"
 
 template<>
 InputParameters validParams<DwarfElephantApp>()
@@ -187,7 +187,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerVectorPostprocessor(DwarfElephantElementalVariableValuesAlongLine);
   registerVectorPostprocessor(DwarfElephantAllElementalVariableValues);
   registerVectorPostprocessor(DwarfElephantNodalDifference);
-  registerVectorPostprocessor(DwarfElephantReverseLiftingFunction);
+  registerVectorPostprocessor(DwarfElephantReverseLiftingFunctionAndDimensionalize);
 
 }
 
