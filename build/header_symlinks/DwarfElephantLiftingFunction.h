@@ -1,1 +1,1 @@
-/Users/denise/projects/DwarfElephant/include/kernels/DwarfElephantLiftingFunction.h
+/Users/denise/projects/DwarfElephant/include/functions/DwarfElephantLiftingFunction.h

@@ -17,9 +17,18 @@ public:
 
 protected:
   const std::string _file;
+  int _dimension;
+  int _num_points;
+
+  std::vector<Real> _x_coordinates;
+  std::vector<Real> _y_coordinates;
+  std::vector<Real> _z_coordinates;
+  std::vector<Real> _variable_values;
+  // std::string _delimiter_to_replace;
 
 private:
-  void fileReader();
+  void fileParser();
+  Real findValue(Real _x_coord, Real _y_coord/*, Real _z_coord*/);
 };
 
 #endif // DWARFELEPHANTBOUNDARYCONDITIONFILEREADER_H

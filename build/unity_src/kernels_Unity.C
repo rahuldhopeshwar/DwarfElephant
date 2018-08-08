@@ -4,7 +4,7 @@
 #include"/Users/denise/projects/DwarfElephant/src/kernels/DwarfElephantFEDarcyOpenDA.C"
 #include"/Users/denise/projects/DwarfElephant/src/kernels/DwarfElephantFEElectricalConduction.C"
 #include"/Users/denise/projects/DwarfElephant/src/kernels/DwarfElephantFEThermalConduction.C"
-#include"/Users/denise/projects/DwarfElephant/src/kernels/DwarfElephantLiftingFunction.C"
+#include"/Users/denise/projects/DwarfElephant/src/kernels/DwarfElephantLiftingFunctionKernel.C"
 #include"/Users/denise/projects/DwarfElephant/src/kernels/DwarfElephantRBConstantRadiogenicHeatProduction.C"
 #include"/Users/denise/projects/DwarfElephant/src/kernels/DwarfElephantRBDiffusion.C"
 #include"/Users/denise/projects/DwarfElephant/src/kernels/DwarfElephantRBDiffusionND.C"

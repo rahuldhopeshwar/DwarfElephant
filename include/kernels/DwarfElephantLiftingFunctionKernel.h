@@ -4,8 +4,8 @@
  */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTLIFTINGFUNCTION_H
-#define DWARFELEPHANTLIFTINGFUNCTION_H
+#ifndef DWARFELEPHANTLIFTINGFUNCTIONKERNEL_H
+#define DWARFELEPHANTLIFTINGFUNCTIONKERNEL_H
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
@@ -14,18 +14,18 @@
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
-class DwarfElephantLiftingFunction;
+class DwarfElephantLiftingFunctionKernel;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<DwarfElephantLiftingFunction>();
+InputParameters validParams<DwarfElephantLiftingFunctionKernel>();
 
 ///-------------------------------------------------------------------------
-class DwarfElephantLiftingFunction : public Diffusion
+class DwarfElephantLiftingFunctionKernel : public Diffusion
 {
 //----------------------------------PUBLIC----------------------------------
 public:
-  DwarfElephantLiftingFunction(const InputParameters & parameters);
+  DwarfElephantLiftingFunctionKernel(const InputParameters & parameters);
 
 //--------------------------------PROTECTED---------------------------------
 protected:
@@ -40,4 +40,4 @@ protected:
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTLIFTINGFUNCTION_H
+#endif // DWARFELEPHANTLIFTINGFUNCTIONKERNEL_H

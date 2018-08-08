@@ -28,7 +28,7 @@
 
 // Kernels
 #include "DwarfElephantFEThermalConduction.h"
-#include "DwarfElephantLiftingFunction.h"
+#include "DwarfElephantLiftingFunctionKernel.h"
 #include "DwarfElephantFEElectricalConduction.h"
 #include "DwarfElephantFEConstantRadiogenicHeatProduction.h"
 #include "DwarfElephantFEDarcy.h"
@@ -66,6 +66,7 @@
 // Functions
 #include "DwarfElephantInitialConditionFileReader.h"
 #include "DwarfElephantBoundaryConditionFileReader.h"
+#include "DwarfElephantLiftingFunction.h"
 
 // Executioners
 #include "DwarfElephantRBExecutioner.h"
@@ -137,7 +138,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // Kernels
   registerKernel(DwarfElephantFEThermalConduction);
-  registerKernel(DwarfElephantLiftingFunction);
+  registerKernel(DwarfElephantLiftingFunctionKernel);
   registerKernel(DwarfElephantFEElectricalConduction);
   registerKernel(DwarfElephantFEConstantRadiogenicHeatProduction);
   registerKernel(DwarfElephantFEDarcy);
@@ -174,6 +175,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   // Functions
   registerFunction(DwarfElephantInitialConditionFileReader);
   registerFunction(DwarfElephantBoundaryConditionFileReader);
+  registerFunction(DwarfElephantLiftingFunction);
 
   // Executioners
   registerExecutioner(DwarfElephantRBExecutioner);
