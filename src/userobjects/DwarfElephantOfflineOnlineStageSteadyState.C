@@ -24,6 +24,7 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     params.addParam<bool>("compute_output", false, "Determines whether an output of interest is computed or not.");
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
+    params.addParam<unsigned int>("online_N", 0, "Defines the dimension of the online stage.");
     params.addParam<Real>("mu_bar", 1., "Value for mu-bar");
     params.addRequiredParam<std::vector<Real>>("online_mu", "Current values of the different layers for which the RB Method is solved.");
     return params;
@@ -42,6 +43,7 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     _offline_error_bound(getParam<bool>("offline_error_bound")),
     _output_file(getParam<bool>("output_file")),
     _compute_output(getParam<bool>("compute_output")),
+    _online_N(getParam<unsigned int>("online_N")),
     _system_name(getParam<std::string>("system")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
@@ -100,14 +102,14 @@ DwarfElephantOfflineOnlineStageSteadyState::offlineStage()
       _rb_eval_writer.write_to_file("rb_eval.bin");
     #else
       // Write the offline data to file (xdr format).
-      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files();
+      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files("offline_data");
     #endif
 
     // If desired, store the basis functions (xdr format).
     if (_store_basis_functions)
     {
-      _initialize_rb_system._eim_con_ptr -> get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._eim_con_ptr);  
-      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr);
+      _initialize_rb_system._eim_con_ptr -> get_rb_evaluation().write_out_basis_functions(_initialize_rb_system._eim_con_ptr->get_explicit_system(),"eim_data");  
+      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr,"offline_data");
     }
 
 //    _initialize_rbeim_system._rb_con_ptr->print_basis_function_orthogonality();
@@ -165,7 +167,7 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       RBDataDeserialization::RBEIMEvaluationDeserialization _rb_eim_eval_reader(_initialize_rb_system._eim_con_ptr -> get_rb_evaluation());
       rb_eim_eval_reader.read_from_file("rb_eim_eval.bin");
       #else
-      _initialize_rb_system._rb_con_ptr -> get_rb_evaluation().legacy_read_offline_data_from_files();
+      _initialize_rb_system._eim_con_ptr -> get_rb_evaluation().legacy_read_offline_data_from_files("eim_data");
       #endif
 
       _initialize_rb_system._eim_eval_ptr -> initialize_eim_theta_objects();
@@ -175,7 +177,7 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       RBDataSerialization::RBEvaluationDeserialization rb_eval_reader(_initialize_rb_system._rb_con_ptr -> get_rb_evaluation());
       rb_eval_reader.read_from_file("rb_eval.bin");
       #else
-      _initialize_rb_system._rb_con_ptr -> get_rb_evaluation().legacy_read_offline_data_from_files();
+      _initialize_rb_system._rb_con_ptr -> get_rb_evaluation().legacy_read_offline_data_from_files("offline_data");
       #endif
 
       setOnlineParameters();
@@ -202,8 +204,8 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       Moose::perf_log.push("DataTransfer()", "Execution");
       if(_output_file)
       {
-         _initialize_rb_system._eim_con_ptr -> get_rb_evaluation().read_in_basis_functions(*_initialize_rb_system._eim_con_ptr);
-         _initialize_rb_system._rb_con_ptr -> get_rb_evaluation().read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
+         _initialize_rb_system._eim_con_ptr -> get_rb_evaluation().read_in_basis_functions(_initialize_rb_system._eim_con_ptr->get_explicit_system(),"eim_data");
+         _initialize_rb_system._rb_con_ptr -> get_rb_evaluation().read_in_basis_functions(*_initialize_rb_system._rb_con_ptr,"offline_data");
 
          _initialize_rb_system._eim_con_ptr -> load_rb_solution();
          _initialize_rb_system._rb_con_ptr -> load_rb_solution();

@@ -67,11 +67,11 @@ DwarfElephantRBNodalBC::computeResidual() // DwarfElephantRBNodalBC::computeResi
     {
       const DwarfElephantInitializeRBSystemSteadyState & _initialize_rb_system = getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject");
 
-      if (_ID_Fq >= _initialize_rb_system._qf)
-        mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
-
       if(_initialize_rb_system._offline_stage)
       {
+        if (_ID_Fq >= _initialize_rb_system._qf) // If statement on _ID_Fq moved inside if statement over _simulation_type for compatibility with EIM.
+          mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
+
         if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         {
           _rb_problem->_rb_assembly.push_back(new DwarfElephantRBAssembly(*(_rb_problem->_nl_sys),_ID_Fq)); // new code 6.8.2018

@@ -167,6 +167,7 @@ class DwarfElephantRBEvaluationSteadyState : public RBEvaluation
 public:
   DwarfElephantRBEvaluationSteadyState(const libMesh::Parallel::Communicator & comm, FEProblemBase & fe_problem);
 
+  virtual ~DwarfElephantRBEvaluationSteadyState() {}
     virtual Real get_stability_lower_bound();
 
 // Outcommented at the moment, please remove comment marks in case you want to use the slower but less error
@@ -272,7 +273,7 @@ public:
 
   DwarfElephantEIMEvaluationSteadyState(const libMesh::Parallel::Communicator & comm);
   
-  ~DwarfElephantEIMEvaluationSteadyState() {}
+  virtual ~DwarfElephantEIMEvaluationSteadyState() {}
 
   ShiftedGaussian sg;
 };
@@ -289,6 +290,8 @@ public:
                          const std::string & name_in,
                          const unsigned int number_in);
 
+  
+  virtual ~DwarfElephantEIMConstructionSteadyState() {}
   /**
    * The type of the parent.
    */

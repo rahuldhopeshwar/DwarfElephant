@@ -233,7 +233,7 @@ DwarfElephantEIMEvaluationSteadyState::DwarfElephantEIMEvaluationSteadyState(con
    */
   void DwarfElephantEIMConstructionSteadyState::init_implicit_system()
   {
-    this->add_variable ("L2_proj_var");//, libMesh::FIRST);
+    this->add_variable ("L2_proj_var"); // variable name should be the same as the one defined in the MOOSE input file for compatibility with EIM
   }
 
   /**

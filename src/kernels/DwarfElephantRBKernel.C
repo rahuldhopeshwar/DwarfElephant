@@ -103,13 +103,16 @@ DwarfElephantRBKernel::computeResidual()
                "You defined a wrong state in your 'execute_on' line in the input file. "
                "Please, correct your settings.");
 
-    if (_ID_Fq >= _initialize_rb_system._qf)
-      mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
+    if(_initialize_rb_system._offline_stage) // order of offline_stage and _ID_Fq if statements changed to make code compatible with EIM.
+    {
+      if (_ID_Fq >= _initialize_rb_system._qf)
+        mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
 
-    if(_initialize_rb_system._offline_stage)
+    
       // Add the calculated vectors to the vectors from the RB system.
       if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         _initialize_rb_system._residuals[_ID_Fq] -> add_vector(_local_re, _var.dofIndices());
+    }
   }
   else if (_simulation_type == "transient") // Transient
   {
