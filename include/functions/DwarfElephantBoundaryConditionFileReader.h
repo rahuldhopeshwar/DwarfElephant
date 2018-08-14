@@ -37,12 +37,15 @@ protected:
   std::vector<Real> _dx;
   std::vector<Real> _dy;
   std::vector<std::vector<Real>> _data_array;
+  std::vector<std::vector<Real>> _dx_data_array;
+  std::vector<std::vector<Real>> _dy_data_array;
 
 private:
   void fileParser();
   std::vector<Real>  fileParserGradients(std::string & file);
   Real findValue(Real _x_coord, Real _y_coord);
   Real interpolateValue(Real _x_coord, Real _y_coord);
+  std::vector<Real> findGradient(Real _x_coord, Real _y_coord);
 };
 
 #endif // DWARFELEPHANTBOUNDARYCONDITIONFILEREADER_H

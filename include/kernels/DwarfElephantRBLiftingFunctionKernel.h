@@ -4,28 +4,28 @@
  */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTLIFTINGFUNCTIONKERNEL_H
-#define DWARFELEPHANTLIFTINGFUNCTIONKERNEL_H
+#ifndef DWARFELEPHANTRBLIFTINGFUNCTIONKERNEL_H
+#define DWARFELEPHANTRBLIFTINGFUNCTIONKERNEL_H
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
-#include "Diffusion.h"
+#include "DwarfElephantRBKernel.h"
 #include "Function.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
-class DwarfElephantLiftingFunctionKernel;
+class DwarfElephantRBLiftingFunctionKernel;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<DwarfElephantLiftingFunctionKernel>();
+InputParameters validParams<DwarfElephantRBLiftingFunctionKernel>();
 
 ///-------------------------------------------------------------------------
-class DwarfElephantLiftingFunctionKernel : public Diffusion
+class DwarfElephantRBLiftingFunctionKernel : public DwarfElephantRBKernel
 {
 //----------------------------------PUBLIC----------------------------------
 public:
-  DwarfElephantLiftingFunctionKernel(const InputParameters & parameters);
+  DwarfElephantRBLiftingFunctionKernel(const InputParameters & parameters);
 
 //--------------------------------PROTECTED---------------------------------
 protected:
@@ -36,8 +36,7 @@ protected:
 
   /* Attributes */
   Function * _lifting_function;
-  Real _scale;
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTLIFTINGFUNCTIONKERNEL_H
+#endif // DWARFELEPHANTRBLIFTINGFUNCTIONKERNEL_H

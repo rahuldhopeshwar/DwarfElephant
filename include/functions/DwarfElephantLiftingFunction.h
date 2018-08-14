@@ -25,14 +25,30 @@ protected:
   std::vector<unsigned int> _data_array_dimensions;
   std::vector<Real> _step_sizes;
   Real _tolerance;
+  std::string _dx_distance_file;
+  std::string _dy_distance_file;
+  std::string _dx_file;
+  std::string _dy_file;
   std::vector<Real> _x_coord_reference_layer;
   std::vector<Real> _y_coord_reference_layer;
   std::vector<Real> _z_coord_reference_layer;
+  std::vector<Real> _dx_distance;
+  std::vector<Real> _dy_distance;
+  std::vector<Real> _dx;
+  std::vector<Real> _dy;
   std::vector<std::vector<Real>> _data_array;
+  std::vector<std::vector<Real>> _dx_data_array;
+  std::vector<std::vector<Real>> _dy_data_array;
+  std::vector<std::vector<Real>> _distance_data_array;
+  std::vector<std::vector<Real>> _dx_distance_data_array;
+  std::vector<std::vector<Real>> _dy_distance_data_array;
   bool _access_multiple_times;
 
 private:
+  std::vector<Real>  fileParserGradients(std::string & file);
   Real interpolateZRef(Real _x_coord, Real _y_coord);
+  std::vector<Real> findGradientDistance(Real _x_coord, Real _y_coord);
+  std::vector<Real> findGradientDepth(Real _x_coord, Real _y_coord);
 };
 
 #endif // DWARFELEPHANTLIFTINGFUNCTION_H

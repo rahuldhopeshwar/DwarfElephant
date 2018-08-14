@@ -28,7 +28,9 @@
 
 // Kernels
 #include "DwarfElephantFEThermalConduction.h"
-#include "DwarfElephantLiftingFunctionKernel.h"
+#include "DwarfElephantFELiftingFunctionKernel.h"
+#include "DwarfElephantRBLiftingFunctionKernel.h"
+#include "DwarfElephantRBLiftingFunctionKernelWithParameterIndependentScale.h"
 #include "DwarfElephantFEElectricalConduction.h"
 #include "DwarfElephantFEConstantRadiogenicHeatProduction.h"
 #include "DwarfElephantFEDarcy.h"
@@ -138,7 +140,9 @@ DwarfElephantApp::registerObjects(Factory & factory)
 
   // Kernels
   registerKernel(DwarfElephantFEThermalConduction);
-  registerKernel(DwarfElephantLiftingFunctionKernel);
+  registerKernel(DwarfElephantFELiftingFunctionKernel);
+  registerKernel(DwarfElephantRBLiftingFunctionKernel);
+  registerKernel(DwarfElephantRBLiftingFunctionKernelWithParameterIndependentScale);
   registerKernel(DwarfElephantFEElectricalConduction);
   registerKernel(DwarfElephantFEConstantRadiogenicHeatProduction);
   registerKernel(DwarfElephantFEDarcy);

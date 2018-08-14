@@ -5,11 +5,11 @@
 
  ///---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
-#include "DwarfElephantLiftingFunctionKernel.h"
+#include "DwarfElephantFELiftingFunctionKernel.h"
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<DwarfElephantLiftingFunctionKernel>()
+InputParameters validParams<DwarfElephantFELiftingFunctionKernel>()
 {
   InputParameters params = validParams<Diffusion>();
   params.addClassDescription("The class implements a lifting function.");
@@ -20,7 +20,7 @@ InputParameters validParams<DwarfElephantLiftingFunctionKernel>()
 }
 
 ///-------------------------------CONSTRUCTOR-------------------------------
-DwarfElephantLiftingFunctionKernel::DwarfElephantLiftingFunctionKernel(const InputParameters & parameters) :
+DwarfElephantFELiftingFunctionKernel::DwarfElephantFELiftingFunctionKernel(const InputParameters & parameters) :
   Diffusion(parameters),
   _lifting_function(&getFunction("lifting_function")),
   _scale(getParam<Real>("scale"))
@@ -31,13 +31,13 @@ DwarfElephantLiftingFunctionKernel::DwarfElephantLiftingFunctionKernel(const Inp
 // Definition of the necessary PDE in the weak formulation
 
 Real
-DwarfElephantLiftingFunctionKernel::computeQpResidual()
+DwarfElephantFELiftingFunctionKernel::computeQpResidual()
 {
   return  _scale*(_grad_test[_i][_qp]*(_lifting_function->gradient(_fe_problem.time(),_q_point[_qp])));
 }
 
 Real
-DwarfElephantLiftingFunctionKernel::computeQpJacobian()
+DwarfElephantFELiftingFunctionKernel::computeQpJacobian()
 {
    return 0.0;
 }

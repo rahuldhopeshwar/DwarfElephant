@@ -38,33 +38,56 @@ DwarfElephantBoundaryConditionFileReader::DwarfElephantBoundaryConditionFileRead
 
   fileParser();
 
+  if(_gradients)
+  {
+    _dx = fileParserGradients(_dx_file);
+    _dy = fileParserGradients(_dy_file);
+  }
+
   if(_data_array_dimensions.size()!=2)
     mooseError("Wrong dimensions of the data array.");
 
     if(_step_sizes.size()!=2)
       mooseError("Wrong dimensions of the step sizes of the data array.");
 
+    if(_gradients && !_access_multiple_times)
+      mooseError("The reading process of the gradients is currently only supported",
+                 " for the multiple access option.");
+
   if(_access_multiple_times)
   {
     _data_array.resize(_data_array_dimensions[0]);
+
+    if(_gradients)
+    {
+      _dx_data_array.resize(_data_array_dimensions[0]);
+      _dy_data_array.resize(_data_array_dimensions[0]);
+    }
+
     for(unsigned int i=0; i<_data_array_dimensions[0]; i++)
+    {
       _data_array[i].resize(_data_array_dimensions[1]);
 
+      if(_gradients)
+      {
+        _dx_data_array[i].resize(_data_array_dimensions[1]);
+        _dy_data_array[i].resize(_data_array_dimensions[1]);
+      }
+    }
+
     const std::vector<dof_id_type> * _reference_node_ids = &_sc_fe_problem.mesh().getNodeList(_ID_data_layer);
+
 
     for(unsigned int i=0;  i< _reference_node_ids[0].size(); i++)
     {
       Node & _reference_node = _sc_fe_problem.mesh().nodeRef(_reference_node_ids[0][i]);
-      Real _value = findValue(_reference_node(0), _reference_node(1));
-      Real _x = std::round(_reference_node(0)/_step_sizes[0]);
-      Real _y = std::round(_reference_node(1)/_step_sizes[1]);
-      _data_array[_x][_y]=_value;
-    }
+      _data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=findValue(_reference_node(0), _reference_node(1));
 
-    if(_gradients)
-    {
-      _dx = fileParserGradients(_dx_file);
-      _dy = fileParserGradients(_dy_file);
+      if(_gradients)
+      {
+        _dx_data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=findGradient(_reference_node(0), _reference_node(1))[0];
+        _dy_data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=findGradient(_reference_node(0), _reference_node(1))[1];
+      }
     }
   }
 }
@@ -82,9 +105,15 @@ DwarfElephantBoundaryConditionFileReader::value(Real /*t*/, const Point & p)
 }
 
 RealGradient
-DwarfElephantBoundaryConditionFileReader::gradient(Real /*t*/, const Point & /*p*/)
+DwarfElephantBoundaryConditionFileReader::gradient(Real /*t*/, const Point & p)
 {
-  return RealGradient(0, 0, 0);
+  RealGradient gradient(0, 0, 0);
+  if(_access_multiple_times)
+  {
+    gradient(0)= _dx_data_array[std::round(p(0)/_step_sizes[0])][std::round(p(1)/_step_sizes[1])];
+    gradient(1)= _dy_data_array[std::round(p(0)/_step_sizes[0])][std::round(p(1)/_step_sizes[1])];
+  }
+  return gradient;
 }
 
 void
@@ -137,7 +166,7 @@ DwarfElephantBoundaryConditionFileReader::fileParserGradients(std::string & file
   // Open the inputFile and check it.
   _input_file.open(file.c_str());
   if (!_input_file.good())
-    mooseError("Error while opening the file '", _file, "' within the DwarfElephantFileReader function.");
+    mooseError("Error while opening the file '", file, "' within the DwarfElephantFileReader function.");
 
   // Read the file.
   while (std::getline(_input_file, _line))
@@ -168,6 +197,25 @@ DwarfElephantBoundaryConditionFileReader::findValue(Real _x_coord, Real _y_coord
    mooseError("Point(", _x_coord, ", ", _y_coord, ") ",
               "could not be matched.");
   return 0;
+}
+
+std::vector<Real>
+DwarfElephantBoundaryConditionFileReader::findGradient(Real _x_coord, Real _y_coord)
+{
+  std::vector<Real> _gradient;
+  _gradient.resize(2);
+  for (unsigned int i=0; i < _num_points; ++i)
+  {
+    if ((std::fabs(_x_coordinates[i] - _x_coord) < _tolerance) && (std::fabs(_y_coordinates[i] - _y_coord) < _tolerance))
+    {
+      _gradient[0]=_dx[i];
+      _gradient[1]=_dy[i];
+      return _gradient;
+    }
+  }
+   mooseError("Gradient for Point(", _x_coord, ", ", _y_coord, ") ",
+              "could not be matched.");
+  return _gradient;
 }
 
 Real
