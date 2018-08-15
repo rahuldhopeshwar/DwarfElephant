@@ -32,10 +32,10 @@ void DwarfElephantEIMFKernel::computeResidual()
           _local_re.zero();
 
           _initialize_rb_system._eim_con_ptr -> _rb_eim_assembly_objects_new[_i_eim_basis_function] -> get_eim_basis_function_values(_assembly.elem(), _qrule, _eim_values_ref);
-	  for (_i = 0; _i < _test.size(); _i++)
+		for (_i = 0; _i < _test.size(); _i++)
 	  	for (_qp = 0; _qp < _qrule -> n_points(); _qp++)
 		{
-			_local_re(_i) += -_JxW[_qp] * _coord[_qp] * _test[_i][_qp] * _eim_values_ref[_qp];
+			_local_re(_i) += _JxW[_qp] * _coord[_qp] * _test[_i][_qp] * _eim_values_ref[_qp];
 		}
 	  re += _local_re;
 	  if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())		

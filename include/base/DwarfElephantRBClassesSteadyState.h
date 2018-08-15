@@ -169,7 +169,6 @@ public:
 
   virtual ~DwarfElephantRBEvaluationSteadyState() {}
     virtual Real get_stability_lower_bound();
-
 // Outcommented at the moment, please remove comment marks in case you want to use the slower but less error
 // prone error bound. Please, keep in mind that the slower error bound works in serial only.
 

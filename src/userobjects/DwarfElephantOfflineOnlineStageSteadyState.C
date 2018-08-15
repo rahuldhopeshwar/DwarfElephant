@@ -75,7 +75,8 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
     // Transfer the data for the F vectors.
     for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
     {
-      _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q]);
+      //_rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q]); Commented out for compatibility with libMesh EIM example
+      _rb_problem->rbAssembly(0).setCachedResidual(*_initialize_rb_system._residuals[_q]); // line added for compatibility with libMesh EIM example
       _initialize_rb_system._residuals[_q]->close();
     }
 
@@ -213,6 +214,9 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
          *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
          _fe_problem.getNonlinearSystemBase().update();
 
+		 #ifdef LIBMESH_HAVE_EXODUS_API
+		 ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("RB_sol_DwarfElephant.e",_es);
+		 #endif
 //        How to write own Exodus file  // not required anymore
 //        Moose::perf_log.push("write_Exodus()", "Output");
 //
