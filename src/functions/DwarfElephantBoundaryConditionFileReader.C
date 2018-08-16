@@ -101,19 +101,18 @@ DwarfElephantBoundaryConditionFileReader::value(Real /*t*/, const Point & p)
     return interpolateValue(p(0), p(1));
   else
     return _data_array[std::round(p(0)/_step_sizes[0])][std::round(p(1)/_step_sizes[1])];
-
 }
 
 RealGradient
 DwarfElephantBoundaryConditionFileReader::gradient(Real /*t*/, const Point & p)
 {
-  RealGradient gradient(0, 0, 0);
+  Real _x = std::round(p(0)/_step_sizes[0]);
+  Real _y = std::round(p(1)/_step_sizes[1]);
   if(_access_multiple_times)
   {
-    gradient(0)= _dx_data_array[std::round(p(0)/_step_sizes[0])][std::round(p(1)/_step_sizes[1])];
-    gradient(1)= _dy_data_array[std::round(p(0)/_step_sizes[0])][std::round(p(1)/_step_sizes[1])];
+     return (_dx_data_array[_x][_y], _dy_data_array[_x][_y], 0);
   }
-  return gradient;
+  return (0,0,0);
 }
 
 void

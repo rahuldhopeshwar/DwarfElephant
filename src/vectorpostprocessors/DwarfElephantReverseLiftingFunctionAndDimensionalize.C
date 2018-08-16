@@ -76,6 +76,8 @@ DwarfElephantReverseLiftingFunctionAndDimensionalize::execute()
 void
 DwarfElephantReverseLiftingFunctionAndDimensionalize::finalize()
 {
-  _nodal_solution->close();
-  *_fe_problem.es().get_system(_system).solution = *_nodal_solution;
+  if(processor_id() == 0){
+    _nodal_solution->close();
+    *_fe_problem.es().get_system(_system).solution = *_nodal_solution;
+  }
 }

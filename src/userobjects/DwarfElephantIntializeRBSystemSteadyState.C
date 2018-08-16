@@ -207,6 +207,7 @@ DwarfElephantInitializeRBSystemSteadyState::execute()
 void
 DwarfElephantInitializeRBSystemSteadyState::finalize()
 {
+  _console << "RB System initialized" << std::endl;
 }
 
 std::vector<std::vector<NumericVector <Number> *> >

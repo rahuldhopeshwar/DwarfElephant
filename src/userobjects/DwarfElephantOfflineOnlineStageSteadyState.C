@@ -74,7 +74,10 @@ DwarfElephantOfflineOnlineStageSteadyState::setAffineMatrices()
     {
       _rb_problem->rbAssembly(_q).setCachedJacobianContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
       _initialize_rb_system._jacobian_subdomain[_q] ->close();
+
+      _console << "DirichletBCs applied to the matrix" << _q << std::endl;
       _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
+      _console << "Matrix" << _q << "added to inner product matrix" << std::endl;
     }
 }
 
@@ -148,6 +151,7 @@ DwarfElephantOfflineOnlineStageSteadyState::initialize()
 void
 DwarfElephantOfflineOnlineStageSteadyState::execute()
 {
+  _console << "Matrices and Vectors assembled" << std::endl;
 
     // Build the RBEvaluation object
     // Required for both the Offline and Online stage.
@@ -170,6 +174,8 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
        // Transfer the affine vectors to the RB system.
        if(_skip_vector_assembly_in_rb_system)
         transferAffineVectors();
+
+      _console << "DirichletBCs applied to the vectors" << std::endl;
 
       // Transfer the affine matrices to the RB system.
       if(_skip_matrix_assembly_in_rb_system)
