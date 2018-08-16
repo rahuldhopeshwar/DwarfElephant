@@ -31,7 +31,7 @@ DwarfElephantRBLiftingFunctionKernel::DwarfElephantRBLiftingFunctionKernel(const
 Real
 DwarfElephantRBLiftingFunctionKernel::computeQpResidual()
 {
-  return  (_grad_test[_i][_qp]*(_lifting_function->gradient(_fe_problem.time(),_q_point[_qp])));
+  return  -(_grad_test[_i][_qp]*(_lifting_function->gradient(_fe_problem.time(),_q_point[_qp])));
 }
 
 Real

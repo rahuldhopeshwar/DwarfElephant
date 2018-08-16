@@ -50,14 +50,15 @@ DwarfElephantReverseLiftingFunctionAndDimensionalize::execute()
   // store the original variable values in a VectorPostprocessor
   _nodal_solution_original.push_back(_nodal_solution->el(_current_node->id()));
 
-  Real _value = 0;
+  Real _value = _nodal_solution->el(_current_node->id());
 
   // reverse the lifitng function
   if(_reverse_lifting_function)
   {
     // Define a point for the lifting function
     Point _point(_current_node->operator()(0), _current_node->operator()(1), _current_node->operator()(2));
-    _value += _nodal_solution->el(_current_node->id()) + _lifting_function.value(_t, _point);
+    // _value += _nodal_solution->el(_current_node->id()) + _lifting_function.value(_t, _point);
+    _value += _lifting_function.value(_t, _point);
   }
 
   // dimensionalize the variable

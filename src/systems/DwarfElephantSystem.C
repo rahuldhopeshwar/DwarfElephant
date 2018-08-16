@@ -26,13 +26,18 @@ DwarfElephantSystem::solve()
   {
     // set the boundaries for the FEM solutions
     _computing_initial_residual = true;
+
     // In case your are using a MOOSE version older than April 19th 2018 uncomment the following line
     // _fe_problem.computeResidual(_transient_sys, *_current_solution, *_transient_sys.rhs);
-
     _fe_problem.computeResidualSys(_transient_sys, *_current_rb_solution, *_transient_sys.rhs);
 
     _computing_initial_residual = false;
     _transient_sys.rhs->close();
+
+    _initial_residual_before_preset_bcs = _transient_sys.rhs->l2_norm();
+    if (_compute_initial_residual_before_preset_bcs)
+      _console << "Initial residual before setting preset BCs: "
+               << _initial_residual_before_preset_bcs << '\n';
   }
 
   // set the counters for the iterations to zero

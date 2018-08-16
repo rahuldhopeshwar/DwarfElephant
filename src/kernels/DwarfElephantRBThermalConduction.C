@@ -33,7 +33,7 @@ DwarfElephantRBThermalConduction::DwarfElephantRBThermalConduction(const InputPa
 Real
 DwarfElephantRBThermalConduction::computeQpResidual()
 {
-  return (_lambda/_norm_value) * DwarfElephantRBDiffusion::computeQpResidual();
+  return -(_lambda/_norm_value) * DwarfElephantRBDiffusion::computeQpResidual();
 }
 
 Real

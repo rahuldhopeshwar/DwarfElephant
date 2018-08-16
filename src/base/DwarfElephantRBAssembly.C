@@ -48,7 +48,7 @@ DwarfElephantRBAssembly::setCachedResidual(NumericVector<Number> & _residual)
     _residual.set(_cached_residual_contribution_rows[i], _cached_residual_contribution_vals[i]);
   }
 
-  clearCachedResidualContributions();
+  // clearCachedResidualContributions();
 }
 
 void
@@ -96,7 +96,7 @@ DwarfElephantRBAssembly::setCachedJacobianContributions(SparseMatrix<Number> & _
                   _cached_jacobian_contribution_cols[i],
                   _cached_jacobian_contribution_vals[i]);
 
-  clearCachedJacobianContributions();
+  // clearCachedJacobianContributions();
 }
 
 void

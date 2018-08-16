@@ -29,9 +29,9 @@ DwarfElephantRBConstructionSteadyState::init_data()
   Parent::init_data();
 }
 
-//Real
-//DwarfElephantRBConstructionSteadyState::train_reduced_basis(const bool resize_rb_eval_data)
-//{
+// Real
+// DwarfElephantRBConstructionSteadyState::train_reduced_basis(const bool resize_rb_eval_data)
+// {
 //  LOG_SCOPE("train_reduced_basis()", "RBConstruction");
 //
 //  int count = 0;
@@ -120,7 +120,7 @@ DwarfElephantRBConstructionSteadyState::init_data()
 //  this->update_greedy_param_list();
 //
 //  return training_greedy_error;
-//}
+// }
 
  Real
  DwarfElephantRBConstructionSteadyState::compute_residual_dual_norm(const unsigned int N)
