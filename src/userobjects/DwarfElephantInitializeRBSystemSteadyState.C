@@ -12,21 +12,38 @@ InputParameters validParams<DwarfElephantInitializeRBSystemSteadyState>()
   //params.addParam<bool>("compliant", true, "Determines whether F is equal to the output vector or not.");
   params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
   params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
-  params.addRequiredParam<unsigned int>("n_training_samples_EIM", "Defines the number of training samples used in the EIM Greedy.");
+  
+  params.addParam<unsigned int>("n_training_samples_EIM", "Defines the number of training samples used in the EIM Greedy."); // Do not make this a required parameter
   params.addParam<bool>("deterministic_training_EIM", false, "Determines whether the EIM training set is generated deterministically or randomly.");
   params.addParam<unsigned int>("training_parameters_random_seed_EIM", -1, "Defines the random seed for the generation of the EIM traning set.");
   params.addParam<bool>("quiet_mode_EIM", true, "Determines the what is printed to the console.");
-  params.addRequiredParam<unsigned int>("N_max_EIM", "Defines the maximum number of EIM basis functions.");
+  params.addParam<unsigned int>("N_max_EIM", "Defines the maximum number of EIM basis functions."); // Do not make this a required parameter
   params.addParam<Real>("rel_training_tolerance_EIM", 1.0e-4, "Defines the relative training tolerance for the EIM Greedy.");
   params.addParam<Real>("abs_training_tolerance_EIM", 1.0e-12, "Defines the relative training tolerance for the EIM Greedy.");
   params.addParam<bool>("normalize_EIM_bound_in_greedy", false, "Determines whether the normalized EIM bound is used in the Greedy or not.");
-  params.addRequiredParam<std::vector<std::string>>("parameter_names_EIM", "Parameter names for the EIM.");
+  params.addParam<std::vector<std::string>>("parameter_names_EIM", "Parameter names for the EIM."); // do not make this a required parameter
   params.addParam<std::vector<Real>>("parameter_min_values_EIM", "Defines the lower bound of the EIM parameter range.");
   params.addParam<std::vector<Real>>("parameter_max_values_EIM", "Defines the upper bound of the EIM parameter range.");
   params.addParam<std::vector<std::string>>("discrete_parameter_names_EIM", "Discrete parameter names for the EIM method.");
   params.addParam<std::vector<Real>>("discrete_parameter_values_EIM", "Defines the list of discrete EIM parameter values.");
   params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
   params.addParam<std::string>("best_fit_type_EIM","The algorithm to be used in the EIM greedy ('projection' or 'eim').");
+
+  params.addParam<bool>("compliant",true,"Determines whether F is equal to the output vector or not.");
+  params.addRequiredParam<unsigned int>("n_training_samples_RB", "Defines the number of training samples used in the RB Greedy.");
+  params.addParam<bool>("deterministic_training_RB", false, "Determines whether the RB training set is generated deterministically or randomly.");
+  params.addParam<unsigned int>("training_parameters_random_seed_RB", -1, "Defines the random seed for the generation of the RB traning set.");
+  params.addParam<bool>("quiet_mode_RB", true, "Determines the what is printed to the console.");
+  params.addRequiredParam<unsigned int>("N_max_RB", "Defines the maximum number of RB basis functions.");
+  params.addParam<Real>("rel_training_tolerance_RB", 1.0e-4, "Defines the relative training tolerance for the RB Greedy.");
+  params.addParam<Real>("abs_training_tolerance_RB", 1.0e-12, "Defines the relative training tolerance for the RB Greedy.");
+  params.addParam<bool>("normalize_rb_bound_in_greedy", false, "Determines whether the normalized RB bound is used in the Greedy or not.");
+  params.addRequiredParam<std::vector<std::string>>("parameter_names_RB", "Parameter names for the RB method.");
+  params.addParam<std::vector<Real>>("parameter_min_values_RB", "Defines the lower bound of the RB parameter range.");
+  params.addParam<std::vector<Real>>("parameter_max_values_RB", "Defines the upper bound of the RB parameter range.");
+  params.addParam<std::vector<std::string>>("discrete_parameter_names_RB", "Discrete parameter names for the RB method.");
+  params.addParam<std::vector<Real>>("discrete_parameter_values_RB", "Defines the list of discrete RB parameter values.");
+  params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
 
   return params;
 }
@@ -53,21 +70,22 @@ DwarfElephantInitializeRBSystemSteadyState::DwarfElephantInitializeRBSystemStead
   _best_fit_type_EIM(getParam<std::string>("best_fit_type_EIM")),
 //  _parameters_filename(getParam<std::string>("parameters_filename")),
   _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
-  _mesh_ptr(&_fe_problem.mesh())
-  //_sys(&_es.get_system<TransientNonlinearImplicitSystem>(_system_name))
+  _mesh_ptr(&_fe_problem.mesh()),
+  _compliant(getParam<bool>("compliant")),
+  _deterministic_training_RB(getParam<bool>("deterministic_training_RB")),
+  _quiet_mode_RB(getParam<bool>("quiet_mode_RB")),
+  _normalize_RB_bound_in_greedy(getParam<bool>("normalize_rb_bound_in_greedy")),
+  _n_training_samples_RB(getParam<unsigned int>("n_training_samples_RB")),
+  _training_parameters_random_seed_RB(getParam<unsigned int>("training_parameters_random_seed_RB")),
+  _N_max_RB(getParam<unsigned int>("N_max_RB")),
+  _system_name(getParam<std::string>("system")),
+  _continuous_parameters_RB(getParam<std::vector<std::string>>("parameter_names_RB")),
+  _discrete_parameters_RB(getParam<std::vector<std::string>>("discrete_parameter_names_RB")),
+  _rel_training_tolerance_RB(getParam<Real>("rel_training_tolerance_RB")),
+  _abs_training_tolerance_RB(getParam<Real>("abs_training_tolerance_RB")),
+  _continuous_parameter_min_values_RB(getParam<std::vector<Real>>("parameter_min_values_RB")),
+  _continuous_parameter_max_values_RB(getParam<std::vector<Real>>("parameter_max_values_RB"))
 {
-// Add a new equation system for the RB construction.
-  //_eim_con_ptr = &_es.add_system<DwarfElephantEIMConstructionSteadyState>("EIMSystem");
-  //_rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionSteadyState> ("RBSystem");
-
-  // Intialization of the added equation system
-  //_rb_con_ptr->init();
-  //_es.update();
-
-  //DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm(), _fe_problem);
-  //DwarfElephantEIMEvaluationSteadyState _eim_eval(_mesh_ptr->comm(), _fe_problem);
-  //_rb_eval_ptr = new DwarfElephantRBEvaluationSteadyState(_mesh_ptr->comm(), _fe_problem);
-  //_eim_eval_ptr = new DwarfElephantEIMEvaluationSteadyState(_mesh_ptr->comm());
   std::cout << "Created initialize_rb_system object " << DwarfElephantInitializeRBSystemSteadyState::name() << std::endl;
 }
 
@@ -126,9 +144,9 @@ DwarfElephantInitializeRBSystemSteadyState::processEIMParameters()
    _eim_con_ptr->set_best_fit_type_flag(_best_fit_type_EIM);
   // End setting parameter values for the EIM construction object
 }
-/*
+
 void
-DwarfElephantInitializeRBSystemSteadyState::processRBParameters()
+DwarfElephantInitializeRBSystemSteadyState::processRBParameters() const
 {
 
   // End setting parameter values for the RB construction object
@@ -182,12 +200,11 @@ DwarfElephantInitializeRBSystemSteadyState::processRBParameters()
                                                _deterministic_training_RB);
  
 }
-*/
 
-void
-DwarfElephantInitializeRBSystemSteadyState::initializeOfflineStage()
+
+void DwarfElephantInitializeRBSystemSteadyState::initializeOfflineStageEIM()
 {
-  // Get and process the necessary input parameters for the
+// Get and process the necessary input parameters for the
   // offline stage
 
   //libMesh way: //  _rb_con_ptr->process_parameters_file(_parameters_filename);
@@ -196,6 +213,7 @@ DwarfElephantInitializeRBSystemSteadyState::initializeOfflineStage()
   _eim_con_ptr->initialize_rb_construction(_skip_matrix_assembly_in_rb_system,_skip_vector_assembly_in_rb_system);
   //_eim_con_ptr->train_reduced_basis();
 
+// The following lines need to be changed at a future time
   _inner_product_matrix_eim = _eim_con_ptr->get_inner_product_matrix();
   PetscMatrix<Number> * _petsc_inner_matrix_eim = dynamic_cast<PetscMatrix<Number>* > (_inner_product_matrix_eim);
    MatSetOption(_petsc_inner_matrix_eim->mat(), MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
@@ -205,10 +223,9 @@ DwarfElephantInitializeRBSystemSteadyState::initializeOfflineStage()
   _eim_con_ptr->print_info(); 
 }
 
-void
-DwarfElephantInitializeRBSystemSteadyState::initialize()
+void DwarfElephantInitializeRBSystemSteadyState::initializeEIM()
 {
-  // Define the parameter file for the libMesh functions.
+    // Define the parameter file for the libMesh functions.
   // In our case not required, because the read-in is done via the MOOSE inputfile.
   // GetPot infile (_parameters_filename);
   std::cout << "Starting InitializeRB::initialize()" << std::endl;
@@ -231,7 +248,18 @@ DwarfElephantInitializeRBSystemSteadyState::initialize()
   // RBConstruction object
   _eim_con_ptr->set_rb_evaluation(*_eim_eval_ptr);
   _rb_con_ptr->set_rb_evaluation(*_rb_eval_ptr);
+}
 
+void
+DwarfElephantInitializeRBSystemSteadyState::initializeOfflineStage() // make new initializeOfflineStageEIM() and initializeOfflineStageRB() functions and use them with if conditions
+{
+  initializeOfflineStageEIM();
+}
+
+void
+DwarfElephantInitializeRBSystemSteadyState::initialize() // Make new initializeEIM() initializeRB() functions that can be called depending on whether we need EIM or not.
+{
+  initializeEIM();
   if (_offline_stage) // location of _offline_stage if statement changed for compatibility with EIM.
   {
     initializeOfflineStage();

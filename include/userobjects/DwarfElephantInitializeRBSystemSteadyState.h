@@ -55,7 +55,7 @@ class DwarfElephantInitializeRBSystemSteadyState :
 {
 
 //----------------------------------PUBLIC----------------------------------
-  public:
+  public: // To do: Add RB parameters to this class
     DwarfElephantInitializeRBSystemSteadyState(const InputParameters & params);
     DwarfElephantInitializeRBSystemSteadyState & operator=(const DwarfElephantInitializeRBSystemSteadyState &);
     /* Methods */
@@ -67,10 +67,12 @@ class DwarfElephantInitializeRBSystemSteadyState :
     }
     // Initializes all required matrices and vectors for the RB solve.
     void initializeOfflineStage();
-
+    void initializeOfflineStageEIM();
+    
     void processEIMParameters();
-	
-	void AssignAffineMatricesAndVectors() const;
+    void processRBParameters() const;
+    void initializeEIM();
+    void AssignAffineMatricesAndVectors() const;
 
     // Initializes the RB System.
     virtual void initialize() override;
@@ -114,13 +116,13 @@ class DwarfElephantInitializeRBSystemSteadyState :
 
     std::vector<std::string> _continuous_parameters_EIM;
     std::vector<std::string> _discrete_parameters_EIM;
-    std::map< std::string, std::vector<Real> > _discrete_parameter_values_EIM;
+    std::map<std::string,std::vector<Real>> _discrete_parameter_values_EIM;
     std::string _best_fit_type_EIM;
 
     EquationSystems & _es;
     MooseMesh * _mesh_ptr;
     //TransientNonlinearImplicitSystem * _sys;
-    DwarfElephantRBConstructionSteadyState * _rb_con_ptr;
+    mutable DwarfElephantRBConstructionSteadyState * _rb_con_ptr;
     DwarfElephantEIMConstructionSteadyState * _eim_con_ptr;
     DwarfElephantRBEvaluationSteadyState *_rb_eval_ptr;
     DwarfElephantEIMEvaluationSteadyState *_eim_eval_ptr;
@@ -132,6 +134,26 @@ class DwarfElephantInitializeRBSystemSteadyState :
     mutable std::vector<NumericVector <Number> *> _residuals;
     mutable std::vector<std::vector<NumericVector <Number> *> > _outputs;
 
+  bool _compliant;
+  bool _deterministic_training_RB;
+  bool _quiet_mode_RB;
+  bool _normalize_RB_bound_in_greedy;
+
+  unsigned int _n_training_samples_RB;
+  unsigned int _training_parameters_random_seed_RB;
+  unsigned int _N_max_RB;
+
+  std::string _system_name;
+//    std::string _parameters_filename;     //only required if one wants to read the data over the GetPot class from libMesh directly
+  std::vector<std::string> _continuous_parameters_RB;
+  std::vector<std::string> _discrete_parameters_RB;
+  std::vector<Real> _discrete_parameter_values_in_RB;
+  mutable std::map<std::string,std::vector<Real>> _discrete_parameter_values_RB;
+
+  Real _rel_training_tolerance_RB;
+  Real _abs_training_tolerance_RB;
+  std::vector<Real> _continuous_parameter_min_values_RB;
+  std::vector<Real> _continuous_parameter_max_values_RB;
     /*Friend Classes*/
     friend class DwarfElephantRBKernel;
     friend class DwarfElephantRBDiracKernel;
