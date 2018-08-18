@@ -17,7 +17,6 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     params.addParam<bool>("compliant", true, "Determines whether F is equal to the output vector or not.");
     params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
     params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
-    params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
     params.addParam<bool>("online_stage", false, "Determines whether the Online stage will be calculated or not.");
     params.addParam<bool>("offline_error_bound", false, "Determines which error bound is used.");
     params.addParam<bool>("output_file", true, "Determines whether an output file is generated or not.");
@@ -38,7 +37,6 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     _skip_matrix_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
     _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
     _compliant(getParam<bool>("compliant")),
-    _offline_stage(getParam<bool>("offline_stage")),
     _online_stage(getParam<bool>("online_stage")),
     _offline_error_bound(getParam<bool>("offline_error_bound")),
     _output_file(getParam<bool>("output_file")),
@@ -76,7 +74,8 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
     for(unsigned int _q=0; _q<_initialize_rb_system._qf; _q++)
     {
       //_rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._residuals[_q]); Commented out for compatibility with libMesh EIM example
-      _rb_problem->rbAssembly(0).setCachedResidual(*_initialize_rb_system._residuals[_q]); // line added for compatibility with libMesh EIM example
+      if (_initialize_rb_system._use_EIM)
+        _rb_problem->rbAssembly(0).setCachedResidual(*_initialize_rb_system._residuals[_q]); // line added for compatibility with libMesh EIM example
       _initialize_rb_system._residuals[_q]->close();
     }
 
@@ -95,7 +94,7 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
 }
 
 void
-DwarfElephantOfflineOnlineStageSteadyState::offlineStage()
+DwarfElephantOfflineOnlineStageSteadyState::offlineStageEIM()
 {
     _initialize_rb_system._rb_con_ptr->train_reduced_basis();
     #if defined(LIBMESH_HAVE_CAPNPROTO)
@@ -126,43 +125,8 @@ DwarfElephantOfflineOnlineStageSteadyState::setOnlineParameters()
     }
 }
 
-void
-DwarfElephantOfflineOnlineStageSteadyState::initialize()
+void DwarfElephantOfflineOnlineStageSteadyState::onlineStageEIM()
 {
-
-}
-
-void
-DwarfElephantOfflineOnlineStageSteadyState::execute()
-{
-
-    // Build the RBEvaluation object
-    // Required for both the Offline and Online stage.
-    // DwarfElephantEIMEvaluationSteadyState _eim_eval(_mesh_ptr->comm() , _fe_problem)
-    // DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm() , _fe_problem);
-    // Pass a pointer of the RBEvaluation object to the
-    // RBConstruction object
-    //_initialize_rbeim_system._eim_con_ptr->set_rb_evaluation(_eim_eval);
-    //_initialize_rbeim_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
-
-    if (_offline_stage)
-    {
-       // Transfer the affine vectors to the RB system.
-       if(_skip_vector_assembly_in_rb_system)
-        transferAffineVectors();
-
-      // Transfer the affine matrices to the RB system.
-      if(_skip_matrix_assembly_in_rb_system)
-        setAffineMatrices();
-
-      // Perform the offline stage.
-      _console << std::endl;
-      offlineStage();
-      _console << std::endl;
-    }
-
-    if(_online_stage)
-    {
       Moose::perf_log.push("onlineStage()", "Execution");
       #if defined(LIBMESH_HAVE_CAPNPROTO)
       RBDataDeserialization::RBEIMEvaluationDeserialization _rb_eim_eval_reader(_initialize_rb_system._eim_con_ptr -> get_rb_evaluation());
@@ -217,6 +181,47 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 		 #ifdef LIBMESH_HAVE_EXODUS_API
 		 ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("RB_sol_DwarfElephant.e",_es);
 		 #endif
+      }
+}
+
+void
+DwarfElephantOfflineOnlineStageSteadyState::initialize()
+{
+
+}
+
+void
+DwarfElephantOfflineOnlineStageSteadyState::execute()
+{
+
+    // Build the RBEvaluation object
+    // Required for both the Offline and Online stage.
+    // DwarfElephantEIMEvaluationSteadyState _eim_eval(_mesh_ptr->comm() , _fe_problem)
+    // DwarfElephantRBEvaluationSteadyState _rb_eval(_mesh_ptr->comm() , _fe_problem);
+    // Pass a pointer of the RBEvaluation object to the
+    // RBConstruction object
+    //_initialize_rbeim_system._eim_con_ptr->set_rb_evaluation(_eim_eval);
+    //_initialize_rbeim_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
+
+    if (_initialize_rb_system._offline_stage)
+    {
+       // Transfer the affine vectors to the RB system.
+       if(_skip_vector_assembly_in_rb_system)
+        transferAffineVectors();
+
+      // Transfer the affine matrices to the RB system.
+      if(_skip_matrix_assembly_in_rb_system)
+        setAffineMatrices();
+
+      // Perform the offline stage.
+      _console << std::endl;
+      if (_initialize_rb_system._use_EIM) { offlineStageEIM();}
+      _console << std::endl;
+    }
+
+    if(_online_stage)
+    {
+        if (_initialize_rb_system._use_EIM) { onlineStageEIM();}
 //        How to write own Exodus file  // not required anymore
 //        Moose::perf_log.push("write_Exodus()", "Output");
 //
@@ -230,7 +235,7 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 ////
 ////      _initialize_rb_system._rb_con_ptr->load_basis_function(0);
 ////      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
-      }
+      
     }
 }
 

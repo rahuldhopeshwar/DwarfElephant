@@ -56,7 +56,8 @@ class DwarfElephantOfflineOnlineStageSteadyState :
 
     /* Methods */
     void setAffineMatrices();
-    void offlineStage();
+    void offlineStageEIM();
+    void onlineStageEIM();
     void setOnlineParameters();
     void transferAffineVectors();
 //    std::string getFileName();
@@ -74,7 +75,6 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     bool _skip_matrix_assembly_in_rb_system;
     bool _skip_vector_assembly_in_rb_system;
     bool _compliant;
-    bool _offline_stage;
     bool _online_stage;
     bool _offline_error_bound;
     bool _output_file;

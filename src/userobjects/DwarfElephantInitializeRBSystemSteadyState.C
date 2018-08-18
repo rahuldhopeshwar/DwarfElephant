@@ -7,27 +7,28 @@ InputParameters validParams<DwarfElephantInitializeRBSystemSteadyState>()
 {
   InputParameters params = validParams<GeneralUserObject>();
 
+  params.addParam<bool>("use_EIM",false,"Flag for whether on not to use EIM in current simulation");
   params.addParam<bool>("use_displaced", false, "Enable/disable the use of the displaced mesh for the data retrieving.");
   params.addParam<bool>("offline_stage", true, "Determines whether the Offline stage will be calculated or not.");
   //params.addParam<bool>("compliant", true, "Determines whether F is equal to the output vector or not.");
   params.addParam<bool>("skip_matrix_assembly_in_rb_system", true, "Determines whether the matrix is assembled in the RB System or in the nl0 system.");
   params.addParam<bool>("skip_vector_assembly_in_rb_system", true, "Determines whether the vectors are assembled in the RB System or in the nl0 system.");
   
-  params.addParam<unsigned int>("n_training_samples_EIM", "Defines the number of training samples used in the EIM Greedy."); // Do not make this a required parameter
+  params.addParam<unsigned int>("n_training_samples_EIM",-1, "Defines the number of training samples used in the EIM Greedy."); // Do not make this a required parameter
   params.addParam<bool>("deterministic_training_EIM", false, "Determines whether the EIM training set is generated deterministically or randomly.");
   params.addParam<unsigned int>("training_parameters_random_seed_EIM", -1, "Defines the random seed for the generation of the EIM traning set.");
   params.addParam<bool>("quiet_mode_EIM", true, "Determines the what is printed to the console.");
-  params.addParam<unsigned int>("N_max_EIM", "Defines the maximum number of EIM basis functions."); // Do not make this a required parameter
+  params.addParam<unsigned int>("N_max_EIM",-1, "Defines the maximum number of EIM basis functions."); // Do not make this a required parameter
   params.addParam<Real>("rel_training_tolerance_EIM", 1.0e-4, "Defines the relative training tolerance for the EIM Greedy.");
   params.addParam<Real>("abs_training_tolerance_EIM", 1.0e-12, "Defines the relative training tolerance for the EIM Greedy.");
   params.addParam<bool>("normalize_EIM_bound_in_greedy", false, "Determines whether the normalized EIM bound is used in the Greedy or not.");
-  params.addParam<std::vector<std::string>>("parameter_names_EIM", "Parameter names for the EIM."); // do not make this a required parameter
+  params.addParam<std::vector<std::string>>("parameter_names_EIM","Parameter names for the EIM."); // do not make this a required parameter
   params.addParam<std::vector<Real>>("parameter_min_values_EIM", "Defines the lower bound of the EIM parameter range.");
   params.addParam<std::vector<Real>>("parameter_max_values_EIM", "Defines the upper bound of the EIM parameter range.");
-  params.addParam<std::vector<std::string>>("discrete_parameter_names_EIM", "Discrete parameter names for the EIM method.");
+  params.addParam<std::vector<std::string>>("discrete_parameter_names_EIM","Discrete parameter names for the EIM method.");
   params.addParam<std::vector<Real>>("discrete_parameter_values_EIM", "Defines the list of discrete EIM parameter values.");
-  params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
-  params.addParam<std::string>("best_fit_type_EIM","The algorithm to be used in the EIM greedy ('projection' or 'eim').");
+  params.addParam<std::string>("system","EIM0","The name of the system that should be read in.");
+  params.addParam<std::string>("best_fit_type_EIM","projection","The algorithm to be used in the EIM greedy ('projection' or 'eim').");
 
   params.addParam<bool>("compliant",true,"Determines whether F is equal to the output vector or not.");
   params.addRequiredParam<unsigned int>("n_training_samples_RB", "Defines the number of training samples used in the RB Greedy.");
@@ -50,6 +51,7 @@ InputParameters validParams<DwarfElephantInitializeRBSystemSteadyState>()
 
 DwarfElephantInitializeRBSystemSteadyState::DwarfElephantInitializeRBSystemSteadyState(const InputParameters & params):
   GeneralUserObject(params),
+  _use_EIM(getParam<bool>("use_EIM")),
   _use_displaced(getParam<bool>("use_displaced")),
   _skip_matrix_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
   _skip_vector_assembly_in_rb_system(getParam<bool>("skip_vector_assembly_in_rb_system")),
@@ -86,6 +88,14 @@ DwarfElephantInitializeRBSystemSteadyState::DwarfElephantInitializeRBSystemStead
   _continuous_parameter_min_values_RB(getParam<std::vector<Real>>("parameter_min_values_RB")),
   _continuous_parameter_max_values_RB(getParam<std::vector<Real>>("parameter_max_values_RB"))
 {
+  if (_use_EIM)
+  {
+    if ((_n_training_samples_EIM == -1)||(_N_max_EIM == -1))
+      mooseError("UserObject DwarfElephantInitializeRBSystemSteadyState: Insufficient parameters provided for EIM. Look at file src/userobjects/DwarfElephantInitializeRBSystemSteadyState.C for details");
+  }
+  else if ((_n_training_samples_EIM != -1)||(_N_max_EIM != -1))
+    mooseError("UserObject DwarfElephantInitializeRBSystemSteadyState: _use_EIM flag must be set to true in input file");
+
   std::cout << "Created initialize_rb_system object " << DwarfElephantInitializeRBSystemSteadyState::name() << std::endl;
 }
 
@@ -253,13 +263,16 @@ void DwarfElephantInitializeRBSystemSteadyState::initializeEIM()
 void
 DwarfElephantInitializeRBSystemSteadyState::initializeOfflineStage() // make new initializeOfflineStageEIM() and initializeOfflineStageRB() functions and use them with if conditions
 {
-  initializeOfflineStageEIM();
+  if (_use_EIM)
+    initializeOfflineStageEIM();
 }
 
 void
 DwarfElephantInitializeRBSystemSteadyState::initialize() // Make new initializeEIM() initializeRB() functions that can be called depending on whether we need EIM or not.
 {
-  initializeEIM();
+  if (_use_EIM)
+    initializeEIM();
+
   if (_offline_stage) // location of _offline_stage if statement changed for compatibility with EIM.
   {
     initializeOfflineStage();

@@ -74,7 +74,6 @@ DwarfElephantRBNodalBC::computeResidual() // DwarfElephantRBNodalBC::computeResi
 
         if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         {
-          //_rb_problem->_rb_assembly.push_back(new DwarfElephantRBAssembly(*(_rb_problem->_nl_sys),_ID_Fq)); // new code 6.8.2018
           _rb_problem->rbAssembly(_ID_Fq).cacheResidual(dof_idx, -res);
          // _initialize_rb_system._residuals[_ID_Fq]->set(dof_idx, -res);
         }
