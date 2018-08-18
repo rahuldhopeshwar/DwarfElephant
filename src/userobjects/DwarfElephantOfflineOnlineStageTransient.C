@@ -62,7 +62,9 @@ DwarfElephantOfflineOnlineStageTransient::DwarfElephantOfflineOnlineStageTransie
     _mu_bar(getParam<Real>("mu_bar")),
     _online_N(getParam<unsigned int>("online_N")),
     _online_mu_parameters(getParam<std::vector<Real>>("online_mu")),
-    _rb_problem(cast_ptr<DwarfElephantRBProblem *>(&_fe_problem))
+    _rb_problem(cast_ptr<DwarfElephantRBProblem *>(&_fe_problem)),
+    _online_stage_timer(registerTimedSection("onlineStage", 1)),
+    _data_transfer_timer(registerTimedSection("dataTransfer", 1))
 {
 }
 
@@ -209,7 +211,10 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 
     if(_online_stage)
     {
-      Moose::perf_log.push("onlineStage()", "Execution");
+      {
+      TIME_SECTION(_online_stage_timer);
+      // for older MOOSE versions that are using the PerfLog
+      // Moose::perf_log.push("onlineStage()", "Execution");
 
       #if defined(LIBMESH_HAVE_CAPNPROTO)
         RBDataDeserialization::TransientRBEvaluationDeserialization _rb_eval_reader(_rb_eval);
@@ -235,6 +240,14 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       _n_time_steps = _initialize_rb_system._n_time_steps;
 
       _console << "Error bound at the final time is " << _error_bound_final_time << std::endl << std::endl;
+
+      }
+      {
+      TIME_SECTION(_data_transfer_timer);
+      // for older MOOSE versions that are using the PerfLog
+      // Moose::perf_log.pop("onlineStage()", "Execution");
+      // Back transfer of the data to use MOOSE Postprocessor and Output classes
+      // Moose::perf_log.push("DataTransfer()", "Execution");
 
       if(_output_console)
       {
@@ -266,9 +279,6 @@ DwarfElephantOfflineOnlineStageTransient::execute()
           _fe_problem.outputStep(EXEC_TIMESTEP_END);
       }
 
-      Moose::perf_log.pop("onlineStage()", "Execution");
-
-      Moose::perf_log.push("DataTransfer()", "Execution");
       if(_output_file)
       {
          _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
@@ -303,8 +313,8 @@ DwarfElephantOfflineOnlineStageTransient::execute()
 //          exo.write_timestep(getFileName(), _es, _time_step, _time_step * _initialize_rb_system._rb_con_ptr->get_delta_t());
 //        }
       }
-      Moose::perf_log.pop("DataTransfer()", "Execution");
     }
+  }
 }
 
 std::string

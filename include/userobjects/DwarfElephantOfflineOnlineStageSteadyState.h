@@ -104,6 +104,10 @@ class DwarfElephantOfflineOnlineStageSteadyState :
 
     DwarfElephantRBProblem * _rb_problem;
 
+    // for MOOSE version that operate on the PerfLog comment out the following two lines
+    PerfID _online_stage_timer;
+    PerfID _data_transfer_timer;
+
     friend class DwarfElephantDakotaOutput;
 };
 ///-------------------------------------------------------------------------

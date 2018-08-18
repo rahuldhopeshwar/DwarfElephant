@@ -72,5 +72,11 @@ DwarfElephantRBExecutioner::execute()
 //   }
 // #endif
 
+    {
+      TIME_SECTION(_final_timer)
+      _problem.execute(EXEC_FINAL);
+      _problem.outputStep(EXEC_FINAL);
+    }
+
   postExecute();
 }

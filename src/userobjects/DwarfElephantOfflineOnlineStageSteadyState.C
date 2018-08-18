@@ -62,7 +62,10 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     _subdomain_ids(_mesh_ptr->meshSubdomains()),
     _mu_bar(getParam<Real>("mu_bar")),
     _online_mu_parameters(getParam<std::vector<Real>>("online_mu")),
-    _rb_problem(cast_ptr<DwarfElephantRBProblem *>(&_fe_problem))
+    _rb_problem(cast_ptr<DwarfElephantRBProblem *>(&_fe_problem)),
+    // for MOOSE version that operate on the PerfLog comment out the following two lines
+    _online_stage_timer(registerTimedSection("onlineStage", 1)),
+    _data_transfer_timer(registerTimedSection("dataTransfer", 1))
 {
 }
 
@@ -74,10 +77,7 @@ DwarfElephantOfflineOnlineStageSteadyState::setAffineMatrices()
     {
       _rb_problem->rbAssembly(_q).setCachedJacobianContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
       _initialize_rb_system._jacobian_subdomain[_q] ->close();
-
-      _console << "DirichletBCs applied to the matrix" << _q << std::endl;
       _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
-      _console << "Matrix" << _q << "added to inner product matrix" << std::endl;
     }
 }
 
@@ -151,8 +151,6 @@ DwarfElephantOfflineOnlineStageSteadyState::initialize()
 void
 DwarfElephantOfflineOnlineStageSteadyState::execute()
 {
-  _console << "Matrices and Vectors assembled" << std::endl;
-
     // Build the RBEvaluation object
     // Required for both the Offline and Online stage.
     DwarfElephantRBEvaluationSteadyState _rb_eval(comm() , _fe_problem);
@@ -165,17 +163,11 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
     if(_offline_stage || _output_file || _offline_error_bound || _online_N == 0)
       _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
 
-
-    // if(_online_stage)
-    //   _rb_con_ptr = &_es.add_system<DwarfElephantRBConstructionSteadyState> ("RBSystem");
-
     if (_offline_stage)
     {
        // Transfer the affine vectors to the RB system.
        if(_skip_vector_assembly_in_rb_system)
         transferAffineVectors();
-
-      _console << "DirichletBCs applied to the vectors" << std::endl;
 
       // Transfer the affine matrices to the RB system.
       if(_skip_matrix_assembly_in_rb_system)
@@ -189,7 +181,10 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
     if(_online_stage)
     {
-      Moose::perf_log.push("onlineStage()", "Execution");
+      {
+      TIME_SECTION(_online_stage_timer);
+      // for older MOOSE versions that are using the PerfLog
+      // Moose::perf_log.push("onlineStage()", "Execution");
 
       #if defined(LIBMESH_HAVE_CAPNPROTO)
         RBDataDeserialization::RBEvaluationDeserialization _rb_eval_reader(_rb_eval);
@@ -212,6 +207,14 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
       _rb_eval.rb_solve(_online_N);
 
+      }
+      {
+      TIME_SECTION(_data_transfer_timer);
+      // for older MOOSE versions that are using the PerfLog
+      // Moose::perf_log.pop("onlineStage()", "Execution");
+      // Back transfer of the data to use MOOSE Postprocessor and Output classes
+      // Moose::perf_log.push("DataTransfer()", "Execution");
+
       if (_output_console)
         for (unsigned int i = 0; i != _n_outputs; i++)
           _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
@@ -226,10 +229,6 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
           _RB_outputs[i] = _rb_eval.RB_outputs[i];
         }
       }
-
-      Moose::perf_log.pop("onlineStage()", "Execution");
-      // Back transfer of the data to use MOOSE Postprocessor and Output classes
-      Moose::perf_log.push("DataTransfer()", "Execution");
 
       if(_output_file)
       {
@@ -253,8 +252,10 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 ////      _initialize_rb_system._rb_con_ptr->load_basis_function(0);
 ////      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
       }
-      Moose::perf_log.pop("DataTransfer()", "Execution");
+      // for older MOOSE versions that are using the PerfLog
+      // Moose::perf_log.pop("DataTransfer()", "Execution");
     }
+  }
 }
 
 void
