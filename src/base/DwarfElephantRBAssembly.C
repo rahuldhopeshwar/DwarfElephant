@@ -47,8 +47,6 @@ DwarfElephantRBAssembly::setCachedResidual(NumericVector<Number> & _residual)
   for (unsigned int i = 0; i < _cached_residual_contribution_vals.size(); ++i){
     _residual.set(_cached_residual_contribution_rows[i], _cached_residual_contribution_vals[i]);
   }
-  for (unsigned int i = 0; i < _residual.size(); i ++)
-    std::cout << "_residual[" << i << "]=" << _residual(i) << std::endl;
 //  clearCachedResidualContributions(); Commented out for debugging purposes. This line causes the dirichlet BC to not be applied to all F vectors (in case there are multiple). This should also be the cause for the dirichlet BCs going haywire for multiple A matrices being affected by dirichlet BCs.
 }
 
