@@ -15,6 +15,7 @@
 #include "DwarfElephantRBDirichletBC.h"
 #include "DwarfElephantRBFunctionDirichletBC.h"
 #include "DwarfElephantRBPenaltyDirichletBC.h"
+#include "DwarfElephantRBFunctionPenaltyDirichletBC.h"
 #include "DwarfElephantRBPresetBC.h"
 #include "DwarfElephantRBFunctionPresetBC.h"
 #include "DwarfElephantRBNeumannBC.h"
@@ -127,6 +128,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerBoundaryCondition(DwarfElephantRBDirichletBC);
   registerBoundaryCondition(DwarfElephantRBFunctionDirichletBC);
   registerBoundaryCondition(DwarfElephantRBPenaltyDirichletBC);
+  registerBoundaryCondition(DwarfElephantRBFunctionPenaltyDirichletBC);
   registerBoundaryCondition(DwarfElephantRBPresetBC);
   registerBoundaryCondition(DwarfElephantRBFunctionPresetBC);
   registerBoundaryCondition(DwarfElephantRBNeumannBC);

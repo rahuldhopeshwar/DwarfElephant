@@ -11,7 +11,7 @@ InputParameters
 validParams<DwarfElephantReverseLiftingFunctionAndDimensionalize>()
 {
   InputParameters params = validParams<NodalVectorPostprocessor>();
-  params.addRequiredParam<FunctionName>("lifting_function", "The lifting function that should be reversed.");
+  params.addParam<FunctionName>("lifting_function", "The lifting function that should be reversed.");
   params.addParam<std::string>("system", "rb0", "The name of the used system.");
   params.addParam<Real>("reference_value_variable", 1.0, "The reference value used for the nondimensionalization.");
   params.addParam<bool>("dimensionalize", true, "When set to true the nondimensionalizated values are backtransformed to their original values.");
@@ -40,19 +40,22 @@ DwarfElephantReverseLiftingFunctionAndDimensionalize::initialize()
 
   // Initialize solution vector
   _nodal_solution = _fe_problem.es().get_system<NonlinearImplicitSystem>(_system).current_local_solution.get();
-
+  // _nodal_solution_add_on = _nodal_solution->zero_clone();
   _nodal_solution_original.clear();
+
+  // if(_dimensionalize)
+  //   _nodal_solution->scale(_reference_value_variable);
 }
 
 void
 DwarfElephantReverseLiftingFunctionAndDimensionalize::execute()
 {
   // store the original variable values in a VectorPostprocessor
-  _nodal_solution_original.push_back(_nodal_solution->el(_current_node->id()));
+  // _nodal_solution_original.push_back(_nodal_solution->el(_current_node->id()));
 
   Real _value = _nodal_solution->el(_current_node->id());
-
-  // reverse the lifitng function
+  // Real _value = 0;
+  // reverse the lifiting function
   if(_reverse_lifting_function)
   {
     // Define a point for the lifting function
@@ -74,10 +77,13 @@ DwarfElephantReverseLiftingFunctionAndDimensionalize::execute()
 }
 
 void
+DwarfElephantReverseLiftingFunctionAndDimensionalize::threadJoin (const UserObject &/*uo*/)
+{
+}
+
+void
 DwarfElephantReverseLiftingFunctionAndDimensionalize::finalize()
 {
-  if(processor_id() == 0){
-    _nodal_solution->close();
-    *_fe_problem.es().get_system(_system).solution = *_nodal_solution;
-  }
+  _nodal_solution->close();
+  *_fe_problem.es().get_system(_system).solution = *_nodal_solution;
 }

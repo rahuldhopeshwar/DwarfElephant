@@ -20,11 +20,12 @@ public:
   virtual void initialize() override;
   virtual void execute() override;
   virtual void finalize() override;
-  virtual void threadJoin (const UserObject &/*uo*/) override {}
+  virtual void threadJoin (const UserObject &/*uo*/) override;
 
 protected:
   Function & _lifting_function;
   NumericVector<Number> * _nodal_solution;
+  // std::unique_ptr<NumericVector<Number>> _nodal_solution_add_on;
   VectorPostprocessorValue & _nodal_solution_original;
   std::string _system;
   Real _reference_value_variable;

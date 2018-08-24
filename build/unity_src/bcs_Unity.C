@@ -2,6 +2,7 @@
 #include"/Users/denise/projects/DwarfElephant/src/bcs/DwarfElephantRBDirichletBC.C"
 #include"/Users/denise/projects/DwarfElephant/src/bcs/DwarfElephantRBFunctionDirichletBC.C"
 #include"/Users/denise/projects/DwarfElephant/src/bcs/DwarfElephantRBFunctionNeumannBC.C"
+#include"/Users/denise/projects/DwarfElephant/src/bcs/DwarfElephantRBFunctionPenaltyDirichletBC.C"
 #include"/Users/denise/projects/DwarfElephant/src/bcs/DwarfElephantRBFunctionPresetBC.C"
 #include"/Users/denise/projects/DwarfElephant/src/bcs/DwarfElephantRBIntegratedBC.C"
 #include"/Users/denise/projects/DwarfElephant/src/bcs/DwarfElephantRBNeumannBC.C"
