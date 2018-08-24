@@ -23,7 +23,6 @@ public:
   virtual void threadJoin (const UserObject &/*uo*/) override;
 
 protected:
-  Function & _lifting_function;
   NumericVector<Number> * _nodal_solution;
   // std::unique_ptr<NumericVector<Number>> _nodal_solution_add_on;
   VectorPostprocessorValue & _nodal_solution_original;
@@ -32,6 +31,7 @@ protected:
   bool _dimensionalize;
   bool _scale_and_add;
   bool _reverse_lifting_function;
+  Function * _lifting_function;
 };
 
 #endif

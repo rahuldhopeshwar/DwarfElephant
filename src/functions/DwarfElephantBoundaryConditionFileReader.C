@@ -7,8 +7,8 @@ validParams<DwarfElephantBoundaryConditionFileReader>()
   InputParameters params = validParams<Function>();
   params.addClassDescription("This file reader is required for reading in the boundary conditions.");
   params.addRequiredParam<std::string>("file", "Name and path of the data file, valid delimiters are space and tab-space.");
-  params.addParam<std::string>("dx_file", "Name and path of the dx file.");
-  params.addParam<std::string>("dy_file", "Name and path of the dx file.");
+  params.addParam<std::string>("dx_file", "","Name and path of the dx file.");
+  params.addParam<std::string>("dy_file", "","Name and path of the dx file.");
   params.addParam<unsigned int>("dimension", 2, "Spatial dimension of the data set." );
   params.addParam<unsigned int>("ID_data_layer", 0,"The ID of the data layer.");
   params.addParam<std::vector<unsigned int>>("dim_data_array", "The dimensions of the data set.");
@@ -31,7 +31,8 @@ DwarfElephantBoundaryConditionFileReader::DwarfElephantBoundaryConditionFileRead
   _step_sizes(getParam<std::vector<Real>>("step_sizes")),
   _tolerance(getParam<Real>("tolerance")),
   _interpolate(getParam<bool>("interpolate")),
-  _access_multiple_times(getParam<bool>("access_multiple_times"))
+  _access_multiple_times(getParam<bool>("access_multiple_times")),
+  _gradients(getParam<bool>("gradients"))
 {
   if(_dimension!=2)
     mooseError("The spatial dimension are incorrect.");

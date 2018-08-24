@@ -22,7 +22,6 @@ validParams<DwarfElephantReverseLiftingFunctionAndDimensionalize>()
 
 DwarfElephantReverseLiftingFunctionAndDimensionalize::DwarfElephantReverseLiftingFunctionAndDimensionalize(const InputParameters & parameters)
   : NodalVectorPostprocessor(parameters),
-  _lifting_function(getFunction("lifting_function")),
   _nodal_solution_original(declareVector("nodal_solution_original")),
   _system(getParam<std::string>("system")),
   _reference_value_variable(getParam<Real>("reference_value_variable")),
@@ -30,6 +29,8 @@ DwarfElephantReverseLiftingFunctionAndDimensionalize::DwarfElephantReverseLiftin
   _scale_and_add(getParam<bool>("scale_and_add")),
   _reverse_lifting_function(getParam<bool>("reverse_lifting_function"))
 {
+  if(_reverse_lifting_function)
+    _lifting_function = &getFunction("lifting_function");
 }
 
 void
@@ -61,7 +62,7 @@ DwarfElephantReverseLiftingFunctionAndDimensionalize::execute()
     // Define a point for the lifting function
     Point _point(_current_node->operator()(0), _current_node->operator()(1), _current_node->operator()(2));
     // _value += _nodal_solution->el(_current_node->id()) + _lifting_function.value(_t, _point);
-    _value += _lifting_function.value(_t, _point);
+    _value += _lifting_function->value(_t, _point);
   }
 
   // dimensionalize the variable
