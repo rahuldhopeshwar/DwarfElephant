@@ -80,7 +80,7 @@ DwarfElephantLiftingFunction::DwarfElephantLiftingFunction(const InputParameters
       Node & _reference_node = _sc_fe_problem.mesh().nodeRef(_reference_node_ids[0][i]);
       Real z_ref = interpolateZRef(_reference_node(0), _reference_node(1));
       _data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=z_ref;
-      _distance_data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=z_ref-_reference_node(2);
+      _distance_data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=_reference_node(2)-z_ref;
       _dx_distance_data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=findGradientDistance(_reference_node(0), _reference_node(1))[0];
       _dy_distance_data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=findGradientDistance(_reference_node(0), _reference_node(1))[1];
       _dx_data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=findGradientDepth(_reference_node(0), _reference_node(1))[0];
@@ -92,12 +92,12 @@ DwarfElephantLiftingFunction::DwarfElephantLiftingFunction(const InputParameters
 void
 DwarfElephantLiftingFunction::initialSetup()
 {
-  // std::ofstream myfile("depth_data_array.dat");
+  // std::ofstream myfile("distance_data_array.dat");
   // myfile << "i " << "j " << "distance" << std::endl;
   //
-  // for(unsigned int j = 0; j< _data_array_dimensions[1]; j++)
-  //   for(unsigned int i = 0; i< _data_array_dimensions[0]; i++)
-  //     myfile << i << " " << j << " " <<_data_array[i][j] << std::endl;
+  // for(unsigned int j = 0; j< _distance_data_array[1].size(); j++)
+  //   for(unsigned int i = 0; i< _distance_data_array[0].size(); i++)
+  //     myfile << i << " " << j << " " <<_distance_data_array[i][j] << std::endl;
 }
 
 Real
@@ -106,7 +106,7 @@ DwarfElephantLiftingFunction::value(Real /*t*/, const Point & p)
   Real _x = std::round(p(0)/_step_sizes[0]);
   Real _y = std::round(p(1)/_step_sizes[1]);
   Real _z_ref = _data_array[_x][_y];
-  Real _distance = std::fabs(-_distance_data_array[_x][_y]);
+  Real _distance = _distance_data_array[_x][_y];
 
   Real _value = _boundary_function->value(0,p)*((p(2)-_z_ref)/_distance);
   return _value;
@@ -124,18 +124,28 @@ DwarfElephantLiftingFunction::gradient(Real /*t*/, const Point & p)
   Real dx = _dx_data_array[_x][_y];
   Real dy = _dy_data_array[_x][_y];
 
-  Real _fx1 = pow(_distance,2)*((dx*_boundary_function->value(0,p))+
-              (_boundary_function->gradient(0,p)(0)*(_z_ref-p(2))));
-  Real _fx2 = (_boundary_function->value(0,p)*dx_distance)*
-              (_distance*(p(2)-_z_ref));
-  Real _fy1 = pow(_distance,2)*((dy*_boundary_function->value(0,p))+
-              (_boundary_function->gradient(0,p)(1)*(_z_ref-p(2))));
-  Real _fy2 = (_boundary_function->value(0,p)*dy_distance)*
-               (_distance*(p(2)-_z_ref));
+  // Real _fx1 = pow(_distance,2)*((dx*_boundary_function->value(0,p))+
+  //             (_boundary_function->gradient(0,p)(0)*(_z_ref-p(2))));
+  // Real _fx2 = (_boundary_function->value(0,p)*dx_distance)*
+  //             (_distance*(p(2)-_z_ref));
+  // Real _fy1 = pow(_distance,2)*((dy*_boundary_function->value(0,p))+
+  //             (_boundary_function->gradient(0,p)(1)*(_z_ref-p(2))));
+  // Real _fy2 = (_boundary_function->value(0,p)*dy_distance)*
+  //              (_distance*(p(2)-_z_ref));
+  //
+  // Real dx_gradient = -1.0/pow(std::fabs(_distance),3)*(_fx1-_fx2);
+  // Real dy_gradient = -1.0/pow(std::fabs(_distance),3)*(_fy1-_fy2);
+  // Real dz_gradient = _boundary_function->value(0,p)/std::fabs(_distance);
 
-  Real dx_gradient = -1.0/pow(std::fabs(_distance),3)*(_fx1-_fx2);
-  Real dy_gradient = -1.0/pow(std::fabs(_distance),3)*(_fy1-_fy2);
-  Real dz_gradient = _boundary_function->value(0,p)/std::fabs(_distance);
+  Real _fx1 = (_boundary_function->gradient(0,p)(0)*(p(2)-_z_ref)-
+              _boundary_function->value(0,p)*dx)*_distance;
+  Real _fx2 = _boundary_function->value(0,p)*(p(2)-_z_ref)*dx_distance;
+  Real _fy1 = (_boundary_function->gradient(0,p)(1)*(p(2)-_z_ref)-
+              _boundary_function->value(0,p)*dy)*_distance;
+  Real _fy2 = _boundary_function->value(0,p)*(p(2)-_z_ref)*dy_distance;
+  Real dx_gradient = (_fx1-_fx2)/(pow(_distance,2));
+  Real dy_gradient = (_fy1-_fy2)/(pow(_distance,2));
+  Real dz_gradient = _boundary_function->value(0,p)/_distance;
 
   RealGradient _gradient(dx_gradient, dy_gradient, dz_gradient);
   return _gradient;

@@ -64,6 +64,7 @@
 #include "DwarfElephantRBNodalVariableValue.h"
 #include "DwarfElephantRBElementalVariableValue.h"
 #include "DwarfElephantRBPointValue.h"
+#include "DwarfElephantRBFilePointValues.h"
 #include "DwarfElephantReducedToFullState.h"
 
 // Functions
@@ -84,6 +85,7 @@
 #include "DwarfElephantAllElementalVariableValues.h"
 #include "DwarfElephantNodalDifference.h"
 #include "DwarfElephantReverseLiftingFunctionAndDimensionalize.h"
+#include "DwarfElephantFEFilePointValues.h"
 
 template<>
 InputParameters validParams<DwarfElephantApp>()
@@ -176,6 +178,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerUserObject(DwarfElephantRBNodalVariableValue);
   registerUserObject(DwarfElephantRBElementalVariableValue);
   registerUserObject(DwarfElephantRBPointValue);
+  registerUserObject(DwarfElephantRBFilePointValues);
   registerUserObject(DwarfElephantReducedToFullState);
 
   // Functions
@@ -196,6 +199,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerVectorPostprocessor(DwarfElephantAllElementalVariableValues);
   registerVectorPostprocessor(DwarfElephantNodalDifference);
   registerVectorPostprocessor(DwarfElephantReverseLiftingFunctionAndDimensionalize);
+  registerVectorPostprocessor(DwarfElephantFEFilePointValues);
 
 }
 
