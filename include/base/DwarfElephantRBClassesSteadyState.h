@@ -49,6 +49,7 @@
 #include "DwarfElephantRBStructuresT6F1O1SteadyState.h"
 #include "DwarfElephantRBStructuresT8F9O1SteadyState.h"
 #include "DwarfElephantRBStructuresT8F9O10SteadyState.h"
+#include "DwarfElephantRBStructuresT8F9O20SteadyState.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
@@ -262,7 +263,7 @@ public:
   FEProblemBase & get_fe_problem(){return fe_problem;}
 
   FEProblemBase & fe_problem;
-  DwarfElephantRBT2F3O10SteadyStateExpansion _rb_theta_expansion;
+  DwarfElephantRBT8F9O20SteadyStateExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------
