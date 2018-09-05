@@ -45,18 +45,18 @@ DwarfElephantBoundaryConditionFileReader::DwarfElephantBoundaryConditionFileRead
     _dy = fileParserGradients(_dy_file);
   }
 
-  if(_data_array_dimensions.size()!=2)
-    mooseError("Wrong dimensions of the data array.");
-
-    if(_step_sizes.size()!=2)
-      mooseError("Wrong dimensions of the step sizes of the data array.");
-
     if(_gradients && !_access_multiple_times)
       mooseError("The reading process of the gradients is currently only supported",
                  " for the multiple access option.");
 
   if(_access_multiple_times)
   {
+    if(_data_array_dimensions.size()!=2)
+      mooseError("Wrong dimensions of the data array.");
+
+    if(_step_sizes.size()!=2)
+      mooseError("Wrong dimensions of the step sizes of the data array.");
+
     _data_array.resize(_data_array_dimensions[0]);
 
     if(_gradients)

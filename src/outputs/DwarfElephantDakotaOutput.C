@@ -11,6 +11,7 @@ validParams<DwarfElephantDakotaOutput>()
   InputParameters params = validParams<FileOutput>();
   params.addParam<std::vector<PostprocessorName>>("postprocessor","Defines the name of the postprocessor(s) you want to use.");
   params.addParam<std::string>("delimiter", "   ", "Defines the delimiter.");
+  params.addParam<std::string>("add_on", "f", "Defines the additional idientifier.");
   params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
   params.addParam<bool>("use_rb", false, "Defines whether the RB or FE method is used.");
   params.addParam<UserObjectName>("offline_online_rb_userobject", "Name of the UserObject for the  offline and online stage of the RB system");
@@ -21,6 +22,7 @@ validParams<DwarfElephantDakotaOutput>()
 DwarfElephantDakotaOutput::DwarfElephantDakotaOutput(const InputParameters & parameters) :
     FileOutput(parameters),
     _delimiter(getParam<std::string>("delimiter")),
+    _add_on(getParam<std::string>("add_on")),
     _simulation_type(getParam<std::string>("simulation_type")),
     _use_rb(getParam<bool>("use_rb"))
 {
@@ -51,10 +53,10 @@ DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
     if(!_use_rb)
     {
       for(unsigned int i = 0; i < _postprocessor_name.size(); i++)
-        if(i < _postprocessor_name.size()-1)
-          dakota_file << _problem_ptr->getPostprocessorValue(_postprocessor_name[i]) << " f"<< _delimiter;
-        else
-          dakota_file << _problem_ptr->getPostprocessorValue(_postprocessor_name[i]) << " f"<< std::endl;
+        // if(i < _postprocessor_name.size()-1)
+        //   dakota_file << _problem_ptr->getPostprocessorValue(_postprocessor_name[i]) << " " << _add_on << _delimiter;
+        // else
+          dakota_file << _problem_ptr->getPostprocessorValue(_postprocessor_name[i]) << " " << _add_on << std::endl;
     } else {
       if(_simulation_type == "steady")
       {
@@ -67,10 +69,10 @@ DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
           mooseError("In order to use this Output class you have to set 'output_csv' in the " + _offline_online_rb_system_name + " UserObject to true.");
 
         for (unsigned int i = 0; i != _offline_online_rb_system._n_outputs; i++)
-          if(i < _offline_online_rb_system._n_outputs-1)
-            dakota_file << _offline_online_rb_system._RB_outputs[i] << " f"<< _delimiter;
-          else
-            dakota_file << _offline_online_rb_system._RB_outputs[i] << " f"<< std::endl;
+          // if(i < _offline_online_rb_system._n_outputs-1)
+          //   dakota_file << _offline_online_rb_system._RB_outputs[i] << " " << _add_on << _delimiter;
+          // else
+            dakota_file << _offline_online_rb_system._RB_outputs[i] << " " << _add_on << std::endl;
       } else{
         const DwarfElephantOfflineOnlineStageTransient & _offline_online_rb_system = _problem_ptr->getUserObject<DwarfElephantOfflineOnlineStageTransient>(_offline_online_rb_system_name);
 
@@ -84,10 +86,10 @@ DwarfElephantDakotaOutput::output(const ExecFlagType & /*type*/)
         {
           for (unsigned int i = 0; i < _offline_online_rb_system._n_outputs; i++)
           {
-            if(i < _offline_online_rb_system._n_outputs-1)
-              dakota_file << _offline_online_rb_system._RB_outputs_all_timesteps[_time_step][i] << " f"<< _delimiter;
-            else
-              dakota_file << _offline_online_rb_system._RB_outputs_all_timesteps[_time_step][i] << " f"<< std::endl;
+            // if(i < _offline_online_rb_system._n_outputs-1)
+            //   dakota_file << _offline_online_rb_system._RB_outputs_all_timesteps[_time_step][i] << " " << _add_on << _delimiter;
+            // else
+              dakota_file << _offline_online_rb_system._RB_outputs_all_timesteps[_time_step][i] << " " << _add_on << std::endl;
             }
          }
       }

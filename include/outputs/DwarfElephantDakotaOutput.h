@@ -39,6 +39,7 @@ public:
 protected:
   /*Attributes*/
   std::string _delimiter;
+  std::string _add_on;
   std::string _simulation_type;
   std::vector<PostprocessorName> _postprocessor_name;
   UserObjectName _offline_online_rb_system_name;
