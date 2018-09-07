@@ -192,6 +192,8 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
         _rb_eval.legacy_read_offline_data_from_files();
       #endif
 
+      _norm_factor = _rb_eval.get_error_bound_normalization();
+
       if(_online_N==0)
         _online_N = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
 
@@ -218,7 +220,7 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       if (_output_console)
         for (unsigned int i = 0; i != _n_outputs; i++)
           _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
-          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
+          << ", error bound = " << _rb_eval.RB_output_error_bounds[i]/_norm_factor << std::endl;
 
 
       if (_output_csv)

@@ -73,19 +73,20 @@ DwarfElephantLiftingFunction::DwarfElephantLiftingFunction(const InputParameters
       _dy_data_array[i].resize(_data_array_dimensions[1]);
     }
 
-    const std::vector<dof_id_type> * _reference_node_ids = &_sc_fe_problem.mesh().getNodeList(_ID_data_layer);
+    const std::vector<dof_id_type> * _data_node_ids = &_sc_fe_problem.mesh().getNodeList(_ID_data_layer);
 
-    for(unsigned int i=0;  i< _reference_node_ids[0].size(); i++)
+    for(unsigned int i=0;  i< _data_node_ids[0].size(); i++)
     {
+      Node & _data_node = _sc_fe_problem.mesh().nodeRef(_data_node_ids[0][i]);
       Node & _reference_node = _sc_fe_problem.mesh().nodeRef(_reference_node_ids[0][i]);
 
-      Real z_ref = interpolateZRef(_reference_node(0), _reference_node(1));
-      _data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=z_ref;
-      _top_data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=_reference_node(2);
-      _dx_top_data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=findGradientTop(_reference_node(0), _reference_node(1))[0];
-      _dy_top_data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=findGradientTop(_reference_node(0), _reference_node(1))[1];
-      _dx_data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=findGradientDepth(_reference_node(0), _reference_node(1))[0];
-      _dy_data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=findGradientDepth(_reference_node(0), _reference_node(1))[1];
+      // Real z_ref = interpolateZRef(_data_node(0), _data_node(1));
+      _data_array[std::round(_reference_node(0)/_step_sizes[0])][std::round(_reference_node(1)/_step_sizes[1])]=_reference_node(2);//z_ref;
+      _top_data_array[std::round(_data_node(0)/_step_sizes[0])][std::round(_data_node(1)/_step_sizes[1])]=_data_node(2);
+      _dx_top_data_array[std::round(_data_node(0)/_step_sizes[0])][std::round(_data_node(1)/_step_sizes[1])]=findGradientTop(_data_node(0), _data_node(1))[0];
+      _dy_top_data_array[std::round(_data_node(0)/_step_sizes[0])][std::round(_data_node(1)/_step_sizes[1])]=findGradientTop(_data_node(0), _data_node(1))[1];
+      _dx_data_array[std::round(_data_node(0)/_step_sizes[0])][std::round(_data_node(1)/_step_sizes[1])]=findGradientDepth(_data_node(0), _data_node(1))[0];
+      _dy_data_array[std::round(_data_node(0)/_step_sizes[0])][std::round(_data_node(1)/_step_sizes[1])]=findGradientDepth(_data_node(0), _data_node(1))[1];
     }
   }
 }
@@ -138,13 +139,11 @@ DwarfElephantLiftingFunction::gradient(Real /*t*/, const Point & p)
   // Real dy_gradient = -1.0/pow(std::fabs(_distance),3)*(_fy1-_fy2);
   // Real dz_gradient = _boundary_function->value(0,p)/std::fabs(_distance);
 
-  Real _fx1 = /*(_boundary_function->gradient(0,p)(0)*(p(2)-_z_ref)
-              -_boundary_function->value(0,p)*dx)*_distance;*/
-              -_boundary_function->value(0,p)*dx*_distance;
+  Real _fx1 = (_boundary_function->gradient(0,p)(0)*(p(2)-_z_ref)
+              -_boundary_function->value(0,p)*dx)*_distance;
   Real _fx2 = _boundary_function->value(0,p)*(p(2)-_z_ref)*dx_distance;
-  Real _fy1 = /*(_boundary_function->gradient(0,p)(1)*(p(2)-_z_ref)
-              -_boundary_function->value(0,p)*dy)*_distance;*/
-              -_boundary_function->value(0,p)*dy*_distance;
+  Real _fy1 = (_boundary_function->gradient(0,p)(1)*(p(2)-_z_ref)
+              -_boundary_function->value(0,p)*dy)*_distance;
   Real _fy2 = _boundary_function->value(0,p)*(p(2)-_z_ref)*dy_distance;
   Real dx_gradient = (_fx1-_fx2)/(pow(_distance,2));
   Real dy_gradient = (_fy1-_fy2)/(pow(_distance,2));

@@ -104,6 +104,8 @@ class DwarfElephantOfflineOnlineStageSteadyState :
 
     DwarfElephantRBProblem * _rb_problem;
 
+    Real _norm_factor;
+
     // for MOOSE version that operate on the PerfLog comment out the following two lines
     PerfID _online_stage_timer;
     PerfID _data_transfer_timer;

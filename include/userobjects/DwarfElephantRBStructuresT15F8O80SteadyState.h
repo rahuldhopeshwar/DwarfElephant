@@ -1,7 +1,7 @@
  /**
   * The structures are defined for an elliptic PDE with the following restrictions:
   *  1. The number of thetas is equal to 15 (T15).
-  *  2. The problem contains 16 load vectors (F16) and 80 outputs (O80).
+  *  2. The problem contains eigth load vectors (F8) and 80 outputs (O80).
   *
   * The structures defined are:
   * 1. Theta --> parameter-dependent part of the PDE
@@ -9,8 +9,8 @@
   */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTRBSTRUCTUREST15F16O80STEADYSTATE_H
-#define DWARFELEPHANTRBSTRUCTUREST15F16O80STEADYSTATE_H
+#ifndef DWARFELEPHANTRBSTRUCTUREST15F8O80STEADYSTATE_H
+#define DWARFELEPHANTRBSTRUCTUREST15F8O80STEADYSTATE_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
@@ -56,9 +56,9 @@ namespace libMesh
  *
  */
 
-struct DwarfElephantRBT15F16O80SteadyStateExpansion : RBThetaExpansion
+struct DwarfElephantRBT15F8O80SteadyStateExpansion : RBThetaExpansion
 {
-  DwarfElephantRBT15F16O80SteadyStateExpansion()
+  DwarfElephantRBT15F8O80SteadyStateExpansion()
   {
     // Setting up the RBThetaExpansion object
     attach_A_theta(&_rb_theta);
@@ -71,7 +71,7 @@ struct DwarfElephantRBT15F16O80SteadyStateExpansion : RBThetaExpansion
     attach_A_theta(&_theta_a_6);
     attach_A_theta(&_theta_a_7);
 
-    attach_F_theta(&_rb_theta);
+    attach_F_theta(&_theta_a_14);
     attach_F_theta(&_theta_a_0);
     attach_F_theta(&_theta_a_8);
     attach_F_theta(&_theta_a_9);
@@ -79,7 +79,6 @@ struct DwarfElephantRBT15F16O80SteadyStateExpansion : RBThetaExpansion
     attach_F_theta(&_theta_a_11);
     attach_F_theta(&_theta_a_12);
     attach_F_theta(&_theta_a_13);
-    attach_F_theta(&_theta_a_14);
 
     attach_output_theta(&_rb_theta);
     attach_output_theta(&_rb_theta);
@@ -182,4 +181,4 @@ struct DwarfElephantRBT15F16O80SteadyStateExpansion : RBThetaExpansion
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTRBSTRUCTUREST15F16O80STEADYSTATE_H
+#endif // DWARFELEPHANTRBSTRUCTUREST15F8O80STEADYSTATE_H
