@@ -70,7 +70,6 @@
 // Functions
 #include "DwarfElephantInitialConditionFileReader.h"
 #include "DwarfElephantBoundaryConditionFileReader.h"
-#include "DwarfElephantLiftingFunction.h"
 
 // Executioners
 #include "DwarfElephantRBExecutioner.h"
@@ -184,7 +183,6 @@ DwarfElephantApp::registerObjects(Factory & factory)
   // Functions
   registerFunction(DwarfElephantInitialConditionFileReader);
   registerFunction(DwarfElephantBoundaryConditionFileReader);
-  registerFunction(DwarfElephantLiftingFunction);
 
   // Executioners
   registerExecutioner(DwarfElephantRBExecutioner);

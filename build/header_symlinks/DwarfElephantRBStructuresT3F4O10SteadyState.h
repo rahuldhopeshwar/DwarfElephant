@@ -1,1 +1,0 @@
-/Users/denise/projects/DwarfElephant/include/userobjects/DwarfElephantRBStructuresT3F4O10SteadyState.h
