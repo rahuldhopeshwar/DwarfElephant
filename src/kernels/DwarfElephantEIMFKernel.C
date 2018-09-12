@@ -39,7 +39,7 @@ void DwarfElephantEIMFKernel::computeResidual()
 		}
 	  re += _local_re;
 	  if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())		
-	  	_initialize_rb_system._residuals[_i_eim_basis_function] -> add_vector(_local_re, _var.dofIndices()); // the +1 takes into account the contribution to the number of residual vectors by the residual of the bilinear form in the libMesh EIM example
+	  	_initialize_rb_system._residuals[_i_eim_basis_function] -> add_vector(_local_re, _var.dofIndices());
 	}
 }
 

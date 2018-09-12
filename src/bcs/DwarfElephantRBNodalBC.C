@@ -90,7 +90,7 @@ DwarfElephantRBNodalBC::computeResidual() // DwarfElephantRBNodalBC::computeResi
       if(_initialize_rb_system._offline_stage)
         if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
         {
-          _rb_problem->_rb_assembly.push_back(new DwarfElephantRBAssembly(*(_rb_problem->_nl_sys),_ID_Fq)); // new code 6.8.2018
+          //_rb_problem->_rb_assembly.push_back(new DwarfElephantRBAssembly(*(_rb_problem->_nl_sys),_ID_Fq)); // new code 6.8.2018
           _rb_problem->rbAssembly(_ID_Fq).cacheResidual(dof_idx, -res);
         }
     }
@@ -140,7 +140,8 @@ DwarfElephantRBNodalBC::computeJacobian()
               if (*it-_ID_first_block >= _initialize_rb_system._qa)
                mooseError("The number of stiffness matrices you defined here is not matching the number of stiffness matrices you specified in the RBClasses Class.");
 
-              _rb_problem->rbAssembly(*it-_ID_first_block).cacheJacobianContribution(cached_row, cached_row, cached_val);
+              //_rb_problem->rbAssembly(*it-_ID_first_block).cacheJacobianContribution(cached_row, cached_row, cached_val);
+              _rb_problem->rbAssembly(0).cacheJacobianContribution(cached_row, cached_row, cached_val); // For EIM example in Martin's publication
             }
            }
            else{

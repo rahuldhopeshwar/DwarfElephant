@@ -92,11 +92,13 @@ void DwarfElephantComputeEIMInnerProductMatrixSteadyState::finalize()
     _initialize_rb_system.processRBParameters();
     _initialize_rb_system._eim_eval_ptr -> initialize_eim_theta_objects();
     _initialize_rb_system._rb_eval_ptr -> get_rb_theta_expansion().attach_multiple_F_theta(_initialize_rb_system._eim_eval_ptr -> get_eim_theta_objects());
+    _initialize_rb_system._rb_eval_ptr -> get_rb_theta_expansion().attach_multiple_A_theta(_initialize_rb_system._eim_eval_ptr -> get_eim_theta_objects()); // Add in-case the A terms contain the function that has been affine-approximated using EIM (Martin's EIM example)
     _initialize_rb_system._eim_con_ptr -> initialize_eim_assembly_objects();
 
     _initialize_rb_system._rb_con_ptr -> print_info();
   
     _initialize_rb_system._rb_con_ptr -> initialize_rb_construction(_initialize_rb_system._skip_matrix_assembly_in_rb_system, _initialize_rb_system._skip_vector_assembly_in_rb_system);
+    _initialize_rb_system._rb_con_ptr -> allocate_EIM_error_structures();// To test against EIM example from Martin's publication
     // Train reduced basis will be called after the kernel assembles the RB affine matrices and vectors
   
     _initialize_rb_system.AssignAffineMatricesAndVectors();
