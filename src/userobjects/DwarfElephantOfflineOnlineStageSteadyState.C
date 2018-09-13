@@ -59,16 +59,17 @@ DwarfElephantOfflineOnlineStageSteadyState::setAffineMatrices()
 {
    _initialize_rb_system._inner_product_matrix -> close();
    
-    _initialize_rb_system._fullFEnonAffineA -> print_matlab("fullFEnonAffineA.m");
-    _initialize_rb_system._jacobian_subdomain[0] -> print_matlab("AffineA0.m");
-    _rb_problem->rbAssembly(0).setCachedJacobianContributions(*_initialize_rb_system._fullFEnonAffineA); // To test against EIM example from Martin's publication
-    _initialize_rb_system._fullFEnonAffineA->close(); // To test against EIM example from Martin's publication
+    //_initialize_rb_system._fullFEnonAffineA -> print_matlab("fullFEnonAffineA.m");
+    //_initialize_rb_system._jacobian_subdomain[0] -> print_matlab("AffineA0.m");
+    //_rb_problem->rbAssembly(0).setCachedJacobianContributions(*_initialize_rb_system._fullFEnonAffineA, false); // To test against EIM example from Martin's publication
+    //_initialize_rb_system._fullFEnonAffineA->close(); // To test against EIM example from Martin's publication
+    //_initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._fullFEnonAffineA);
     for(unsigned int _q=0; _q<_initialize_rb_system._qa; _q++)
     {
       //_rb_problem->rbAssembly(_q).setCachedJacobianContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
-      _rb_problem->rbAssembly(0).setCachedJacobianContributions(*_initialize_rb_system._jacobian_subdomain[_q]); // for EIM example in Martin's publication
+      _rb_problem->rbAssembly(0).setCachedJacobianContributions(*_initialize_rb_system._jacobian_subdomain[_q], true); // for EIM example in Martin's publication
       _initialize_rb_system._jacobian_subdomain[_q] ->close();
-      if (_q <= 1) // To test against EIM example from Martin's publication
+      if (_q < 1) // To test against EIM example from Martin's publication
          _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
     }
 
@@ -107,8 +108,8 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
 void
 DwarfElephantOfflineOnlineStageSteadyState::offlineStageEIM()
 {
-    _initialize_rb_system._rb_con_ptr->TestEIMAccuracy(); // To test against EIM example from Martin's publication
-    mooseError("Ending program as tests of EIM accuracy have concluded"); // To test against EIM example from Martin's publication
+    //_initialize_rb_system._rb_con_ptr->TestEIMAccuracy(); // To test against EIM example from Martin's publication
+    //mooseError("Ending program as tests of EIM accuracy have concluded"); // To test against EIM example from Martin's publication
     _initialize_rb_system._rb_con_ptr->train_reduced_basis();
     #if defined(LIBMESH_HAVE_CAPNPROTO)
       RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
@@ -180,7 +181,7 @@ void DwarfElephantOfflineOnlineStageSteadyState::onlineStageEIM()
             << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
 */
       // Back transfer of the data to use MOOSE Postprocessor and Output classes
-      Moose::perf_log.push("DataTransfer()", "Execution");
+      //Moose::perf_log.push("DataTransfer()", "Execution");
       if(_output_file)
       {
          _initialize_rb_system._eim_con_ptr -> get_rb_evaluation().read_in_basis_functions(_initialize_rb_system._eim_con_ptr->get_explicit_system(),"eim_data");

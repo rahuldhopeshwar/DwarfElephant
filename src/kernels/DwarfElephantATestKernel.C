@@ -35,7 +35,7 @@ void DwarfElephantATestKernel::computeJacobian()
 	    for (_j = 0; _j < _phi.size(); _j++)  
         	for (_qp = 0; _qp < _qrule -> n_points(); _qp++)
 		{
-			_local_ke(_i, _j) += _JxW[_qp] * _coord[_qp] *( (_grad_test[_i][_qp] * _grad_phi[_j][_qp]) +  _test[_i][_qp] * _phi[_j][_qp] * 1./sqrt(pow(_q_point[_qp](0) + 0.01,2) + pow(_q_point[_qp](1) + 0.01,2)));
+			_local_ke(_i, _j) += _JxW[_qp] * _coord[_qp] * _test[_i][_qp] * _phi[_j][_qp] * 1./sqrt(pow(_q_point[_qp](0) + 0.01,2) + pow(_q_point[_qp](1) + 0.01,2));
 		}
 	  ke += _local_ke;
 	  if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)		

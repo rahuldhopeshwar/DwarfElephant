@@ -41,7 +41,7 @@ public:
 
   void setCachedResidual(NumericVector<Number> & _residual);
   void setCachedOutput(NumericVector<Number> & _output);
-  void setCachedJacobianContributions(SparseMatrix<Number> & _jacobian);
+  void setCachedJacobianContributions(SparseMatrix<Number> & _jacobian, bool _set_diagonal_entries);
   void setCachedMassMatrixContributions(SparseMatrix<Number> & _mass);
 
   void clearCachedJacobianContributions();

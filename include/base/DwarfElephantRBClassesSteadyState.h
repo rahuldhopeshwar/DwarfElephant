@@ -111,6 +111,11 @@ public:
     _nonAffineF = NumericVector<Number>::build(this->comm());
     _nonAffineF->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
 
+          fullFEsolution = NumericVector<Number>::build(this->comm());
+      fullFEsolution ->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+      EIM_FEsolution = NumericVector<Number>::build(this->comm());
+      EIM_FEsolution->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+
   }
 
   Real compute_residual_dual_norm(const unsigned int N);
@@ -135,7 +140,9 @@ public:
       // assemble full FE system
       // A_matrix = Aq[0] + _nonAffineA
       // F_vector = _nonAffineF
-      std::unique_ptr<NumericVector<Number>> fullFEsolution, EIM_FEsolution;
+      
+
+
       fullFEsolution -> zero();
       fullFEsolution -> close();
 
@@ -149,8 +156,8 @@ public:
       this -> matrix -> close();
       this -> rhs -> close();
       
-      //matrix -> add(1.0,*get_Aq(0));
-      matrix -> add(1.0,*_nonAffineA);
+      matrix -> add(1.0,*get_Aq(0));
+      //matrix -> add(1.0,*_nonAffineA);
       rhs -> add(*_nonAffineF);
 
       this -> matrix -> close();
@@ -171,7 +178,7 @@ public:
       if (assert_convergence)
         check_convergence(*get_linear_solver());
     }
-    fullFEsolution -> add(*solution);
+    fullFEsolution -> add(*rhs);//add(*solution);
       
 
 
@@ -189,7 +196,7 @@ public:
       this -> matrix -> close();
       this -> rhs -> close();
       
-      for (unsigned int q_a=0; q_a<M+1; q_a++)
+      for (unsigned int q_a=0; q_a</*M+*/1; q_a++)
       {
         matrix->add(get_rb_theta_expansion().eval_A_theta(q_a, mu), *get_Aq(q_a));
       }
@@ -222,7 +229,7 @@ public:
       if (assert_convergence)
         check_convergence(*get_linear_solver());
     }
-    EIM_FEsolution -> add(*solution);
+    EIM_FEsolution -> add(*rhs);//add(*solution);
     *fullFEsolution -= *EIM_FEsolution;
     get_non_dirichlet_inner_product_matrix_if_avail()->vector_mult(*inner_product_storage_vector, *fullFEsolution);
     Number truthError_X_norm = std::sqrt(inner_product_storage_vector->dot(*fullFEsolution));
@@ -235,6 +242,8 @@ public:
   unsigned int u_var;
   std::unique_ptr<SparseMatrix<Number>> _nonAffineA; // To test against EIM example from Martin's publication
   std::unique_ptr<NumericVector<Number>> _nonAffineF; // To test against EIM example from Martin's publication
+  std::unique_ptr<NumericVector<Number>> fullFEsolution;
+  std::unique_ptr<NumericVector<Number>> EIM_FEsolution;
 
 };
 
