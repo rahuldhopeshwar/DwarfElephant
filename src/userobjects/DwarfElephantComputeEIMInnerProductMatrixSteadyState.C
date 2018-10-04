@@ -82,7 +82,10 @@ void DwarfElephantComputeEIMInnerProductMatrixSteadyState::finalize()
   if (_initialize_rb_system._offline_stage)
   {
     _initialize_rb_system._inner_product_matrix_eim -> close();
+    _initialize_rb_system._eim_con_ptr->GreedyOutputFile.open("EIMGreedyOutputFile.csv");
+    _initialize_rb_system._eim_con_ptr->GreedyOutputFile << "mu_0, mu_1, MaxGreedyError" << std::endl;
     _initialize_rb_system._eim_con_ptr->train_reduced_basis();
+    _initialize_rb_system._eim_con_ptr->GreedyOutputFile.close();
     #if defined(LIBMESH_HAVE_CAPNPROTO)
       RBDataSerialization::RBEvaluationSerialization rb_eim_eval_writer(*(_initialize_rb_system._eim_eval_ptr));
       rb_eim_eval_writer.write_to_file("rb_eim_eval.bin");
@@ -98,7 +101,6 @@ void DwarfElephantComputeEIMInnerProductMatrixSteadyState::finalize()
     _initialize_rb_system._rb_con_ptr -> print_info();
   
     _initialize_rb_system._rb_con_ptr -> initialize_rb_construction(_initialize_rb_system._skip_matrix_assembly_in_rb_system, _initialize_rb_system._skip_vector_assembly_in_rb_system);
-    _initialize_rb_system._rb_con_ptr -> allocate_EIM_error_structures();// To test against EIM example from Martin's publication
     // Train reduced basis will be called after the kernel assembles the RB affine matrices and vectors
   
     _initialize_rb_system.AssignAffineMatricesAndVectors();

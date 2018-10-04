@@ -3,6 +3,10 @@
  */
 
 ///---------------------------------INCLUDES--------------------------------
+#include <sstream>
+#include <iomanip>
+#include <cstring>
+
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantOfflineOnlineStageSteadyState.h"
 
@@ -23,7 +27,7 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     params.addParam<bool>("compute_output", false, "Determines whether an output of interest is computed or not.");
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
-    params.addParam<unsigned int>("online_N", 0, "Defines the dimension of the online stage.");
+    params.addRequiredParam<unsigned int>("online_N", "Defines the dimension of the online stage.");
     params.addParam<Real>("mu_bar", 1., "Value for mu-bar");
     params.addRequiredParam<std::vector<Real>>("online_mu", "Current values of the different layers for which the RB Method is solved.");
     return params;
@@ -59,18 +63,12 @@ DwarfElephantOfflineOnlineStageSteadyState::setAffineMatrices()
 {
    _initialize_rb_system._inner_product_matrix -> close();
    
-    //_initialize_rb_system._fullFEnonAffineA -> print_matlab("fullFEnonAffineA.m");
-    //_initialize_rb_system._jacobian_subdomain[0] -> print_matlab("AffineA0.m");
-    //_rb_problem->rbAssembly(0).setCachedJacobianContributions(*_initialize_rb_system._fullFEnonAffineA, false); // To test against EIM example from Martin's publication
-    //_initialize_rb_system._fullFEnonAffineA->close(); // To test against EIM example from Martin's publication
-    //_initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._fullFEnonAffineA);
+   _initialize_rb_system._inner_product_matrix->close();
     for(unsigned int _q=0; _q<_initialize_rb_system._qa; _q++)
     {
       //_rb_problem->rbAssembly(_q).setCachedJacobianContributions(*_initialize_rb_system._jacobian_subdomain[_q]);
-      _rb_problem->rbAssembly(0).setCachedJacobianContributions(*_initialize_rb_system._jacobian_subdomain[_q], true); // for EIM example in Martin's publication
+      _rb_problem->rbAssembly(0).setCachedJacobianContributions(*_initialize_rb_system._jacobian_subdomain[_q]); // for EIM example in Martin's publication
       _initialize_rb_system._jacobian_subdomain[_q] ->close();
-      if (_q < 1) // To test against EIM example from Martin's publication
-         _initialize_rb_system._inner_product_matrix->add(_mu_bar, *_initialize_rb_system._jacobian_subdomain[_q]);
     }
 
 }
@@ -89,8 +87,7 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
 
       _initialize_rb_system._residuals[_q]->close();
     }
-    _rb_problem->rbAssembly(0).setCachedResidual(*_initialize_rb_system._fullFEnonAffineF); // To test against EIM example from Martin's publication
-    _initialize_rb_system._fullFEnonAffineF->close(); // To test against EIM example from Martin's publication
+
     if(_compute_output)
     {
       // Transfer the data for the output vectors.
@@ -108,9 +105,10 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
 void
 DwarfElephantOfflineOnlineStageSteadyState::offlineStageEIM()
 {
-    //_initialize_rb_system._rb_con_ptr->TestEIMAccuracy(); // To test against EIM example from Martin's publication
-    //mooseError("Ending program as tests of EIM accuracy have concluded"); // To test against EIM example from Martin's publication
+    _initialize_rb_system._rb_con_ptr->GreedyOutputFile.open("RBGreedyOutputFile.csv");
+    _initialize_rb_system._rb_con_ptr->GreedyOutputFile << "mu_0, mu_1, MaxErrorBound" << std::endl;
     _initialize_rb_system._rb_con_ptr->train_reduced_basis();
+    _initialize_rb_system._rb_con_ptr->GreedyOutputFile.close();
     #if defined(LIBMESH_HAVE_CAPNPROTO)
       RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
       _rb_eval_writer.write_to_file("rb_eval.bin");
@@ -165,6 +163,7 @@ void DwarfElephantOfflineOnlineStageSteadyState::onlineStageEIM()
 
       _console << "---- Online Stage ----" << std::endl;
       _initialize_rb_system._rb_eval_ptr ->print_parameters();
+      std::cout << "Online N = " << _online_N << std::endl;
 
       if (_online_N == 0)
         _online_N = _initialize_rb_system._rb_eval_ptr->get_n_basis_functions();
@@ -192,9 +191,12 @@ void DwarfElephantOfflineOnlineStageSteadyState::onlineStageEIM()
 
          *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
          _fe_problem.getNonlinearSystemBase().update();
-
+         std::stringstream ss;
+         
+         ss << std::setw(2) << std::setfill('0') << _online_N;
+         
 		 #ifdef LIBMESH_HAVE_EXODUS_API
-		 ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("RB_sol_DwarfElephant.e",_es);
+		 ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("RB_sol_DwarfElephant.e-s"+ss.str(),_es);
 		 #endif
       }
 }

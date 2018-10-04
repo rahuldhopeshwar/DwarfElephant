@@ -157,8 +157,7 @@ class DwarfElephantInitializeRBSystemSteadyState :
   std::vector<Real> _continuous_parameter_min_values_RB;
   std::vector<Real> _continuous_parameter_max_values_RB;
 
-  mutable SparseMatrix <Number> * _fullFEnonAffineA; // To test against EIM example from Martin's publication
-  mutable NumericVector <Number> * _fullFEnonAffineF; // To test against EIM example from Martin's publication
+  mutable SparseMatrix <Number> * _RB_inner_product_matrix; // To test against EIM example from Martin's publication
 
     /*Friend Classes*/
     friend class DwarfElephantRBKernel;
@@ -170,8 +169,7 @@ class DwarfElephantInitializeRBSystemSteadyState :
     friend class DwarfElephantComputeEIMInnerProductMatrixSteadyState;
     friend class DwarfElephantEIMFKernel;
     friend class DwarfElephantEIMAKernel;
-    friend class DwarfElephantFTestKernel; // To test against EIM example from Martin's publication
-    friend class DwarfElephantATestKernel; // To test against EIM example from Martin's publication
+    friend class RBInnerProductMatrix; // To test against EIM example from Martin's publication
     friend class DwarfElephantEIMFKernelsAction;
 };
 ///-------------------------------------------------------------------------

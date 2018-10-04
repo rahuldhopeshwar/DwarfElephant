@@ -46,9 +46,7 @@
 #include "DwarfElephantEIMFKernel.h"
 #include "DwarfElephantEIMAKernel.h"
 #include "ExtractQpPointsKernel.h"
-#include "DwarfElephantFTestKernel.h"
-#include "DwarfElephantATestKernel.h"
-
+#include "RBInnerProductMatrix.h"
 
 // DiracKernels
 #include "DwarfElephantRBConstantPointSource.h"
@@ -163,9 +161,7 @@ DwarfElephantApp::registerObjects(Factory & factory)
   registerKernel(ExtractQpPointsKernel);
   registerKernel(DwarfElephantEIMFKernel);
   registerKernel(DwarfElephantEIMAKernel);
-  registerKernel(DwarfElephantFTestKernel); // To test against EIM example from Martin's publication
-  registerKernel(DwarfElephantATestKernel); // To test against EIM example from Martin's publication
-
+  registerKernel(RBInnerProductMatrix);
 
   //DiracKernels
   registerDiracKernel(DwarfElephantRBConstantPointSource);

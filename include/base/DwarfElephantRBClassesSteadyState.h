@@ -88,163 +88,14 @@ public:
   typedef RBConstruction Parent;
 
   // Initialize data structure
-  virtual void init_data();
-  NumericVector<Number> * get_nonAffineF() // To test against EIM example from Martin's publication
-  {
-    return _nonAffineF.get();
-  }
+  virtual void init_data() override;
 
-  SparseMatrix<Number> * get_nonAffineA() // To test against EIM example from Martin's publication
-  {
-    return _nonAffineA.get();
-  }
-//  Real train_reduced_basis(const bool resize_rb_eval_data = true);
-
-  void allocate_EIM_error_structures() // To test against EIM example from Martin's publication
-  {
-    _nonAffineA = SparseMatrix<Number>::build(this->comm());
-    libMesh::DofMap & dof_map = this -> get_dof_map();
-    dof_map.attach_matrix(*_nonAffineA);
-    _nonAffineA->init();
-    _nonAffineA->zero();
-
-    _nonAffineF = NumericVector<Number>::build(this->comm());
-    _nonAffineF->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
-
-          fullFEsolution = NumericVector<Number>::build(this->comm());
-      fullFEsolution ->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
-      EIM_FEsolution = NumericVector<Number>::build(this->comm());
-      EIM_FEsolution->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
-
-  }
-
-  Real compute_residual_dual_norm(const unsigned int N);
-  
-  void TestEIMAccuracy()// To test against EIM example from Martin's publication
-  {
-    RBParameters mu;
-    mu.set_value("mu_0", -0.01);
-    mu.set_value("mu_1", -0.01);
-    std::ofstream EIMErrorFile;
-    EIMErrorFile.open("EIMError_vs_M.csv");
-   
-    EIMErrorFile << "M, EIMError" << std::endl;
-    for (unsigned int M = 1; M < get_rb_theta_expansion().get_n_F_terms(); M++)
-      EIMErrorFile << M << ", " << find_EIMFE_error(M,mu) << std::endl;
-
-    EIMErrorFile.close();
-  }
-  Real find_EIMFE_error(unsigned int M, RBParameters mu)// To test against EIM example from Martin's publication
-  {
-    // compute full FE solution
-      // assemble full FE system
-      // A_matrix = Aq[0] + _nonAffineA
-      // F_vector = _nonAffineF
-      
-
-
-      fullFEsolution -> zero();
-      fullFEsolution -> close();
-
-      EIM_FEsolution -> zero();
-      EIM_FEsolution -> close();
-
-
-      this -> matrix -> zero();
-      this -> rhs -> zero();
-      
-      this -> matrix -> close();
-      this -> rhs -> close();
-      
-      matrix -> add(1.0,*get_Aq(0));
-      //matrix -> add(1.0,*_nonAffineA);
-      rhs -> add(*_nonAffineF);
-
-      this -> matrix -> close();
-      this -> rhs -> close();
-      if (extra_linear_solver)
-    {
-      // If extra_linear_solver has been initialized, then we use it for the
-      // truth solves.
-      solve_for_matrix_and_rhs(*extra_linear_solver, *matrix, *rhs);
-
-      if (assert_convergence)
-        check_convergence(*extra_linear_solver);
-    }
-  else
-    {
-      solve_for_matrix_and_rhs(*get_linear_solver(), *matrix, *rhs);
-
-      if (assert_convergence)
-        check_convergence(*get_linear_solver());
-    }
-    fullFEsolution -> add(*rhs);//add(*solution);
-      
-
-
-
-     // solve equation
-
-    // compute EIM_FE solution for 1<=M<=M_max
-      // assemble EIM_FE system for M
-      // solve equation
-
-
-      this -> matrix -> zero();
-      this -> rhs -> zero();
-      
-      this -> matrix -> close();
-      this -> rhs -> close();
-      
-      for (unsigned int q_a=0; q_a</*M+*/1; q_a++)
-      {
-        matrix->add(get_rb_theta_expansion().eval_A_theta(q_a, mu), *get_Aq(q_a));
-      }
-
-    std::unique_ptr<NumericVector<Number>> temp_vec = NumericVector<Number>::build(this->comm());
-    temp_vec->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
-    for (unsigned int q_f=0; q_f<M; q_f++)
-      {
-        *temp_vec = *get_Fq(q_f);
-        temp_vec->scale( get_rb_theta_expansion().eval_F_theta(q_f, mu) );
-        rhs->add(*temp_vec);
-      }
-
-      this -> matrix -> close();
-      this -> rhs -> close();
-
-      if (extra_linear_solver)
-    {
-      // If extra_linear_solver has been initialized, then we use it for the
-      // truth solves.
-      solve_for_matrix_and_rhs(*extra_linear_solver, *matrix, *rhs);
-
-      if (assert_convergence)
-        check_convergence(*extra_linear_solver);
-    }
-  else
-    {
-      solve_for_matrix_and_rhs(*get_linear_solver(), *matrix, *rhs);
-
-      if (assert_convergence)
-        check_convergence(*get_linear_solver());
-    }
-    EIM_FEsolution -> add(*rhs);//add(*solution);
-    *fullFEsolution -= *EIM_FEsolution;
-    get_non_dirichlet_inner_product_matrix_if_avail()->vector_mult(*inner_product_storage_vector, *fullFEsolution);
-    Number truthError_X_norm = std::sqrt(inner_product_storage_vector->dot(*fullFEsolution));
-
-    return truthError_X_norm;
-   // Compute X inner product of the difference between full FE solution and EIM_FE solution
-  }
-  
+  virtual Real compute_residual_dual_norm(const unsigned int N);
+ 
+  virtual Real train_reduced_basis(const bool resize_rb_eval_data=true) override;
 
   unsigned int u_var;
-  std::unique_ptr<SparseMatrix<Number>> _nonAffineA; // To test against EIM example from Martin's publication
-  std::unique_ptr<NumericVector<Number>> _nonAffineF; // To test against EIM example from Martin's publication
-  std::unique_ptr<NumericVector<Number>> fullFEsolution;
-  std::unique_ptr<NumericVector<Number>> EIM_FEsolution;
-
+  std::ofstream GreedyOutputFile;
 };
 
 ///------------------------DWARFELEPHANTRBEVALUATION------------------------
@@ -349,8 +200,7 @@ public:
 
   // Compute the dual norms of the outputs if we haven't already done so
   compute_output_dual_innerprods();
-std::ofstream greedyFile;
-greedyFile.open("EIM_Example_Martin_InterpolationPoints_L2bestfit.csv");
+
   // Compute the Fq Riesz representor dual norms if we haven't already done so
   compute_Fq_representor_innerprods();
 
@@ -385,7 +235,7 @@ greedyFile.open("EIM_Example_Martin_InterpolationPoints_L2bestfit.csv");
 
       libMesh::out << "Performing truth solve at parameter:" << std::endl;
       print_parameters();
-      
+      GreedyOutputFile << get_parameters().get_value("mu_0") << ", " << get_parameters().get_value("mu_1") << ", " << training_greedy_error << std::endl; 
       
       // Update the list of Greedily selected parameters
       this->update_greedy_param_list();
@@ -402,20 +252,18 @@ greedyFile.open("EIM_Example_Martin_InterpolationPoints_L2bestfit.csv");
       // Increment counter
       count++;
     }
-   RBEIMEvaluation & eim_eval = cast_ref<RBEIMEvaluation &>(get_rb_evaluation());
-   for (unsigned int i = 0; i < count ; i++) { eim_eval.interpolation_points[i].write_unformatted(greedyFile); }
-   greedyFile.close();
   this->update_greedy_param_list();
 
   return training_greedy_error;
 
-}
+} 
   /**
    * Variable number for u.
    */
   unsigned int u_var;
 
   std::vector<std::unique_ptr<DwarfElephantEIMFAssembly>> _rb_eim_assembly_objects_new;
+  std::ofstream GreedyOutputFile;
 };
 
 ///-------------------------------------------------------------------------

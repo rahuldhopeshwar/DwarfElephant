@@ -85,16 +85,11 @@ DwarfElephantRBAssembly::cacheMassMatrixContribution(numeric_index_type i, numer
 
 
 void
-DwarfElephantRBAssembly::setCachedJacobianContributions(SparseMatrix<Number> & _jacobian, bool _set_diagonal_entries)
+DwarfElephantRBAssembly::setCachedJacobianContributions(SparseMatrix<Number> & _jacobian)
 {
   _jacobian.close();
   _jacobian.zero_rows(_cached_jacobian_contribution_rows, 0.);
-  //_jacobian.zero_rows(_cached_jacobian_contribution_rows, 1.0);
-  //_jacobian.get_transpose(_jacobian);
-  //_jacobian.zero_rows(_cached_jacobian_contribution_rows, 1.0);
-  //_jacobian.get_transpose(_jacobian);
 
-  if (_set_diagonal_entries)
   for (unsigned int i = 0; i < _cached_jacobian_contribution_vals.size(); i++)
     _jacobian.set(_cached_jacobian_contribution_rows[i],
                   _cached_jacobian_contribution_cols[i],

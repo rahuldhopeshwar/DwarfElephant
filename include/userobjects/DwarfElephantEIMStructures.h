@@ -49,7 +49,7 @@ struct ShiftedGaussian : public RBParametrizedFunction
     Real center_x = mu.get_value("mu_0");
     Real center_y = mu.get_value("mu_1");
     //return exp(-2.*(pow(center_x-p(0),2.) + pow(center_y-p(1),2.))); //Forcing function from libMesh rb example 4
-    return sqrt(1.0/(pow(center_x - p(0),2) + pow(center_y - p(1),2))); // Forcing function from Martin's EIM publication
+    return 1.0/sqrt(pow(center_x - p(0),2) + pow(center_y - p(1),2)); // Forcing function from Martin's EIM publication
   }
 };
 
