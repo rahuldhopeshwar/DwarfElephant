@@ -19,7 +19,7 @@ InputParameters validParams<DwarfElephantRBNodalBC>()
 
   params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
   params.addParam<std::string>("simulation_type", "steady", "Determines whether the simulation is steady state or transient.");
-  params.addParam<unsigned int>("ID_Fq", 0 , "ID if the load vector.");
+  params.addParam<std::vector<unsigned int>>("ID_Fq","ID if the load vector.");
   params.addParam<unsigned int>("ID_Aq", 0 , "ID if the stiffness matrix.");
   params.addParam<unsigned int>("ID_Mq", 0 , "ID if the mass matrix.");
   params.addParam<bool>("compute_output",false,"Determines whether an output function is used or not");
@@ -36,11 +36,14 @@ DwarfElephantRBNodalBC::DwarfElephantRBNodalBC(const InputParameters & parameter
     _matrix_seperation_according_to_subdomains(getParam<bool>("matrix_seperation_according_to_subdomains")),
     _compute_output(getParam<bool>("compute_output")),
     _simulation_type(getParam<std::string>("simulation_type")),
-    _ID_Fq(getParam<unsigned int>("ID_Fq")),
+    _ID_Fq(getParam<std::vector<unsigned int>>("ID_Fq")),
     _ID_Aq(getParam<unsigned int>("ID_Aq")),
     _ID_Mq(getParam<unsigned int>("ID_Mq"))
 {
     _rb_problem = cast_ptr<DwarfElephantRBProblem *>(&_fe_problem);
+
+    if(_ID_Fq.size()==0)
+      _ID_Fq = {0};
 }
 
 ///-------------------------------------------------------------------------
@@ -70,27 +73,31 @@ DwarfElephantRBNodalBC::computeResidual() // DwarfElephantRBNodalBC::computeResi
 
     if (_simulation_type == "steady")  // Steady State
     {
-      if (_ID_Fq >= _initialize_rb_system->_qf)
-        mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
+      for(unsigned int i = 0; i < _ID_Fq.size(); i++){
+        if (_ID_Fq[i] >= _initialize_rb_system->_qf)
+          mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
 
-      if(_initialize_rb_system->_offline_stage)
-      {
-        if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
-        {
-          _rb_problem->rbAssembly(_ID_Fq).cacheResidual(dof_idx, -res);
-         // _initialize_rb_system->_residuals[_ID_Fq]->set(dof_idx, -res);
+          if(_initialize_rb_system->_offline_stage)
+          {
+            if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
+            {
+              _rb_problem->rbAssembly(_ID_Fq[i]).cacheResidual(dof_idx, -res);
+              // _initialize_rb_system->_residuals[_ID_Fq]->set(dof_idx, -res);
+            }
+          }
         }
-      }
     }
 
     else if (_simulation_type == "transient")
     {
-      if (_ID_Fq >= _initialize_rb_system_transient->_qf)
-        mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
+      for(unsigned int i = 0; i < _ID_Fq.size(); i++){
+        if (_ID_Fq[i] >= _initialize_rb_system_transient->_qf)
+          mooseError("The number of load vectors you defined here is not matching the number of load vectors you specified in the RBClasses Class.");
 
-      if(_initialize_rb_system_transient->_offline_stage)
-        if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
-          _rb_problem->rbAssembly(_ID_Fq).cacheResidual(dof_idx, -res);
+        if(_initialize_rb_system_transient->_offline_stage)
+          if (_fe_problem.getNonlinearSystemBase().computingInitialResidual())
+            _rb_problem->rbAssembly(_ID_Fq[i]).cacheResidual(dof_idx, -res);
+      }
     }
 
     if (_has_save_in)

@@ -19,6 +19,7 @@
 
 #include "DwarfElephantRBStructuresA00ThetaConstant.h"
 #include "DwarfElephantRBStructuresA0ThetaEqualMu0.h"
+#include "DwarfElephantRBStructuresA0ThetaEqualScalarDividedByMu0.h"
 #include "DwarfElephantRBStructuresA0ThetaNormMu0.h"
 #include "DwarfElephantRBStructuresA0ThetaNormMu1.h"
 #include "DwarfElephantRBStructuresA1ThetaEqualMu1.h"
@@ -52,10 +53,13 @@ struct DwarfElephantRBT3F3O10SteadyStateExpansion : RBThetaExpansion
   {
     // Setting up the RBThetaExpansion object
     attach_A_theta(&_rb_theta);
-    attach_A_theta(&_theta_a_0);
+    // attach_A_theta(&_theta_a_0);
+    // attach_A_theta(&_theta_a_1);
+    // attach_A_theta(&_theta_a_2);
 
-    attach_F_theta(&_theta_a_1);
+    attach_F_theta(&_rb_theta);
     attach_F_theta(&_theta_a_0);
+    attach_F_theta(&_theta_a_1);
     attach_F_theta(&_theta_a_2);
 
     attach_output_theta(&_rb_theta);

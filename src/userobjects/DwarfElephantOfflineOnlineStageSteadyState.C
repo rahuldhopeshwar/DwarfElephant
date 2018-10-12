@@ -25,9 +25,11 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     params.addParam<bool>("output_csv",false, "Determines whether an output of interest is passed to the CSV file.");
     params.addParam<bool>("compliant", false, "Specifies if you have a compliant or non-compliant case.");
     params.addParam<bool>("norm_online_values", false, "Determines wether online parameters are normed.");
+    params.addParam<bool>("load_basis_function", false, "Set to true if you want to load a basis function.");
     params.addParam<unsigned int>("norm_id", 0, "Defines the id of the parameter that will be used for the normalization.");
     params.addParam<unsigned int>("n_outputs", 1, "Defines the number of outputs.");
     params.addParam<unsigned int>("online_N", 0, "Defines the dimension of the online stage.");
+    params.addParam<unsigned int>("basis_function_number", 0, "The number of the basis function to retrieve.");
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
     params.addParam<Real>("mu_bar", 1., "Value for mu-bar");
@@ -51,9 +53,11 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     _output_csv(getParam<bool>("output_csv")),
     _compliant(getParam<bool>("compliant")),
     _norm_online_values(getParam<bool>("norm_online_values")),
+    _load_basis_function(getParam<bool>("load_basis_function")),
     _norm_id(getParam<unsigned int>("norm_id")),
     _n_outputs(getParam<unsigned int>("n_outputs")),
     _online_N(getParam<unsigned int>("online_N")),
+    _basis_function_number(getParam<unsigned int>("basis_function_number")),
     _system_name(getParam<std::string>("system")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
@@ -192,7 +196,7 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
         _rb_eval.legacy_read_offline_data_from_files();
       #endif
 
-      _norm_factor = _rb_eval.get_error_bound_normalization();
+      // _norm_factor = 1.0;//_rb_eval.get_error_bound_normalization();
 
       if(_online_N==0)
         _online_N = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
@@ -220,7 +224,8 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       if (_output_console)
         for (unsigned int i = 0; i != _n_outputs; i++)
           _console << "Output " << std::to_string(i) << ": value = " << _rb_eval.RB_outputs[i]
-          << ", error bound = " << _rb_eval.RB_output_error_bounds[i]/_norm_factor << std::endl;
+          << ", error bound = " << _rb_eval.RB_output_error_bounds[i] << std::endl;
+          // << ", error bound = " << _rb_eval.RB_output_error_bounds[i]/_norm_factor << std::endl;
 
 
       if (_output_csv)
@@ -235,6 +240,9 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       if(_output_file)
       {
         _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
+        if(_load_basis_function)
+          _initialize_rb_system._rb_con_ptr->load_basis_function(_basis_function_number);
+        else
         _initialize_rb_system._rb_con_ptr->load_rb_solution();
 
          *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;

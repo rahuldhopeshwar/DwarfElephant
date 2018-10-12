@@ -81,10 +81,12 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     bool _output_csv;
     bool _compliant;
     bool _norm_online_values;
+    bool _load_basis_function;
 
     unsigned int _norm_id;
     unsigned int _n_outputs;
     unsigned int _online_N;
+    unsigned int _basis_function_number;
 
     std::string _system_name;
 

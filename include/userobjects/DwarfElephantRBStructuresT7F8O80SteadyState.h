@@ -1,7 +1,7 @@
  /**
   * The structures are defined for an elliptic PDE with the following restrictions:
-  *  1. The number of thetas is equal to eight (T8).
-  *  2. The problem contains nine load vectors (F9) and twenty outputs (O20).
+  *  1. The number of thetas is equal to seven (T7).
+  *  2. The problem contains eight load vectors (F8) and 80 outputs (O80).
   *
   * The structures defined are:
   * 1. Theta --> parameter-dependent part of the PDE
@@ -9,8 +9,8 @@
   */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTRBSTRUCTUREST8F9O20STEADYSTATE_H
-#define DWARFELEPHANTRBSTRUCTUREST8F9O20STEADYSTATE_H
+#ifndef DWARFELEPHANTRBSTRUCTUREST7F8O80STEADYSTATE_H
+#define DWARFELEPHANTRBSTRUCTUREST7F8O80STEADYSTATE_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
@@ -31,7 +31,6 @@
 #include "DwarfElephantRBStructuresA4ThetaEqualMu4.h"
 #include "DwarfElephantRBStructuresA5ThetaEqualMu5.h"
 #include "DwarfElephantRBStructuresA6ThetaEqualMu6.h"
-#include "DwarfElephantRBStructuresA7ThetaEqualMu7.h"
 
 
 // Forward Declarations
@@ -49,13 +48,12 @@ namespace libMesh
  *
  */
 
-struct DwarfElephantRBT8F9O20SteadyStateExpansion : RBThetaExpansion
+struct DwarfElephantRBT7F8O80SteadyStateExpansion : RBThetaExpansion
 {
-  DwarfElephantRBT8F9O20SteadyStateExpansion()
+  DwarfElephantRBT7F8O80SteadyStateExpansion()
   {
     // Setting up the RBThetaExpansion object
     attach_A_theta(&_rb_theta);
-    attach_A_theta(&_theta_a_0);
 
     attach_F_theta(&_rb_theta);
     attach_F_theta(&_theta_a_0);
@@ -65,8 +63,67 @@ struct DwarfElephantRBT8F9O20SteadyStateExpansion : RBThetaExpansion
     attach_F_theta(&_theta_a_4);
     attach_F_theta(&_theta_a_5);
     attach_F_theta(&_theta_a_6);
-    attach_F_theta(&_theta_a_7);
 
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
+    attach_output_theta(&_rb_theta);
     attach_output_theta(&_rb_theta);
     attach_output_theta(&_rb_theta);
     attach_output_theta(&_rb_theta);
@@ -96,9 +153,8 @@ struct DwarfElephantRBT8F9O20SteadyStateExpansion : RBThetaExpansion
   DwarfElephantThetaA4EqualMu4 _theta_a_4;
   DwarfElephantThetaA5EqualMu5 _theta_a_5;
   DwarfElephantThetaA6EqualMu6 _theta_a_6;
-  DwarfElephantThetaA7EqualMu7 _theta_a_7;
   RBTheta _rb_theta;         // Default RBTheta object, simply returns one.
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTRBSTRUCTUREST8F9O20STEADYSTATE_H
+#endif // DWARFELEPHANTRBSTRUCTUREST7F9O80STEADYSTATE_H

@@ -71,7 +71,7 @@ protected:
 
   std::string _simulation_type;
 
-  unsigned int _ID_Fq;
+  std::vector<unsigned int> _ID_Fq;
   unsigned int _ID_Aq;
   unsigned int _ID_Mq;
   DwarfElephantRBProblem * _rb_problem;
