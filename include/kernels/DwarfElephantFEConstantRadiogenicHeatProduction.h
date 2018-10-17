@@ -20,7 +20,7 @@ class DwarfElephantFEConstantRadiogenicHeatProduction;
 template<>
 InputParameters validParams<DwarfElephantFEConstantRadiogenicHeatProduction>();
 
-///-------------------------------------------------------------------------
+///This Kernel is implements a constant radiogenic heat production using the full Finite Element solution. It is included in this package for validation purposes.
 class DwarfElephantFEConstantRadiogenicHeatProduction : public Kernel
 {
 //----------------------------------PUBLIC----------------------------------

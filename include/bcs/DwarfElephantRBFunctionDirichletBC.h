@@ -23,7 +23,7 @@ class Function;
 template<>
 InputParameters validParams<DwarfElephantRBFunctionDirichletBC>();
 
-///-------------------------------------------------------------------------
+///This BC is required to use the RB method for the Function Dirichlet BC. Since all necessary operations are defined in the DwarfElephantRBNodalBC class this class is the same as the Function Dirichlet BC provided by MOOSE except that it inherits from the DwarfElephantRBNodalBC instead of the NodalBC class.
 class DwarfElephantRBFunctionDirichletBC : public DwarfElephantRBNodalBC
 {
 //----------------------------------PUBLIC----------------------------------

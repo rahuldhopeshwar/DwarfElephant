@@ -1,0 +1,4 @@
+<map id="DwarfElephantRBTimeKernel" name="DwarfElephantRBTimeKernel">
+<area shape="rect" id="node4" href="$class_dwarf_elephant_r_b_time_derivative.html" title="This Kernel implements the TimeDerivative by using the RB method. It is important to note that every ..." alt="" coords="5,229,223,256"/>
+<area shape="rect" id="node2" href="$class_dwarf_elephant_r_b_kernel.html" title="This Kernel is required to use the RB method as it is provided by the RB libMesh package. The RBKernel inherits from the Kernel class. It overwrites the function computeJacobian because for the RB method the stiffness matrix is needed separated in its subdomain contributions. In addition it overwrites the function computeResidual. " alt="" coords="31,80,197,107"/>
+</map>

@@ -21,7 +21,7 @@ class DwarfElephantRBNeumannBCND;
 template<>
 InputParameters validParams<DwarfElephantRBNeumannBCND>();
 
-///-------------------------------------------------------------------------
+///This BC is required to use the RB method for the dimensionless Neumann BC. Since all necessary operations are defined in the DwarfElephantRBIntegratedBC class this class is the same as the Neumann BC provided by MOOSE except that it inherits from the DwarfElephantRBIntegratedBC instead of the IntegratedBC class.
 class DwarfElephantRBNeumannBCND : public DwarfElephantRBIntegratedBC
 {
 //----------------------------------PUBLIC----------------------------------

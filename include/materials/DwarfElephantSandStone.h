@@ -21,7 +21,7 @@ class DwarfElephantSandStone;
 template<>
 InputParameters validParams<DwarfElephantSandStone>();
 
-///-------------------------------------------------------------------------
+///SandStone inherits from the MOOSE class Material and overrides computeQpProperties. Within the Class SandStone the typical rock properties of a sandstone are stored.
 class DwarfElephantSandStone : public Material
 {
 

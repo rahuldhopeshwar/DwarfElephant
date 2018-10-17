@@ -20,7 +20,7 @@ class DwarfElephantShale;
 template<>
 InputParameters validParams<DwarfElephantShale>();
 
-///-------------------------------------------------------------------------
+///Shale inherits from the MOOSE class  Material and overrides computeQpProperties. Within the class Shale the typical rock properties of a shale are stored.
 class DwarfElephantShale : public Material
 {
 

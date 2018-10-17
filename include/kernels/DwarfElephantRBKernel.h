@@ -43,7 +43,7 @@ class DwarfElephantRBKernel;
 template<>
 InputParameters validParams<DwarfElephantRBKernel>();
 
-///-------------------------------------------------------------------------
+///This Kernel is required to use the RB method as it is provided by the RB libMesh package. The RBKernel inherits from the Kernel class. It overwrites the function computeJacobian because for the RB method the stiffness matrix is needed separated in its subdomain contributions. In addition it overwrites the function computeResidual.
 class DwarfElephantRBKernel : public Kernel
 {
 

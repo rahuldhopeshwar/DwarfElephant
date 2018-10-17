@@ -1,3 +1,11 @@
+/**
+ * This BC is required to use the RB method for the Function Penalty Dirichlet BC.
+ * Since all necessary operations are defined in the DwarfElephantRBNodalBC
+ * class this class is the same as the Function Penalty Dirichlet BC provided by
+ * MOOSE except that it inherits from the DwarfElephantRBNodalBC instead of
+ * the NodalBC class.
+ */
+
 #ifndef DWARFELEPHANTRBFUNCTIONPENALTYDIRICHLETBC_H
 #define DWARFELEPHANTRBFUNCTIONPENALTYDIRICHLETBC_H
 
@@ -16,6 +24,7 @@ InputParameters validParams<DwarfElephantRBFunctionPenaltyDirichletBC>();
  *
  */
 
+///This BC is required to use the RB method for the Function Penalty Dirichlet BC. Since all necessary operations are defined in the DwarfElephantRBNodalBC class this class is the same as the Function Penalty Dirichlet BC provided by MOOSE except that it inherits from the DwarfElephantRBNodalBC instead of the NodalBC class.
 class DwarfElephantRBFunctionPenaltyDirichletBC : public DwarfElephantRBIntegratedBC
 {
 public:

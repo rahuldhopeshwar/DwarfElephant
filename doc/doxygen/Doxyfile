@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = "DWARF_ELEPHANT"
+PROJECT_NAME           = "DwarfElephant"
 PROJECT_NUMBER         =
 PROJECT_BRIEF          =
 PROJECT_LOGO           =
@@ -118,7 +118,7 @@ USE_MDFILE_AS_MAINPAGE =
 # configuration options related to source browsing
 #---------------------------------------------------------------------------
 SOURCE_BROWSER         = NO
-INLINE_SOURCES         = NO
+INLINE_SOURCES         = YES
 STRIP_CODE_COMMENTS    = YES
 REFERENCED_BY_RELATION = NO
 REFERENCES_RELATION    = NO

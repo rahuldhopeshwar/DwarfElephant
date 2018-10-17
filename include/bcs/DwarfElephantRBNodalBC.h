@@ -42,7 +42,7 @@ class DwarfElephantRBNodalBC;
 template<>
 InputParameters validParams<DwarfElephantRBNodalBC>();
 
-///-------------------------------------------------------------------------
+///This BC is required to use the RB method as it is provided by the RB libMesh package. The RBNodalBC inherits from the NodalBC class. It overwrites the function computeJacobian because for the RB method the stiffness matrix is needed separated in its subdomain contributions. In addition it overwrites the function computeResidual.
 class DwarfElephantRBNodalBC :
   public NodalBC
 {

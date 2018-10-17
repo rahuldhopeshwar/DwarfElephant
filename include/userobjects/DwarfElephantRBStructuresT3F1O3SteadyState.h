@@ -37,7 +37,7 @@ namespace libMesh
   class RBThetaExpansion;
 }
 
-///----------------------------RBTHETAEXPANSION-----------------------------
+///The structures are defined for an elliptic PDE with the following restrictions: 1. The number of thetas is equal to three (T3). 2. The problem contains one load vector (F1) and three outputs (O3).
 /**
  * Attaches the stiffness matrix and the theta object to a structure of the
  * type RBThetatExpansion.

@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$class_dwarf_elephant_f_e_electrical_conduction.html" title="This Kernel is implements a thermal conduction problem using the full Finite Element solution..." alt="" coords="158,5,338,47"/>
+<area shape="rect" id="node3" href="$class_dwarf_elephant_f_e_lifting_function_kernel.html" title="This Kernel is implements the concept of the lifting function to avoid problems caused by non&#45;homogen..." alt="" coords="141,71,355,112"/>
+<area shape="rect" id="node4" href="$class_dwarf_elephant_f_e_thermal_conduction.html" title="This Kernel is implements a thermal conduction problem using the full Finite Element solution..." alt="" coords="127,137,369,163"/>
+<area shape="rect" id="node5" href="$class_extract_qp_points_kernel.html" title="ExtractQpPointsKernel" alt="" coords="169,187,327,214"/>
+</map>

@@ -23,7 +23,7 @@ class DwarfElephantRBTimeDerivative;
 template <>
 InputParameters validParams<DwarfElephantRBTimeDerivative>();
 
-///-------------------------------------------------------------------------
+/// This Kernel implements the TimeDerivative by using the RB method. It is important to note that every PDE that will be used within the RB method has to inherit from RBKernel and not from Kernel. Since all RB related operations are performed in the RBTimeKernel class this class is the same as the MOOSE provided class with the eception that it inherits from DwarfElephantRBTimeKernel instead of TimeKernel.
 class DwarfElephantRBTimeDerivative : public DwarfElephantRBTimeKernel
 {
 //----------------------------------PUBLIC----------------------------------

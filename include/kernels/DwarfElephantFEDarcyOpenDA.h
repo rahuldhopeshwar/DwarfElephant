@@ -22,7 +22,7 @@ class DwarfElephantFEDarcyOpenDA;
 template<>
 InputParameters validParams<DwarfElephantFEDarcyOpenDA>();
 
-///-------------------------------------------------------------------------
+///This Kernel is implements a darcy flow problem using the full Finite Element solution. It is included in this package for validation purposes. It was slightly modified from the original DwarfElephantFEDarcy Kernel in order to allow an easier usability within the Blackbox Wrapper of OpenDA.
 class DwarfElephantFEDarcyOpenDA : public Kernel
 {
 //----------------------------------PUBLIC----------------------------------

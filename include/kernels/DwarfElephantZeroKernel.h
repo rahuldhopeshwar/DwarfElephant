@@ -15,7 +15,6 @@ class DwarfElephantZeroKernel;
 template<>
 InputParameters validParams<DwarfElephantZeroKernel>();
 
-///-------------------------------------------------------------------------
 class DwarfElephantZeroKernel : public Kernel
 {
 

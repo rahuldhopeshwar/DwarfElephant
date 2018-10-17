@@ -1,0 +1,12 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$class_dwarf_elephant_e_r_t_pre_calculations.html" title="DwarfElephantERTPreCalculations" alt="" coords="189,5,419,32"/>
+<area shape="rect" id="node3" href="$class_dwarf_elephant_initialize_r_b_system_steady_state.html" title="This UserObject is required to initialitze the RB system structure and transfer for the steady state ..." alt="" coords="194,57,414,98"/>
+<area shape="rect" id="node4" href="$class_dwarf_elephant_initialize_r_b_system_transient.html" title="This UserObject is required to initialitze the RB system structure and transfer for the transient cas..." alt="" coords="194,122,414,163"/>
+<area shape="rect" id="node5" href="$class_dwarf_elephant_offline_online_stage_steady_state.html" title="This UserObject implements the Offline and Online stage of the RB method for the steady state case..." alt="" coords="211,187,397,229"/>
+<area shape="rect" id="node6" href="$class_dwarf_elephant_offline_online_stage_transient.html" title="This UserObject implements the Offline and Online stage of the RB method for the transient case..." alt="" coords="211,253,397,294"/>
+<area shape="rect" id="node7" href="$class_dwarf_elephant_r_b_elemental_variable_value.html" title="DwarfElephantRBElemental\lVariableValue" alt="" coords="211,318,397,359"/>
+<area shape="rect" id="node8" href="$class_dwarf_elephant_r_b_file_point_values.html" title="DwarfElephantRBFilePoint\lValues" alt="" coords="214,383,394,425"/>
+<area shape="rect" id="node9" href="$class_dwarf_elephant_r_b_nodal_variable_value.html" title="DwarfElephantRBNodalVariable\lValue" alt="" coords="198,449,410,490"/>
+<area shape="rect" id="node10" href="$class_dwarf_elephant_r_b_point_value.html" title="DwarfElephantRBPointValue" alt="" coords="208,515,400,541"/>
+<area shape="rect" id="node11" href="$class_dwarf_elephant_reduced_to_full_state.html" title="This UserObject is required to initialitze the RB system structure and transfer for the steady state ..." alt="" coords="204,566,404,607"/>
+</map>

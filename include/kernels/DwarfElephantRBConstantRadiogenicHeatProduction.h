@@ -1,7 +1,7 @@
 /**
  * This Kernel is implements a constant radiogenic heat production using the
- * Reduced Basis solution. It is included in this package for validation
- * purposes.
+ * Reduced Basis solution. It is required if you do want the radiogenic heat
+ * production stay fixed for all parameters.
  */
 
 ///-------------------------------------------------------------------------
@@ -20,7 +20,7 @@ class DwarfElephantRBConstantRadiogenicHeatProduction;
 template<>
 InputParameters validParams<DwarfElephantRBConstantRadiogenicHeatProduction>();
 
-///-------------------------------------------------------------------------
+///This Kernel is implements a constant radiogenic heat production using the  Reduced Basis solution. It is required if you do want the radiogenic heat production stay fixed for all parameters.
 class DwarfElephantRBConstantRadiogenicHeatProduction : public DwarfElephantRBKernel
 {
 //----------------------------------PUBLIC----------------------------------

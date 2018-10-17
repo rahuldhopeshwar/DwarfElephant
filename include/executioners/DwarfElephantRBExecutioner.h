@@ -19,7 +19,7 @@ class DwarfElephantRBExecutioner;
 template<>
 InputParameters validParams<DwarfElephantRBExecutioner>();
 
-///-------------------------------------------------------------------------
+///This Executioner class is required to execute the RB method directly over the libMesh system. It is for both the steady state and transient case.
 class DwarfElephantRBExecutioner :
   public Steady
 {

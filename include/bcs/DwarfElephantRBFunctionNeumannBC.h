@@ -15,7 +15,6 @@
 #include "DwarfElephantRBIntegratedBC.h"
 
 ///-------------------------------------------------------------------------
-//Forward Declarations
 class DwarfElephantRBFunctionNeumannBC;
 class Function;
 
@@ -23,7 +22,8 @@ class Function;
 template<>
 InputParameters validParams<DwarfElephantRBFunctionNeumannBC>();
 
-///-------------------------------------------------------------------------
+///This BC is required to use the RB method for the Function Neumann BC. Since all necessary operations are defined in the DwarfElephantRBIntegratedBC class this class is the same as the Function Neumann BC provided by MOOSE except that it inherits from the DwarfElephantRBIntegratedBC instead of the IntegratedBC class.
+//Forward Declarations
 class DwarfElephantRBFunctionNeumannBC : public DwarfElephantRBIntegratedBC
 {
 //----------------------------------PUBLIC----------------------------------

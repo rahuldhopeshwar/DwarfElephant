@@ -2,14 +2,6 @@
  * In this class subclasses of the RBEvaluation and
  * RBConstruction class are introduced.
  *
- * DwarfElephantRBEvaluation: requires only the definition of the lower
- * coercivity constant. The value is here specified for a three layer
- * problem.
- *
- * DwarfElephantRBConstruction: In order to construct the RB System with the
- * DwarfElephantRBEvaluation subclass the method build_rb_evaluation needs to be
- * overriden.
- *
  * NOTE: ENSURE THAT THE CLASS IS USING THE CORRECT RBSTRUCTURES.
  */
 

@@ -1,0 +1,3 @@
+<map id="DwarfElephantRBDirichletBC" name="DwarfElephantRBDirichletBC">
+<area shape="rect" id="node2" href="$class_dwarf_elephant_r_b_nodal_b_c.html" title="This BC is required to use the RB method as it is provided by the RB libMesh package. The RBNodalBC inherits from the NodalBC class. It overwrites the function computeJacobian because for the RB method the stiffness matrix is needed separated in its subdomain contributions. In addition it overwrites the function computeResidual. " alt="" coords="12,80,193,107"/>
+</map>

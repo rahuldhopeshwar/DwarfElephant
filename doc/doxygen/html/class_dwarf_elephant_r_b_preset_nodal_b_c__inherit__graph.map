@@ -1,0 +1,5 @@
+<map id="DwarfElephantRBPresetNodalBC" name="DwarfElephantRBPresetNodalBC">
+<area shape="rect" id="node4" href="$class_dwarf_elephant_r_b_function_preset_b_c.html" title="This BC is required to use the RB method for the Function Preset BC. Since all necessary operations a..." alt="" coords="5,229,241,256"/>
+<area shape="rect" id="node5" href="$class_dwarf_elephant_r_b_preset_b_c.html" title="This BC is required to use the RB method for the Preset BC. Since all necessary operations are define..." alt="" coords="265,229,451,256"/>
+<area shape="rect" id="node2" href="$class_dwarf_elephant_r_b_nodal_b_c.html" title="This BC is required to use the RB method as it is provided by the RB libMesh package. The RBNodalBC inherits from the NodalBC class. It overwrites the function computeJacobian because for the RB method the stiffness matrix is needed separated in its subdomain contributions. In addition it overwrites the function computeResidual. " alt="" coords="150,80,331,107"/>
+</map>

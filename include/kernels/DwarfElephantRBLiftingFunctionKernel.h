@@ -20,7 +20,7 @@ class DwarfElephantRBLiftingFunctionKernel;
 template<>
 InputParameters validParams<DwarfElephantRBLiftingFunctionKernel>();
 
-///-------------------------------------------------------------------------
+///This Kernel is implements the concept of the lifting function to avoid problems caused by non-homogenous DirichletBC.
 class DwarfElephantRBLiftingFunctionKernel : public DwarfElephantRBKernel
 {
 //----------------------------------PUBLIC----------------------------------

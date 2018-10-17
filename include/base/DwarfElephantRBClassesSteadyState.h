@@ -2,14 +2,6 @@
  * In this class subclasses of the RBEvaluation and
  * RBConstruction class are introduced.
  *
- * DwarfElephantRBEvaluation: requires only the definition of the lower
- * coercivity constant. The value is here specified for a three layer
- * problem.
- *
- * DwarfElephantRBConstruction: In order to construct the RB System with the
- * DwarfElephantRBEvaluation subclass the method build_rb_evaluation needs to be
- * overriden.
- *
  * NOTE: ENSURE THAT THE CLASS IS USING THE CORRECT RBSTRUCTURES.
  */
 
@@ -56,6 +48,7 @@
 #include "DwarfElephantRBStructuresT8F9O20SteadyState.h"
 #include "DwarfElephantRBStructuresT9F2O80SteadyState.h"
 #include "DwarfElephantRBStructuresT9F10O80SteadyState.h"
+#include "DwarfElephantRBStructuresT12F13O20SteadyState.h"
 #include "DwarfElephantRBStructuresT15F8O80SteadyState.h"
 #include "DwarfElephantRBStructuresT15F16O80SteadyState.h"
 #include "DwarfElephantRBStructuresT16F16O80SteadyState.h"
@@ -74,7 +67,7 @@ namespace libMesh
 
 class DwarfElephantInitializeRBSystemSteadyState;
 
-///-----------------------DWARFELEPHANTRBCONSTRUCTION-----------------------
+//////In this class the subclasse of RBConstruction class is introduced.
 class DwarfElephantRBConstructionSteadyState : public RBConstruction
 {
 
@@ -169,7 +162,7 @@ public:
 
 };
 
-///------------------------DWARFELEPHANTRBEVALUATION------------------------
+///In this class the subclasse of RBEvaluation class is introduced. NOTE: ENSURE THAT THE CLASS IS USING THE CORRECT RBSTRUCTURES.
 class DwarfElephantRBEvaluationSteadyState : public RBEvaluation
 {
 
@@ -272,8 +265,7 @@ public:
   FEProblemBase & get_fe_problem(){return fe_problem;}
 
   FEProblemBase & fe_problem;
-  DwarfElephantRBT3F3O10SteadyStateExpansion _rb_theta_expansion;
-  // DwarfElephantRBT8F9O20SteadyStateExpansion _rb_theta_expansion;
+  DwarfElephantRBT8F9O20SteadyStateExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------

@@ -1,0 +1,7 @@
+<map id="DwarfElephantRBIntegratedBC" name="DwarfElephantRBIntegratedBC">
+<area shape="rect" id="node3" href="$class_dwarf_elephant_r_b_function_neumann_b_c.html" title="This BC is required to use the RB method for the Function Neumann BC. Since all necessary operations ..." alt="" coords="408,5,664,32"/>
+<area shape="rect" id="node4" href="$class_dwarf_elephant_r_b_function_penalty_dirichlet_b_c.html" title="This BC is required to use the RB method for the Function Penalty Dirichlet BC. Since all necessary o..." alt="" coords="424,57,648,98"/>
+<area shape="rect" id="node5" href="$class_dwarf_elephant_r_b_neumann_b_c.html" title="This BC is required to use the RB method for the Neumann BC. Since all necessary operations are defin..." alt="" coords="434,123,638,149"/>
+<area shape="rect" id="node6" href="$class_dwarf_elephant_r_b_neumann_b_c_n_d.html" title="This BC is required to use the RB method for the dimensionless Neumann BC. Since all necessary operat..." alt="" coords="424,173,648,200"/>
+<area shape="rect" id="node7" href="$class_dwarf_elephant_r_b_penalty_dirichlet_b_c.html" title="This BC is required to use the RB method for the Penalty Dirichlet BC. Since all necessary operations..." alt="" coords="417,224,655,251"/>
+</map>

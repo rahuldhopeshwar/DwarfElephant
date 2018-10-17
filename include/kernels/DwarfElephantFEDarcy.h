@@ -20,7 +20,7 @@ class DwarfElephantFEDarcy;
 template<>
 InputParameters validParams<DwarfElephantFEDarcy>();
 
-///-------------------------------------------------------------------------
+///This Kernel is implements a darcy flow problem using the full Finite Element solution. It is included in this package for validation purposes.
 class DwarfElephantFEDarcy : public Kernel
 {
 //----------------------------------PUBLIC----------------------------------

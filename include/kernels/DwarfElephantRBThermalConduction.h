@@ -20,7 +20,7 @@ class DwarfElephantRBThermalConduction;
 template<>
 InputParameters validParams<DwarfElephantRBThermalConduction>();
 
-///-------------------------------------------------------------------------
+///This Kernel is implements a thermal conduction problem using the reduced basis solution. Note that the thermal conductivity is fixed for all parameters.
 class DwarfElephantRBThermalConduction : public DwarfElephantRBDiffusion
 {
 //----------------------------------PUBLIC----------------------------------

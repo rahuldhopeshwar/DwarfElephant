@@ -44,7 +44,7 @@ class DwarfElephantOfflineOnlineStageSteadyState;
 template<>
 InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>();
 
-///-------------------------------------------------------------------------
+///This UserObject implements the Offline and Online stage of the RB method for the steady state case.
 class DwarfElephantOfflineOnlineStageSteadyState :
   public GeneralUserObject
 {

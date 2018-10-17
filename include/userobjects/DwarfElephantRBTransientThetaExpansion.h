@@ -1,10 +1,12 @@
-///-------------------------------------------------------------------------
+/*
+*/
+
 #ifndef DWARFELEPHANTRBTRANSIENTTHETAEXPANSION_H
 #define DWARFELEPHANTRBTRANSIENTTHETAEXPANSION_H
 
-///---------------------------------INCLUDES--------------------------------
 #include "libmesh/transient_rb_theta_expansion.h"
-///-----------------------DWARFELEPHANTRBCONSTRUCTION-----------------------
+
+///DwarfElephantRBTransientThetaExpansion
 class DwarfElephantRBTransientThetaExpansion : public TransientRBThetaExpansion
 {
 

@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$class_dwarf_elephant_fault.html" title="Fault inherits from the MOOSE class Material and overrides computeQpProperties. Within the Class Faul..." alt="" coords="141,5,280,32"/>
+<area shape="rect" id="node3" href="$class_dwarf_elephant_sand_stone.html" title="SandStone inherits from the MOOSE class Material and overrides computeQpProperties. Within the Class SandStone the typical rock properties of a sandstone are stored. " alt="" coords="123,56,299,83"/>
+<area shape="rect" id="node4" href="$class_dwarf_elephant_shale.html" title="Shale inherits from the MOOSE class Material and overrides computeQpProperties. Within the class Shal..." alt="" coords="139,107,283,133"/>
+<area shape="rect" id="node5" href="$class_extract_qp_points.html" title="ExtractQpPoints" alt="" coords="151,157,270,184"/>
+</map>

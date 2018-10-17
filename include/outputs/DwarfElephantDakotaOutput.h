@@ -24,8 +24,9 @@ class DwarfElephantDakotaOutput;
 template <>
 InputParameters validParams<DwarfElephantDakotaOutput>();
 
-///-------------------------------------------------------------------------
-// class DwarfElephantDakotaOutput : public CSV
+
+
+///This Output is required to couple the DwarfElephant package over a fork interface to the multitool kit DAKOTA (developed by Sandia National Labratories).
 class DwarfElephantDakotaOutput : public FileOutput
 {
 //----------------------------------PUBLIC----------------------------------

@@ -20,7 +20,7 @@ class DwarfElephantFELiftingFunctionKernel;
 template<>
 InputParameters validParams<DwarfElephantFELiftingFunctionKernel>();
 
-///-------------------------------------------------------------------------
+///This Kernel is implements the concept of the lifting function to avoid problems caused by non-homogenous DirichletBC.
 class DwarfElephantFELiftingFunctionKernel : public Diffusion
 {
 //----------------------------------PUBLIC----------------------------------

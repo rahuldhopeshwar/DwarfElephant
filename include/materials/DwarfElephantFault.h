@@ -21,7 +21,7 @@ class DwarfElephantFault;
 template<>
 InputParameters validParams<DwarfElephantFault>();
 
-///-------------------------------------------------------------------------
+///Fault inherits from the MOOSE class Material and overrides computeQpProperties. Within the Class Fault the typical properties of a fault are stored.
 class DwarfElephantFault : public Material
 {
 

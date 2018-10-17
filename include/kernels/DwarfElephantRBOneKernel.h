@@ -15,7 +15,7 @@ class DwarfElephantRBOneKernel;
 template<>
 InputParameters validParams<DwarfElephantRBOneKernel>();
 
-///-------------------------------------------------------------------------
+///
 class DwarfElephantRBOneKernel : public DwarfElephantRBKernel
 {
 

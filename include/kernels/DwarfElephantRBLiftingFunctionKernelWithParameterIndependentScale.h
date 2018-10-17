@@ -13,14 +13,13 @@
 #include "Function.h"
 
 ///-------------------------------------------------------------------------
-// Forward Declarations
 class DwarfElephantRBLiftingFunctionKernelWithParameterIndependentScale;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantRBLiftingFunctionKernelWithParameterIndependentScale>();
 
-///-------------------------------------------------------------------------
+///This Kernel is implements the concept of the lifting function to avoid problems caused by non-homogenous DirichletBC. Note that the scale is fixed for all parameters.
 class DwarfElephantRBLiftingFunctionKernelWithParameterIndependentScale : public DwarfElephantRBKernel
 {
 //----------------------------------PUBLIC----------------------------------

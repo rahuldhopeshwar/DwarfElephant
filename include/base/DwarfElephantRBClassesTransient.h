@@ -2,14 +2,6 @@
  * In this class subclasses of the RBEvaluation and
  * RBConstruction class are introduced.
  *
- * DwarfElephantRBEvaluation: requires only the definition of the lower
- * coercivity constant. The value is here specified for a three layer
- * problem.
- *
- * DwarfElephantRBConstruction: In order to construct the RB System with the
- * DwarfElephantRBEvaluation subclass the method build_rb_evaluation needs to be
- * overriden.
- *
  * NOTE: ENSURE THAT THE CLASS IS USING THE CORRECT RBSTRUCTURES.
  */
 
@@ -61,7 +53,7 @@ namespace libMesh
   class TransientRBEvaluation;
 }
 
-///-----------------------DWARFELEPHANTRBCONSTRUCTION-----------------------
+///In this class the subclasse of TransientRBConstruction class is introduced.
 class DwarfElephantRBConstructionTransient : public TransientRBConstruction
 {
 
@@ -130,7 +122,7 @@ private:
   std::vector<std::unique_ptr<NumericVector<Number>>> non_dirichlet_IC_q_vector;
 };
 
-///------------------------DWARFELEPHANTRBEVALUATION------------------------
+///In this class the subclasse of TransientRBEvaluation class is introduced. NOTE: ENSURE THAT THE CLASS IS USING THE CORRECT RBSTRUCTURES.
 class DwarfElephantRBEvaluationTransient : public TransientRBEvaluation
 {
 

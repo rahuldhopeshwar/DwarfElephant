@@ -1,0 +1,33 @@
+<map id="include/kernels/DwarfElephantRBKernel.h" name="include/kernels/DwarfElephantRBKernel.h">
+<area shape="rect" id="node7" href="$_dwarf_elephant_initialize_r_b_system_steady_state_8h.html" title="DwarfElephantInitializeRBSystem\lSteadyState.h" alt="" coords="1456,95,1676,136"/>
+<area shape="rect" id="node47" href="$_dwarf_elephant_initialize_r_b_system_transient_8h.html" title="DwarfElephantInitializeRBSystem\lTransient.h" alt="" coords="919,95,1139,136"/>
+<area shape="rect" id="node13" href="$_dwarf_elephant_system_8h.html" title="DwarfElephantSystem.h" alt="" coords="2799,184,2965,211"/>
+<area shape="rect" id="node19" href="$_dwarf_elephant_r_b_classes_steady_state_8h.html" title="DwarfElephantRBClassesSteady\lState.h" alt="" coords="2773,259,2991,300"/>
+<area shape="rect" id="node21" href="$_dwarf_elephant_r_b_structures_t1_f1_o1_steady_state_8h.html" title="DwarfElephantRBStructures\lT1F1O1SteadyState.h" alt="" coords="4681,348,4870,389"/>
+<area shape="rect" id="node22" href="$_dwarf_elephant_r_b_structures_t2_f1_o1_steady_state_8h.html" title="DwarfElephantRBStructures\lT2F1O1SteadyState.h" alt="" coords="4894,348,5083,389"/>
+<area shape="rect" id="node23" href="$_dwarf_elephant_r_b_structures_t2_f3_o1_steady_state_8h.html" title="DwarfElephantRBStructures\lT2F3O1SteadyState.h" alt="" coords="5107,348,5297,389"/>
+<area shape="rect" id="node24" href="$_dwarf_elephant_r_b_structures_t2_f2_o10_steady_state_8h.html" title="DwarfElephantRBStructures\lT2F2O10SteadyState.h" alt="" coords="5321,348,5510,389"/>
+<area shape="rect" id="node25" href="$_dwarf_elephant_r_b_structures_t2_f3_o10_steady_state_8h.html" title="DwarfElephantRBStructures\lT2F3O10SteadyState.h" alt="" coords="5534,348,5723,389"/>
+<area shape="rect" id="node26" href="$_dwarf_elephant_r_b_structures_t3_f1_o1_steady_state_8h.html" title="DwarfElephantRBStructures\lT3F1O1SteadyState.h" alt="" coords="5747,348,5937,389"/>
+<area shape="rect" id="node27" href="$_dwarf_elephant_r_b_structures_t3_f2_o1_steady_state_8h.html" title="DwarfElephantRBStructures\lT3F2O1SteadyState.h" alt="" coords="5961,348,6150,389"/>
+<area shape="rect" id="node28" href="$_dwarf_elephant_r_b_structures_t3_f3_o1_steady_state_8h.html" title="DwarfElephantRBStructures\lT3F3O1SteadyState.h" alt="" coords="6174,348,6363,389"/>
+<area shape="rect" id="node29" href="$_dwarf_elephant_r_b_structures_t3_f1_o3_steady_state_8h.html" title="DwarfElephantRBStructures\lT3F1O3SteadyState.h" alt="" coords="6387,348,6577,389"/>
+<area shape="rect" id="node30" href="$_dwarf_elephant_r_b_structures_t3_f3_o10_steady_state_8h.html" title="DwarfElephantRBStructures\lT3F3O10SteadyState.h" alt="" coords="867,348,1057,389"/>
+<area shape="rect" id="node31" href="$_dwarf_elephant_r_b_structures_t4_f1_o1_steady_state_8h.html" title="DwarfElephantRBStructures\lT4F1O1SteadyState.h" alt="" coords="1081,348,1270,389"/>
+<area shape="rect" id="node32" href="$_dwarf_elephant_r_b_structures_t4_f2_o1_steady_state_8h.html" title="DwarfElephantRBStructures\lT4F2O1SteadyState.h" alt="" coords="1294,348,1483,389"/>
+<area shape="rect" id="node33" href="$_dwarf_elephant_r_b_structures_t4_f5_o10_steady_state_8h.html" title="DwarfElephantRBStructures\lT4F5O10SteadyState.h" alt="" coords="1507,348,1697,389"/>
+<area shape="rect" id="node34" href="$_dwarf_elephant_r_b_structures_t5_f1_o1_steady_state_8h.html" title="DwarfElephantRBStructures\lT5F1O1SteadyState.h" alt="" coords="1721,348,1910,389"/>
+<area shape="rect" id="node35" href="$_dwarf_elephant_r_b_structures_t5_f3_o1_steady_state_8h.html" title="DwarfElephantRBStructures\lT5F3O1SteadyState.h" alt="" coords="1934,348,2123,389"/>
+<area shape="rect" id="node36" href="$_dwarf_elephant_r_b_structures_t6_f1_o1_steady_state_8h.html" title="DwarfElephantRBStructures\lT6F1O1SteadyState.h" alt="" coords="2147,348,2337,389"/>
+<area shape="rect" id="node37" href="$_dwarf_elephant_r_b_structures_t7_f8_o80_steady_state_8h.html" title="DwarfElephantRBStructures\lT7F8O80SteadyState.h" alt="" coords="2361,348,2550,389"/>
+<area shape="rect" id="node38" href="$_dwarf_elephant_r_b_structures_t8_f9_o1_steady_state_8h.html" title="DwarfElephantRBStructures\lT8F9O1SteadyState.h" alt="" coords="2574,348,2763,389"/>
+<area shape="rect" id="node39" href="$_dwarf_elephant_r_b_structures_t8_f9_o10_steady_state_8h.html" title="DwarfElephantRBStructures\lT8F9O10SteadyState.h" alt="" coords="2787,348,2977,389"/>
+<area shape="rect" id="node40" href="$_dwarf_elephant_r_b_structures_t8_f9_o20_steady_state_8h.html" title="DwarfElephantRBStructures\lT8F9O20SteadyState.h" alt="" coords="3001,348,3190,389"/>
+<area shape="rect" id="node41" href="$_dwarf_elephant_r_b_structures_t9_f2_o80_steady_state_8h.html" title="DwarfElephantRBStructures\lT9F2O80SteadyState.h" alt="" coords="3214,348,3403,389"/>
+<area shape="rect" id="node42" href="$_dwarf_elephant_r_b_structures_t9_f10_o80_steady_state_8h.html" title="DwarfElephantRBStructures\lT9F10O80SteadyState.h" alt="" coords="3427,348,3617,389"/>
+<area shape="rect" id="node43" href="$_dwarf_elephant_r_b_structures_t12_f13_o20_steady_state_8h.html" title="DwarfElephantRBStructures\lT12F13O20SteadyState.h" alt="" coords="3641,348,3830,389"/>
+<area shape="rect" id="node44" href="$_dwarf_elephant_r_b_structures_t15_f8_o80_steady_state_8h.html" title="DwarfElephantRBStructures\lT15F8O80SteadyState.h" alt="" coords="3854,348,4043,389"/>
+<area shape="rect" id="node45" href="$_dwarf_elephant_r_b_structures_t15_f16_o80_steady_state_8h.html" title="DwarfElephantRBStructures\lT15F16O80SteadyState.h" alt="" coords="4067,348,4257,389"/>
+<area shape="rect" id="node46" href="$_dwarf_elephant_r_b_structures_t16_f16_o80_steady_state_8h.html" title="DwarfElephantRBStructures\lT16F16O80SteadyState.h" alt="" coords="4281,348,4470,389"/>
+<area shape="rect" id="node48" href="$_dwarf_elephant_r_b_classes_transient_8h.html" title="DwarfElephantRBClassesTransient.h" alt="" coords="481,266,723,293"/>
+</map>

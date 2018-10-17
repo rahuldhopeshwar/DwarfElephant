@@ -30,7 +30,7 @@ class DwarfElephantRBIntegratedBC;
 template<>
 InputParameters validParams<DwarfElephantRBIntegratedBC>();
 
-///-------------------------------------------------------------------------
+///This BC is required to use the RB method as it is provided by the RB libMesh package. The RBIntegratedBC inherits from the IntegratedBC class. It overwrites the function computeJacobian because for the RB method the stiffness matrix is needed separated in its subdomain contributions. In addition it overwrites the function computeResidual.
 class DwarfElephantRBIntegratedBC :
   public IntegratedBC
 {

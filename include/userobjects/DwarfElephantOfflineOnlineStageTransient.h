@@ -45,7 +45,7 @@ class DwarfElephantRBProblem;
 template<>
 InputParameters validParams<DwarfElephantOfflineOnlineStageTransient>();
 
-///-------------------------------------------------------------------------
+///This UserObject implements the Offline and Online stage of the RB method for the transient case.
 class DwarfElephantOfflineOnlineStageTransient :
   public GeneralUserObject
 {

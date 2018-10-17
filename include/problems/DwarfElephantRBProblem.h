@@ -25,7 +25,7 @@ class NonlinearSystem;
 template<>
 InputParameters validParams<DwarfElephantRBProblem>();
 
-///-------------------------------------------------------------------------
+///This Problem class is required to use the RB system instead of the FE system.
 class DwarfElephantRBProblem :
   public FEProblemBase
 {

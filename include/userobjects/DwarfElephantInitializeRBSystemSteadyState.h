@@ -42,7 +42,7 @@ class DwarfElephantInitializeRBSystemSteadyState;
 template<>
 InputParameters validParams<DwarfElephantInitializeRBSystemSteadyState>();
 
-///-------------------------------------------------------------------------
+///This UserObject is required to initialitze the RB system structure and transfer for the steady state case.
 class DwarfElephantInitializeRBSystemSteadyState :
   public GeneralUserObject
 {

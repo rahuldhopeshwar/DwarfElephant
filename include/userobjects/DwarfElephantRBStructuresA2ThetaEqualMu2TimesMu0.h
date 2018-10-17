@@ -15,7 +15,6 @@ namespace libMesh
   class RBTheta;
 }
 
-///-----------------------------------THETA---------------------------------
 /**
  * Please take the name convention of this package for the mu object into
  * account to ensure a gernal useability of your class.

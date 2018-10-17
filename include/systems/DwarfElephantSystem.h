@@ -32,7 +32,7 @@ class FEProblemBase;
 class KernelBase;
 class DwarfElephantRBConstructionSteadyState;
 
-///-------------------------------------------------------------------------
+///This System class is required to use the RB system instead of the FE system. Furthermore, it prevents an additional solve.
 class DwarfElephantSystem : public NonlinearSystem
 
 {

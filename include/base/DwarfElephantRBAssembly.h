@@ -25,7 +25,7 @@ namespace libMesh
 
 class SystemBase;
 
-///-------------------------------------------------------------------------
+///This Assembly class is required to cache the matrix and vector entries introdued by the Dirichlet BCs with respect to the desired separation.
 class DwarfElephantRBAssembly
 {
 //----------------------------------PUBLIC----------------------------------

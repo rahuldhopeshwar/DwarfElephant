@@ -7,13 +7,14 @@
 
 
 // Forward Declarations
+///-------------------------------------------------------------------------
 class ExtractQpPointsKernel;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<ExtractQpPointsKernel>();
 
-///-------------------------------------------------------------------------
+
 class ExtractQpPointsKernel : public Diffusion
 {
 //----------------------------------PUBLIC----------------------------------
@@ -31,4 +32,3 @@ protected:
   std::ofstream _qp_file;
 };
 #endif
-

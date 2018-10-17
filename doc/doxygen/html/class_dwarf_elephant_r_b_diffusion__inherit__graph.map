@@ -1,0 +1,4 @@
+<map id="DwarfElephantRBDiffusion" name="DwarfElephantRBDiffusion">
+<area shape="rect" id="node4" href="$class_dwarf_elephant_r_b_thermal_conduction.html" title="This Kernel is implements a thermal conduction problem using the reduced basis solution. Note that the thermal conductivity is fixed for all parameters. " alt="" coords="5,229,249,256"/>
+<area shape="rect" id="node2" href="$class_dwarf_elephant_r_b_kernel.html" title="This Kernel is required to use the RB method as it is provided by the RB libMesh package. The RBKernel inherits from the Kernel class. It overwrites the function computeJacobian because for the RB method the stiffness matrix is needed separated in its subdomain contributions. In addition it overwrites the function computeResidual. " alt="" coords="44,80,211,107"/>
+</map>

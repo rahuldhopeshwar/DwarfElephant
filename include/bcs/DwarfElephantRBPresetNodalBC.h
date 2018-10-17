@@ -22,7 +22,7 @@ class DwarfElephantRBPresetNodalBC;
 template<>
 InputParameters validParams<DwarfElephantRBPresetNodalBC>();
 
-///-------------------------------------------------------------------------
+///This BC is required to use the RB method for the Preset BC. Since all necessary operations are defined in the DwarfElephantRBNodalBC class this class is the same as the PresetNodal BC provided by MOOSE except that it inherits from the DwarfElephantRBNodalBC instead of the NodalBC class.
 class DwarfElephantRBPresetNodalBC : public DwarfElephantRBNodalBC
 {
 //----------------------------------PUBLIC----------------------------------

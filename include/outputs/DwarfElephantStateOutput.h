@@ -19,7 +19,7 @@ class DwarfElephantStateOutput;
 template <>
 InputParameters validParams<DwarfElephantStateOutput>();
 
-///-------------------------------------------------------------------------
+///This Output is required to couple the DwarfElephant package over a fork interface to the OpenDA framework.
 class DwarfElephantStateOutput : public FileOutput
 {
 //----------------------------------PUBLIC----------------------------------

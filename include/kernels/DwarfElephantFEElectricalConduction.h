@@ -20,7 +20,7 @@ class DwarfElephantFEElectricalConduction;
 template<>
 InputParameters validParams<DwarfElephantFEElectricalConduction>();
 
-///-------------------------------------------------------------------------
+///This Kernel is implements a thermal conduction problem using the full Finite Element solution. It is included in this package for validation purposes.
 class DwarfElephantFEElectricalConduction : public Diffusion
 {
 //----------------------------------PUBLIC----------------------------------

@@ -1,0 +1,5 @@
+<map id="DwarfElephantRBTransientThetaExpansion" name="DwarfElephantRBTransientThetaExpansion">
+<area shape="rect" id="node3" href="$struct_dwarf_elephant_r_b_t3_f3_o3_m2_i_c1_transient_expansion.html" title="The structures are defined for an parabolic PDE with the following restrictions: 1. The number of thetas is equal to three (T3). 2. The problem contains three load vectors (F3) and one output (O1). " alt="" coords="477,5,693,47"/>
+<area shape="rect" id="node4" href="$struct_dwarf_elephant_r_b_t4_f1_o1_m1_i_c1_transient_expansion.html" title="The structures are defined for an parabolic PDE with the following restrictions: 1. The number of thetas is equal to three (T3). 2. The problem contains one load vector (F1) and one output (O1). " alt="" coords="477,71,693,112"/>
+<area shape="rect" id="node5" href="$struct_dwarf_elephant_r_b_t6_f1_o1_m1_i_c3_transient_expansion.html" title="The structures are defined for an parabolic PDE with the following restrictions: 1. The number of thetas is equal to three (T3). 2. The problem contains one load vector (F1) and one output (O1). " alt="" coords="477,136,693,177"/>
+</map>

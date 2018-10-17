@@ -11,7 +11,7 @@ class ExtractQpPoints;
 template<>
 InputParameters validParams<ExtractQpPoints>();
 
-///-------------------------------------------------------------------------
+
 class ExtractQpPoints : public Material
 {
 

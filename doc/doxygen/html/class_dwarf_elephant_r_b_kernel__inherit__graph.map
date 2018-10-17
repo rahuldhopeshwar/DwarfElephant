@@ -1,0 +1,11 @@
+<map id="DwarfElephantRBKernel" name="DwarfElephantRBKernel">
+<area shape="rect" id="node3" href="$class_dwarf_elephant_r_b_constant_radiogenic_heat_production.html" title="This Kernel is implements a constant radiogenic heat production using the Reduced Basis solution..." alt="" coords="333,5,581,47"/>
+<area shape="rect" id="node4" href="$class_dwarf_elephant_r_b_diffusion.html" title="This Kernel implements the Diffusion problem by using the RB method. It is important to note that eve..." alt="" coords="367,71,547,98"/>
+<area shape="rect" id="node6" href="$class_dwarf_elephant_r_b_diffusion_n_d.html" title="DwarfElephantRBDiffusionND" alt="" coords="357,122,556,149"/>
+<area shape="rect" id="node7" href="$class_dwarf_elephant_r_b_lifting_function_kernel.html" title="This Kernel is implements the concept of the lifting function to avoid problems caused by non&#45;homogen..." alt="" coords="349,173,564,215"/>
+<area shape="rect" id="node8" href="$class_dwarf_elephant_r_b_lifting_function_kernel_with_parameter_independent_scale.html" title="This Kernel is implements the concept of the lifting function to avoid problems caused by non&#45;homogen..." alt="" coords="328,239,585,280"/>
+<area shape="rect" id="node9" href="$class_dwarf_elephant_r_b_one_kernel.html" title="DwarfElephantRBOneKernel" alt="" coords="361,305,553,331"/>
+<area shape="rect" id="node10" href="$class_dwarf_elephant_r_b_time_kernel.html" title="All time kernels should inherit from this class. " alt="" coords="359,355,555,382"/>
+<area shape="rect" id="node5" href="$class_dwarf_elephant_r_b_thermal_conduction.html" title="This Kernel is implements a thermal conduction problem using the reduced basis solution. Note that the thermal conductivity is fixed for all parameters. " alt="" coords="633,71,877,98"/>
+<area shape="rect" id="node11" href="$class_dwarf_elephant_r_b_time_derivative.html" title="This Kernel implements the TimeDerivative by using the RB method. It is important to note that every ..." alt="" coords="647,355,864,382"/>
+</map>

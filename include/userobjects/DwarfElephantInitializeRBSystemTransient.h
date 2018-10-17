@@ -43,7 +43,7 @@ class DwarfElephantInitializeRBSystemTransient;
 template<>
 InputParameters validParams<DwarfElephantInitializeRBSystemTransient>();
 
-///-------------------------------------------------------------------------
+///This UserObject is required to initialitze the RB system structure and transfer for the transient case.
 class DwarfElephantInitializeRBSystemTransient :
   public GeneralUserObject
 {
