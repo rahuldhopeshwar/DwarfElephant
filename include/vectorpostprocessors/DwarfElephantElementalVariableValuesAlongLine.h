@@ -9,9 +9,7 @@ class DwarfElephantElementalVariableValuesAlongLine;
 template <>
 InputParameters validParams<DwarfElephantElementalVariableValuesAlongLine>();
 
-/**
- * Get all of the elements that are intersected by a line
- */
+///Get all of the elements that are intersected by a line
 class DwarfElephantElementalVariableValuesAlongLine : public GeneralVectorPostprocessor
 {
 public:

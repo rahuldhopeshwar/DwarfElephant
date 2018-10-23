@@ -169,7 +169,7 @@
 <!-- Node19 -->
 <g id="node19" class="node"><title>Node19</title>
 <g id="a_node19"><a xlink:href="_dwarf_elephant_r_b_classes_steady_state_8h.html" target="_top" xlink:title="DwarfElephantRBClassesSteady\lState.h">
-<polygon fill="white" stroke="black" points="2177.41,-67.5 2177.41,-97.5 2340.41,-97.5 2340.41,-67.5 2177.41,-67.5"/>
+<polygon fill="white" stroke="red" points="2177.41,-67.5 2177.41,-97.5 2340.41,-97.5 2340.41,-67.5 2177.41,-67.5"/>
 <text text-anchor="start" x="2185.41" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">DwarfElephantRBClassesSteady</text>
 <text text-anchor="middle" x="2258.91" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">State.h</text>
 </a>
@@ -593,10 +593,10 @@
 </g>
 <!-- Node43 -->
 <g id="node43" class="node"><title>Node43</title>
-<g id="a_node43"><a xlink:href="_dwarf_elephant_r_b_structures_t12_f13_o20_steady_state_8h.html" target="_top" xlink:title="DwarfElephantRBStructures\lT12F13O20SteadyState.h">
+<g id="a_node43"><a xlink:href="_dwarf_elephant_r_b_structures_t9_f10_o900_steady_state_8h.html" target="_top" xlink:title="DwarfElephantRBStructures\lT9F10O900SteadyState.h">
 <polygon fill="white" stroke="red" points="3787.91,-0.5 3787.91,-30.5 3929.91,-30.5 3929.91,-0.5 3787.91,-0.5"/>
 <text text-anchor="start" x="3795.91" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="3858.91" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">T12F13O20SteadyState.h</text>
+<text text-anchor="middle" x="3858.91" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">T9F10O900SteadyState.h</text>
 </a>
 </g>
 </g>
@@ -607,10 +607,10 @@
 </g>
 <!-- Node44 -->
 <g id="node44" class="node"><title>Node44</title>
-<g id="a_node44"><a xlink:href="_dwarf_elephant_r_b_structures_t15_f8_o80_steady_state_8h.html" target="_top" xlink:title="DwarfElephantRBStructures\lT15F8O80SteadyState.h">
+<g id="a_node44"><a xlink:href="_dwarf_elephant_r_b_structures_t12_f13_o20_steady_state_8h.html" target="_top" xlink:title="DwarfElephantRBStructures\lT12F13O20SteadyState.h">
 <polygon fill="white" stroke="red" points="3947.91,-0.5 3947.91,-30.5 4089.91,-30.5 4089.91,-0.5 3947.91,-0.5"/>
 <text text-anchor="start" x="3955.91" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="4018.91" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">T15F8O80SteadyState.h</text>
+<text text-anchor="middle" x="4018.91" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">T12F13O20SteadyState.h</text>
 </a>
 </g>
 </g>
@@ -621,10 +621,10 @@
 </g>
 <!-- Node45 -->
 <g id="node45" class="node"><title>Node45</title>
-<g id="a_node45"><a xlink:href="_dwarf_elephant_r_b_structures_t15_f16_o80_steady_state_8h.html" target="_top" xlink:title="DwarfElephantRBStructures\lT15F16O80SteadyState.h">
+<g id="a_node45"><a xlink:href="_dwarf_elephant_r_b_structures_t15_f8_o80_steady_state_8h.html" target="_top" xlink:title="DwarfElephantRBStructures\lT15F8O80SteadyState.h">
 <polygon fill="white" stroke="red" points="4107.91,-0.5 4107.91,-30.5 4249.91,-30.5 4249.91,-0.5 4107.91,-0.5"/>
 <text text-anchor="start" x="4115.91" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="4178.91" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">T15F16O80SteadyState.h</text>
+<text text-anchor="middle" x="4178.91" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">T15F8O80SteadyState.h</text>
 </a>
 </g>
 </g>
@@ -635,10 +635,10 @@
 </g>
 <!-- Node46 -->
 <g id="node46" class="node"><title>Node46</title>
-<g id="a_node46"><a xlink:href="_dwarf_elephant_r_b_structures_t16_f16_o80_steady_state_8h.html" target="_top" xlink:title="DwarfElephantRBStructures\lT16F16O80SteadyState.h">
+<g id="a_node46"><a xlink:href="_dwarf_elephant_r_b_structures_t15_f16_o80_steady_state_8h.html" target="_top" xlink:title="DwarfElephantRBStructures\lT15F16O80SteadyState.h">
 <polygon fill="white" stroke="red" points="4267.91,-0.5 4267.91,-30.5 4409.91,-30.5 4409.91,-0.5 4267.91,-0.5"/>
 <text text-anchor="start" x="4275.91" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="4338.91" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">T16F16O80SteadyState.h</text>
+<text text-anchor="middle" x="4338.91" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">T15F16O80SteadyState.h</text>
 </a>
 </g>
 </g>

@@ -20,11 +20,11 @@
  * viscosity - https://en.wikipedia.org/wiki/Brine
  */
 
-///---------------------------------INCLUDES--------------------------------
+//---------------------------------INCLUDES--------------------------------
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantShale.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantShale>()
 {
@@ -33,7 +33,7 @@ InputParameters validParams<DwarfElephantShale>()
    return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantShale::DwarfElephantShale(const InputParameters & parameters) :
     Material(parameters),
     _thermal_conductivity(declareProperty<Real>("thermal_conductivity")),
@@ -44,7 +44,7 @@ DwarfElephantShale::DwarfElephantShale(const InputParameters & parameters) :
 {
 }
 
-///-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 void
 DwarfElephantShale::computeQpProperties()
 {

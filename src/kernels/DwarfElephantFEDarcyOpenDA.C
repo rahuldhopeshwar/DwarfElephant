@@ -6,12 +6,12 @@
  * OpenDA.
  */
 
- ///---------------------------------INCLUDES-------------------------------
+ //---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantFEDarcyOpenDA.h"
 #include "MooseMesh.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantFEDarcyOpenDA>()
 {
@@ -22,7 +22,7 @@ InputParameters validParams<DwarfElephantFEDarcyOpenDA>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantFEDarcyOpenDA::DwarfElephantFEDarcyOpenDA(const InputParameters & parameters) :
   Kernel(parameters),
   _permeability(getParam<std::vector<Real>>("permeability")),
@@ -30,7 +30,7 @@ DwarfElephantFEDarcyOpenDA::DwarfElephantFEDarcyOpenDA(const InputParameters & p
 {
 }
 
-///----------------------------------PDEs-----------------------------------
+//----------------------------------PDEs-----------------------------------
 // Definition of the necessary PDE in the weak formulation
 Real
 DwarfElephantFEDarcyOpenDA::computeQpResidual()

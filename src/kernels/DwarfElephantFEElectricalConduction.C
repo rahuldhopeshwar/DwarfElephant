@@ -4,12 +4,12 @@
  * purposes.
  */
 
- ///---------------------------------INCLUDES-------------------------------
+ //---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
 //#include "DwarfElephantFEElectricalConduction.h"
 #include "DwarfElephantFEElectricalConduction.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantFEElectricalConduction>()
 {
@@ -20,14 +20,14 @@ InputParameters validParams<DwarfElephantFEElectricalConduction>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantFEElectricalConduction::DwarfElephantFEElectricalConduction(const InputParameters & parameters) :
   Diffusion(parameters),
   _resistivity(getParam<Real>("resistivity"))
 {
 }
 
-///----------------------------------PDEs-----------------------------------
+//----------------------------------PDEs-----------------------------------
 // Definition of the necessary PDE in the weak formulation
 Real
 DwarfElephantFEElectricalConduction::computeQpResidual()

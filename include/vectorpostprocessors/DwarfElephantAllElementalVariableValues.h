@@ -9,9 +9,7 @@ class DwarfElephantAllElementalVariableValues;
 template <>
 InputParameters validParams<DwarfElephantAllElementalVariableValues>();
 
-/**
- * Get all of the elements that are intersected by a line
- */
+/// This VectorPostprocessor returns all of the elemental variable values of the mesh.
 class DwarfElephantAllElementalVariableValues : public GeneralVectorPostprocessor
 {
 public:

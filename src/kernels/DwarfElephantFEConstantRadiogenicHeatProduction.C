@@ -4,11 +4,11 @@
  * purposes.
  */
 
- ///---------------------------------INCLUDES-------------------------------
+ //---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantFEConstantRadiogenicHeatProduction.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantFEConstantRadiogenicHeatProduction>()
 {
@@ -21,7 +21,7 @@ InputParameters validParams<DwarfElephantFEConstantRadiogenicHeatProduction>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantFEConstantRadiogenicHeatProduction::DwarfElephantFEConstantRadiogenicHeatProduction(const InputParameters & parameters) :
   Kernel(parameters),
   _radiogenic_heat_production(getParam<Real>("radiogenic_heat_production")),
@@ -29,7 +29,7 @@ DwarfElephantFEConstantRadiogenicHeatProduction::DwarfElephantFEConstantRadiogen
 {
 }
 
-///----------------------------------PDEs-----------------------------------
+//----------------------------------PDEs-----------------------------------
 // Definition of the necessary PDE in the weak formulation
 Real
 DwarfElephantFEConstantRadiogenicHeatProduction::computeQpResidual()

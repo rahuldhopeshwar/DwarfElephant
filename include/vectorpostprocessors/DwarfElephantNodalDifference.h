@@ -17,6 +17,7 @@ class DwarfElephantNodalDifference;
 template <>
 InputParameters validParams<DwarfElephantNodalDifference>();
 
+/// Calculates the difference between a variable and function at every node.
 class DwarfElephantNodalDifference : public NodalVectorPostprocessor
 {
 public:

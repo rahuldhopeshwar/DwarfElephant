@@ -38,7 +38,6 @@ dataLoad(std::istream & stream, DwarfElephantFormattedTable & table, void * cont
   table._stream_open = false;
 }
 
-
 DwarfElephantFormattedTable::DwarfElephantFormattedTable()
   : FormattedTable(),
    _output_row_index(0),

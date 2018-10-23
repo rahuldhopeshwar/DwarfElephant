@@ -16,7 +16,7 @@
 </g>
 <!-- Node2 -->
 <g id="node2" class="node"><title>Node2</title>
-<g id="a_node2"><a xlink:href="class_dwarf_elephant_boundary_condition_file_reader.html" target="_top" xlink:title="DwarfElephantBoundaryCondition\lFileReader">
+<g id="a_node2"><a xlink:href="class_dwarf_elephant_boundary_condition_file_reader.html" target="_top" xlink:title="This function is responsible for reading boundary condition values from file. ">
 <polygon fill="white" stroke="black" points="91,-49.5 91,-79.5 258,-79.5 258,-49.5 91,-49.5"/>
 <text text-anchor="start" x="99" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00">DwarfElephantBoundaryCondition</text>
 <text text-anchor="middle" x="174.5" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00">FileReader</text>
@@ -30,7 +30,7 @@
 </g>
 <!-- Node3 -->
 <g id="node3" class="node"><title>Node3</title>
-<g id="a_node3"><a xlink:href="class_dwarf_elephant_initial_condition_file_reader.html" target="_top" xlink:title="DwarfElephantInitialCondition\lFileReader">
+<g id="a_node3"><a xlink:href="class_dwarf_elephant_initial_condition_file_reader.html" target="_top" xlink:title="This function is responsible for reading initial condition values from file. ">
 <polygon fill="white" stroke="black" points="100.5,-0.5 100.5,-30.5 248.5,-30.5 248.5,-0.5 100.5,-0.5"/>
 <text text-anchor="start" x="108.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">DwarfElephantInitialCondition</text>
 <text text-anchor="middle" x="174.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">FileReader</text>

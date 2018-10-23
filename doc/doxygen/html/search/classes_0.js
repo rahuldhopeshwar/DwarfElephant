@@ -98,6 +98,7 @@ var searchData=
   ['dwarfelephantrbt8f9o1steadystateexpansion',['DwarfElephantRBT8F9O1SteadyStateExpansion',['../struct_dwarf_elephant_r_b_t8_f9_o1_steady_state_expansion.html',1,'']]],
   ['dwarfelephantrbt8f9o20steadystateexpansion',['DwarfElephantRBT8F9O20SteadyStateExpansion',['../struct_dwarf_elephant_r_b_t8_f9_o20_steady_state_expansion.html',1,'']]],
   ['dwarfelephantrbt9f10o80steadystateexpansion',['DwarfElephantRBT9F10O80SteadyStateExpansion',['../struct_dwarf_elephant_r_b_t9_f10_o80_steady_state_expansion.html',1,'']]],
+  ['dwarfelephantrbt9f10o900steadystateexpansion',['DwarfElephantRBT9F10O900SteadyStateExpansion',['../struct_dwarf_elephant_r_b_t9_f10_o900_steady_state_expansion.html',1,'']]],
   ['dwarfelephantrbt9f2o80steadystateexpansion',['DwarfElephantRBT9F2O80SteadyStateExpansion',['../struct_dwarf_elephant_r_b_t9_f2_o80_steady_state_expansion.html',1,'']]],
   ['dwarfelephantrbthermalconduction',['DwarfElephantRBThermalConduction',['../class_dwarf_elephant_r_b_thermal_conduction.html',1,'']]],
   ['dwarfelephantrbtimederivative',['DwarfElephantRBTimeDerivative',['../class_dwarf_elephant_r_b_time_derivative.html',1,'']]],

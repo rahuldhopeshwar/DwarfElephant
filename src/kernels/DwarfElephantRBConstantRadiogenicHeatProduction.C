@@ -3,11 +3,11 @@
  * Reduced Basis solution.
  */
 
- ///---------------------------------INCLUDES-------------------------------
+ //---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBConstantRadiogenicHeatProduction.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantRBConstantRadiogenicHeatProduction>()
 {
@@ -20,7 +20,7 @@ InputParameters validParams<DwarfElephantRBConstantRadiogenicHeatProduction>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantRBConstantRadiogenicHeatProduction::DwarfElephantRBConstantRadiogenicHeatProduction(const InputParameters & parameters) :
   DwarfElephantRBKernel(parameters),
   _radiogenic_heat_production(getParam<Real>("radiogenic_heat_production")),
@@ -28,7 +28,7 @@ DwarfElephantRBConstantRadiogenicHeatProduction::DwarfElephantRBConstantRadiogen
 {
 }
 
-///----------------------------------PDEs-----------------------------------
+//----------------------------------PDEs-----------------------------------
 // Definition of the necessary PDE in the weak formulation
 Real
 DwarfElephantRBConstantRadiogenicHeatProduction::computeQpResidual()

@@ -1,6 +1,6 @@
 #include "ExtractQpPoints.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<ExtractQpPoints>()
 {
@@ -8,13 +8,13 @@ InputParameters validParams<ExtractQpPoints>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 ExtractQpPoints::ExtractQpPoints(const InputParameters & parameters) :
     Material(parameters)
 {
 }
 
-///-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 void
 ExtractQpPoints::computeQpProperties()
 {

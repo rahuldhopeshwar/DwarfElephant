@@ -3,7 +3,7 @@
  * introdued by the Dirichlet BCs with respect to the desired separation.
  */
 
-///---------------------------------INCLUDES--------------------------------
+//---------------------------------INCLUDES--------------------------------
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBAssembly.h"
 
@@ -15,12 +15,12 @@ DwarfElephantRBAssembly::DwarfElephantRBAssembly(SystemBase & sys, THREAD_ID tid
 {
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantRBAssembly::~DwarfElephantRBAssembly()
 {
 }
 
-///-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 // The boundary entries of the residuals need to be cached to be set after
 // multiplication of the parameter independent and dependent part are completed.
 void

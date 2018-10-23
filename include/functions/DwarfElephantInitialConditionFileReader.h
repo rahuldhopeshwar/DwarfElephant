@@ -8,6 +8,7 @@ class DwarfElephantInitialConditionFileReader;
 template <>
 InputParameters validParams<DwarfElephantInitialConditionFileReader>();
 
+///This function is responsible for reading initial condition values from file.
 class DwarfElephantInitialConditionFileReader : public Function
 {
 public:

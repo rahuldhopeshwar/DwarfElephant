@@ -7,13 +7,13 @@ InputParameters validParams<ExtractQpPointsKernel>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 ExtractQpPointsKernel::ExtractQpPointsKernel(const InputParameters & parameters) :
   Diffusion(parameters)
 {
 }
 
-///----------------------------------PDEs-----------------------------------
+//----------------------------------PDEs-----------------------------------
 // Definition of the necessary PDE in the weak formulation
 void
 ExtractQpPointsKernel::initialSetup()

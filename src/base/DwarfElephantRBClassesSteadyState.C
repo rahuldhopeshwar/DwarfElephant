@@ -5,7 +5,7 @@
  * NOTE: ENSURE THAT THE CLASS IS USING THE CORRECT RBSTRUCTURES.
  */
 
- ///-------------------------------------------------------------------------
+ //-------------------------------------------------------------------------
  #include "DwarfElephantRBClassesSteadyState.h"
 
 DwarfElephantRBConstructionSteadyState::DwarfElephantRBConstructionSteadyState (EquationSystems & es,

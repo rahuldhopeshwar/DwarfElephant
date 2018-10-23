@@ -1,8 +1,8 @@
- ///---------------------------------INCLUDES-------------------------------
+ //---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBOneKernel.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantRBOneKernel>()
 {
@@ -10,13 +10,13 @@ InputParameters validParams<DwarfElephantRBOneKernel>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantRBOneKernel::DwarfElephantRBOneKernel(const InputParameters & parameters) :
   DwarfElephantRBKernel(parameters)
 {
 }
 
-///----------------------------------PDEs-----------------------------------
+//----------------------------------PDEs-----------------------------------
 // Definition of the necessary PDE in the weak formulation
 Real
 DwarfElephantRBOneKernel::computeQpResidual()

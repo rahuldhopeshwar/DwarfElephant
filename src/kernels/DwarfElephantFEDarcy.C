@@ -4,11 +4,11 @@
  * purposes.
  */
 
- ///---------------------------------INCLUDES-------------------------------
+ //---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantFEDarcy.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantFEDarcy>()
 {
@@ -20,7 +20,7 @@ InputParameters validParams<DwarfElephantFEDarcy>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantFEDarcy::DwarfElephantFEDarcy(const InputParameters & parameters) :
   Kernel(parameters),
   _permeability(getParam<Real>("permeability")),
@@ -28,7 +28,7 @@ DwarfElephantFEDarcy::DwarfElephantFEDarcy(const InputParameters & parameters) :
 {
 }
 
-///----------------------------------PDEs-----------------------------------
+//----------------------------------PDEs-----------------------------------
 // Definition of the necessary PDE in the weak formulation
 Real
 DwarfElephantFEDarcy::computeQpResidual()

@@ -24,7 +24,7 @@ class DwarfElephantERTPreCalculations;
 template<>
 InputParameters validParams<DwarfElephantERTPreCalculations>();
 
-///
+///Currently not used
 class DwarfElephantERTPreCalculations :
   public GeneralUserObject
 {

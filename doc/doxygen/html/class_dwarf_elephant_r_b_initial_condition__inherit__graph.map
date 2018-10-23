@@ -1,4 +1,4 @@
 <map id="DwarfElephantRBInitialCondition" name="DwarfElephantRBInitialCondition">
-<area shape="rect" id="node3" href="$class_dwarf_elephant_r_b_constant_i_c.html" title="DwarfElephantRBConstantIC" alt="" coords="5,155,200,181"/>
+<area shape="rect" id="node3" href="$class_dwarf_elephant_r_b_constant_i_c.html" title="DwarfElephantRBConstantIC just returns a constant value. It is analog to the MOOSE class ConstantIC b..." alt="" coords="5,155,200,181"/>
 <area shape="rect" id="node4" href="$class_dwarf_elephant_r_b_function_i_c.html" title="DwarfElephantRBFunctionIC" alt="" coords="224,155,416,181"/>
 </map>

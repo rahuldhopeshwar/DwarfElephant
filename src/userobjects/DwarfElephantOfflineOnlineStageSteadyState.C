@@ -2,11 +2,11 @@
  * This UserObject implements the Offline and Online stage of the RB method.
  */
 
-///---------------------------------INCLUDES--------------------------------
+//---------------------------------INCLUDES--------------------------------
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantOfflineOnlineStageSteadyState.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
 {
@@ -38,7 +38,7 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageSteadyState(const InputParameters & params):
     GeneralUserObject(params),
     _use_displaced(getParam<bool>("use_displaced")),

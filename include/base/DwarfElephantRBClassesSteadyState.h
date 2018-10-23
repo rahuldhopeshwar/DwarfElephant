@@ -48,6 +48,7 @@
 #include "DwarfElephantRBStructuresT8F9O20SteadyState.h"
 #include "DwarfElephantRBStructuresT9F2O80SteadyState.h"
 #include "DwarfElephantRBStructuresT9F10O80SteadyState.h"
+#include "DwarfElephantRBStructuresT9F10O900SteadyState.h"
 #include "DwarfElephantRBStructuresT12F13O20SteadyState.h"
 #include "DwarfElephantRBStructuresT15F8O80SteadyState.h"
 #include "DwarfElephantRBStructuresT15F16O80SteadyState.h"
@@ -67,7 +68,7 @@ namespace libMesh
 
 class DwarfElephantInitializeRBSystemSteadyState;
 
-//////In this class the subclasse of RBConstruction class is introduced.
+///In this class the subclasse of RBConstruction class is introduced.
 class DwarfElephantRBConstructionSteadyState : public RBConstruction
 {
 
@@ -265,7 +266,7 @@ public:
   FEProblemBase & get_fe_problem(){return fe_problem;}
 
   FEProblemBase & fe_problem;
-  DwarfElephantRBT8F9O20SteadyStateExpansion _rb_theta_expansion;
+  DwarfElephantRBT9F10O900SteadyStateExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------

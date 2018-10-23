@@ -1,8 +1,8 @@
- ///---------------------------------INCLUDES-------------------------------
+ //---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantZeroKernel.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantZeroKernel>()
 {
@@ -10,13 +10,13 @@ InputParameters validParams<DwarfElephantZeroKernel>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantZeroKernel::DwarfElephantZeroKernel(const InputParameters & parameters) :
   Kernel(parameters)
 {
 }
 
-///----------------------------------PDEs-----------------------------------
+//----------------------------------PDEs-----------------------------------
 // Definition of the necessary PDE in the weak formulation
 Real
 DwarfElephantZeroKernel::computeQpResidual()

@@ -5,7 +5,7 @@
  * NOTE: ENSURE THAT THE CLASS IS INHERITING FROM THE CORRECT RBSTRUCTURES.
  */
 
-///-----------------------DWARFELEPHANTRBCONSTRUCTION-----------------------
+//-----------------------DWARFELEPHANTRBCONSTRUCTION-----------------------
 #include "DwarfElephantRBClassesTransient.h"
 
 DwarfElephantRBConstructionTransient::DwarfElephantRBConstructionTransient (EquationSystems & es,
@@ -538,7 +538,7 @@ DwarfElephantRBConstructionTransient::init_data()
   }
 
 
-///------------------------DWARFELEPHANTRBEVALUATION------------------------
+//------------------------DWARFELEPHANTRBEVALUATION------------------------
 #include "libmesh/xdr_cxx.h"
 
   DwarfElephantRBEvaluationTransient::DwarfElephantRBEvaluationTransient(const libMesh::Parallel::Communicator & comm, FEProblemBase & fe_problem):

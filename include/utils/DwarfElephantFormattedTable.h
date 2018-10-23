@@ -3,7 +3,7 @@
 
 #include "FormattedTable.h"
 
-
+///Currently not used
 class DwarfElephantFormattedTable : public FormattedTable
 {
 public:

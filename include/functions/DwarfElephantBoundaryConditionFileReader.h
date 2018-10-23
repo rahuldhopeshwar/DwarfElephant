@@ -8,6 +8,7 @@ class DwarfElephantBoundaryConditionFileReader;
 template <>
 InputParameters validParams<DwarfElephantBoundaryConditionFileReader>();
 
+///This function is responsible for reading boundary condition values from file.
 class DwarfElephantBoundaryConditionFileReader : public Function
 {
 public:

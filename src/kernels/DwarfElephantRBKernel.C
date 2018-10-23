@@ -6,7 +6,7 @@
  * addition it overwrites the function computeResidual.
  */
 
-///---------------------------------INCLUDES--------------------------------
+//---------------------------------INCLUDES--------------------------------
 // libMesh includes
 #include "libmesh/threads.h"
 #include "libmesh/quadrature.h"
@@ -22,7 +22,7 @@
 //MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBKernel.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantRBKernel>()
 {
@@ -44,7 +44,7 @@ InputParameters validParams<DwarfElephantRBKernel>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantRBKernel::DwarfElephantRBKernel(const InputParameters & parameters) :
     Kernel(parameters),
     _use_displaced(getParam<bool>("use_displaced")),
@@ -64,7 +64,7 @@ DwarfElephantRBKernel::DwarfElephantRBKernel(const InputParameters & parameters)
 
 }
 
-///-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 void
 DwarfElephantRBKernel::initialSetup()
 {
@@ -226,7 +226,7 @@ DwarfElephantRBKernel::computeJacobian()
       var->sys().solution().add_vector(diag, var->dofIndices());
   }
 }
-///----------------------------------PDEs-----------------------------------
+//----------------------------------PDEs-----------------------------------
 // For the PDEs zero is implemented, since this Kernel shall be used for any
 // RB problem. The problem specific PDEs are implemented in separate Kernels.
 

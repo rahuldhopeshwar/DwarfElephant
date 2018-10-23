@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 3117;
+var viewWidth = 3118;
 var viewHeight = 764;
 var sectionId = 'dynsection-1';
 </script>
@@ -54,942 +54,942 @@ var sectionId = 'dynsection-1';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>include/userobjects/DwarfElephantRBStructuresA6ThetaEqualMu6.h</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-760 3113.02,-760 3113.02,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-760 3113.69,-760 3113.69,4 -4,4"/>
 <!-- Node1 -->
 <g id="node1" class="node"><title>Node1</title>
-<polygon fill="#bfbfbf" stroke="black" points="1889.02,-714.5 1889.02,-755.5 2033.02,-755.5 2033.02,-714.5 1889.02,-714.5"/>
-<text text-anchor="start" x="1897.02" y="-743.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="1897.02" y="-732.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="1961.02" y="-721.5" font-family="Helvetica,sans-Serif" font-size="10.00">A6ThetaEqualMu6.h</text>
+<polygon fill="#bfbfbf" stroke="black" points="1433.5,-714.5 1433.5,-755.5 1577.5,-755.5 1577.5,-714.5 1433.5,-714.5"/>
+<text text-anchor="start" x="1441.5" y="-743.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="1441.5" y="-732.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
+<text text-anchor="middle" x="1505.5" y="-721.5" font-family="Helvetica,sans-Serif" font-size="10.00">A6ThetaEqualMu6.h</text>
 </g>
 <!-- Node2 -->
 <g id="node2" class="node"><title>Node2</title>
 <g id="a_node2"><a xlink:href="_dwarf_elephant_r_b_structures_t12_f13_o20_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT12F13O20SteadyState.h">
-<polygon fill="white" stroke="black" points="1160.02,-636.5 1160.02,-677.5 1304.02,-677.5 1304.02,-636.5 1160.02,-636.5"/>
-<text text-anchor="start" x="1168.02" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="1168.02" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="1232.02" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T12F13O20SteadyState.h</text>
+<polygon fill="white" stroke="black" points="623.5,-636.5 623.5,-677.5 767.5,-677.5 767.5,-636.5 623.5,-636.5"/>
+<text text-anchor="start" x="631.5" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="631.5" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
+<text text-anchor="middle" x="695.5" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T12F13O20SteadyState.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge"><title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M1878.5,-730.988C1754.87,-725.549 1514.56,-711.381 1313.02,-678 1310.16,-677.527 1307.25,-677.005 1304.33,-676.446"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1878.5,-734.492 1888.64,-731.427 1878.8,-727.498 1878.5,-734.492"/>
+<path fill="none" stroke="midnightblue" d="M1423.07,-732.103C1287.44,-727.99 1009.03,-715.376 776.5,-678 773.64,-677.54 770.732,-677.03 767.802,-676.481"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1423.28,-735.61 1433.38,-732.407 1423.49,-728.613 1423.28,-735.61"/>
+</g>
+<!-- Node41 -->
+<g id="node41" class="node"><title>Node41</title>
+<g id="a_node41"><a xlink:href="_dwarf_elephant_r_b_structures_t15_f16_o80_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT15F16O80SteadyState.h">
+<polygon fill="white" stroke="black" points="785.5,-636.5 785.5,-677.5 929.5,-677.5 929.5,-636.5 785.5,-636.5"/>
+<text text-anchor="start" x="793.5" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="793.5" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
+<text text-anchor="middle" x="857.5" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T15F16O80SteadyState.h</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node41 -->
+<g id="edge76" class="edge"><title>Node1&#45;&gt;Node41</title>
+<path fill="none" stroke="midnightblue" d="M1423.35,-729.598C1312.62,-722.821 1109.61,-707.418 938.5,-678 935.645,-677.509 932.742,-676.973 929.815,-676.401"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1423.26,-733.099 1433.45,-730.208 1423.68,-726.112 1423.26,-733.099"/>
 </g>
 <!-- Node42 -->
 <g id="node42" class="node"><title>Node42</title>
-<g id="a_node42"><a xlink:href="_dwarf_elephant_r_b_structures_t15_f16_o80_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT15F16O80SteadyState.h">
-<polygon fill="white" stroke="black" points="1322.02,-636.5 1322.02,-677.5 1466.02,-677.5 1466.02,-636.5 1322.02,-636.5"/>
-<text text-anchor="start" x="1330.02" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="1330.02" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="1394.02" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T15F16O80SteadyState.h</text>
+<g id="a_node42"><a xlink:href="_dwarf_elephant_r_b_structures_t15_f8_o80_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT15F8O80SteadyState.h">
+<polygon fill="white" stroke="black" points="947.5,-636.5 947.5,-677.5 1091.5,-677.5 1091.5,-636.5 947.5,-636.5"/>
+<text text-anchor="start" x="955.5" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="955.5" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
+<text text-anchor="middle" x="1019.5" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T15F8O80SteadyState.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node42 -->
 <g id="edge78" class="edge"><title>Node1&#45;&gt;Node42</title>
-<path fill="none" stroke="midnightblue" d="M1878.92,-727.751C1781.92,-719.628 1615.89,-703.401 1475.02,-678 1472.17,-677.486 1469.27,-676.93 1466.34,-676.342"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1878.7,-731.245 1888.96,-728.583 1879.28,-724.269 1878.7,-731.245"/>
+<path fill="none" stroke="midnightblue" d="M1423.41,-725.204C1341.3,-715.806 1211.58,-699.333 1100.5,-678 1097.66,-677.454 1094.76,-676.871 1091.84,-676.26"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1423.1,-728.691 1433.43,-726.342 1423.89,-721.735 1423.1,-728.691"/>
 </g>
 <!-- Node43 -->
 <g id="node43" class="node"><title>Node43</title>
-<g id="a_node43"><a xlink:href="_dwarf_elephant_r_b_structures_t15_f8_o80_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT15F8O80SteadyState.h">
-<polygon fill="white" stroke="black" points="1484.02,-636.5 1484.02,-677.5 1628.02,-677.5 1628.02,-636.5 1484.02,-636.5"/>
-<text text-anchor="start" x="1492.02" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="1492.02" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="1556.02" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T15F8O80SteadyState.h</text>
+<g id="a_node43"><a xlink:href="_dwarf_elephant_r_b_structures_t16_f16_o80_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT16F16O80SteadyState.h">
+<polygon fill="white" stroke="black" points="1109.5,-636.5 1109.5,-677.5 1253.5,-677.5 1253.5,-636.5 1109.5,-636.5"/>
+<text text-anchor="start" x="1117.5" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="1117.5" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
+<text text-anchor="middle" x="1181.5" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T16F16O80SteadyState.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node43 -->
 <g id="edge80" class="edge"><title>Node1&#45;&gt;Node43</title>
-<path fill="none" stroke="midnightblue" d="M1879.11,-721.491C1813.42,-711.063 1718.99,-695.181 1637.02,-678 1634.18,-677.406 1631.3,-676.782 1628.38,-676.138"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1878.57,-724.949 1889,-723.053 1879.67,-718.035 1878.57,-724.949"/>
+<path fill="none" stroke="midnightblue" d="M1423.54,-715.446C1376.39,-704.69 1316.07,-690.784 1262.5,-678 1259.68,-677.327 1256.81,-676.638 1253.91,-675.938"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1422.87,-718.882 1433.39,-717.692 1424.42,-712.057 1422.87,-718.882"/>
 </g>
 <!-- Node44 -->
 <g id="node44" class="node"><title>Node44</title>
-<g id="a_node44"><a xlink:href="_dwarf_elephant_r_b_structures_t16_f16_o80_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT16F16O80SteadyState.h">
-<polygon fill="white" stroke="black" points="1646.02,-636.5 1646.02,-677.5 1790.02,-677.5 1790.02,-636.5 1646.02,-636.5"/>
-<text text-anchor="start" x="1654.02" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="1654.02" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="1718.02" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T16F16O80SteadyState.h</text>
+<g id="a_node44"><a xlink:href="_dwarf_elephant_r_b_structures_t7_f8_o80_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT7F8O80SteadyState.h">
+<polygon fill="white" stroke="black" points="1271.5,-636.5 1271.5,-677.5 1415.5,-677.5 1415.5,-636.5 1271.5,-636.5"/>
+<text text-anchor="start" x="1279.5" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="1279.5" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
+<text text-anchor="middle" x="1343.5" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T7F8O80SteadyState.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node44 -->
 <g id="edge82" class="edge"><title>Node1&#45;&gt;Node44</title>
-<path fill="none" stroke="midnightblue" d="M1888.89,-711.442C1854.4,-700.655 1813.51,-687.867 1780.38,-677.506"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1887.85,-714.783 1898.44,-714.428 1889.94,-708.103 1887.85,-714.783"/>
+<path fill="none" stroke="midnightblue" d="M1454.45,-710.049C1432.1,-699.566 1406.22,-687.424 1385.08,-677.506"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1453.24,-713.349 1463.78,-714.428 1456.21,-707.012 1453.24,-713.349"/>
 </g>
 <!-- Node45 -->
 <g id="node45" class="node"><title>Node45</title>
-<g id="a_node45"><a xlink:href="_dwarf_elephant_r_b_structures_t7_f8_o80_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT7F8O80SteadyState.h">
-<polygon fill="white" stroke="black" points="1808.02,-636.5 1808.02,-677.5 1952.02,-677.5 1952.02,-636.5 1808.02,-636.5"/>
-<text text-anchor="start" x="1816.02" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="1816.02" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="1880.02" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T7F8O80SteadyState.h</text>
+<g id="a_node45"><a xlink:href="_dwarf_elephant_r_b_structures_t8_f9_o10_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT8F9O10SteadyState.h">
+<polygon fill="white" stroke="black" points="1433.5,-636.5 1433.5,-677.5 1577.5,-677.5 1577.5,-636.5 1433.5,-636.5"/>
+<text text-anchor="start" x="1441.5" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="1441.5" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
+<text text-anchor="middle" x="1505.5" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T8F9O10SteadyState.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node45 -->
 <g id="edge84" class="edge"><title>Node1&#45;&gt;Node45</title>
-<path fill="none" stroke="midnightblue" d="M1932.77,-707.492C1922.25,-697.629 1910.53,-686.627 1900.81,-677.506"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1930.47,-710.138 1940.16,-714.428 1935.26,-705.033 1930.47,-710.138"/>
+<path fill="none" stroke="midnightblue" d="M1505.5,-704.297C1505.5,-695.301 1505.5,-685.653 1505.5,-677.506"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1502,-704.428 1505.5,-714.428 1509,-704.428 1502,-704.428"/>
 </g>
 <!-- Node46 -->
 <g id="node46" class="node"><title>Node46</title>
-<g id="a_node46"><a xlink:href="_dwarf_elephant_r_b_structures_t8_f9_o10_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT8F9O10SteadyState.h">
-<polygon fill="white" stroke="black" points="1970.02,-636.5 1970.02,-677.5 2114.02,-677.5 2114.02,-636.5 1970.02,-636.5"/>
-<text text-anchor="start" x="1978.02" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="1978.02" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="2042.02" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T8F9O10SteadyState.h</text>
+<g id="a_node46"><a xlink:href="_dwarf_elephant_r_b_structures_t8_f9_o1_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT8F9O1SteadyState.h">
+<polygon fill="white" stroke="black" points="1595.5,-636.5 1595.5,-677.5 1739.5,-677.5 1739.5,-636.5 1595.5,-636.5"/>
+<text text-anchor="start" x="1603.5" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="1603.5" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
+<text text-anchor="middle" x="1667.5" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T8F9O1SteadyState.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node46 -->
 <g id="edge86" class="edge"><title>Node1&#45;&gt;Node46</title>
-<path fill="none" stroke="midnightblue" d="M1989.27,-707.492C1999.78,-697.629 2011.51,-686.627 2021.23,-677.506"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1986.78,-705.033 1981.88,-714.428 1991.56,-710.138 1986.78,-705.033"/>
+<path fill="none" stroke="midnightblue" d="M1556.55,-710.049C1578.9,-699.566 1604.78,-687.424 1625.92,-677.506"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1554.79,-707.012 1547.22,-714.428 1557.76,-713.349 1554.79,-707.012"/>
 </g>
 <!-- Node47 -->
 <g id="node47" class="node"><title>Node47</title>
-<g id="a_node47"><a xlink:href="_dwarf_elephant_r_b_structures_t8_f9_o1_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT8F9O1SteadyState.h">
-<polygon fill="white" stroke="black" points="2132.02,-636.5 2132.02,-677.5 2276.02,-677.5 2276.02,-636.5 2132.02,-636.5"/>
-<text text-anchor="start" x="2140.02" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="2140.02" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="2204.02" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T8F9O1SteadyState.h</text>
+<g id="a_node47"><a xlink:href="_dwarf_elephant_r_b_structures_t8_f9_o20_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT8F9O20SteadyState.h">
+<polygon fill="white" stroke="black" points="1757.5,-636.5 1757.5,-677.5 1901.5,-677.5 1901.5,-636.5 1757.5,-636.5"/>
+<text text-anchor="start" x="1765.5" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="1765.5" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
+<text text-anchor="middle" x="1829.5" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T8F9O20SteadyState.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node47 -->
 <g id="edge88" class="edge"><title>Node1&#45;&gt;Node47</title>
-<path fill="none" stroke="midnightblue" d="M2033.14,-711.442C2067.63,-700.655 2108.52,-687.867 2141.65,-677.506"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2032.1,-708.103 2023.6,-714.428 2034.19,-714.783 2032.1,-708.103"/>
+<path fill="none" stroke="midnightblue" d="M1587.46,-715.446C1634.61,-704.69 1694.93,-690.784 1748.5,-678 1751.32,-677.327 1754.19,-676.638 1757.09,-675.938"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1586.58,-712.057 1577.61,-717.692 1588.13,-718.882 1586.58,-712.057"/>
 </g>
 <!-- Node48 -->
 <g id="node48" class="node"><title>Node48</title>
-<g id="a_node48"><a xlink:href="_dwarf_elephant_r_b_structures_t8_f9_o20_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT8F9O20SteadyState.h">
-<polygon fill="white" stroke="black" points="2294.02,-636.5 2294.02,-677.5 2438.02,-677.5 2438.02,-636.5 2294.02,-636.5"/>
-<text text-anchor="start" x="2302.02" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="2302.02" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="2366.02" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T8F9O20SteadyState.h</text>
+<g id="a_node48"><a xlink:href="_dwarf_elephant_r_b_structures_t9_f10_o80_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT9F10O80SteadyState.h">
+<polygon fill="white" stroke="black" points="1919.5,-636.5 1919.5,-677.5 2063.5,-677.5 2063.5,-636.5 1919.5,-636.5"/>
+<text text-anchor="start" x="1927.5" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="1927.5" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
+<text text-anchor="middle" x="1991.5" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T9F10O80SteadyState.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node48 -->
 <g id="edge90" class="edge"><title>Node1&#45;&gt;Node48</title>
-<path fill="none" stroke="midnightblue" d="M2042.92,-721.491C2108.61,-711.063 2203.05,-695.181 2285.02,-678 2287.85,-677.406 2290.74,-676.782 2293.65,-676.138"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2042.37,-718.035 2033.04,-723.053 2043.46,-724.949 2042.37,-718.035"/>
+<path fill="none" stroke="midnightblue" d="M1587.59,-725.204C1669.7,-715.806 1799.42,-699.333 1910.5,-678 1913.34,-677.454 1916.24,-676.871 1919.16,-676.26"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1587.11,-721.735 1577.57,-726.342 1587.9,-728.691 1587.11,-721.735"/>
 </g>
 <!-- Node49 -->
 <g id="node49" class="node"><title>Node49</title>
-<g id="a_node49"><a xlink:href="_dwarf_elephant_r_b_structures_t9_f10_o80_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT9F10O80SteadyState.h">
-<polygon fill="white" stroke="black" points="2456.02,-636.5 2456.02,-677.5 2600.02,-677.5 2600.02,-636.5 2456.02,-636.5"/>
-<text text-anchor="start" x="2464.02" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="2464.02" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="2528.02" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T9F10O80SteadyState.h</text>
+<g id="a_node49"><a xlink:href="_dwarf_elephant_r_b_structures_t9_f10_o900_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT9F10O900SteadyState.h">
+<polygon fill="white" stroke="black" points="2081.5,-636.5 2081.5,-677.5 2225.5,-677.5 2225.5,-636.5 2081.5,-636.5"/>
+<text text-anchor="start" x="2089.5" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="2089.5" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
+<text text-anchor="middle" x="2153.5" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T9F10O900SteadyState.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node49 -->
 <g id="edge92" class="edge"><title>Node1&#45;&gt;Node49</title>
-<path fill="none" stroke="midnightblue" d="M2043.11,-727.751C2140.12,-719.628 2306.15,-703.401 2447.02,-678 2449.87,-677.486 2452.77,-676.93 2455.69,-676.342"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2042.75,-724.269 2033.08,-728.583 2043.33,-731.245 2042.75,-724.269"/>
+<path fill="none" stroke="midnightblue" d="M1587.65,-729.598C1698.38,-722.821 1901.39,-707.418 2072.5,-678 2075.36,-677.509 2078.26,-676.973 2081.19,-676.401"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1587.32,-726.112 1577.55,-730.208 1587.74,-733.099 1587.32,-726.112"/>
 </g>
 <!-- Node50 -->
 <g id="node50" class="node"><title>Node50</title>
 <g id="a_node50"><a xlink:href="_dwarf_elephant_r_b_structures_t9_f2_o80_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantRBStructures\lT9F2O80SteadyState.h">
-<polygon fill="white" stroke="black" points="2618.02,-636.5 2618.02,-677.5 2762.02,-677.5 2762.02,-636.5 2618.02,-636.5"/>
-<text text-anchor="start" x="2626.02" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="2626.02" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
-<text text-anchor="middle" x="2690.02" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T9F2O80SteadyState.h</text>
+<polygon fill="white" stroke="black" points="2243.5,-636.5 2243.5,-677.5 2387.5,-677.5 2387.5,-636.5 2243.5,-636.5"/>
+<text text-anchor="start" x="2251.5" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="2251.5" y="-654.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBStructures</text>
+<text text-anchor="middle" x="2315.5" y="-643.5" font-family="Helvetica,sans-Serif" font-size="10.00">T9F2O80SteadyState.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node50 -->
 <g id="edge94" class="edge"><title>Node1&#45;&gt;Node50</title>
-<path fill="none" stroke="midnightblue" d="M2043.54,-730.988C2167.17,-725.549 2407.48,-711.381 2609.02,-678 2611.88,-677.527 2614.78,-677.005 2617.71,-676.446"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2043.23,-727.498 2033.39,-731.427 2043.54,-734.492 2043.23,-727.498"/>
+<path fill="none" stroke="midnightblue" d="M1587.93,-732.103C1723.56,-727.99 2001.97,-715.376 2234.5,-678 2237.36,-677.54 2240.27,-677.03 2243.2,-676.481"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1587.51,-728.613 1577.62,-732.407 1587.72,-735.61 1587.51,-728.613"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node"><title>Node3</title>
 <g id="a_node3"><a xlink:href="_dwarf_elephant_r_b_classes_steady_state_8h.html" target="_top" xlink:title="include/base/DwarfElephant\lRBClassesSteadyState.h">
-<polygon fill="white" stroke="black" points="1890.52,-569.5 1890.52,-599.5 2031.52,-599.5 2031.52,-569.5 1890.52,-569.5"/>
-<text text-anchor="start" x="1898.52" y="-587.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/base/DwarfElephant</text>
-<text text-anchor="middle" x="1961.02" y="-576.5" font-family="Helvetica,sans-Serif" font-size="10.00">RBClassesSteadyState.h</text>
+<polygon fill="white" stroke="black" points="1435,-569.5 1435,-599.5 1576,-599.5 1576,-569.5 1435,-569.5"/>
+<text text-anchor="start" x="1443" y="-587.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/base/DwarfElephant</text>
+<text text-anchor="middle" x="1505.5" y="-576.5" font-family="Helvetica,sans-Serif" font-size="10.00">RBClassesSteadyState.h</text>
 </a>
 </g>
 </g>
 <!-- Node2&#45;&gt;Node3 -->
 <g id="edge2" class="edge"><title>Node2&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M1314.5,-635.896C1528.82,-602.086 1772.28,-590.912 1890.09,-587.22"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1313.64,-632.489 1304.32,-637.523 1314.75,-639.401 1313.64,-632.489"/>
+<path fill="none" stroke="midnightblue" d="M778.001,-635.906C1023.89,-598.158 1306.03,-588.771 1434.93,-586.345"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="777.141,-632.497 767.797,-637.492 778.216,-639.414 777.141,-632.497"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node"><title>Node4</title>
 <g id="a_node4"><a xlink:href="_dwarf_elephant_r_b_classes_steady_state_8_c.html" target="_top" xlink:title="src/base/DwarfElephantRBClasses\lSteadyState.C">
-<polygon fill="white" stroke="black" points="1402.02,-502.5 1402.02,-532.5 1574.02,-532.5 1574.02,-502.5 1402.02,-502.5"/>
-<text text-anchor="start" x="1410.02" y="-520.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/base/DwarfElephantRBClasses</text>
-<text text-anchor="middle" x="1488.02" y="-509.5" font-family="Helvetica,sans-Serif" font-size="10.00">SteadyState.C</text>
+<polygon fill="white" stroke="black" points="969.5,-502.5 969.5,-532.5 1141.5,-532.5 1141.5,-502.5 969.5,-502.5"/>
+<text text-anchor="start" x="977.5" y="-520.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/base/DwarfElephantRBClasses</text>
+<text text-anchor="middle" x="1055.5" y="-509.5" font-family="Helvetica,sans-Serif" font-size="10.00">SteadyState.C</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node4 -->
 <g id="edge3" class="edge"><title>Node3&#45;&gt;Node4</title>
-<path fill="none" stroke="midnightblue" d="M1880.19,-573.145C1803.62,-563.23 1685.42,-547.653 1583.02,-533 1580.13,-532.586 1577.19,-532.162 1574.22,-531.729"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1879.88,-576.635 1890.25,-574.446 1880.78,-569.692 1879.88,-576.635"/>
+<path fill="none" stroke="midnightblue" d="M1424.84,-572.263C1352.86,-562.18 1244.61,-546.876 1150.5,-533 1147.61,-532.574 1144.67,-532.139 1141.71,-531.697"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1424.36,-575.73 1434.75,-573.651 1425.33,-568.798 1424.36,-575.73"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node"><title>Node5</title>
 <g id="a_node5"><a xlink:href="_dwarf_elephant_nodal_difference_8_c.html" target="_top" xlink:title="src/vectorpostprocessors\l/DwarfElephantNodalDifference.C">
-<polygon fill="white" stroke="black" points="1592.52,-502.5 1592.52,-532.5 1759.52,-532.5 1759.52,-502.5 1592.52,-502.5"/>
-<text text-anchor="start" x="1600.52" y="-520.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/vectorpostprocessors</text>
-<text text-anchor="middle" x="1676.02" y="-509.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantNodalDifference.C</text>
+<polygon fill="white" stroke="black" points="1160,-502.5 1160,-532.5 1327,-532.5 1327,-502.5 1160,-502.5"/>
+<text text-anchor="start" x="1168" y="-520.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/vectorpostprocessors</text>
+<text text-anchor="middle" x="1243.5" y="-509.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantNodalDifference.C</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node5 -->
 <g id="edge4" class="edge"><title>Node3&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M1889.49,-567.186C1842.81,-556.54 1782.49,-542.784 1737.89,-532.611"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1889,-570.665 1899.53,-569.476 1890.56,-563.84 1889,-570.665"/>
+<path fill="none" stroke="midnightblue" d="M1439.2,-567.052C1396.37,-556.425 1341.21,-542.741 1300.38,-532.611"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1438.42,-570.465 1448.97,-569.476 1440.11,-563.671 1438.42,-570.465"/>
 </g>
 <!-- Node6 -->
 <g id="node6" class="node"><title>Node6</title>
 <g id="a_node6"><a xlink:href="_dwarf_elephant_system_8h.html" target="_top" xlink:title="include/systems/DwarfElephant\lSystem.h">
-<polygon fill="white" stroke="black" points="1883.02,-502.5 1883.02,-532.5 2039.02,-532.5 2039.02,-502.5 1883.02,-502.5"/>
-<text text-anchor="start" x="1891.02" y="-520.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/systems/DwarfElephant</text>
-<text text-anchor="middle" x="1961.02" y="-509.5" font-family="Helvetica,sans-Serif" font-size="10.00">System.h</text>
+<polygon fill="white" stroke="black" points="2103.5,-502.5 2103.5,-532.5 2259.5,-532.5 2259.5,-502.5 2103.5,-502.5"/>
+<text text-anchor="start" x="2111.5" y="-520.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/systems/DwarfElephant</text>
+<text text-anchor="middle" x="2181.5" y="-509.5" font-family="Helvetica,sans-Serif" font-size="10.00">System.h</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node6 -->
 <g id="edge5" class="edge"><title>Node3&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M1961.02,-559.108C1961.02,-550.154 1961.02,-540.323 1961.02,-532.577"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1957.52,-559.396 1961.02,-569.396 1964.52,-559.396 1957.52,-559.396"/>
+<path fill="none" stroke="midnightblue" d="M1586.22,-575.739C1717.11,-563.153 1974.02,-538.45 2103.28,-526.021"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1585.87,-572.256 1576.25,-576.697 1586.54,-579.224 1585.87,-572.256"/>
 </g>
 <!-- Node15 -->
 <g id="node15" class="node"><title>Node15</title>
 <g id="a_node15"><a xlink:href="_dwarf_elephant_offline_online_stage_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantOfflineOnline\lStageSteadyState.h">
-<polygon fill="white" stroke="black" points="2724.52,-201.5 2724.52,-242.5 2867.52,-242.5 2867.52,-201.5 2724.52,-201.5"/>
-<text text-anchor="start" x="2732.52" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="2732.52" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantOfflineOnline</text>
-<text text-anchor="middle" x="2796.02" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">StageSteadyState.h</text>
+<polygon fill="white" stroke="black" points="122,-201.5 122,-242.5 265,-242.5 265,-201.5 122,-201.5"/>
+<text text-anchor="start" x="130" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="130" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantOfflineOnline</text>
+<text text-anchor="middle" x="193.5" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">StageSteadyState.h</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node15 -->
-<g id="edge77" class="edge"><title>Node3&#45;&gt;Node15</title>
-<path fill="none" stroke="midnightblue" d="M2042.05,-582.369C2297.8,-577.737 3071.02,-555.162 3071.02,-451.5 3071.02,-451.5 3071.02,-451.5 3071.02,-377 3071.02,-283.703 2949.03,-246.37 2867.55,-231.839"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2041.65,-578.875 2031.72,-582.551 2041.78,-585.874 2041.65,-578.875"/>
+<g id="edge75" class="edge"><title>Node3&#45;&gt;Node15</title>
+<path fill="none" stroke="midnightblue" d="M1458.51,-565.371C1414.52,-544.962 1355.5,-507.203 1355.5,-451.5 1355.5,-451.5 1355.5,-451.5 1355.5,-377 1355.5,-321.737 518.654,-249.363 265.311,-228.719"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1457.09,-568.568 1467.65,-569.463 1459.95,-562.18 1457.09,-568.568"/>
 </g>
 <!-- Node20 -->
 <g id="node20" class="node"><title>Node20</title>
 <g id="a_node20"><a xlink:href="_dwarf_elephant_initialize_r_b_system_transient_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantInitializeRBSystem\lTransient.h">
-<polygon fill="white" stroke="black" points="1780.02,-201.5 1780.02,-242.5 1948.02,-242.5 1948.02,-201.5 1780.02,-201.5"/>
-<text text-anchor="start" x="1788.02" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="1788.02" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantInitializeRBSystem</text>
-<text text-anchor="middle" x="1864.02" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">Transient.h</text>
+<polygon fill="white" stroke="black" points="1701.5,-201.5 1701.5,-242.5 1869.5,-242.5 1869.5,-201.5 1701.5,-201.5"/>
+<text text-anchor="start" x="1709.5" y="-230.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="1709.5" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantInitializeRBSystem</text>
+<text text-anchor="middle" x="1785.5" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">Transient.h</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node20 -->
-<g id="edge76" class="edge"><title>Node3&#45;&gt;Node20</title>
-<path fill="none" stroke="midnightblue" d="M1902.85,-565.944C1852.6,-546.754 1788.02,-510.594 1788.02,-451.5 1788.02,-451.5 1788.02,-451.5 1788.02,-377 1788.02,-324.228 1824.35,-270.811 1846.77,-242.869"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1901.77,-569.276 1912.37,-569.444 1904.19,-562.707 1901.77,-569.276"/>
+<g id="edge74" class="edge"><title>Node3&#45;&gt;Node20</title>
+<path fill="none" stroke="midnightblue" d="M1522.69,-561.363C1573.36,-496.126 1721.58,-305.291 1770,-242.953"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1519.85,-559.323 1516.48,-569.368 1525.37,-563.617 1519.85,-559.323"/>
 </g>
-<!-- Node40 -->
-<g id="node40" class="node"><title>Node40</title>
-<g id="a_node40"><a xlink:href="_dwarf_elephant_initialize_r_b_system_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantInitializeRBSystem\lSteadyState.h">
-<polygon fill="white" stroke="black" points="2380.02,-279.5 2380.02,-320.5 2548.02,-320.5 2548.02,-279.5 2380.02,-279.5"/>
-<text text-anchor="start" x="2388.02" y="-308.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="2388.02" y="-297.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantInitializeRBSystem</text>
-<text text-anchor="middle" x="2464.02" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">SteadyState.h</text>
+<!-- Node39 -->
+<g id="node39" class="node"><title>Node39</title>
+<g id="a_node39"><a xlink:href="_dwarf_elephant_initialize_r_b_system_steady_state_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantInitializeRBSystem\lSteadyState.h">
+<polygon fill="white" stroke="black" points="1421.5,-279.5 1421.5,-320.5 1589.5,-320.5 1589.5,-279.5 1421.5,-279.5"/>
+<text text-anchor="start" x="1429.5" y="-308.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="1429.5" y="-297.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantInitializeRBSystem</text>
+<text text-anchor="middle" x="1505.5" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">SteadyState.h</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node40 -->
-<g id="edge75" class="edge"><title>Node3&#45;&gt;Node40</title>
-<path fill="none" stroke="midnightblue" d="M2041.96,-571.534C2156.08,-553.71 2355.96,-516.76 2408.02,-466 2448.43,-426.597 2454.77,-355.118 2458.98,-320.641"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2041.22,-568.107 2031.87,-573.095 2042.29,-575.025 2041.22,-568.107"/>
+<!-- Node3&#45;&gt;Node39 -->
+<g id="edge73" class="edge"><title>Node3&#45;&gt;Node39</title>
+<path fill="none" stroke="midnightblue" d="M1501.51,-559.29C1497.72,-504.266 1497.83,-370.705 1501.86,-320.505"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1498.04,-559.812 1502.35,-569.491 1505.02,-559.237 1498.04,-559.812"/>
 </g>
 <!-- Node7 -->
 <g id="node7" class="node"><title>Node7</title>
 <g id="a_node7"><a xlink:href="_dwarf_elephant_system_8_c.html" target="_top" xlink:title="src/systems/DwarfElephant\lSystem.C">
-<polygon fill="white" stroke="black" points="1892.02,-363 1892.02,-393 2030.02,-393 2030.02,-363 1892.02,-363"/>
-<text text-anchor="start" x="1900.02" y="-381" font-family="Helvetica,sans-Serif" font-size="10.00">src/systems/DwarfElephant</text>
-<text text-anchor="middle" x="1961.02" y="-370" font-family="Helvetica,sans-Serif" font-size="10.00">System.C</text>
+<polygon fill="white" stroke="black" points="2747.5,-363 2747.5,-393 2885.5,-393 2885.5,-363 2747.5,-363"/>
+<text text-anchor="start" x="2755.5" y="-381" font-family="Helvetica,sans-Serif" font-size="10.00">src/systems/DwarfElephant</text>
+<text text-anchor="middle" x="2816.5" y="-370" font-family="Helvetica,sans-Serif" font-size="10.00">System.C</text>
 </a>
 </g>
 </g>
 <!-- Node6&#45;&gt;Node7 -->
 <g id="edge6" class="edge"><title>Node6&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M1961.02,-492.287C1961.02,-463.607 1961.02,-416.775 1961.02,-393.326"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1957.52,-492.303 1961.02,-502.303 1964.52,-492.303 1957.52,-492.303"/>
+<path fill="none" stroke="midnightblue" d="M2269.76,-502.197C2325.5,-492.794 2398.92,-479.725 2463.5,-466 2570.93,-443.168 2695.4,-411.181 2764.11,-393.033"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2268.85,-498.802 2259.57,-503.91 2270.01,-505.705 2268.85,-498.802"/>
 </g>
 <!-- Node8 -->
 <g id="node8" class="node"><title>Node8</title>
 <g id="a_node8"><a xlink:href="_dwarf_elephant_r_b_problem_8h.html" target="_top" xlink:title="include/problems/DwarfElephant\lRBProblem.h">
-<polygon fill="white" stroke="black" points="2248.02,-435.5 2248.02,-465.5 2408.02,-465.5 2408.02,-435.5 2248.02,-435.5"/>
-<text text-anchor="start" x="2256.02" y="-453.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/problems/DwarfElephant</text>
-<text text-anchor="middle" x="2328.02" y="-442.5" font-family="Helvetica,sans-Serif" font-size="10.00">RBProblem.h</text>
+<polygon fill="white" stroke="black" points="2294.5,-435.5 2294.5,-465.5 2454.5,-465.5 2454.5,-435.5 2294.5,-435.5"/>
+<text text-anchor="start" x="2302.5" y="-453.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/problems/DwarfElephant</text>
+<text text-anchor="middle" x="2374.5" y="-442.5" font-family="Helvetica,sans-Serif" font-size="10.00">RBProblem.h</text>
 </a>
 </g>
 </g>
 <!-- Node6&#45;&gt;Node8 -->
 <g id="edge7" class="edge"><title>Node6&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M2049.27,-500.87C2110.07,-490.101 2190.18,-475.913 2248.91,-465.511"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2048.53,-497.445 2039.3,-502.636 2049.76,-504.338 2048.53,-497.445"/>
+<path fill="none" stroke="midnightblue" d="M2233.19,-499.092C2264.34,-488.599 2303.51,-475.408 2332.7,-465.577"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2231.74,-495.887 2223.38,-502.396 2233.97,-502.521 2231.74,-495.887"/>
 </g>
 <!-- Node6&#45;&gt;Node20 -->
-<g id="edge74" class="edge"><title>Node6&#45;&gt;Node20</title>
-<path fill="none" stroke="midnightblue" d="M1941.51,-494.328C1923.04,-471.945 1896.23,-435.549 1883.02,-399 1863.48,-344.95 1862.35,-275.953 1863.16,-242.686"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1939.02,-496.799 1948.14,-502.191 1944.37,-492.289 1939.02,-496.799"/>
+<g id="edge72" class="edge"><title>Node6&#45;&gt;Node20</title>
+<path fill="none" stroke="midnightblue" d="M2093.27,-510.191C2012.29,-499.76 1894.34,-472.129 1822.5,-399 1780.6,-356.345 1780.68,-279.021 1783.38,-242.764"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2093.1,-513.696 2103.45,-511.438 2093.95,-506.748 2093.1,-513.696"/>
 </g>
-<!-- Node6&#45;&gt;Node40 -->
-<g id="edge64" class="edge"><title>Node6&#45;&gt;Node40</title>
-<path fill="none" stroke="midnightblue" d="M2007.72,-498.55C2057.65,-478.245 2138,-442.303 2200.02,-399 2222.18,-383.523 2220.37,-370.096 2244.02,-357 2285.74,-333.899 2337.17,-320.125 2379.81,-312.022"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2006.12,-495.419 1998.15,-502.4 2008.73,-501.913 2006.12,-495.419"/>
+<!-- Node6&#45;&gt;Node39 -->
+<g id="edge62" class="edge"><title>Node6&#45;&gt;Node39</title>
+<path fill="none" stroke="midnightblue" d="M2093.16,-510.985C1986.26,-503.465 1813.09,-488.325 1752.5,-466 1659.84,-431.853 1567.59,-356.464 1526.99,-320.642"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2093.07,-514.487 2103.29,-511.689 2093.55,-507.504 2093.07,-514.487"/>
 </g>
 <!-- Node8&#45;&gt;Node7 -->
 <g id="edge10" class="edge"><title>Node8&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M2237.86,-435.603C2180.68,-426.33 2105.25,-413.255 2039.02,-399 2030.68,-397.206 2021.89,-395.131 2013.33,-393.011"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2237.53,-439.095 2247.96,-437.232 2238.64,-432.184 2237.53,-439.095"/>
+<path fill="none" stroke="midnightblue" d="M2464.77,-439.255C2537.61,-430.4 2642.56,-416.311 2733.5,-399 2742.53,-397.282 2752.05,-395.222 2761.3,-393.088"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2464.22,-435.796 2454.71,-440.47 2465.06,-442.746 2464.22,-435.796"/>
 </g>
 <!-- Node9 -->
 <g id="node9" class="node"><title>Node9</title>
 <g id="a_node9"><a xlink:href="_dwarf_elephant_app_8_c.html" target="_top" xlink:title="src/base/DwarfElephantApp.C">
-<polygon fill="white" stroke="black" points="1643.02,-0.5 1643.02,-19.5 1793.02,-19.5 1793.02,-0.5 1643.02,-0.5"/>
-<text text-anchor="middle" x="1718.02" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/base/DwarfElephantApp.C</text>
+<polygon fill="white" stroke="black" points="1453.5,-0.5 1453.5,-19.5 1603.5,-19.5 1603.5,-0.5 1453.5,-0.5"/>
+<text text-anchor="middle" x="1528.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/base/DwarfElephantApp.C</text>
 </a>
 </g>
 </g>
 <!-- Node8&#45;&gt;Node9 -->
 <g id="edge8" class="edge"><title>Node8&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M2418.46,-442.474C2624.1,-424.015 3109.02,-365.391 3109.02,-223 3109.02,-223 3109.02,-223 3109.02,-148.5 3109.02,-103.884 3106.78,-81.2851 3070.02,-56 3017.17,-19.6477 2069.62,-12.5679 1793.15,-11.2738"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2417.94,-439.006 2408.29,-443.375 2418.56,-445.979 2417.94,-439.006"/>
+<path fill="none" stroke="midnightblue" d="M2459.03,-433.358C2598.6,-402.909 2879.5,-325.14 3057.5,-165 3095.53,-130.784 3130.15,-92.691 3094.5,-56 3068.23,-28.965 1912.47,-15.0016 1603.68,-11.7492"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2458.27,-429.942 2449.23,-435.469 2459.74,-436.785 2458.27,-429.942"/>
 </g>
 <!-- Node10 -->
 <g id="node10" class="node"><title>Node10</title>
 <g id="a_node10"><a xlink:href="_dwarf_elephant_r_b_problem_8_c.html" target="_top" xlink:title="src/problems/DwarfElephant\lRBProblem.C">
-<polygon fill="white" stroke="black" points="2253.02,-363 2253.02,-393 2395.02,-393 2395.02,-363 2253.02,-363"/>
-<text text-anchor="start" x="2261.02" y="-381" font-family="Helvetica,sans-Serif" font-size="10.00">src/problems/DwarfElephant</text>
-<text text-anchor="middle" x="2324.02" y="-370" font-family="Helvetica,sans-Serif" font-size="10.00">RBProblem.C</text>
+<polygon fill="white" stroke="black" points="2303.5,-363 2303.5,-393 2445.5,-393 2445.5,-363 2303.5,-363"/>
+<text text-anchor="start" x="2311.5" y="-381" font-family="Helvetica,sans-Serif" font-size="10.00">src/problems/DwarfElephant</text>
+<text text-anchor="middle" x="2374.5" y="-370" font-family="Helvetica,sans-Serif" font-size="10.00">RBProblem.C</text>
 </a>
 </g>
 </g>
 <!-- Node8&#45;&gt;Node10 -->
 <g id="edge9" class="edge"><title>Node8&#45;&gt;Node10</title>
-<path fill="none" stroke="midnightblue" d="M2326.64,-425.232C2326.04,-414.568 2325.35,-402.414 2324.83,-393.246"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2323.15,-425.448 2327.21,-435.233 2330.14,-425.051 2323.15,-425.448"/>
+<path fill="none" stroke="midnightblue" d="M2374.5,-425.232C2374.5,-414.568 2374.5,-402.414 2374.5,-393.246"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2371,-425.233 2374.5,-435.233 2378,-425.233 2371,-425.233"/>
 </g>
 <!-- Node11 -->
 <g id="node11" class="node"><title>Node11</title>
 <g id="a_node11"><a xlink:href="_dwarf_elephant_r_b_nodal_b_c_8h.html" target="_top" xlink:title="include/bcs/DwarfElephant\lRBNodalBC.h">
-<polygon fill="white" stroke="black" points="2567.52,-134.5 2567.52,-164.5 2702.52,-164.5 2702.52,-134.5 2567.52,-134.5"/>
-<text text-anchor="start" x="2575.52" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
-<text text-anchor="middle" x="2635.02" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">RBNodalBC.h</text>
+<polygon fill="white" stroke="black" points="2604,-134.5 2604,-164.5 2739,-164.5 2739,-134.5 2604,-134.5"/>
+<text text-anchor="start" x="2612" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
+<text text-anchor="middle" x="2671.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">RBNodalBC.h</text>
 </a>
 </g>
 </g>
 <!-- Node8&#45;&gt;Node11 -->
 <g id="edge11" class="edge"><title>Node8&#45;&gt;Node11</title>
-<path fill="none" stroke="midnightblue" d="M2362.14,-430.086C2375.88,-421.466 2391.42,-410.638 2404.02,-399 2421.46,-382.894 2417.4,-370.368 2437.02,-357 2483.03,-325.645 2515.03,-357.573 2557.02,-321 2606.35,-278.025 2626.3,-197.426 2632.6,-164.777"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2360.13,-427.215 2353.42,-435.419 2363.78,-433.186 2360.13,-427.215"/>
+<path fill="none" stroke="midnightblue" d="M2409.76,-430.26C2424.28,-421.589 2440.86,-410.676 2454.5,-399 2545.44,-321.15 2632.53,-204.785 2661.44,-164.681"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2407.9,-427.293 2401.03,-435.357 2411.43,-433.338 2407.9,-427.293"/>
 </g>
 <!-- Node8&#45;&gt;Node15 -->
 <g id="edge17" class="edge"><title>Node8&#45;&gt;Node15</title>
-<path fill="none" stroke="midnightblue" d="M2368.22,-431.132C2388.84,-421.645 2414.32,-409.818 2437.02,-399 2553.88,-343.293 2691,-275.344 2756.84,-242.555"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2366.74,-427.959 2359.11,-435.314 2369.66,-434.32 2366.74,-427.959"/>
+<path fill="none" stroke="midnightblue" d="M2284.21,-443.932C2174.64,-436.556 1984.45,-421.759 1822.5,-399 1638.81,-373.187 1576.96,-406.79 1412.5,-321 1388.81,-308.644 1394.07,-289.485 1369.5,-279 1258.05,-231.441 399.643,-258.8 279.5,-243 274.789,-242.38 269.957,-241.618 265.104,-240.755"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2284.02,-447.427 2294.23,-444.601 2284.49,-440.443 2284.02,-447.427"/>
 </g>
 <!-- Node18 -->
 <g id="node18" class="node"><title>Node18</title>
 <g id="a_node18"><a xlink:href="_dwarf_elephant_offline_online_stage_transient_8h.html" target="_top" xlink:title="include/userobjects\l/DwarfElephantOfflineOnline\lStageTransient.h">
-<polygon fill="white" stroke="red" points="2048.52,-357.5 2048.52,-398.5 2191.52,-398.5 2191.52,-357.5 2048.52,-357.5"/>
-<text text-anchor="start" x="2056.52" y="-386.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
-<text text-anchor="start" x="2056.52" y="-375.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantOfflineOnline</text>
-<text text-anchor="middle" x="2120.02" y="-364.5" font-family="Helvetica,sans-Serif" font-size="10.00">StageTransient.h</text>
+<polygon fill="white" stroke="red" points="1832,-357.5 1832,-398.5 1975,-398.5 1975,-357.5 1832,-357.5"/>
+<text text-anchor="start" x="1840" y="-386.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/userobjects</text>
+<text text-anchor="start" x="1840" y="-375.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantOfflineOnline</text>
+<text text-anchor="middle" x="1903.5" y="-364.5" font-family="Helvetica,sans-Serif" font-size="10.00">StageTransient.h</text>
 </a>
 </g>
 </g>
 <!-- Node8&#45;&gt;Node18 -->
 <g id="edge22" class="edge"><title>Node8&#45;&gt;Node18</title>
-<path fill="none" stroke="midnightblue" d="M2276.58,-432.065C2246.59,-421.9 2208.69,-409.053 2177.69,-398.546"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2275.83,-435.507 2286.43,-435.403 2278.08,-428.878 2275.83,-435.507"/>
+<path fill="none" stroke="midnightblue" d="M2284.42,-436.017C2194.48,-422.555 2058.05,-402.133 1975.2,-389.732"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2283.93,-439.482 2294.33,-437.501 2284.96,-432.559 2283.93,-439.482"/>
 </g>
 <!-- Node12 -->
 <g id="node12" class="node"><title>Node12</title>
 <g id="a_node12"><a xlink:href="_dwarf_elephant_r_b_nodal_b_c_8_c.html" target="_top" xlink:title="src/bcs/DwarfElephantRBNodalBC.C">
-<polygon fill="white" stroke="black" points="2556.02,-67.5 2556.02,-86.5 2736.02,-86.5 2736.02,-67.5 2556.02,-67.5"/>
-<text text-anchor="middle" x="2646.02" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/bcs/DwarfElephantRBNodalBC.C</text>
+<polygon fill="white" stroke="black" points="2576.5,-67.5 2576.5,-86.5 2756.5,-86.5 2756.5,-67.5 2576.5,-67.5"/>
+<text text-anchor="middle" x="2666.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/bcs/DwarfElephantRBNodalBC.C</text>
 </a>
 </g>
 </g>
 <!-- Node11&#45;&gt;Node12 -->
 <g id="edge12" class="edge"><title>Node11&#45;&gt;Node12</title>
-<path fill="none" stroke="midnightblue" d="M2638.83,-124.091C2640.84,-111.214 2643.18,-96.1974 2644.63,-86.8932"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2635.33,-123.813 2637.24,-134.233 2642.24,-124.892 2635.33,-123.813"/>
+<path fill="none" stroke="midnightblue" d="M2669.77,-124.091C2668.86,-111.214 2667.79,-96.1974 2667.13,-86.8932"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2666.29,-124.506 2670.49,-134.233 2673.27,-124.011 2666.29,-124.506"/>
 </g>
 <!-- Node13 -->
 <g id="node13" class="node"><title>Node13</title>
 <g id="a_node13"><a xlink:href="_dwarf_elephant_r_b_dirichlet_b_c_8h.html" target="_top" xlink:title="include/bcs/DwarfElephant\lRBDirichletBC.h">
-<polygon fill="white" stroke="red" points="2754.52,-62 2754.52,-92 2889.52,-92 2889.52,-62 2754.52,-62"/>
-<text text-anchor="start" x="2762.52" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
-<text text-anchor="middle" x="2822.02" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBDirichletBC.h</text>
+<polygon fill="white" stroke="red" points="2775,-62 2775,-92 2910,-92 2910,-62 2775,-62"/>
+<text text-anchor="start" x="2783" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
+<text text-anchor="middle" x="2842.5" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBDirichletBC.h</text>
 </a>
 </g>
 </g>
 <!-- Node11&#45;&gt;Node13 -->
 <g id="edge13" class="edge"><title>Node11&#45;&gt;Node13</title>
-<path fill="none" stroke="midnightblue" d="M2681.94,-130.81C2713.72,-118.827 2755.15,-103.21 2784.69,-92.0729"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2680.53,-127.6 2672.41,-134.403 2683,-134.15 2680.53,-127.6"/>
+<path fill="none" stroke="midnightblue" d="M2715.16,-130.499C2744.12,-118.559 2781.59,-103.114 2808.37,-92.0729"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2713.6,-127.355 2705.69,-134.403 2716.27,-133.827 2713.6,-127.355"/>
 </g>
 <!-- Node14 -->
 <g id="node14" class="node"><title>Node14</title>
 <g id="a_node14"><a xlink:href="_dwarf_elephant_r_b_function_dirichlet_b_c_8h.html" target="_top" xlink:title="include/bcs/DwarfElephant\lRBFunctionDirichletBC.h">
-<polygon fill="white" stroke="red" points="2907.52,-62 2907.52,-92 3042.52,-92 3042.52,-62 2907.52,-62"/>
-<text text-anchor="start" x="2915.52" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
-<text text-anchor="middle" x="2975.02" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBFunctionDirichletBC.h</text>
+<polygon fill="white" stroke="red" points="2928,-62 2928,-92 3063,-92 3063,-62 2928,-62"/>
+<text text-anchor="start" x="2936" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
+<text text-anchor="middle" x="2995.5" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBFunctionDirichletBC.h</text>
 </a>
 </g>
 </g>
 <!-- Node11&#45;&gt;Node14 -->
 <g id="edge15" class="edge"><title>Node11&#45;&gt;Node14</title>
-<path fill="none" stroke="midnightblue" d="M2712.48,-134.981C2765.01,-125.482 2835.92,-112.012 2898.02,-98 2906.1,-96.176 2914.63,-94.1084 2922.94,-92.0116"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2711.78,-131.551 2702.56,-136.767 2713.02,-138.44 2711.78,-131.551"/>
+<path fill="none" stroke="midnightblue" d="M2748.92,-133.754C2797.71,-124.193 2861.96,-111.114 2918.5,-98 2926.44,-96.1589 2934.81,-94.1041 2942.99,-92.032"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2748.21,-130.327 2739.06,-135.679 2749.55,-137.197 2748.21,-130.327"/>
 </g>
 <!-- Node13&#45;&gt;Node9 -->
 <g id="edge14" class="edge"><title>Node13&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M2764.24,-59.6028C2757.79,-58.1893 2751.29,-56.9416 2745.02,-56 2561.35,-28.4379 1997.53,-15.9484 1793.07,-12.241"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2763.75,-63.0821 2774.28,-61.9406 2765.34,-56.2644 2763.75,-63.0821"/>
+<path fill="none" stroke="midnightblue" d="M2785.01,-59.6161C2778.47,-58.1863 2771.87,-56.9314 2765.5,-56 2539.44,-22.9336 1835.56,-13.752 1603.53,-11.59"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2784.65,-63.1272 2795.18,-61.9854 2786.24,-56.3094 2784.65,-63.1272"/>
 </g>
 <!-- Node14&#45;&gt;Node9 -->
 <g id="edge16" class="edge"><title>Node14&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M2917.52,-59.6273C2910.98,-58.1954 2904.38,-56.937 2898.02,-56 2683.53,-24.4339 2018.03,-14.3106 1793.14,-11.745"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2917.17,-63.1384 2927.7,-61.9988 2918.76,-56.3209 2917.17,-63.1384"/>
+<path fill="none" stroke="midnightblue" d="M2938.01,-59.5905C2931.47,-58.1655 2924.87,-56.9187 2918.5,-56 2661.45,-18.9259 1854.86,-12.3838 1603.83,-11.2398"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2937.66,-63.1017 2948.19,-61.955 2939.24,-56.2832 2937.66,-63.1017"/>
 </g>
 <!-- Node15&#45;&gt;Node9 -->
 <g id="edge18" class="edge"><title>Node15&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M2822.84,-194.342C2843.82,-174.919 2874.62,-149.41 2906.02,-134 2965.63,-104.744 3010.11,-150.304 3051.02,-98 3062.52,-83.2962 3063.99,-69.4201 3051.02,-56 3007.08,-10.5579 2068.14,-9.898 1793.09,-10.6856"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2820.17,-192.047 2815.3,-201.454 2824.97,-197.14 2820.17,-192.047"/>
+<path fill="none" stroke="midnightblue" d="M187.703,-191C182.359,-153.299 180.111,-89.4828 217.5,-56 263.731,-14.5996 1181.91,-11.0771 1453.47,-10.9436"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="184.321,-192.018 189.342,-201.348 191.235,-190.923 184.321,-192.018"/>
 </g>
 <!-- Node16 -->
 <g id="node16" class="node"><title>Node16</title>
 <g id="a_node16"><a xlink:href="_dwarf_elephant_offline_online_stage_steady_state_8_c.html" target="_top" xlink:title="src/userobjects/DwarfElephant\lOfflineOnlineStageSteadyState.C">
-<polygon fill="white" stroke="black" points="2915.52,-134.5 2915.52,-164.5 3080.52,-164.5 3080.52,-134.5 2915.52,-134.5"/>
-<text text-anchor="start" x="2923.52" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/userobjects/DwarfElephant</text>
-<text text-anchor="middle" x="2998.02" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">OfflineOnlineStageSteadyState.C</text>
+<polygon fill="white" stroke="black" points="0,-134.5 0,-164.5 165,-164.5 165,-134.5 0,-134.5"/>
+<text text-anchor="start" x="8" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/userobjects/DwarfElephant</text>
+<text text-anchor="middle" x="82.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">OfflineOnlineStageSteadyState.C</text>
 </a>
 </g>
 </g>
 <!-- Node15&#45;&gt;Node16 -->
 <g id="edge19" class="edge"><title>Node15&#45;&gt;Node16</title>
-<path fill="none" stroke="midnightblue" d="M2861.65,-198.095C2893.27,-187.059 2930.18,-174.175 2957.63,-164.597"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2860.31,-194.856 2852.02,-201.455 2862.61,-201.465 2860.31,-194.856"/>
+<path fill="none" stroke="midnightblue" d="M153.692,-195.717C137.25,-185.274 118.805,-173.559 104.81,-164.67"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="152.262,-198.955 162.58,-201.362 156.015,-193.046 152.262,-198.955"/>
 </g>
 <!-- Node17 -->
 <g id="node17" class="node"><title>Node17</title>
 <g id="a_node17"><a xlink:href="_dwarf_elephant_dakota_output_8h.html" target="_top" xlink:title="include/outputs/DwarfElephant\lDakotaOutput.h">
-<polygon fill="white" stroke="red" points="2348.02,-134.5 2348.02,-164.5 2500.02,-164.5 2500.02,-134.5 2348.02,-134.5"/>
-<text text-anchor="start" x="2356.02" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/outputs/DwarfElephant</text>
-<text text-anchor="middle" x="2424.02" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">DakotaOutput.h</text>
+<polygon fill="white" stroke="red" points="1271.5,-134.5 1271.5,-164.5 1423.5,-164.5 1423.5,-134.5 1271.5,-134.5"/>
+<text text-anchor="start" x="1279.5" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/outputs/DwarfElephant</text>
+<text text-anchor="middle" x="1347.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">DakotaOutput.h</text>
 </a>
 </g>
 </g>
 <!-- Node15&#45;&gt;Node17 -->
 <g id="edge20" class="edge"><title>Node15&#45;&gt;Node17</title>
-<path fill="none" stroke="midnightblue" d="M2714.16,-205.486C2649.65,-193.26 2560.47,-176.36 2498.07,-164.534"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2713.82,-208.984 2724.29,-207.407 2715.12,-202.106 2713.82,-208.984"/>
+<path fill="none" stroke="midnightblue" d="M275.48,-215.992C489.608,-202.91 1063.45,-167.853 1271.14,-155.165"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="275.02,-212.513 265.252,-216.617 275.447,-219.5 275.02,-212.513"/>
 </g>
 <!-- Node17&#45;&gt;Node9 -->
 <g id="edge21" class="edge"><title>Node17&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M2447.68,-127.218C2467.42,-106.965 2489.43,-76.6061 2470.02,-56 2447.05,-31.6189 1979.21,-17.4407 1793.27,-12.7502"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2445.01,-124.94 2440.32,-134.443 2449.91,-129.935 2445.01,-124.94"/>
+<path fill="none" stroke="midnightblue" d="M1319.6,-127.752C1310.81,-119.566 1302.18,-109.384 1297.5,-98 1290.4,-80.7365 1285.63,-70.4061 1297.5,-56 1317.08,-32.2325 1393.71,-20.8524 1453.4,-15.5123"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1317.42,-130.497 1327.26,-134.413 1322.01,-125.213 1317.42,-130.497"/>
 </g>
 <!-- Node18&#45;&gt;Node9 -->
 <g id="edge23" class="edge"><title>Node18&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M2038.21,-356.978C1221.93,-215.931 989.192,-354.222 187.018,-165 104.746,-145.593 57.1228,-167.507 9.01788,-98 -1.60511,-82.6508 -4.00657,-69.3719 9.01788,-56 37.9217,-26.3251 1316.83,-14.1799 1642.96,-11.5622"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2037.69,-360.44 2048.14,-358.703 2038.89,-353.543 2037.69,-360.44"/>
+<path fill="none" stroke="midnightblue" d="M1985.43,-368.554C2275.92,-337.102 3230.87,-220.088 3071.5,-56 3045.65,-29.3862 1909.4,-15.1384 1603.61,-11.7815"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1984.95,-365.086 1975.38,-369.637 1985.7,-372.046 1984.95,-365.086"/>
 </g>
 <!-- Node18&#45;&gt;Node17 -->
-<g id="edge63" class="edge"><title>Node18&#45;&gt;Node17</title>
-<path fill="none" stroke="midnightblue" d="M2136.04,-348.77C2159.48,-309.949 2206.72,-240.42 2265.02,-201 2290.33,-183.883 2321.78,-172.298 2350.02,-164.592"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2132.96,-347.098 2130.87,-357.484 2138.98,-350.671 2132.96,-347.098"/>
+<g id="edge61" class="edge"><title>Node18&#45;&gt;Node17</title>
+<path fill="none" stroke="midnightblue" d="M1857.36,-352.744C1775.63,-310.032 1608.23,-223.761 1546.5,-201 1504.7,-185.585 1456.27,-173.184 1417.66,-164.528"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1855.94,-355.947 1866.42,-357.482 1859.18,-349.745 1855.94,-355.947"/>
 </g>
 <!-- Node19 -->
 <g id="node19" class="node"><title>Node19</title>
 <g id="a_node19"><a xlink:href="_dwarf_elephant_r_b_classes_transient_8h.html" target="_top" xlink:title="include/base/DwarfElephant\lRBClassesTransient.h">
-<polygon fill="white" stroke="red" points="1902.52,-285 1902.52,-315 2043.52,-315 2043.52,-285 1902.52,-285"/>
-<text text-anchor="start" x="1910.52" y="-303" font-family="Helvetica,sans-Serif" font-size="10.00">include/base/DwarfElephant</text>
-<text text-anchor="middle" x="1973.02" y="-292" font-family="Helvetica,sans-Serif" font-size="10.00">RBClassesTransient.h</text>
+<polygon fill="white" stroke="red" points="1833,-285 1833,-315 1974,-315 1974,-285 1833,-285"/>
+<text text-anchor="start" x="1841" y="-303" font-family="Helvetica,sans-Serif" font-size="10.00">include/base/DwarfElephant</text>
+<text text-anchor="middle" x="1903.5" y="-292" font-family="Helvetica,sans-Serif" font-size="10.00">RBClassesTransient.h</text>
 </a>
 </g>
 </g>
 <!-- Node18&#45;&gt;Node19 -->
 <g id="edge24" class="edge"><title>Node18&#45;&gt;Node19</title>
-<path fill="none" stroke="midnightblue" d="M2067.21,-352.97C2042.41,-340.554 2014.23,-325.827 1995.13,-315.225"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2065.66,-356.108 2076.17,-357.428 2068.78,-349.84 2065.66,-356.108"/>
+<path fill="none" stroke="midnightblue" d="M1896.89,-347.283C1896.5,-336.254 1896.9,-324.246 1898.1,-315.225"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1893.41,-347.659 1897.51,-357.428 1900.4,-347.234 1893.41,-347.659"/>
 </g>
 <!-- Node19&#45;&gt;Node18 -->
-<g id="edge62" class="edge"><title>Node19&#45;&gt;Node18</title>
-<path fill="none" stroke="midnightblue" d="M2015.22,-319.762C2038.46,-331.214 2066.76,-345.832 2088.15,-357.428"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2016.46,-316.47 2005.93,-315.225 2013.38,-322.76 2016.46,-316.47"/>
+<g id="edge60" class="edge"><title>Node19&#45;&gt;Node18</title>
+<path fill="none" stroke="midnightblue" d="M1909.84,-325.313C1910.49,-335.688 1910.37,-347.635 1909.49,-357.428"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1913.32,-324.856 1908.9,-315.225 1906.35,-325.508 1913.32,-324.856"/>
 </g>
 <!-- Node19&#45;&gt;Node20 -->
 <g id="edge25" class="edge"><title>Node19&#45;&gt;Node20</title>
-<path fill="none" stroke="midnightblue" d="M1938.75,-279.292C1921.64,-268.056 1901.5,-254.018 1886.37,-242.771"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1937.09,-282.384 1947.38,-284.883 1940.89,-276.509 1937.09,-282.384"/>
+<path fill="none" stroke="midnightblue" d="M1867.41,-279.601C1848.86,-268.314 1826.81,-254.121 1810.19,-242.771"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1865.82,-282.73 1876.19,-284.883 1869.43,-276.731 1865.82,-282.73"/>
 </g>
 <!-- Node20&#45;&gt;Node9 -->
 <g id="edge26" class="edge"><title>Node20&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M1769.75,-218.298C1402.03,-207.299 81.3021,-163.356 22.0179,-98 9.47647,-84.174 8.99478,-69.3732 22.0179,-56 50.683,-26.5642 1318.46,-14.2506 1642.98,-11.5776"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1769.73,-221.798 1779.83,-218.598 1769.94,-214.801 1769.73,-221.798"/>
+<path fill="none" stroke="midnightblue" d="M1737.44,-195.956C1724.26,-187.438 1710.79,-176.992 1700.5,-165 1665.79,-124.552 1689.6,-92.2146 1650.5,-56 1630.13,-37.1325 1601.17,-26.0073 1576.58,-19.54"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1735.67,-198.979 1746.01,-201.271 1739.36,-193.029 1735.67,-198.979"/>
 </g>
 <!-- Node20&#45;&gt;Node11 -->
 <g id="edge29" class="edge"><title>Node20&#45;&gt;Node11</title>
-<path fill="none" stroke="midnightblue" d="M1958.07,-213.663C2083.74,-203.671 2313.3,-184.754 2509.02,-165 2527.97,-163.087 2548.5,-160.812 2567.38,-158.637"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1957.79,-210.175 1948.1,-214.455 1958.34,-217.153 1957.79,-210.175"/>
+<path fill="none" stroke="midnightblue" d="M1879.89,-213.49C2059.74,-199.179 2447.53,-168.322 2604,-155.871"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1879.34,-210.022 1869.65,-214.304 1879.9,-217 1879.34,-210.022"/>
 </g>
 <!-- Node20&#45;&gt;Node17 -->
-<g id="edge60" class="edge"><title>Node20&#45;&gt;Node17</title>
-<path fill="none" stroke="midnightblue" d="M1958.21,-209.141C2067.79,-195.347 2246.56,-172.84 2347.8,-160.095"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1957.64,-205.686 1948.16,-210.407 1958.52,-212.631 1957.64,-205.686"/>
+<g id="edge58" class="edge"><title>Node20&#45;&gt;Node17</title>
+<path fill="none" stroke="midnightblue" d="M1691.24,-205.828C1611.29,-192.959 1498.06,-174.734 1423.73,-162.77"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1690.88,-209.315 1701.31,-207.449 1691.99,-202.404 1690.88,-209.315"/>
 </g>
 <!-- Node20&#45;&gt;Node18 -->
-<g id="edge61" class="edge"><title>Node20&#45;&gt;Node18</title>
-<path fill="none" stroke="midnightblue" d="M1957.94,-237.864C1989.93,-246.189 2024.52,-259.085 2052.02,-279 2080.19,-299.408 2100.67,-335.235 2111.42,-357.455"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1958.66,-234.436 1948.11,-235.425 1956.97,-241.23 1958.66,-234.436"/>
+<g id="edge59" class="edge"><title>Node20&#45;&gt;Node18</title>
+<path fill="none" stroke="midnightblue" d="M1792.09,-252.614C1797.81,-273.355 1807.7,-300.853 1823.5,-321 1835.01,-335.675 1851.4,-348.078 1866.35,-357.452"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1795.43,-251.555 1789.54,-242.749 1788.65,-253.306 1795.43,-251.555"/>
 </g>
 <!-- Node20&#45;&gt;Node19 -->
 <g id="edge28" class="edge"><title>Node20&#45;&gt;Node19</title>
-<path fill="none" stroke="midnightblue" d="M1906.9,-248.433C1924.91,-260.514 1944.64,-274.506 1957.93,-284.705"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1908.51,-245.296 1898.24,-242.68 1904.64,-251.128 1908.51,-245.296"/>
+<path fill="none" stroke="midnightblue" d="M1830.78,-248.051C1850.49,-260.289 1872.32,-274.563 1886.97,-284.883"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1832.55,-245.031 1822.2,-242.771 1828.89,-250.993 1832.55,-245.031"/>
 </g>
 <!-- Node21 -->
 <g id="node21" class="node"><title>Node21</title>
 <g id="a_node21"><a xlink:href="_dwarf_elephant_intialize_r_b_system_transient_8_c.html" target="_top" xlink:title="src/userobjects/DwarfElephant\lIntializeRBSystemTransient.C">
-<polygon fill="white" stroke="black" points="1609.02,-134.5 1609.02,-164.5 1761.02,-164.5 1761.02,-134.5 1609.02,-134.5"/>
-<text text-anchor="start" x="1617.02" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/userobjects/DwarfElephant</text>
-<text text-anchor="middle" x="1685.02" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">IntializeRBSystemTransient.C</text>
+<polygon fill="white" stroke="black" points="1709.5,-134.5 1709.5,-164.5 1861.5,-164.5 1861.5,-134.5 1709.5,-134.5"/>
+<text text-anchor="start" x="1717.5" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/userobjects/DwarfElephant</text>
+<text text-anchor="middle" x="1785.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">IntializeRBSystemTransient.C</text>
 </a>
 </g>
 </g>
 <!-- Node20&#45;&gt;Node21 -->
 <g id="edge27" class="edge"><title>Node20&#45;&gt;Node21</title>
-<path fill="none" stroke="midnightblue" d="M1804.54,-197.574C1776.78,-186.641 1744.66,-173.991 1720.72,-164.56"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1803.57,-200.954 1814.16,-201.362 1806.13,-194.441 1803.57,-200.954"/>
+<path fill="none" stroke="midnightblue" d="M1785.5,-191.08C1785.5,-182.006 1785.5,-172.45 1785.5,-164.892"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1782,-191.362 1785.5,-201.362 1789,-191.362 1782,-191.362"/>
 </g>
 <!-- Node22 -->
 <g id="node22" class="node"><title>Node22</title>
 <g id="a_node22"><a xlink:href="_dwarf_elephant_r_b_integrated_b_c_8h.html" target="_top" xlink:title="include/bcs/DwarfElephant\lRBIntegratedBC.h">
-<polygon fill="white" stroke="black" points="1956.52,-134.5 1956.52,-164.5 2091.52,-164.5 2091.52,-134.5 1956.52,-134.5"/>
-<text text-anchor="start" x="1964.52" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
-<text text-anchor="middle" x="2024.02" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">RBIntegratedBC.h</text>
+<polygon fill="white" stroke="black" points="831,-134.5 831,-164.5 966,-164.5 966,-134.5 831,-134.5"/>
+<text text-anchor="start" x="839" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
+<text text-anchor="middle" x="898.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">RBIntegratedBC.h</text>
 </a>
 </g>
 </g>
 <!-- Node20&#45;&gt;Node22 -->
 <g id="edge30" class="edge"><title>Node20&#45;&gt;Node22</title>
-<path fill="none" stroke="midnightblue" d="M1917.83,-197.287C1942.5,-186.42 1970.89,-173.909 1992.11,-164.56"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1916.33,-194.127 1908.59,-201.362 1919.15,-200.532 1916.33,-194.127"/>
+<path fill="none" stroke="midnightblue" d="M1691.34,-212.996C1647.34,-209.287 1594.24,-204.858 1546.5,-201 1334.77,-183.891 1084.03,-164.637 966.145,-155.644"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1691.19,-216.495 1701.45,-213.848 1691.78,-209.52 1691.19,-216.495"/>
 </g>
 <!-- Node29 -->
 <g id="node29" class="node"><title>Node29</title>
 <g id="a_node29"><a xlink:href="_dwarf_elephant_r_b_dirac_kernel_8h.html" target="_top" xlink:title="include/dirackernels\l/DwarfElephantRBDiracKernel.h">
-<polygon fill="white" stroke="black" points="1779.52,-134.5 1779.52,-164.5 1938.52,-164.5 1938.52,-134.5 1779.52,-134.5"/>
-<text text-anchor="start" x="1787.52" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/dirackernels</text>
-<text text-anchor="middle" x="1859.02" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBDiracKernel.h</text>
+<polygon fill="white" stroke="black" points="1483,-134.5 1483,-164.5 1642,-164.5 1642,-134.5 1483,-134.5"/>
+<text text-anchor="start" x="1491" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/dirackernels</text>
+<text text-anchor="middle" x="1562.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBDiracKernel.h</text>
 </a>
 </g>
 </g>
 <!-- Node20&#45;&gt;Node29 -->
 <g id="edge42" class="edge"><title>Node20&#45;&gt;Node29</title>
-<path fill="none" stroke="midnightblue" d="M1861.92,-191.376C1861.27,-182.214 1860.58,-172.532 1860.04,-164.892"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1858.43,-191.635 1862.63,-201.362 1865.41,-191.139 1858.43,-191.635"/>
+<path fill="none" stroke="midnightblue" d="M1713.95,-198.38C1678.84,-187.281 1637.65,-174.257 1607.09,-164.597"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1713.09,-201.778 1723.68,-201.455 1715.2,-195.104 1713.09,-201.778"/>
 </g>
 <!-- Node32 -->
 <g id="node32" class="node"><title>Node32</title>
 <g id="a_node32"><a xlink:href="_dwarf_elephant_r_b_initial_condition_8h.html" target="_top" xlink:title="include/ics/DwarfElephant\lRBInitialCondition.h">
-<polygon fill="white" stroke="red" points="717.018,-134.5 717.018,-164.5 849.018,-164.5 849.018,-134.5 717.018,-134.5"/>
-<text text-anchor="start" x="725.018" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/ics/DwarfElephant</text>
-<text text-anchor="middle" x="783.018" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">RBInitialCondition.h</text>
+<polygon fill="white" stroke="red" points="2061.5,-134.5 2061.5,-164.5 2193.5,-164.5 2193.5,-134.5 2061.5,-134.5"/>
+<text text-anchor="start" x="2069.5" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/ics/DwarfElephant</text>
+<text text-anchor="middle" x="2127.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">RBInitialCondition.h</text>
 </a>
 </g>
 </g>
 <!-- Node20&#45;&gt;Node32 -->
 <g id="edge46" class="edge"><title>Node20&#45;&gt;Node32</title>
-<path fill="none" stroke="midnightblue" d="M1769.73,-220.001C1591.15,-217.168 1191.57,-206.335 858.018,-165 855.122,-164.641 852.171,-164.237 849.194,-163.798"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1769.82,-223.503 1779.88,-220.157 1769.93,-216.503 1769.82,-223.503"/>
+<path fill="none" stroke="midnightblue" d="M1879.47,-201.63C1937.2,-189.728 2009.75,-174.774 2061.44,-164.118"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1878.69,-198.217 1869.6,-203.663 1880.1,-205.072 1878.69,-198.217"/>
 </g>
 <!-- Node33 -->
 <g id="node33" class="node"><title>Node33</title>
 <g id="a_node33"><a xlink:href="_dwarf_elephant_r_b_kernel_8h.html" target="_top" xlink:title="include/kernels/DwarfElephant\lRBKernel.h">
-<polygon fill="white" stroke="red" points="867.018,-134.5 867.018,-164.5 1019.02,-164.5 1019.02,-134.5 867.018,-134.5"/>
-<text text-anchor="start" x="875.018" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/kernels/DwarfElephant</text>
-<text text-anchor="middle" x="943.018" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">RBKernel.h</text>
+<polygon fill="white" stroke="red" points="1891.5,-134.5 1891.5,-164.5 2043.5,-164.5 2043.5,-134.5 1891.5,-134.5"/>
+<text text-anchor="start" x="1899.5" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/kernels/DwarfElephant</text>
+<text text-anchor="middle" x="1967.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">RBKernel.h</text>
 </a>
 </g>
 </g>
 <!-- Node20&#45;&gt;Node33 -->
 <g id="edge47" class="edge"><title>Node20&#45;&gt;Node33</title>
-<path fill="none" stroke="midnightblue" d="M1769.9,-201.803C1767.92,-201.521 1765.96,-201.253 1764.02,-201 1491.42,-165.524 1164.56,-154.846 1019.18,-151.732"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1769.45,-205.275 1779.86,-203.318 1770.5,-198.354 1769.45,-205.275"/>
+<path fill="none" stroke="midnightblue" d="M1845.61,-197.717C1873.91,-186.751 1906.75,-174.032 1931.2,-164.56"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1844.26,-194.486 1836.2,-201.362 1846.79,-201.013 1844.26,-194.486"/>
 </g>
 <!-- Node23 -->
 <g id="node23" class="node"><title>Node23</title>
 <g id="a_node23"><a xlink:href="_dwarf_elephant_r_b_integrated_b_c_8_c.html" target="_top" xlink:title="src/bcs/DwarfElephantRBIntegratedBC.C">
-<polygon fill="white" stroke="black" points="2109.52,-67.5 2109.52,-86.5 2308.52,-86.5 2308.52,-67.5 2109.52,-67.5"/>
-<text text-anchor="middle" x="2209.02" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/bcs/DwarfElephantRBIntegratedBC.C</text>
+<polygon fill="white" stroke="black" points="898,-67.5 898,-86.5 1097,-86.5 1097,-67.5 898,-67.5"/>
+<text text-anchor="middle" x="997.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">src/bcs/DwarfElephantRBIntegratedBC.C</text>
 </a>
 </g>
 </g>
 <!-- Node22&#45;&gt;Node23 -->
 <g id="edge31" class="edge"><title>Node22&#45;&gt;Node23</title>
-<path fill="none" stroke="midnightblue" d="M2070.61,-130.743C2107.71,-116.607 2158,-97.4423 2186.62,-86.5336"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2069.11,-127.571 2061.01,-134.403 2071.6,-134.112 2069.11,-127.571"/>
+<path fill="none" stroke="midnightblue" d="M926.722,-128.403C946.07,-114.624 970.776,-97.0306 985.296,-86.6911"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="924.65,-125.582 918.534,-134.233 928.71,-131.284 924.65,-125.582"/>
 </g>
 <!-- Node24 -->
 <g id="node24" class="node"><title>Node24</title>
 <g id="a_node24"><a xlink:href="_dwarf_elephant_r_b_function_neumann_b_c_8h.html" target="_top" xlink:title="include/bcs/DwarfElephant\lRBFunctionNeumannBC.h">
-<polygon fill="white" stroke="red" points="2326.52,-62 2326.52,-92 2461.52,-92 2461.52,-62 2326.52,-62"/>
-<text text-anchor="start" x="2334.52" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
-<text text-anchor="middle" x="2394.02" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBFunctionNeumannBC.h</text>
+<polygon fill="white" stroke="red" points="566,-62 566,-92 701,-92 701,-62 566,-62"/>
+<text text-anchor="start" x="574" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
+<text text-anchor="middle" x="633.5" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBFunctionNeumannBC.h</text>
 </a>
 </g>
 </g>
 <!-- Node22&#45;&gt;Node24 -->
 <g id="edge32" class="edge"><title>Node22&#45;&gt;Node24</title>
-<path fill="none" stroke="midnightblue" d="M2101.56,-136.943C2160.82,-127.674 2244.4,-113.661 2317.02,-98 2325.25,-96.2239 2333.94,-94.1587 2342.39,-92.043"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2100.87,-133.508 2091.53,-138.503 2101.95,-140.425 2100.87,-133.508"/>
+<path fill="none" stroke="midnightblue" d="M836.079,-131.894C790.6,-119.794 729.654,-103.581 686.526,-92.1069"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="835.264,-135.299 845.828,-134.487 837.064,-128.534 835.264,-135.299"/>
 </g>
 <!-- Node25 -->
 <g id="node25" class="node"><title>Node25</title>
 <g id="a_node25"><a xlink:href="_dwarf_elephant_r_b_function_penalty_dirichlet_b_c_8h.html" target="_top" xlink:title="include/bcs/DwarfElephant\lRBFunctionPenaltyDirichletBC.h">
-<polygon fill="white" stroke="red" points="1472.02,-62 1472.02,-92 1632.02,-92 1632.02,-62 1472.02,-62"/>
-<text text-anchor="start" x="1480.02" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
-<text text-anchor="middle" x="1552.02" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBFunctionPenaltyDirichletBC.h</text>
+<polygon fill="white" stroke="red" points="719.5,-62 719.5,-92 879.5,-92 879.5,-62 719.5,-62"/>
+<text text-anchor="start" x="727.5" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
+<text text-anchor="middle" x="799.5" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBFunctionPenaltyDirichletBC.h</text>
 </a>
 </g>
 </g>
 <!-- Node22&#45;&gt;Node25 -->
 <g id="edge34" class="edge"><title>Node22&#45;&gt;Node25</title>
-<path fill="none" stroke="midnightblue" d="M1946.45,-133.993C1809.93,-113.662 1772.84,-120.503 1641.02,-98 1631.18,-96.3211 1620.8,-94.2573 1610.73,-92.0997"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1946.05,-137.471 1956.46,-135.504 1947.09,-130.55 1946.05,-137.471"/>
+<path fill="none" stroke="midnightblue" d="M870.318,-128.431C853.974,-116.792 833.797,-102.424 819.166,-92.0049"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="868.29,-131.284 878.466,-134.233 872.35,-125.582 868.29,-131.284"/>
 </g>
 <!-- Node26 -->
 <g id="node26" class="node"><title>Node26</title>
 <g id="a_node26"><a xlink:href="_dwarf_elephant_r_b_neumann_b_c_8h.html" target="_top" xlink:title="include/bcs/DwarfElephant\lRBNeumannBC.h">
-<polygon fill="white" stroke="red" points="1650.52,-62 1650.52,-92 1785.52,-92 1785.52,-62 1650.52,-62"/>
-<text text-anchor="start" x="1658.52" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
-<text text-anchor="middle" x="1718.02" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBNeumannBC.h</text>
+<polygon fill="white" stroke="red" points="1115,-62 1115,-92 1250,-92 1250,-62 1115,-62"/>
+<text text-anchor="start" x="1123" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
+<text text-anchor="middle" x="1182.5" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBNeumannBC.h</text>
 </a>
 </g>
 </g>
 <!-- Node22&#45;&gt;Node26 -->
 <g id="edge36" class="edge"><title>Node22&#45;&gt;Node26</title>
-<path fill="none" stroke="midnightblue" d="M1946.75,-132.364C1902.03,-122.818 1844.73,-110.234 1794.02,-98 1786.33,-96.1441 1778.22,-94.1026 1770.28,-92.0548"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1946.16,-135.818 1956.67,-134.477 1947.62,-128.971 1946.16,-135.818"/>
+<path fill="none" stroke="midnightblue" d="M966.74,-132.121C1007.13,-122.361 1059.27,-109.642 1105.5,-98 1113,-96.1111 1120.9,-94.0916 1128.68,-92.089"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="965.899,-128.724 957,-134.473 967.542,-135.528 965.899,-128.724"/>
 </g>
 <!-- Node27 -->
 <g id="node27" class="node"><title>Node27</title>
 <g id="a_node27"><a xlink:href="_dwarf_elephant_r_b_neumann_b_c_n_d_8h.html" target="_top" xlink:title="include/bcs/DwarfElephant\lRBNeumannBCND.h">
-<polygon fill="white" stroke="red" points="1803.52,-62 1803.52,-92 1938.52,-92 1938.52,-62 1803.52,-62"/>
-<text text-anchor="start" x="1811.52" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
-<text text-anchor="middle" x="1871.02" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBNeumannBCND.h</text>
+<polygon fill="white" stroke="red" points="260,-62 260,-92 395,-92 395,-62 260,-62"/>
+<text text-anchor="start" x="268" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
+<text text-anchor="middle" x="327.5" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBNeumannBCND.h</text>
 </a>
 </g>
 </g>
 <!-- Node22&#45;&gt;Node27 -->
 <g id="edge38" class="edge"><title>Node22&#45;&gt;Node27</title>
-<path fill="none" stroke="midnightblue" d="M1984.27,-130.187C1958.46,-118.29 1925.31,-103.018 1901.56,-92.0729"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1982.88,-133.396 1993.42,-134.403 1985.81,-127.039 1982.88,-133.396"/>
+<path fill="none" stroke="midnightblue" d="M820.667,-144.316C722.721,-138.191 549.621,-124.514 403.5,-98 394.64,-96.3923 385.297,-94.2843 376.309,-92.0407"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="820.583,-147.817 830.779,-144.938 821.013,-140.83 820.583,-147.817"/>
 </g>
 <!-- Node28 -->
 <g id="node28" class="node"><title>Node28</title>
 <g id="a_node28"><a xlink:href="_dwarf_elephant_r_b_penalty_dirichlet_b_c_8h.html" target="_top" xlink:title="include/bcs/DwarfElephant\lRBPenaltyDirichletBC.h">
-<polygon fill="white" stroke="red" points="1956.52,-62 1956.52,-92 2091.52,-92 2091.52,-62 1956.52,-62"/>
-<text text-anchor="start" x="1964.52" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
-<text text-anchor="middle" x="2024.02" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBPenaltyDirichletBC.h</text>
+<polygon fill="white" stroke="red" points="413,-62 413,-92 548,-92 548,-62 413,-62"/>
+<text text-anchor="start" x="421" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/bcs/DwarfElephant</text>
+<text text-anchor="middle" x="480.5" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBPenaltyDirichletBC.h</text>
 </a>
 </g>
 </g>
 <!-- Node22&#45;&gt;Node28 -->
 <g id="edge40" class="edge"><title>Node22&#45;&gt;Node28</title>
-<path fill="none" stroke="midnightblue" d="M2024.02,-124.232C2024.02,-113.568 2024.02,-101.414 2024.02,-92.2455"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2020.52,-124.233 2024.02,-134.233 2027.52,-124.233 2020.52,-124.233"/>
+<path fill="none" stroke="midnightblue" d="M820.943,-139.535C751.345,-130.901 646.589,-116.446 556.5,-98 548.079,-96.2758 539.2,-94.189 530.599,-92.0225"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="820.598,-143.019 830.951,-140.767 821.453,-136.072 820.598,-143.019"/>
 </g>
 <!-- Node24&#45;&gt;Node9 -->
 <g id="edge33" class="edge"><title>Node24&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M2335.66,-59.6763C2329.4,-58.275 2323.1,-57.0097 2317.02,-56 2130.3,-24.9936 1907.25,-15.3337 1793.24,-12.3372"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2334.88,-63.0901 2345.42,-61.9729 2336.49,-56.2761 2334.88,-63.0901"/>
+<path fill="none" stroke="midnightblue" d="M691.565,-59.6125C697.918,-58.2105 704.32,-56.9627 710.5,-56 981.554,-13.7744 1308.5,-9.63211 1453.26,-10.1567"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="690.603,-56.2427 681.661,-61.9238 692.194,-63.0596 690.603,-56.2427"/>
 </g>
 <!-- Node25&#45;&gt;Node9 -->
 <g id="edge35" class="edge"><title>Node25&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M1597.68,-58.1214C1629.81,-45.5403 1671.37,-29.2661 1696.29,-19.507"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1596.07,-54.9907 1588.04,-61.896 1598.63,-61.5089 1596.07,-54.9907"/>
+<path fill="none" stroke="midnightblue" d="M866.077,-59.895C873.61,-58.4138 881.2,-57.0706 888.5,-56 1091.28,-26.2603 1333.19,-16.0243 1453.22,-12.6191"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="865.33,-56.4752 856.236,-61.9104 866.735,-63.3329 865.33,-56.4752"/>
 </g>
 <!-- Node26&#45;&gt;Node9 -->
 <g id="edge37" class="edge"><title>Node26&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M1718.02,-51.7495C1718.02,-40.517 1718.02,-27.8767 1718.02,-19.6945"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1714.52,-51.8959 1718.02,-61.896 1721.52,-51.896 1714.52,-51.8959"/>
+<path fill="none" stroke="midnightblue" d="M1247.98,-59.595C1253.55,-58.3298 1259.12,-57.1134 1264.5,-56 1335.53,-41.3038 1418.02,-27.8084 1471.64,-19.5076"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1246.91,-56.2491 1237.96,-61.9137 1248.49,-63.0688 1246.91,-56.2491"/>
 </g>
 <!-- Node27&#45;&gt;Node9 -->
 <g id="edge39" class="edge"><title>Node27&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M1828.55,-57.9585C1798.99,-45.4001 1760.91,-29.224 1738.04,-19.507"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1827.25,-61.2071 1837.82,-61.896 1829.98,-54.7644 1827.25,-61.2071"/>
+<path fill="none" stroke="midnightblue" d="M384.516,-59.5759C390.88,-58.1674 397.302,-56.9283 403.5,-56 606.841,-25.5485 1235.71,-14.7564 1453.41,-11.8768"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="383.535,-56.2111 374.602,-61.9084 385.138,-63.0251 383.535,-56.2111"/>
 </g>
 <!-- Node28&#45;&gt;Node9 -->
 <g id="edge41" class="edge"><title>Node28&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M1961.49,-59.4241C1956.6,-58.2305 1951.74,-57.0751 1947.02,-56 1884.8,-41.8198 1812.46,-28.0548 1766,-19.5615"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1960.97,-62.9001 1971.52,-61.9142 1962.66,-56.1066 1960.97,-62.9001"/>
+<path fill="none" stroke="midnightblue" d="M537.522,-59.6152C543.885,-58.1993 550.305,-56.9477 556.5,-56 729.02,-29.6096 1256.26,-16.5045 1453.23,-12.4311"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="536.538,-56.2514 527.609,-61.9554 538.146,-63.0641 536.538,-56.2514"/>
 </g>
 <!-- Node30 -->
 <g id="node30" class="node"><title>Node30</title>
 <g id="a_node30"><a xlink:href="_dwarf_elephant_r_b_dirac_kernel_8_c.html" target="_top" xlink:title="src/dirackernels/DwarfElephant\lRBDiracKernel.C">
-<polygon fill="white" stroke="black" points="1298.52,-62 1298.52,-92 1453.52,-92 1453.52,-62 1298.52,-62"/>
-<text text-anchor="start" x="1306.52" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">src/dirackernels/DwarfElephant</text>
-<text text-anchor="middle" x="1376.02" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBDiracKernel.C</text>
+<polygon fill="white" stroke="black" points="1487,-62 1487,-92 1642,-92 1642,-62 1487,-62"/>
+<text text-anchor="start" x="1495" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">src/dirackernels/DwarfElephant</text>
+<text text-anchor="middle" x="1564.5" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBDiracKernel.C</text>
 </a>
 </g>
 </g>
 <!-- Node29&#45;&gt;Node30 -->
 <g id="edge43" class="edge"><title>Node29&#45;&gt;Node30</title>
-<path fill="none" stroke="midnightblue" d="M1769.42,-133.967C1632.24,-115.237 1595.21,-120.875 1463.02,-98 1453.24,-96.3088 1442.92,-94.2131 1432.93,-92.021"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1769.08,-137.454 1779.47,-135.359 1770.04,-130.52 1769.08,-137.454"/>
+<path fill="none" stroke="midnightblue" d="M1563.19,-124.232C1563.49,-113.568 1563.84,-101.414 1564.1,-92.2455"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1559.69,-124.138 1562.9,-134.233 1566.69,-124.337 1559.69,-124.138"/>
 </g>
 <!-- Node31 -->
 <g id="node31" class="node"><title>Node31</title>
 <g id="a_node31"><a xlink:href="_dwarf_elephant_r_b_constant_point_source_8h.html" target="_top" xlink:title="include/dirackernels\l/DwarfElephantRBConstantPoint\lSource.h">
-<polygon fill="white" stroke="red" points="1118.02,-56.5 1118.02,-97.5 1280.02,-97.5 1280.02,-56.5 1118.02,-56.5"/>
-<text text-anchor="start" x="1126.02" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/dirackernels</text>
-<text text-anchor="start" x="1126.02" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBConstantPoint</text>
-<text text-anchor="middle" x="1199.02" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00">Source.h</text>
+<polygon fill="white" stroke="red" points="1306.5,-56.5 1306.5,-97.5 1468.5,-97.5 1468.5,-56.5 1306.5,-56.5"/>
+<text text-anchor="start" x="1314.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/dirackernels</text>
+<text text-anchor="start" x="1314.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DwarfElephantRBConstantPoint</text>
+<text text-anchor="middle" x="1387.5" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00">Source.h</text>
 </a>
 </g>
 </g>
 <!-- Node29&#45;&gt;Node31 -->
 <g id="edge44" class="edge"><title>Node29&#45;&gt;Node31</title>
-<path fill="none" stroke="midnightblue" d="M1769.51,-134.023C1555.4,-109.352 1497.88,-128.859 1289.02,-98 1286.17,-97.5789 1283.27,-97.1181 1280.36,-96.6254"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1769.15,-137.505 1779.49,-135.192 1769.96,-130.553 1769.15,-137.505"/>
+<path fill="none" stroke="midnightblue" d="M1517.9,-130.533C1492.88,-120.454 1461.65,-107.871 1436.02,-97.5464"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1516.92,-133.912 1527.51,-134.403 1519.54,-127.419 1516.92,-133.912"/>
 </g>
 <!-- Node31&#45;&gt;Node9 -->
 <g id="edge45" class="edge"><title>Node31&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M1290.44,-55.8577C1419.58,-35.2524 1559.15,-22.7303 1642.89,-16.269"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1289.69,-52.4345 1280.37,-57.4847 1290.8,-59.3449 1289.69,-52.4345"/>
+<path fill="none" stroke="midnightblue" d="M1439.07,-52.2285C1463.73,-40.8587 1491.73,-27.9497 1509.73,-19.6525"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1437.42,-49.1328 1429.8,-56.4979 1440.35,-55.4898 1437.42,-49.1328"/>
 </g>
 <!-- Node33&#45;&gt;Node6 -->
-<g id="edge59" class="edge"><title>Node33&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M991.707,-168.005C1166.94,-231.007 1763.48,-445.479 1922.05,-502.488"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="992.82,-164.686 982.225,-164.596 990.452,-171.273 992.82,-164.686"/>
+<g id="edge57" class="edge"><title>Node33&#45;&gt;Node6</title>
+<path fill="none" stroke="midnightblue" d="M2053.96,-165.075C2265.03,-193.318 2913.5,-108.483 2913.5,-299 2913.5,-379 2913.5,-379 2913.5,-379 2913.5,-444.946 2448.67,-493.104 2259.84,-509.948"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2054.35,-161.595 2043.95,-163.595 2053.33,-168.52 2054.35,-161.595"/>
 </g>
 <!-- Node34 -->
 <g id="node34" class="node"><title>Node34</title>
 <g id="a_node34"><a xlink:href="_dwarf_elephant_r_b_kernel_8_c.html" target="_top" xlink:title="src/kernels/DwarfElephant\lRBKernel.C">
-<polygon fill="white" stroke="black" points="966.518,-62 966.518,-92 1099.52,-92 1099.52,-62 966.518,-62"/>
-<text text-anchor="start" x="974.518" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">src/kernels/DwarfElephant</text>
-<text text-anchor="middle" x="1033.02" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBKernel.C</text>
+<polygon fill="white" stroke="black" points="2425,-62 2425,-92 2558,-92 2558,-62 2425,-62"/>
+<text text-anchor="start" x="2433" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">src/kernels/DwarfElephant</text>
+<text text-anchor="middle" x="2491.5" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBKernel.C</text>
 </a>
 </g>
 </g>
 <!-- Node33&#45;&gt;Node34 -->
 <g id="edge48" class="edge"><title>Node33&#45;&gt;Node34</title>
-<path fill="none" stroke="midnightblue" d="M969.459,-127.788C984.167,-116.266 1002.08,-102.233 1015.14,-92.0049"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="966.945,-125.311 961.231,-134.233 971.261,-130.822 966.945,-125.311"/>
+<path fill="none" stroke="midnightblue" d="M2054.17,-133.845C2214.98,-112.926 2259.21,-126.131 2415.5,-98 2424.36,-96.4048 2433.71,-94.3028 2442.7,-92.0613"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2053.37,-130.42 2043.92,-135.204 2054.29,-137.36 2053.37,-130.42"/>
 </g>
 <!-- Node35 -->
 <g id="node35" class="node"><title>Node35</title>
 <g id="a_node35"><a xlink:href="_dwarf_elephant_r_b_constant_radiogenic_heat_production_8h.html" target="_top" xlink:title="include/kernels/DwarfElephant\lRBConstantRadiogenicHeatProduction.h">
-<polygon fill="white" stroke="red" points="31.0179,-62 31.0179,-92 229.018,-92 229.018,-62 31.0179,-62"/>
-<text text-anchor="start" x="39.0179" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/kernels/DwarfElephant</text>
-<text text-anchor="middle" x="130.018" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBConstantRadiogenicHeatProduction.h</text>
+<polygon fill="white" stroke="red" points="1868.5,-62 1868.5,-92 2066.5,-92 2066.5,-62 1868.5,-62"/>
+<text text-anchor="start" x="1876.5" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/kernels/DwarfElephant</text>
+<text text-anchor="middle" x="1967.5" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBConstantRadiogenicHeatProduction.h</text>
 </a>
 </g>
 </g>
 <!-- Node33&#45;&gt;Node35 -->
 <g id="edge49" class="edge"><title>Node33&#45;&gt;Node35</title>
-<path fill="none" stroke="midnightblue" d="M856.355,-133.9C581.992,-103.43 508.689,-130.79 238.018,-98 225.24,-96.452 211.692,-94.3299 198.668,-92.0441"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="856.29,-137.414 866.619,-135.056 857.074,-130.458 856.29,-137.414"/>
+<path fill="none" stroke="midnightblue" d="M1967.5,-124.232C1967.5,-113.568 1967.5,-101.414 1967.5,-92.2455"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1964,-124.233 1967.5,-134.233 1971,-124.233 1964,-124.233"/>
 </g>
 <!-- Node36 -->
 <g id="node36" class="node"><title>Node36</title>
 <g id="a_node36"><a xlink:href="_dwarf_elephant_r_b_diffusion_8h.html" target="_top" xlink:title="include/kernels/DwarfElephant\lRBDiffusion.h">
-<polygon fill="white" stroke="red" points="247.018,-62 247.018,-92 399.018,-92 399.018,-62 247.018,-62"/>
-<text text-anchor="start" x="255.018" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/kernels/DwarfElephant</text>
-<text text-anchor="middle" x="323.018" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBDiffusion.h</text>
+<polygon fill="white" stroke="red" points="2084.5,-62 2084.5,-92 2236.5,-92 2236.5,-62 2084.5,-62"/>
+<text text-anchor="start" x="2092.5" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/kernels/DwarfElephant</text>
+<text text-anchor="middle" x="2160.5" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBDiffusion.h</text>
 </a>
 </g>
 </g>
 <!-- Node33&#45;&gt;Node36 -->
 <g id="edge51" class="edge"><title>Node33&#45;&gt;Node36</title>
-<path fill="none" stroke="midnightblue" d="M856.393,-133.876C657.14,-109.754 602.946,-128.55 408.018,-98 397.983,-96.4273 387.379,-94.3079 377.19,-92.0357"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="856.257,-137.386 866.61,-135.135 857.113,-130.438 856.257,-137.386"/>
+<path fill="none" stroke="midnightblue" d="M2015.5,-130.965C2048.36,-118.962 2091.36,-103.258 2121.97,-92.0729"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2014.28,-127.684 2006.09,-134.403 2016.69,-134.259 2014.28,-127.684"/>
 </g>
 <!-- Node37 -->
 <g id="node37" class="node"><title>Node37</title>
 <g id="a_node37"><a xlink:href="_dwarf_elephant_r_b_diffusion_n_d_8h.html" target="_top" xlink:title="include/kernels/DwarfElephant\lRBDiffusionND.h">
-<polygon fill="white" stroke="red" points="417.018,-62 417.018,-92 569.018,-92 569.018,-62 417.018,-62"/>
-<text text-anchor="start" x="425.018" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/kernels/DwarfElephant</text>
-<text text-anchor="middle" x="493.018" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBDiffusionND.h</text>
+<polygon fill="white" stroke="red" points="2254.5,-62 2254.5,-92 2406.5,-92 2406.5,-62 2254.5,-62"/>
+<text text-anchor="start" x="2262.5" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/kernels/DwarfElephant</text>
+<text text-anchor="middle" x="2330.5" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBDiffusionND.h</text>
 </a>
 </g>
 </g>
 <!-- Node33&#45;&gt;Node37 -->
 <g id="edge53" class="edge"><title>Node33&#45;&gt;Node37</title>
-<path fill="none" stroke="midnightblue" d="M856.672,-133.843C732.222,-115.681 698.337,-119.83 578.018,-98 568.621,-96.295 558.701,-94.218 549.085,-92.0552"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="856.182,-137.309 866.586,-135.309 857.205,-130.384 856.182,-137.309"/>
+<path fill="none" stroke="midnightblue" d="M2054.04,-133.28C2121.59,-121.308 2209.76,-105.446 2245.5,-98 2254.26,-96.1758 2263.49,-94.1301 2272.52,-92.0619"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2053.05,-129.901 2043.81,-135.092 2054.27,-136.794 2053.05,-129.901"/>
 </g>
 <!-- Node38 -->
 <g id="node38" class="node"><title>Node38</title>
 <g id="a_node38"><a xlink:href="_dwarf_elephant_r_b_lifting_function_kernel_8h.html" target="_top" xlink:title="include/kernels/DwarfElephant\lRBLiftingFunctionKernel.h">
-<polygon fill="white" stroke="red" points="587.018,-62 587.018,-92 739.018,-92 739.018,-62 587.018,-62"/>
-<text text-anchor="start" x="595.018" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/kernels/DwarfElephant</text>
-<text text-anchor="middle" x="663.018" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBLiftingFunctionKernel.h</text>
+<polygon fill="white" stroke="red" points="1698.5,-62 1698.5,-92 1850.5,-92 1850.5,-62 1698.5,-62"/>
+<text text-anchor="start" x="1706.5" y="-80" font-family="Helvetica,sans-Serif" font-size="10.00">include/kernels/DwarfElephant</text>
+<text text-anchor="middle" x="1774.5" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00">RBLiftingFunctionKernel.h</text>
 </a>
 </g>
 </g>
 <!-- Node33&#45;&gt;Node38 -->
 <g id="edge55" class="edge"><title>Node33&#45;&gt;Node38</title>
-<path fill="none" stroke="midnightblue" d="M877.366,-131.97C829.28,-119.862 764.71,-103.605 719.045,-92.1069"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="876.812,-135.44 887.364,-134.487 878.521,-128.651 876.812,-135.44"/>
-</g>
-<!-- Node39 -->
-<g id="node39" class="node"><title>Node39</title>
-<g id="a_node39"><a xlink:href="_dwarf_elephant_r_b_lifting_function_kernel_with_parameter_independent_scale_8h.html" target="_top" xlink:title="include/kernels/DwarfElephant\lRBLiftingFunctionKernelWithParameter\lIndependentScale.h">
-<polygon fill="white" stroke="red" points="757.518,-56.5 757.518,-97.5 948.518,-97.5 948.518,-56.5 757.518,-56.5"/>
-<text text-anchor="start" x="765.518" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/kernels/DwarfElephant</text>
-<text text-anchor="start" x="765.518" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">RBLiftingFunctionKernelWithParameter</text>
-<text text-anchor="middle" x="853.018" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00">IndependentScale.h</text>
-</a>
-</g>
-</g>
-<!-- Node33&#45;&gt;Node39 -->
-<g id="edge57" class="edge"><title>Node33&#45;&gt;Node39</title>
-<path fill="none" stroke="midnightblue" d="M916.762,-127.933C904.545,-118.363 890.083,-107.034 878.024,-97.5884"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="914.774,-130.822 924.805,-134.233 919.091,-125.311 914.774,-130.822"/>
+<path fill="none" stroke="midnightblue" d="M1919.5,-130.965C1886.64,-118.962 1843.64,-103.258 1813.03,-92.0729"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1918.31,-134.259 1928.91,-134.403 1920.72,-127.684 1918.31,-134.259"/>
 </g>
 <!-- Node35&#45;&gt;Node9 -->
 <g id="edge50" class="edge"><title>Node35&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M206.841,-60.2887C217.283,-58.589 227.888,-57.0855 238.018,-56 514.705,-26.35 1381.92,-14.6656 1642.95,-11.7657"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="206.177,-56.8513 196.902,-61.9713 207.346,-63.7531 206.177,-56.8513"/>
+<path fill="none" stroke="midnightblue" d="M1884.5,-60.2143C1876.07,-58.7345 1867.62,-57.303 1859.5,-56 1769.6,-41.5734 1665.47,-27.9168 1598.38,-19.5118"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1883.92,-63.666 1894.38,-61.9689 1885.15,-56.7739 1883.92,-63.666"/>
 </g>
 <!-- Node36&#45;&gt;Node9 -->
 <g id="edge52" class="edge"><title>Node36&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M385.255,-59.88C392.882,-58.3424 400.6,-56.9903 408.018,-56 649.23,-23.7985 1401.75,-13.9935 1642.87,-11.6386"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="384.369,-56.4902 375.315,-61.9933 385.824,-63.3371 384.369,-56.4902"/>
+<path fill="none" stroke="midnightblue" d="M2096.2,-59.8063C2089.24,-58.3726 2082.24,-57.0642 2075.5,-56 1908.2,-29.5871 1709.52,-18.1584 1603.68,-13.6395"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2095.81,-63.3037 2106.32,-61.9828 2097.28,-56.4599 2095.81,-63.3037"/>
 </g>
 <!-- Node37&#45;&gt;Node9 -->
 <g id="edge54" class="edge"><title>Node37&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M555.582,-59.852C563.103,-58.3347 570.707,-56.9951 578.018,-56 784.706,-27.8692 1422.98,-15.5663 1642.75,-12.0887"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="554.83,-56.4336 545.775,-61.9348 556.284,-63.2809 554.83,-56.4336"/>
+<path fill="none" stroke="midnightblue" d="M2267.02,-59.8364C2259.8,-58.3627 2252.51,-57.0373 2245.5,-56 2013.08,-21.6135 1734.48,-13.4672 1603.51,-11.5629"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2266.29,-63.2601 2276.81,-61.9248 2267.76,-56.4143 2266.29,-63.2601"/>
 </g>
 <!-- Node38&#45;&gt;Node9 -->
 <g id="edge56" class="edge"><title>Node38&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M725.589,-59.9016C733.109,-58.3756 740.71,-57.0203 748.018,-56 920.513,-31.916 1446.47,-17.3942 1642.94,-12.6885"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="724.833,-56.484 715.783,-61.9922 726.293,-63.3301 724.833,-56.484"/>
+<path fill="none" stroke="midnightblue" d="M1711.71,-59.4102C1663.54,-46.6803 1599,-29.6273 1560.78,-19.5287"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1710.86,-62.8052 1721.42,-61.976 1712.65,-56.0374 1710.86,-62.8052"/>
+</g>
+<!-- Node39&#45;&gt;Node3 -->
+<g id="edge65" class="edge"><title>Node39&#45;&gt;Node3</title>
+<path fill="none" stroke="midnightblue" d="M1509.83,-330.504C1513.41,-390.702 1513.02,-525.694 1508.65,-569.491"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1513.32,-330.241 1509.14,-320.505 1506.33,-330.722 1513.32,-330.241"/>
 </g>
 <!-- Node39&#45;&gt;Node9 -->
-<g id="edge58" class="edge"><title>Node39&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M958.95,-55.839C1214.88,-24.4526 1507.85,-15.0316 1642.92,-12.1858"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="958.206,-52.4044 948.713,-57.1087 959.067,-59.3511 958.206,-52.4044"/>
+<g id="edge63" class="edge"><title>Node39&#45;&gt;Node9</title>
+<path fill="none" stroke="midnightblue" d="M1411.36,-279.961C1409.39,-279.631 1407.43,-279.31 1405.5,-279 1274.21,-257.946 1240.09,-262.084 1108.5,-243 915.378,-214.993 114.963,-196.394 250.5,-56 292.423,-12.5748 1185.62,-10.4559 1453.32,-10.8007"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1410.84,-283.423 1421.29,-281.678 1412.03,-276.525 1410.84,-283.423"/>
 </g>
-<!-- Node40&#45;&gt;Node3 -->
-<g id="edge67" class="edge"><title>Node40&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M2470.27,-330.779C2471.35,-367.703 2462.8,-430.137 2426.02,-466 2370.63,-520.004 2147.93,-558.376 2031.92,-574.715"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2473.75,-330.422 2469.68,-320.641 2466.76,-330.826 2473.75,-330.422"/>
+<!-- Node39&#45;&gt;Node11 -->
+<g id="edge66" class="edge"><title>Node39&#45;&gt;Node11</title>
+<path fill="none" stroke="midnightblue" d="M1599.77,-286.994C1827.98,-257.93 2405.9,-184.327 2603.8,-159.122"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1599.3,-283.525 1589.82,-288.261 1600.19,-290.469 1599.3,-283.525"/>
 </g>
-<!-- Node40&#45;&gt;Node9 -->
-<g id="edge65" class="edge"><title>Node40&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M2479.78,-270.317C2506.28,-217.885 2551.01,-107.262 2488.02,-56 2434.98,-12.841 1976.42,-9.90541 1793.19,-10.4822"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.57,-268.913 2475.07,-279.402 2482.78,-272.133 2476.57,-268.913"/>
+<!-- Node39&#45;&gt;Node15 -->
+<g id="edge71" class="edge"><title>Node39&#45;&gt;Node15</title>
+<path fill="none" stroke="midnightblue" d="M1411.38,-279.476C1410.08,-279.309 1408.79,-279.151 1407.5,-279 909.318,-220.642 776.843,-308.123 279.5,-243 274.788,-242.383 269.957,-241.622 265.103,-240.761"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1411.06,-282.965 1421.45,-280.889 1412.04,-276.033 1411.06,-282.965"/>
 </g>
-<!-- Node40&#45;&gt;Node11 -->
-<g id="edge68" class="edge"><title>Node40&#45;&gt;Node11</title>
-<path fill="none" stroke="midnightblue" d="M2496.97,-272.864C2508.49,-263.57 2521.43,-252.944 2533.02,-243 2564.58,-215.912 2600.36,-182.914 2620.04,-164.554"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2494.48,-270.375 2488.88,-279.367 2498.86,-275.832 2494.48,-270.375"/>
+<!-- Node39&#45;&gt;Node17 -->
+<g id="edge70" class="edge"><title>Node39&#45;&gt;Node17</title>
+<path fill="none" stroke="midnightblue" d="M1411.7,-275.997C1394.62,-268.024 1378.45,-257.329 1366.5,-243 1347.81,-220.59 1345.92,-184.624 1346.51,-164.788"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1410.69,-279.377 1421.26,-280.153 1413.48,-272.957 1410.69,-279.377"/>
 </g>
-<!-- Node40&#45;&gt;Node15 -->
-<g id="edge73" class="edge"><title>Node40&#45;&gt;Node15</title>
-<path fill="none" stroke="midnightblue" d="M2558.26,-277.426C2611,-265.354 2675.69,-250.544 2724.28,-239.423"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2557.19,-274.08 2548.22,-279.724 2558.75,-280.904 2557.19,-274.08"/>
+<!-- Node39&#45;&gt;Node22 -->
+<g id="edge67" class="edge"><title>Node39&#45;&gt;Node22</title>
+<path fill="none" stroke="midnightblue" d="M1415.46,-276.973C1288.88,-246.004 1061.94,-190.486 955.966,-164.559"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1414.98,-280.457 1425.52,-279.434 1416.64,-273.657 1414.98,-280.457"/>
 </g>
-<!-- Node40&#45;&gt;Node17 -->
-<g id="edge72" class="edge"><title>Node40&#45;&gt;Node17</title>
-<path fill="none" stroke="midnightblue" d="M2459.87,-269.301C2456.73,-249.67 2451.8,-223.504 2445.02,-201 2441.24,-188.454 2435.43,-174.76 2430.88,-164.801"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2456.41,-269.839 2461.38,-279.193 2463.33,-268.778 2456.41,-269.839"/>
+<!-- Node39&#45;&gt;Node29 -->
+<g id="edge68" class="edge"><title>Node39&#45;&gt;Node29</title>
+<path fill="none" stroke="midnightblue" d="M1529.67,-271.273C1536.04,-262.701 1542.3,-252.898 1546.5,-243 1557.65,-216.749 1561.03,-183.163 1562.06,-164.537"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1526.73,-269.353 1523.34,-279.391 1532.25,-273.658 1526.73,-269.353"/>
 </g>
-<!-- Node40&#45;&gt;Node22 -->
-<g id="edge69" class="edge"><title>Node40&#45;&gt;Node22</title>
-<path fill="none" stroke="midnightblue" d="M2369.87,-278.68C2336.02,-269.782 2298.07,-257.917 2265.02,-243 2233.67,-228.85 2231.33,-215.23 2200.02,-201 2165,-185.086 2123.77,-172.934 2090.02,-164.543"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2369.2,-282.123 2379.76,-281.229 2370.95,-275.345 2369.2,-282.123"/>
+<!-- Node39&#45;&gt;Node33 -->
+<g id="edge69" class="edge"><title>Node39&#45;&gt;Node33</title>
+<path fill="none" stroke="midnightblue" d="M1544.86,-273.871C1581.66,-251.493 1638.84,-219.511 1692.5,-201 1728.41,-188.614 1823.19,-172.499 1891.44,-161.843"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1542.65,-271.122 1535.96,-279.339 1546.32,-277.087 1542.65,-271.122"/>
 </g>
-<!-- Node40&#45;&gt;Node29 -->
-<g id="edge70" class="edge"><title>Node40&#45;&gt;Node29</title>
-<path fill="none" stroke="midnightblue" d="M2369.92,-280.689C2319.36,-270.436 2256.07,-256.935 2200.02,-243 2134.08,-226.607 2118.57,-218.893 2053.02,-201 2006.35,-188.261 1953.17,-174.467 1914.3,-164.52"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2369.36,-284.146 2379.86,-282.695 2370.75,-277.285 2369.36,-284.146"/>
-</g>
-<!-- Node40&#45;&gt;Node33 -->
-<g id="edge71" class="edge"><title>Node40&#45;&gt;Node33</title>
-<path fill="none" stroke="midnightblue" d="M2369.92,-293.608C2285.62,-287.036 2159.28,-272.857 2053.02,-243 2008.18,-230.402 2002.35,-211.666 1957.02,-201 1779.01,-159.116 1223.39,-151.952 1019.25,-150.741"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2369.75,-297.105 2379.98,-294.372 2370.28,-290.125 2369.75,-297.105"/>
-</g>
-<!-- Node41 -->
-<g id="node41" class="node"><title>Node41</title>
-<g id="a_node41"><a xlink:href="_dwarf_elephant_intialize_r_b_system_steady_state_8_c.html" target="_top" xlink:title="src/userobjects/DwarfElephant\lIntializeRBSystemSteadyState.C">
-<polygon fill="white" stroke="black" points="2274.02,-207 2274.02,-237 2436.02,-237 2436.02,-207 2274.02,-207"/>
-<text text-anchor="start" x="2282.02" y="-225" font-family="Helvetica,sans-Serif" font-size="10.00">src/userobjects/DwarfElephant</text>
-<text text-anchor="middle" x="2355.02" y="-214" font-family="Helvetica,sans-Serif" font-size="10.00">IntializeRBSystemSteadyState.C</text>
+<!-- Node40 -->
+<g id="node40" class="node"><title>Node40</title>
+<g id="a_node40"><a xlink:href="_dwarf_elephant_intialize_r_b_system_steady_state_8_c.html" target="_top" xlink:title="src/userobjects/DwarfElephant\lIntializeRBSystemSteadyState.C">
+<polygon fill="white" stroke="black" points="1375.5,-207 1375.5,-237 1537.5,-237 1537.5,-207 1375.5,-207"/>
+<text text-anchor="start" x="1383.5" y="-225" font-family="Helvetica,sans-Serif" font-size="10.00">src/userobjects/DwarfElephant</text>
+<text text-anchor="middle" x="1456.5" y="-214" font-family="Helvetica,sans-Serif" font-size="10.00">IntializeRBSystemSteadyState.C</text>
 </a>
 </g>
 </g>
-<!-- Node40&#45;&gt;Node41 -->
-<g id="edge66" class="edge"><title>Node40&#45;&gt;Node41</title>
-<path fill="none" stroke="midnightblue" d="M2427.67,-273.655C2410.27,-261.526 2390.09,-247.455 2375.42,-237.225"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2425.74,-276.58 2435.95,-279.428 2429.75,-270.838 2425.74,-276.58"/>
+<!-- Node39&#45;&gt;Node40 -->
+<g id="edge64" class="edge"><title>Node39&#45;&gt;Node40</title>
+<path fill="none" stroke="midnightblue" d="M1487.43,-270.98C1480.03,-259.499 1471.79,-246.711 1465.67,-237.225"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1484.52,-272.92 1492.88,-279.428 1490.4,-269.127 1484.52,-272.92"/>
+</g>
+<!-- Node41&#45;&gt;Node3 -->
+<g id="edge77" class="edge"><title>Node41&#45;&gt;Node3</title>
+<path fill="none" stroke="midnightblue" d="M939.906,-635.893C1123.27,-605.949 1329.01,-593.294 1434.79,-588.315"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="939.104,-632.478 929.809,-637.564 940.246,-639.384 939.104,-632.478"/>
 </g>
 <!-- Node42&#45;&gt;Node3 -->
 <g id="edge79" class="edge"><title>Node42&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M1476.36,-635.883C1628.89,-609.83 1797.21,-596.07 1890.17,-589.774"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1475.59,-632.464 1466.34,-637.617 1476.79,-639.361 1475.59,-632.464"/>
+<path fill="none" stroke="midnightblue" d="M1101.74,-635.871C1224.03,-613.677 1355.89,-599.327 1434.87,-591.756"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1101.03,-632.443 1091.83,-637.692 1102.3,-639.328 1101.03,-632.443"/>
 </g>
 <!-- Node43&#45;&gt;Node3 -->
 <g id="edge81" class="edge"><title>Node43&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M1638.44,-635.792C1730.71,-617.546 1826.7,-603.403 1890.23,-594.716"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1637.49,-632.412 1628.37,-637.803 1638.86,-639.276 1637.49,-632.412"/>
+<path fill="none" stroke="midnightblue" d="M1264.01,-635.69C1327.03,-621.472 1388.79,-608.729 1434.9,-599.45"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1262.87,-632.36 1253.89,-637.984 1264.42,-639.187 1262.87,-632.36"/>
 </g>
 <!-- Node44&#45;&gt;Node3 -->
 <g id="edge83" class="edge"><title>Node44&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M1795,-633.665C1833.47,-622.504 1878.85,-609.34 1912.43,-599.597"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1794.01,-630.308 1785.38,-636.455 1795.96,-637.03 1794.01,-630.308"/>
+<path fill="none" stroke="midnightblue" d="M1397.99,-632.287C1422.96,-621.42 1451.71,-608.909 1473.19,-599.56"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1396.4,-629.162 1388.63,-636.362 1399.19,-635.581 1396.4,-629.162"/>
 </g>
 <!-- Node45&#45;&gt;Node3 -->
 <g id="edge85" class="edge"><title>Node45&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M1910.41,-629.551C1922.06,-619.41 1934.9,-608.229 1944.74,-599.67"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1907.83,-627.156 1902.58,-636.362 1912.42,-632.437 1907.83,-627.156"/>
+<path fill="none" stroke="midnightblue" d="M1505.5,-626.08C1505.5,-617.006 1505.5,-607.45 1505.5,-599.892"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1502,-626.362 1505.5,-636.362 1509,-626.362 1502,-626.362"/>
 </g>
 <!-- Node46&#45;&gt;Node3 -->
 <g id="edge87" class="edge"><title>Node46&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M2011.63,-629.551C1999.98,-619.41 1987.13,-608.229 1977.3,-599.67"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2009.61,-632.437 2019.45,-636.362 2014.21,-627.156 2009.61,-632.437"/>
+<path fill="none" stroke="midnightblue" d="M1613.01,-632.287C1588.04,-621.42 1559.29,-608.909 1537.81,-599.56"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1611.81,-635.581 1622.37,-636.362 1614.6,-629.162 1611.81,-635.581"/>
 </g>
 <!-- Node47&#45;&gt;Node3 -->
 <g id="edge89" class="edge"><title>Node47&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M2127.03,-633.665C2088.56,-622.504 2043.19,-609.34 2009.61,-599.597"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2126.07,-637.03 2136.65,-636.455 2128.02,-630.308 2126.07,-637.03"/>
+<path fill="none" stroke="midnightblue" d="M1746.99,-635.69C1683.97,-621.472 1622.21,-608.729 1576.1,-599.45"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1746.58,-639.187 1757.11,-637.984 1748.13,-632.36 1746.58,-639.187"/>
 </g>
 <!-- Node48&#45;&gt;Node3 -->
 <g id="edge91" class="edge"><title>Node48&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M2283.6,-635.792C2191.33,-617.546 2095.34,-603.403 2031.8,-594.716"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2283.17,-639.276 2293.66,-637.803 2284.54,-632.412 2283.17,-639.276"/>
+<path fill="none" stroke="midnightblue" d="M1909.26,-635.871C1786.97,-613.677 1655.11,-599.327 1576.13,-591.756"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1908.7,-639.328 1919.17,-637.692 1909.97,-632.443 1908.7,-639.328"/>
 </g>
 <!-- Node49&#45;&gt;Node3 -->
 <g id="edge93" class="edge"><title>Node49&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M2445.68,-635.883C2293.14,-609.83 2124.83,-596.07 2031.86,-589.774"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2445.25,-639.361 2455.7,-637.617 2446.44,-632.464 2445.25,-639.361"/>
+<path fill="none" stroke="midnightblue" d="M2071.09,-635.893C1887.73,-605.949 1681.99,-593.294 1576.21,-588.315"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2070.75,-639.384 2081.19,-637.564 2071.9,-632.478 2070.75,-639.384"/>
 </g>
 <!-- Node50&#45;&gt;Node3 -->
 <g id="edge95" class="edge"><title>Node50&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M2607.53,-635.896C2393.22,-602.086 2149.76,-590.912 2031.95,-587.22"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2607.29,-639.401 2617.72,-637.523 2608.39,-632.489 2607.29,-639.401"/>
+<path fill="none" stroke="midnightblue" d="M2233,-635.906C1987.11,-598.158 1704.97,-588.771 1576.07,-586.345"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2232.78,-639.414 2243.2,-637.492 2233.86,-632.497 2232.78,-639.414"/>
 </g>
 </g>
 </svg>

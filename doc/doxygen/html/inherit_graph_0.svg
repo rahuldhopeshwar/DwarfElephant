@@ -16,7 +16,7 @@
 </g>
 <!-- Node2 -->
 <g id="node2" class="node"><title>Node2</title>
-<g id="a_node2"><a xlink:href="class_dwarf_elephant_all_elemental_variable_values.html" target="_top" xlink:title="DwarfElephantAllElemental\lVariableValues">
+<g id="a_node2"><a xlink:href="class_dwarf_elephant_all_elemental_variable_values.html" target="_top" xlink:title="This VectorPostprocessor returns all of the elemental variable values of the mesh. ">
 <polygon fill="white" stroke="black" points="193.5,-98.5 193.5,-128.5 331.5,-128.5 331.5,-98.5 193.5,-98.5"/>
 <text text-anchor="start" x="201.5" y="-116.5" font-family="Helvetica,sans-Serif" font-size="10.00">DwarfElephantAllElemental</text>
 <text text-anchor="middle" x="262.5" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">VariableValues</text>
@@ -30,7 +30,7 @@
 </g>
 <!-- Node3 -->
 <g id="node3" class="node"><title>Node3</title>
-<g id="a_node3"><a xlink:href="class_dwarf_elephant_elemental_variable_values_along_line.html" target="_top" xlink:title="DwarfElephantElementalVariable\lValuesAlongLine">
+<g id="a_node3"><a xlink:href="class_dwarf_elephant_elemental_variable_values_along_line.html" target="_top" xlink:title="Get all of the elements that are intersected by a line. ">
 <polygon fill="white" stroke="black" points="181,-49.5 181,-79.5 344,-79.5 344,-49.5 181,-49.5"/>
 <text text-anchor="start" x="189" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00">DwarfElephantElementalVariable</text>
 <text text-anchor="middle" x="262.5" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00">ValuesAlongLine</text>
@@ -44,7 +44,7 @@
 </g>
 <!-- Node4 -->
 <g id="node4" class="node"><title>Node4</title>
-<g id="a_node4"><a xlink:href="class_dwarf_elephant_f_e_file_point_values.html" target="_top" xlink:title="DwarfElephantFEFilePoint\lValues">
+<g id="a_node4"><a xlink:href="class_dwarf_elephant_f_e_file_point_values.html" target="_top" xlink:title="Extract the values of the physical points given by a text file. ">
 <polygon fill="white" stroke="black" points="195.5,-0.5 195.5,-30.5 329.5,-30.5 329.5,-0.5 195.5,-0.5"/>
 <text text-anchor="start" x="203.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">DwarfElephantFEFilePoint</text>
 <text text-anchor="middle" x="262.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">Values</text>

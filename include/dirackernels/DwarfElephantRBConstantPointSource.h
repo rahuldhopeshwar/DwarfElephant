@@ -10,6 +10,7 @@ class DwarfElephantRBConstantPointSource;
 template <>
 InputParameters validParams<DwarfElephantRBConstantPointSource>();
 
+///Analoge to the class ConstantPointSource. It enables the use of RB for this DiracKernel. Note, that the value of the point source is fixed for all parameters.
 class DwarfElephantRBConstantPointSource : public DwarfElephantRBDiracKernel
 {
 public:

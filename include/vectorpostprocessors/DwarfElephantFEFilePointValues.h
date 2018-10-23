@@ -9,6 +9,7 @@ class DwarfElephantFEFilePointValues;
 template <>
 InputParameters validParams<DwarfElephantFEFilePointValues>();
 
+///Extract the values of the physical points given by a text file.
 class DwarfElephantFEFilePointValues : public GeneralVectorPostprocessor
 {
 public:

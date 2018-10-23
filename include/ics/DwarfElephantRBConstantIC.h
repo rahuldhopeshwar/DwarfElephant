@@ -21,9 +21,7 @@ InputParameters validParams();
 template <>
 InputParameters validParams<DwarfElephantRBConstantIC>();
 
-/**
- * DwarfElephantRBConstantIC just returns a constant value.
- */
+/// DwarfElephantRBConstantIC just returns a constant value. It is analog to the MOOSE class ConstantIC but enables parameter dependent IC for RB.
 class DwarfElephantRBConstantIC : public DwarfElephantRBInitialCondition
 {
 public:

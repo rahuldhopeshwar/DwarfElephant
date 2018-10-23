@@ -16,7 +16,7 @@
 </g>
 <!-- Node3 -->
 <g id="node3" class="node"><title>Node3</title>
-<g id="a_node3"><a xlink:href="class_dwarf_elephant_r_b_constant_i_c.html" target="_top" xlink:title="DwarfElephantRBConstantIC">
+<g id="a_node3"><a xlink:href="class_dwarf_elephant_r_b_constant_i_c.html" target="_top" xlink:title="DwarfElephantRBConstantIC just returns a constant value. It is analog to the MOOSE class ConstantIC b...">
 <polygon fill="white" stroke="black" points="0,-0.5 0,-19.5 146,-19.5 146,-0.5 0,-0.5"/>
 <text text-anchor="middle" x="73" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">DwarfElephantRBConstantIC</text>
 </a>

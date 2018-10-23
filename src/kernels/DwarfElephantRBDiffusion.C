@@ -9,11 +9,11 @@
  * RBDiffusion Kernel is used for a Conduction problem.
  */
 
-///---------------------------------INCLUDES--------------------------------
+//---------------------------------INCLUDES--------------------------------
 //MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBDiffusion.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantRBDiffusion>()
 {
@@ -23,13 +23,13 @@ InputParameters validParams<DwarfElephantRBDiffusion>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantRBDiffusion::DwarfElephantRBDiffusion(const InputParameters & parameters) :
   DwarfElephantRBKernel(parameters)
 {
 }
 
-///----------------------------------PDEs-----------------------------------
+//----------------------------------PDEs-----------------------------------
 Real
 DwarfElephantRBDiffusion::computeQpResidual()
 {

@@ -4,11 +4,11 @@
  * purposes.
  */
 
- ///---------------------------------INCLUDES-------------------------------
+ //---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBThermalConduction.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantRBThermalConduction>()
 {
@@ -20,7 +20,7 @@ InputParameters validParams<DwarfElephantRBThermalConduction>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantRBThermalConduction::DwarfElephantRBThermalConduction(const InputParameters & parameters) :
   DwarfElephantRBDiffusion(parameters),
   _lambda(getParam<Real>("thermal_conductivity")),
@@ -28,7 +28,7 @@ DwarfElephantRBThermalConduction::DwarfElephantRBThermalConduction(const InputPa
 {
 }
 
-///----------------------------------PDEs-----------------------------------
+//----------------------------------PDEs-----------------------------------
 // Definition of the necessary PDE in the weak formulation
 Real
 DwarfElephantRBThermalConduction::computeQpResidual()

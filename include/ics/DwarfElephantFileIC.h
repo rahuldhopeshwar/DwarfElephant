@@ -14,6 +14,7 @@ InputParameters validParams();
 template <>
 InputParameters validParams<DwarfElephantFileIC>();
 
+///Gets the initial conditions from DwarfElephantInitialConditionFileReader.
 class DwarfElephantFileIC : public FunctionIC
 {
 public:

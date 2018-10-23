@@ -35,7 +35,7 @@ InputParameters validParams<DwarfElephantFault>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantFault::DwarfElephantFault(const InputParameters & parameters) :
     Material(parameters),
     _thermal_conductivity(declareProperty<Real>("thermal_conductivity")),
@@ -47,7 +47,7 @@ DwarfElephantFault::DwarfElephantFault(const InputParameters & parameters) :
 {
 }
 
-///-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 void
 DwarfElephantFault::computeQpProperties()
 {

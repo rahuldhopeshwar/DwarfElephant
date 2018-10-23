@@ -3,11 +3,11 @@
  * problems caused by non-homogenous DirichletBC.
  */
 
- ///---------------------------------INCLUDES-------------------------------
+ //---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantFELiftingFunctionKernel.h"
 
-///----------------------------INPUT PARAMETERS-----------------------------
+//----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantFELiftingFunctionKernel>()
 {
@@ -19,7 +19,7 @@ InputParameters validParams<DwarfElephantFELiftingFunctionKernel>()
   return params;
 }
 
-///-------------------------------CONSTRUCTOR-------------------------------
+//-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantFELiftingFunctionKernel::DwarfElephantFELiftingFunctionKernel(const InputParameters & parameters) :
   Diffusion(parameters),
   _lifting_function(&getFunction("lifting_function")),
@@ -27,7 +27,7 @@ DwarfElephantFELiftingFunctionKernel::DwarfElephantFELiftingFunctionKernel(const
 {
 }
 
-///----------------------------------PDEs-----------------------------------
+//----------------------------------PDEs-----------------------------------
 // Definition of the necessary PDE in the weak formulation
 
 Real

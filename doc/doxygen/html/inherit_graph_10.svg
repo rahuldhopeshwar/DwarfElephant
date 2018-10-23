@@ -16,7 +16,7 @@
 </g>
 <!-- Node2 -->
 <g id="node2" class="node"><title>Node2</title>
-<g id="a_node2"><a xlink:href="class_dwarf_elephant_nodal_difference.html" target="_top" xlink:title="DwarfElephantNodalDifference">
+<g id="a_node2"><a xlink:href="class_dwarf_elephant_nodal_difference.html" target="_top" xlink:title="Calculates the difference between a variable and function at every node. ">
 <polygon fill="white" stroke="black" points="171,-50 171,-69 325,-69 325,-50 171,-50"/>
 <text text-anchor="middle" x="248" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00">DwarfElephantNodalDifference</text>
 </a>
