@@ -8,6 +8,8 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantFEDarcy.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantFEDarcy);
+
 //----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantFEDarcy>()

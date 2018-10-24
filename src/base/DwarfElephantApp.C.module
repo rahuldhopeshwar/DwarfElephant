@@ -14,9 +14,11 @@ DwarfElephantApp::DwarfElephantApp(InputParameters parameters) :
     MooseApp(parameters)
 {
   Moose::registerObjects(_factory);
+  DwarfElephantApp::registerObjectDepends(_factory);
   DwarfElephantApp::registerObjects(_factory);
 
   Moose::associateSyntax(_syntax, _action_factory);
+  DwarfElephantApp::associateSyntaxDepends(_syntax, _action_factory);
   DwarfElephantApp::associateSyntax(_syntax, _action_factory);
 }
 
@@ -24,24 +26,48 @@ DwarfElephantApp::~DwarfElephantApp()
 {
 }
 
-// External entry point for dynamic application loading
-extern "C" void DwarfElephantApp__registerApps() { DwarfElephantApp::registerApps(); }
 void
-DwarfElephantApp::registerApps()
+DwarfElephantApp::registerObjects(Factory & factory)
 {
-  registerApp(DwarfElephantApp);
+  Registry::registerObjectsTo(factory, {"DwarfElephantApp"});
 }
 
-// External entry point for dynamic object registration
-extern "C" void DwarfElephantApp__registerObjects(Factory & factory) { DwarfElephantApp::registerObjects(factory); }
 void
-DwarfElephantApp::registerObjects(Factory & /*factory*/)
+DwarfElephantApp::associateSyntax(Syntax & /*syntax*/, ActionFactory & action_factory)
+{
+  Registry::registerActionsTo(action_factory, {"DwarfElephantApp"});
+
+  /* Uncomment Syntax parameter and register your new objects here! */
+}
+
+void
+DwarfElephantApp::registerObjectDepends(Factory & /*factory*/)
 {
 }
 
-// External entry point for dynamic syntax association
-extern "C" void DwarfElephantApp__associateSyntax(Syntax & syntax, ActionFactory & action_factory) { DwarfElephantApp::associateSyntax(syntax, action_factory); }
 void
-DwarfElephantApp::associateSyntax(Syntax & /*syntax*/, ActionFactory & /*action_factory*/)
+DwarfElephantApp::associateSyntaxDepends(Syntax & /*syntax*/, ActionFactory & /*action_factory*/)
 {
+}
+
+
+/***************************************************************************************************
+ *********************** Dynamic Library Entry Points - DO NOT MODIFY ******************************
+ **************************************************************************************************/
+extern "C" void
+DwarfElephantApp__registerApps()
+{
+  DwarfElephantApp::registerApps();
+}
+
+extern "C" void
+DwarfElephantApp__registerObjects(Factory & factory)
+{
+  DwarfElephantApp::registerObjects(factory);
+}
+
+extern "C" void
+DwarfElephantApp__associateSyntax(Syntax & syntax, ActionFactory & action_factory)
+{
+  DwarfElephantApp::associateSyntax(syntax, action_factory);
 }

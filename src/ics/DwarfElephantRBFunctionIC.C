@@ -2,6 +2,8 @@
 
 #include "DwarfElephantRBFunctionIC.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBFunctionIC);
+
 template <>
 InputParameters
 validParams<DwarfElephantRBFunctionIC>()

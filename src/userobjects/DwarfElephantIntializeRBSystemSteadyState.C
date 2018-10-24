@@ -2,6 +2,8 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantInitializeRBSystemSteadyState.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantInitializeRBSystemSteadyState);
+
 template<>
 InputParameters validParams<DwarfElephantInitializeRBSystemSteadyState>()
 {

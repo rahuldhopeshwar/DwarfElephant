@@ -7,6 +7,8 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBLiftingFunctionKernel.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBLiftingFunctionKernel);
+
 //----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantRBLiftingFunctionKernel>()

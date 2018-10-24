@@ -1,5 +1,7 @@
 #include "DwarfElephantRBNeumannBCND.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBNeumannBCND);
+
 template<>
 InputParameters validParams<DwarfElephantRBNeumannBCND>()
 {
@@ -22,5 +24,3 @@ DwarfElephantRBNeumannBCND::computeQpResidual()
 {
   return -(_l_ref/_u_ref)*_test[_i][_qp]*_value;
 }
-
-

@@ -1,5 +1,7 @@
 #include "DwarfElephantInitialConditionFileReader.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantInitialConditionFileReader);
+
 template <>
 InputParameters
 validParams<DwarfElephantInitialConditionFileReader>()

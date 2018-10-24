@@ -25,6 +25,8 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantFault.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantFault);
+
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantFault>()

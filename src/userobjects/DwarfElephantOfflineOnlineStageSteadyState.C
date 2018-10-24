@@ -6,6 +6,8 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantOfflineOnlineStageSteadyState.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantOfflineOnlineStageSteadyState);
+
 //----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
@@ -33,7 +35,7 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
     params.addParam<Real>("mu_bar", 1., "Value for mu-bar");
-    params.addRequiredParam<std::vector<Real>>("online_mu", "Current values of the different layers for which the RB Method is solved.");
+    params.addParam<std::vector<Real>>("online_mu", "Current values of the different layers for which the RB Method is solved.");
 
     return params;
 }
@@ -71,6 +73,8 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     _online_stage_timer(registerTimedSection("onlineStage", 1)),
     _data_transfer_timer(registerTimedSection("dataTransfer", 1))
 {
+  if(_online_stage==true & _online_mu_parameters.size()==0)
+    mooseError("You have not defined the online parameters.");
 }
 
 void

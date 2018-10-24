@@ -1,5 +1,7 @@
 #include "DwarfElephantRBTimeDerivative.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBTimeDerivative);
+
 // MOOSE includes
 #include "Assembly.h"
 #include "MooseVariable.h"

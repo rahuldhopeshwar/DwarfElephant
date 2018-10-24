@@ -1,6 +1,8 @@
 #include "DwarfElephantRBPenaltyDirichletBC.h"
 #include "Function.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBPenaltyDirichletBC);
+
 template <>
 InputParameters
 validParams<DwarfElephantRBPenaltyDirichletBC>()

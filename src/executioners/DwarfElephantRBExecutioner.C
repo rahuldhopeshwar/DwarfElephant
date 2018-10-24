@@ -2,6 +2,8 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBExecutioner.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBExecutioner);
+
 template<>
 InputParameters validParams<DwarfElephantRBExecutioner>()
 {

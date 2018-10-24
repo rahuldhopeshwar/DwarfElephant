@@ -8,6 +8,8 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantFEThermalConduction.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantFEThermalConduction);
+
 //----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantFEThermalConduction>()

@@ -1,5 +1,7 @@
 #include "ExtractQpPoints.h"
 
+registerMooseObject("DwarfElephantApp", ExtractQpPoints);
+
 //----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<ExtractQpPoints>()

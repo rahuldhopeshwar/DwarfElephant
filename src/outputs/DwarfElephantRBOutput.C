@@ -4,6 +4,8 @@
 
 #include "DwarfElephantRBOutput.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBOutput);
+
 template <>
 InputParameters
 validParams<DwarfElephantRBOutput>()

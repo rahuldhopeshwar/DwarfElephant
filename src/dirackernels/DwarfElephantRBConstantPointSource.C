@@ -1,5 +1,7 @@
 #include "DwarfElephantRBConstantPointSource.h"
 
+ registerMooseObject("DwarfElephantApp", DwarfElephantRBConstantPointSource);
+
 template <>
 InputParameters
 validParams<DwarfElephantRBConstantPointSource>()

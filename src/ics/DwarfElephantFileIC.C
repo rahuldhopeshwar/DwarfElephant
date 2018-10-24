@@ -2,6 +2,8 @@
 #include "DwarfElephantInitialConditionFileReader.h"
 #include "Function.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantFileIC);
+
 template <>
 InputParameters
 validParams<DwarfElephantFileIC>()

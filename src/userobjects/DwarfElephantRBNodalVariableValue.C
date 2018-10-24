@@ -7,6 +7,8 @@
 
 #include "libmesh/node.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBNodalVariableValue);
+
 template <>
 InputParameters
 validParams<DwarfElephantRBNodalVariableValue>()

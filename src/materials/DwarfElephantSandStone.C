@@ -25,6 +25,8 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantSandStone.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantSandStone);
+
 //----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantSandStone>()

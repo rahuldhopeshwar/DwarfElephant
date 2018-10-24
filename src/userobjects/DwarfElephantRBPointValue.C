@@ -9,6 +9,8 @@
 #include "libmesh/fe_interface.h"
 #include "libmesh/fe_compute_data.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBPointValue);
+
 template <>
 InputParameters
 validParams<DwarfElephantRBPointValue>()

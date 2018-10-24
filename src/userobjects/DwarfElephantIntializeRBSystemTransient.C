@@ -2,6 +2,8 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantInitializeRBSystemTransient.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantInitializeRBSystemTransient);
+
 template<>
 InputParameters validParams<DwarfElephantInitializeRBSystemTransient>()
 {

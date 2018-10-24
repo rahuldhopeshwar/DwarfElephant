@@ -2,6 +2,8 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantReducedToFullState.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantReducedToFullState);
+
 template<>
 InputParameters validParams<DwarfElephantReducedToFullState>()
 {

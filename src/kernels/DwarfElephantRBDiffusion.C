@@ -13,6 +13,8 @@
 //MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBDiffusion.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBDiffusion);
+
 //----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantRBDiffusion>()

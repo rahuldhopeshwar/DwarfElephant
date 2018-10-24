@@ -1,6 +1,8 @@
 #include "DwarfElephantRBFunctionNeumannBC.h"
 #include "Function.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBFunctionNeumannBC);
+
 template<>
 InputParameters validParams<DwarfElephantRBFunctionNeumannBC>()
 {
@@ -20,4 +22,3 @@ DwarfElephantRBFunctionNeumannBC::computeQpResidual()
 {
   return -_test[_i][_qp] * _func.value(_t, _q_point[_qp]);
 }
-

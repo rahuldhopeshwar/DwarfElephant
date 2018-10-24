@@ -9,6 +9,8 @@
 //#include "DwarfElephantFEElectricalConduction.h"
 #include "DwarfElephantFEElectricalConduction.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantFEElectricalConduction);
+
 //----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantFEElectricalConduction>()

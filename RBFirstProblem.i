@@ -73,7 +73,7 @@
 [Outputs]
 exodus = true
 # csv = true   # only required for the PostProcessors
-print_perf_log = true
+perf_graph = true
   [./console]
     type = Console
     outlier_variable_norms = false

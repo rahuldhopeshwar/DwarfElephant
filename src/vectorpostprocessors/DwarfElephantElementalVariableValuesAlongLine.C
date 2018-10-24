@@ -6,6 +6,8 @@
 #include "MooseMesh.h"
 #include "MooseVariable.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantElementalVariableValuesAlongLine);
+
 template <>
 InputParameters
 validParams<DwarfElephantElementalVariableValuesAlongLine>()

@@ -11,6 +11,8 @@
 #include "DwarfElephantFEDarcyOpenDA.h"
 #include "MooseMesh.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantFEDarcyOpenDA);
+
 //----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantFEDarcyOpenDA>()

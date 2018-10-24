@@ -2,6 +2,8 @@
 #include "Function.h"
 #include "DwarfElephantRBClassesSteadyState.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantNodalDifference);
+
 template <>
 InputParameters
 validParams<DwarfElephantNodalDifference>()

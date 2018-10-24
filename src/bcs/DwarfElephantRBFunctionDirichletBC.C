@@ -1,6 +1,8 @@
 #include "DwarfElephantRBFunctionDirichletBC.h"
 #include "Function.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBFunctionDirichletBC);
+
 template<>
 InputParameters validParams<DwarfElephantRBFunctionDirichletBC>()
 {
@@ -26,4 +28,3 @@ DwarfElephantRBFunctionDirichletBC::computeQpResidual()
 {
   return _u[_qp]-f();
 }
-

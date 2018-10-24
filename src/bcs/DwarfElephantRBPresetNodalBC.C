@@ -2,6 +2,8 @@
 
 #include "libmesh/numeric_vector.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBPresetNodalBC);
+
 template<>
 InputParameters validParams<DwarfElephantRBPresetNodalBC>()
 {

@@ -1,5 +1,7 @@
 #include "DwarfElephantBoundaryConditionFileReader.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantBoundaryConditionFileReader);
+
 template <>
 InputParameters
 validParams<DwarfElephantBoundaryConditionFileReader>()

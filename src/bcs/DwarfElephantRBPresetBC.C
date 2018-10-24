@@ -1,5 +1,7 @@
 #include "DwarfElephantRBPresetBC.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBPresetBC);
+
 template<>
 InputParameters validParams<DwarfElephantRBPresetBC>()
 {
@@ -21,4 +23,3 @@ DwarfElephantRBPresetBC::computeQpValue()
 {
   return _value;
 }
-

@@ -8,6 +8,8 @@
 
 #include "libmesh/system.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantFEFilePointValues);
+
 template <>
 InputParameters
 validParams<DwarfElephantFEFilePointValues>()

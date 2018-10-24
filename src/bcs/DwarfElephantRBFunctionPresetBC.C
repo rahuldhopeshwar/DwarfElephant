@@ -1,6 +1,8 @@
 #include "DwarfElephantRBFunctionPresetBC.h"
 #include "Function.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBFunctionPresetBC);
+
 template<>
 InputParameters validParams<DwarfElephantRBFunctionPresetBC>()
 {
@@ -20,4 +22,3 @@ DwarfElephantRBFunctionPresetBC::computeQpValue()
 {
   return _func.value(_t, *_current_node);
 }
-

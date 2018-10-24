@@ -2,6 +2,8 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantERTPreCalculations.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantERTPreCalculations);
+
 template<>
 InputParameters validParams<DwarfElephantERTPreCalculations>()
 {

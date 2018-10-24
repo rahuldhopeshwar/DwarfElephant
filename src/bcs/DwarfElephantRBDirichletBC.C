@@ -1,5 +1,7 @@
 #include "DwarfElephantRBDirichletBC.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBDirichletBC);
+
 template<>
 InputParameters validParams<DwarfElephantRBDirichletBC>()
 {

@@ -7,6 +7,8 @@
 #include "MooseEigenSystem.h"
 #include "NonlinearSystem.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBProblem);
+
 template<>
 InputParameters validParams<DwarfElephantRBProblem>()
 {

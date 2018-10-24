@@ -2,6 +2,8 @@
 
 #include "DwarfElephantRBConstantIC.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBConstantIC);
+
 template <>
 InputParameters
 validParams<DwarfElephantRBConstantIC>()

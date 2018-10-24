@@ -1,5 +1,7 @@
 #include "DwarfElephantRBElementalVariableValue.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBElementalVariableValue);
+
 // MOOSE includes
 #include "MooseMesh.h"
 #include "MooseVariable.h"

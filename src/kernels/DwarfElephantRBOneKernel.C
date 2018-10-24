@@ -2,6 +2,8 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantRBOneKernel.h"
 
+registerMooseObject("DwarfElephantApp", DwarfElephantRBOneKernel);
+
 //----------------------------INPUT PARAMETERS-----------------------------
 template<>
 InputParameters validParams<DwarfElephantRBOneKernel>()
