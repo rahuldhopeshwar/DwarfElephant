@@ -168,6 +168,7 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
     if(!_offline_stage && _output_file)
       _initialize_rb_system._rb_con_ptr->init();
 
+
     if(_offline_stage || _output_file || _offline_error_bound || _online_N == 0)
       _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
 
