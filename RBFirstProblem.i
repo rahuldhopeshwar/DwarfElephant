@@ -64,18 +64,9 @@
 [../]
 []
 
-#[Postprocessors]
-#  [./average]
-#    type = ElementAverageValue
-#    variable = temperature
-#    execute_on = 'custom'
-#  [../]
-#[]
-
 [Outputs]
 exodus = true
 execute_on = 'timestep_end'
-# csv = true   # only required for the PostProcessors
 perf_graph = true
   [./console]
     type = Console
