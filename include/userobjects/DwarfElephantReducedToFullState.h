@@ -1,7 +1,3 @@
-/* This UserObject is required to initialitze the RB system structure
- * and transfer for the steady state case.
- */
-
 ///-------------------------------------------------------------------------
 #ifndef DWARFELEPHANTREDUCEDTOFULLSTATE_H
 #define DWARFELEPHANTREDUCEDTOFULLSTATE_H
@@ -20,7 +16,7 @@ class DwarfElephantReducedToFullState;
 template<>
 InputParameters validParams<DwarfElephantReducedToFullState>();
 
-///This UserObject is required to initialitze the RB system structure and transfer for the steady state case.
+///This UserObject is required to transfer the reduced back into the full state.
 class DwarfElephantReducedToFullState :
   public GeneralUserObject
 {
