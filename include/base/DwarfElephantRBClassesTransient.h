@@ -156,7 +156,7 @@ public:
 
   bool parameter_dependent_IC;
 
-  DwarfElephantRBT2F2O1M2TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT2F3O3M2TransientExpansion _rb_theta_expansion;
 
   std::vector<DenseVector<Number>> RB_IC_q_vector;
 };

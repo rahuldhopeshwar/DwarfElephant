@@ -391,7 +391,11 @@ DwarfElephantRBConstructionTransient::init_data()
   {
     compute_truth_projection_error = true;
 
-    Real value = train_reduced_basis_steady(resize_rb_eval_data);
+    Real value = 0;
+    if (parameter_dependent_IC)
+      value = train_reduced_basis_steady(resize_rb_eval_data);
+    else
+      value = Parent::train_reduced_basis(resize_rb_eval_data);
 
     compute_truth_projection_error = false;
 
@@ -401,99 +405,116 @@ DwarfElephantRBConstructionTransient::init_data()
   Real
   DwarfElephantRBConstructionTransient::train_reduced_basis_steady(const bool resize_rb_eval_data)
   {
-    LOG_SCOPE("train_reduced_basis()", "RBConstruction");
+  LOG_SCOPE("train_reduced_basis()", "RBConstruction");
 
-    int count = 0;
+  int count = 0;
 
-    // initialize rb_eval's parameters
-    get_rb_evaluation().initialize_parameters(*this);
+  // initialize rb_eval's parameters
+  get_rb_evaluation().initialize_parameters(*this);
 
-    // possibly resize data structures according to Nmax
-    if (resize_rb_eval_data)
-      {
-        get_rb_evaluation().resize_data_structures(get_Nmax());
-      }
+  // possibly resize data structures according to Nmax
+  if (resize_rb_eval_data)
+    {
+      get_rb_evaluation().resize_data_structures(get_Nmax());
+    }
 
-    // Clear the Greedy param list
-    for (std::size_t i=0; i<get_rb_evaluation().greedy_param_list.size(); i++)
-      get_rb_evaluation().greedy_param_list[i].clear();
+  // Clear the Greedy param list
+  for (std::size_t i=0; i<get_rb_evaluation().greedy_param_list.size(); i++)
+    get_rb_evaluation().greedy_param_list[i].clear();
 
-    get_rb_evaluation().greedy_param_list.clear();
+  get_rb_evaluation().greedy_param_list.clear();
 
-    Real training_greedy_error;
+  Real training_greedy_error = 0.;
 
 
-    // If we are continuing from a previous training run,
-    // we might already be at the max number of basis functions.
-    // If so, we can just return.
-    if (get_rb_evaluation().get_n_basis_functions() >= get_Nmax())
+  // If we are continuing from a previous training run,
+  // we might already be at the max number of basis functions.
+  // If so, we can just return.
+  if (get_rb_evaluation().get_n_basis_functions() >= get_Nmax())
+    {
+      libMesh::out << "Maximum number of basis functions reached: Nmax = "
+                   << get_Nmax() << std::endl;
+      return 0.;
+    }
+
+
+  if(!skip_residual_in_train_reduced_basis)
+    {
+      // Compute the dual norms of the outputs if we haven't already done so.
+      compute_output_dual_innerprods();
+
+      // Compute the Fq Riesz representor dual norms if we haven't already done so.
+      compute_Fq_representor_innerprods();
+    }
+
+  libMesh::out << std::endl << "---- Performing Greedy basis enrichment ----" << std::endl;
+  Real initial_greedy_error = 0.;
+  bool initial_greedy_error_initialized = false;
+  while (true)
+    {
+      libMesh::out << std::endl << "---- Basis dimension: "
+                   << get_rb_evaluation().get_n_basis_functions() << " ----" << std::endl;
+
+      if (count > 0 || (count==0 && use_empty_rb_solve_in_greedy))
+        {
+          libMesh::out << "Performing RB solves on training set" << std::endl;
+          training_greedy_error = compute_max_error_bound();
+
+          libMesh::out << "Maximum error bound is " << training_greedy_error << std::endl << std::endl;
+
+          // record the initial error
+          if (!initial_greedy_error_initialized)
+            {
+              initial_greedy_error = training_greedy_error;
+              initial_greedy_error_initialized = true;
+            }
+
+          // Break out of training phase if we have reached Nmax
+          // or if the training_tolerance is satisfied.
+          if (greedy_termination_test(training_greedy_error, initial_greedy_error, count))
+            break;
+        }
+
+      libMesh::out << "Performing truth solve at parameter:" << std::endl;
+      print_parameters();
+
+      // Update the list of Greedily selected parameters
+      this->update_greedy_param_list();
+
+      // Perform an Offline truth solve for the current parameter
+      truth_solve(-1);
+
+      // Add orthogonal part of the snapshot to the RB space
+      libMesh::out << "Enriching the RB space" << std::endl;
+      if (parameter_dependent_IC && get_rb_evaluation().get_n_basis_functions() == 0)
+        enrich_RB_space_for_initial_conditions();
+      else
+        enrich_RB_space();
+
+      update_system();
+
+      // Check if we've reached Nmax now. We do this before calling
+      // update_residual_terms() since we can skip that step if we've
+      // already reached Nmax.
+      if (get_rb_evaluation().get_n_basis_functions() >= this->get_Nmax())
       {
         libMesh::out << "Maximum number of basis functions reached: Nmax = "
                      << get_Nmax() << std::endl;
-        return 0.;
+        break;
       }
 
+      if(!skip_residual_in_train_reduced_basis)
+        {
+          Parent::update_residual_terms(compute_RB_inner_product);
+        }
 
-    // Compute the dual norms of the outputs if we haven't already done so
-    compute_output_dual_innerprods();
+      // Increment counter
+      count++;
+    }
+  this->update_greedy_param_list();
 
-    // Compute the Fq Riesz representor dual norms if we haven't already done so
-    compute_Fq_representor_innerprods();
-
-    libMesh::out << std::endl << "---- Performing Greedy basis enrichment ----" << std::endl;
-    Real initial_greedy_error = 0.;
-    bool initial_greedy_error_initialized = false;
-    while (true)
-      {
-        libMesh::out << std::endl << "---- Basis dimension: "
-                     << get_rb_evaluation().get_n_basis_functions() << " ----" << std::endl;
-
-        if (count > 0 || (count==0 && use_empty_rb_solve_in_greedy))
-          {
-            libMesh::out << "Performing RB solves on training set" << std::endl;
-            training_greedy_error = compute_max_error_bound();
-
-            libMesh::out << "Maximum error bound is " << training_greedy_error << std::endl << std::endl;
-
-            // record the initial error
-            if (!initial_greedy_error_initialized)
-              {
-                initial_greedy_error = training_greedy_error;
-                initial_greedy_error_initialized = true;
-              }
-
-            // Break out of training phase if we have reached Nmax
-            // or if the training_tolerance is satisfied.
-            if (greedy_termination_test(training_greedy_error, initial_greedy_error, count))
-              break;
-          }
-
-        libMesh::out << "Performing truth solve at parameter:" << std::endl;
-        print_parameters();
-
-        // Update the list of Greedily selected parameters
-        this->update_greedy_param_list();
-
-        // Perform an Offline truth solve for the current parameter
-        truth_solve(-1);
-
-        // Add orthogonal part of the snapshot to the RB space
-        libMesh::out << "Enriching the RB space" << std::endl;
-
-        if (parameter_dependent_IC && get_rb_evaluation().get_n_basis_functions() == 0)
-          enrich_RB_space_for_initial_conditions();
-        else
-          enrich_RB_space();
-
-        update_system();
-
-        // Increment counter
-        count++;
-      }
-    this->update_greedy_param_list();
-
-    return training_greedy_error;
-  }
+  return training_greedy_error;
+}
 
   void
   DwarfElephantRBConstructionTransient::enrich_RB_space_for_initial_conditions() {
