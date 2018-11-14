@@ -276,6 +276,12 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 void
 DwarfElephantOfflineOnlineStageSteadyState::finalize()
 {
+  _fe_problem.computeIndicators();
+  _fe_problem.computeMarkers();
+
+  _fe_problem.execute(EXEC_CUSTOM);
+  _fe_problem.outputStep(EXEC_TIMESTEP_END);
+  _fe_problem.outputStep(EXEC_CUSTOM);
 }
 
 //std::string

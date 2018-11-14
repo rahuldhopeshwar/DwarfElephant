@@ -45,7 +45,11 @@ DwarfElephantSystem::solve()
   _current_nl_its = 0;
 
   // Initialize the solution vector
-  setInitialSolution();
+  DwarfElephantRBProblem * _rb_problem = cast_ptr<DwarfElephantRBProblem *>(&_fe_problem);
+  if(_rb_problem->getUseReducedInitialCondition())
+    _rb_problem->setReducedInitialCondition();
+  else
+    setInitialSolution();
 
   if(_use_finite_differenced_preconditioner)
     setupFiniteDifferencedPreconditioner();

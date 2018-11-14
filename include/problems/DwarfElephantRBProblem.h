@@ -14,12 +14,15 @@
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantSystem.h"
 #include "DwarfElephantRBAssembly.h"
-
+#include "DwarfElephantInitializeRBSystemTransient.h"
+#include "DwarfElephantRBClassesTransient.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
 class DwarfElephantRBProblem;
 class NonlinearSystem;
+class DwarfElephantInitializeRBSystemTransient;
+class DwarfElephantRBEvaluationTransient;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
@@ -46,6 +49,12 @@ class DwarfElephantRBProblem :
 
     virtual void newRBAssemblyArray(NonlinearSystemBase & nl);
 
+    void setReducedInitialCondition();
+
+    bool getUseReducedInitialCondition(){return _use_reduced_initial_condition;}
+
+    void fileParser(DwarfElephantRBEvaluationTransient & _rb_eval);
+
     // virtual MooseVariable & getVariable(THREAD_ID tid, const std::string & var_name) override;
 
 //--------------------------------PROTECTED---------------------------------
@@ -57,6 +66,12 @@ class DwarfElephantRBProblem :
     //NonlinearSystem * _nl_sys;
 
     std::vector<DwarfElephantRBAssembly *> _rb_assembly;
+
+    bool _use_reduced_initial_condition;
+
+    UserObjectName _initial_rb_userobject;
+
+    std::string _file;
 
 };
 ///-------------------------------------------------------------------------

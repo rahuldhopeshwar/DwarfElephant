@@ -56,15 +56,15 @@ DwarfElephantRBExecutioner::execute()
     _problem.onTimestepEnd();
     _problem.execute(EXEC_TIMESTEP_END);
 
-    if(_simulation_type == "steady")
-    {
-      _problem.computeIndicators();
-      _problem.computeMarkers();
-
-      _problem.execute(EXEC_CUSTOM);
-      _problem.outputStep(EXEC_TIMESTEP_END);
-      _problem.outputStep(EXEC_CUSTOM);
-    }
+    // if(_simulation_type == "steady")
+    // {
+    //   // _problem.computeIndicators();
+    //   // _problem.computeMarkers();
+    //   //
+    //   // _problem.execute(EXEC_CUSTOM);
+    //   // _problem.outputStep(EXEC_TIMESTEP_END);
+    //   // _problem.outputStep(EXEC_CUSTOM);
+    // }
 
 // #ifdef LIBMESH_ENABLE_AMR
 //     if (r_step != steps)

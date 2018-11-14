@@ -79,6 +79,8 @@
   online_stage = true
   online_mu = '1.00 2.00 1.00'
   execute_on = 'timestep_end'
+  online_N = 12
+  n_outputs = 1
 [../]
 []
 

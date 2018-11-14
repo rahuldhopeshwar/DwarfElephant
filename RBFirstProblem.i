@@ -61,6 +61,9 @@
   online_mu = '1.0 2.38 1.0'
   execute_on = 'timestep_end'
   offline_stage = true
+  output_file = true
+  n_outputs = 1
+  online_N = 3
 [../]
 []
 

@@ -139,6 +139,7 @@ class DwarfElephantInitializeRBSystemTransient :
     friend class DwarfElephantRBExecutioner;
     friend class DwarfElephantDakotaOutput;
     friend class DwarfElephantRBInitialCondition;
+    friend class DwarfElephantRBProblem;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTINITIALIZERBSYSTEMTRANSIENT_H

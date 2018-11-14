@@ -123,9 +123,18 @@ DwarfElephantRBConstructionTransient::init_data()
         DwarfElephantRBTransientThetaExpansion & dwarf_elephant_trans_theta_expansion =
           cast_ref<DwarfElephantRBTransientThetaExpansion &>(get_rb_theta_expansion());
 
+        // DwarfElephantRBProblem * _rb_problem = cast_ptr<DwarfElephantRBProblem *>(&trans_rb_eval.get_fe_problem());
+
         if (!parameter_dependent_IC){
+          // if(!_rb_problem->getUseReducedInitialCondition())
           DwarfElephantRBEvaluationTransient & trans_rb_eval = cast_ref<DwarfElephantRBEvaluationTransient &>(get_rb_evaluation());
           *this->solution.get() = *trans_rb_eval.get_fe_problem().es().get_system("rb0").solution.get();
+          // else
+          // {
+          //   this->solution->zero();
+          //   *this->solution.get() = *trans_rb_eval.get_fe_problem().es().get_system("rb0").solution.get();
+          //   this->solution->zero();
+          // }
         }
         else
         {
