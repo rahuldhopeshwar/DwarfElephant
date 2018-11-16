@@ -23,7 +23,7 @@ DwarfElephantRBOneKernel::DwarfElephantRBOneKernel(const InputParameters & param
 Real
 DwarfElephantRBOneKernel::computeQpResidual()
 {
-  return -_test[_i][_qp];
+  return _test[_i][_qp];
 }
 
 Real

@@ -37,6 +37,7 @@ protected:
   /* Attributes */
   Function * _lifting_function;
   Real _scale;
+  Real _norm_value;
 };
 
 ///-------------------------------------------------------------------------

@@ -36,7 +36,7 @@ DwarfElephantFEConstantRadiogenicHeatProduction::DwarfElephantFEConstantRadiogen
 Real
 DwarfElephantFEConstantRadiogenicHeatProduction::computeQpResidual()
 {
-  return (_radiogenic_heat_production/_norm_value) * _test[_i][_qp];
+  return -(_radiogenic_heat_production/_norm_value) * _test[_i][_qp];
 }
 
 Real

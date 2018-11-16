@@ -35,19 +35,6 @@ class DwarfElephantReducedToFullState :
 
     // Method not used in this UserObject.
     virtual void finalize() override;
-
-    void read_reduced_state(const std::string & _file_base, const bool _read_binary_data);
-
-    void check_file_exists(const std::string & _file_name);
-
-//--------------------------------PROTECTED---------------------------------
-  protected:
-
-    /* Attributes */
-    std::string _file_base;
-    std::vector<Number> _state_vector_reduced;
-
-    bool _read_binary_data;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTREDUCEDTOFULLSTATE_H
