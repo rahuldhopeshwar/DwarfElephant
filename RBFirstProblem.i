@@ -54,13 +54,13 @@
   parameter_min_values = '1.0 1.0 1.0'
   parameter_max_values = '5.15 7.15 5.15'
   normalize_rb_bound_in_greedy = true
-  offline_stage = true
+  offline_stage = false
 [../]
 [./performRBSystem ]
   type = DwarfElephantOfflineOnlineStageSteadyState
   online_mu = '1.0 2.38 1.0'
   execute_on = 'timestep_end'
-  offline_stage = true
+  offline_stage = false
   output_file = true
   n_outputs = 1
   online_N = 3
