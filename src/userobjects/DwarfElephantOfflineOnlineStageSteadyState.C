@@ -153,7 +153,6 @@ DwarfElephantOfflineOnlineStageSteadyState::setOnlineParameters()
 void
 DwarfElephantOfflineOnlineStageSteadyState::initialize()
 {
-
 }
 
 void

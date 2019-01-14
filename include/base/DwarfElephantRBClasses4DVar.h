@@ -79,6 +79,8 @@ public:
 
   virtual Real train_reduced_basis(const bool resize_rb_eval_data=true) override;
 
+  virtual void allocate_data_structures() override;
+
   // unsigned int get_n_qois() const {return n_qois;}
   //
   // virtual void set_n_qois(unsigned int n_qois_in);
@@ -90,6 +92,11 @@ public:
 protected:
   // unsigned int n_qois;
   // std::vector<Real> qoi_weights;
+  std::vector<DenseVector<Number>> obs_data_all_k;
+
+  // std::vector<std::unique_ptr<NumericVector<Number>>> Cq_vector;
+
+friend class DwarfElephantInitializeRBSystem4DVar;
 
 };
 

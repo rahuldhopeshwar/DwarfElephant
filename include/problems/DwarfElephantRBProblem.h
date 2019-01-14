@@ -68,6 +68,9 @@ class DwarfElephantRBProblem :
     std::vector<DwarfElephantRBAssembly *> _rb_assembly;
 
     bool _use_reduced_initial_condition;
+    bool _user_defined_assembly_size;
+
+    unsigned int _assembly_size;
 
     UserObjectName _initial_rb_userobject;
 

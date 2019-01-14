@@ -55,13 +55,8 @@ class DwarfElephantInitializeRBSystem4DVar :
     /* Methods */
 
     void processParameters();
-
-    // Initializes all required matrices and vectors for the RB solve.
-    // void initializeOfflineStage();
-
-    // Initializes the RB System.
-    // virtual void initialize() override;
-    // void initialize();
+    void initializeOfflineStage();
+    void readObservationData(std::string _data_file);
 
     // Method not used in this UserObject.
     // virtual void execute() override;
@@ -77,6 +72,7 @@ class DwarfElephantInitializeRBSystem4DVar :
   protected:
     unsigned int _n_qois;
     std::vector<Real> _qoi_weights;
+    std::string _data_file_name;
 
     // /*Friend Classes*/
     // friend class DwarfElephantRBKernel;

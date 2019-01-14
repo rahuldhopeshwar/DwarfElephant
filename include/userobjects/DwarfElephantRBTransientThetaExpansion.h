@@ -32,17 +32,22 @@ public:
   virtual unsigned int get_n_IC_terms()
     { return cast_int<unsigned int>(_IC_theta_vector.size());}
 
+  // virtual unsigned int get_n_C_terms()
+    // { return cast_int<unsigned int>(_C_theta_vector.size());}
+
   /**
    * Attach a pointer to a functor object that defines one
    * of the theta_q_ic terms.
    */
   virtual void attach_IC_theta(RBTheta * theta_q_ic);
+  // virtual void attach_C_theta(RBTheta * theta_q_c);
 
 private:
   /**
    * Vector storing the pointers to the RBTheta functors.
    */
   std::vector<RBTheta *> _IC_theta_vector;
+  // std::vector<RBTheta *> _C_theta_vector;
 
 };
 

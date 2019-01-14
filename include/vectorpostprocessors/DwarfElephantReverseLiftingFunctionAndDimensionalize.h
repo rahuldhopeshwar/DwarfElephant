@@ -28,6 +28,7 @@ protected:
   VectorPostprocessorValue & _nodal_solution_original;
   std::string _system;
   Real _reference_value_variable;
+  Real _scale_lifting_function;
   bool _dimensionalize;
   bool _scale_and_add;
   bool _reverse_lifting_function;
