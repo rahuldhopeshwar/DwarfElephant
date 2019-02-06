@@ -29,10 +29,13 @@ protected:
   std::string _system;
   Real _reference_value_variable;
   Real _scale_lifting_function;
+  Real _range;
   bool _dimensionalize;
   bool _scale_and_add;
+  bool _kriging;
   bool _reverse_lifting_function;
-  Function * _lifting_function;
+  Function * _lifting_function_1;
+  Function * _lifting_function_2;
 };
 
 #endif

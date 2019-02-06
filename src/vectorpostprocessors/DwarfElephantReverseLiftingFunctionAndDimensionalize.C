@@ -14,12 +14,15 @@ validParams<DwarfElephantReverseLiftingFunctionAndDimensionalize>()
 {
   InputParameters params = validParams<NodalVectorPostprocessor>();
   params.addParam<FunctionName>("lifting_function", "The lifting function that should be reversed.");
+  params.addParam<FunctionName>("lifting_function_2", "The second lifting function that should be reversed (only required for kriging).");
   params.addParam<std::string>("system", "rb0", "The name of the used system.");
   params.addParam<Real>("reference_value_variable", 1.0, "The reference value used for the nondimensionalization.");
   params.addParam<bool>("dimensionalize", true, "When set to true the nondimensionalizated values are backtransformed to their original values.");
   params.addParam<bool>("scale_and_add", true, "When true: new_variable = old_variable*ref+ref, when false: new_variable = old_variable*ref");
+  params.addParam<bool>("kriging",false, "Enables the option to reverse the lifitng function when kriging is performed.");
   params.addParam<bool>("reverse_lifting_function", true, "Determines whether a lifting function is reversed or not.");
   params.addParam<Real>("scale_lifting_function", 1.0, "The scaling value for the lifting function.");
+  params.addParam<Real>("range", -1.0, "The range of the semivariogramm.");
   return params;
 }
 
@@ -29,12 +32,20 @@ DwarfElephantReverseLiftingFunctionAndDimensionalize::DwarfElephantReverseLiftin
   _system(getParam<std::string>("system")),
   _reference_value_variable(getParam<Real>("reference_value_variable")),
   _scale_lifting_function(getParam<Real>("scale_lifting_function")),
+  _range(getParam<Real>("range")),
   _dimensionalize(getParam<bool>("dimensionalize")),
   _scale_and_add(getParam<bool>("scale_and_add")),
+  _kriging(getParam<bool>("kriging")),
   _reverse_lifting_function(getParam<bool>("reverse_lifting_function"))
 {
   if(_reverse_lifting_function)
-    _lifting_function = &getFunction("lifting_function");
+    _lifting_function_1 = &getFunction("lifting_function");
+
+  if(_kriging && _reverse_lifting_function)
+    _lifting_function_2 = &getFunction("lifting_function_2");
+
+  if(_kriging && _range == -1.0)
+    mooseError("You have to define a range.");
 }
 
 void
@@ -65,8 +76,21 @@ DwarfElephantReverseLiftingFunctionAndDimensionalize::execute()
   {
     // Define a point for the lifting function
     Point _point(_current_node->operator()(0), _current_node->operator()(1), _current_node->operator()(2));
-    // _value += _nodal_solution->el(_current_node->id()) + _lifting_function.value(_t, _point);
-    _value += _scale_lifting_function * _lifting_function->value(_t, _point);
+
+    if(!_kriging)
+    {
+      // _value += _nodal_solution->el(_current_node->id()) + _lifting_function.value(_t, _point);
+      _value += _scale_lifting_function * _lifting_function_1->value(_t, _point);
+    } else {
+      Real h = sqrt(pow(_current_node->operator()(0),2)+
+               pow(_current_node->operator()(1),2)+
+               pow(_current_node->operator()(2),2));
+
+      if(h>0 && h<_range)
+        _value += _scale_lifting_function * _lifting_function_1->value(_t, _point);
+      else
+        _value += _scale_lifting_function * _lifting_function_2->value(_t, _point);
+    }
   }
 
   // dimensionalize the variable
