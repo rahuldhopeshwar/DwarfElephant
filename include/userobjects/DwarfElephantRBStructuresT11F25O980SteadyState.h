@@ -26,6 +26,14 @@
 #include "DwarfElephantRBStructuresA6ThetaEqualMu6.h"
 #include "DwarfElephantRBStructuresA7ThetaEqualMu7.h"
 #include "DwarfElephantRBStructuresA8ThetaEqualMu8.h"
+#include "DwarfElephantRBStructuresA0ThetaEqualMu0TimesMu8.h"
+#include "DwarfElephantRBStructuresA1ThetaEqualMu1TimesMu8.h"
+#include "DwarfElephantRBStructuresA2ThetaEqualMu2TimesMu8.h"
+#include "DwarfElephantRBStructuresA3ThetaEqualMu3TimesMu8.h"
+#include "DwarfElephantRBStructuresA4ThetaEqualMu4TimesMu8.h"
+#include "DwarfElephantRBStructuresA5ThetaEqualMu5TimesMu8.h"
+#include "DwarfElephantRBStructuresA6ThetaEqualMu6TimesMu8.h"
+#include "DwarfElephantRBStructuresA7ThetaEqualMu7TimesMu8.h"
 #include "DwarfElephantRBStructuresA0ThetaEqualMu0TimesMu9.h"
 #include "DwarfElephantRBStructuresA1ThetaEqualMu1TimesMu9.h"
 #include "DwarfElephantRBStructuresA2ThetaEqualMu2TimesMu9.h"
@@ -34,7 +42,6 @@
 #include "DwarfElephantRBStructuresA5ThetaEqualMu5TimesMu9.h"
 #include "DwarfElephantRBStructuresA6ThetaEqualMu6TimesMu9.h"
 #include "DwarfElephantRBStructuresA7ThetaEqualMu7TimesMu9.h"
-#include "DwarfElephantRBStructuresA8ThetaEqualMu8TimesMu9.h"
 #include "DwarfElephantRBStructuresA0ThetaEqualMu0TimesMu10.h"
 #include "DwarfElephantRBStructuresA1ThetaEqualMu1TimesMu10.h"
 #include "DwarfElephantRBStructuresA2ThetaEqualMu2TimesMu10.h"
@@ -43,16 +50,6 @@
 #include "DwarfElephantRBStructuresA5ThetaEqualMu5TimesMu10.h"
 #include "DwarfElephantRBStructuresA6ThetaEqualMu6TimesMu10.h"
 #include "DwarfElephantRBStructuresA7ThetaEqualMu7TimesMu10.h"
-#include "DwarfElephantRBStructuresA8ThetaEqualMu8TimesMu10.h"
-#include "DwarfElephantRBStructuresA0ThetaEqualMu0TimesMu11.h"
-#include "DwarfElephantRBStructuresA1ThetaEqualMu1TimesMu11.h"
-#include "DwarfElephantRBStructuresA2ThetaEqualMu2TimesMu11.h"
-#include "DwarfElephantRBStructuresA3ThetaEqualMu3TimesMu11.h"
-#include "DwarfElephantRBStructuresA4ThetaEqualMu4TimesMu11.h"
-#include "DwarfElephantRBStructuresA5ThetaEqualMu5TimesMu11.h"
-#include "DwarfElephantRBStructuresA6ThetaEqualMu6TimesMu11.h"
-#include "DwarfElephantRBStructuresA7ThetaEqualMu7TimesMu11.h"
-#include "DwarfElephantRBStructuresA8ThetaEqualMu8TimesMu11.h"
 
 
 // Forward Declarations
@@ -1101,30 +1098,30 @@ struct DwarfElephantRBT11F25O980SteadyStateExpansion : RBThetaExpansion
   DwarfElephantThetaA5EqualMu5 _theta_a_5;
   DwarfElephantThetaA6EqualMu6 _theta_a_6;
   DwarfElephantThetaA7EqualMu7 _theta_a_7;
-  DwarfElephantThetaA0EqualMu0TimesMu9 _theta_f_0;
-  DwarfElephantThetaA1EqualMu1TimesMu9 _theta_f_1;
-  DwarfElephantThetaA2EqualMu2TimesMu9 _theta_f_2;
-  DwarfElephantThetaA3EqualMu3TimesMu9 _theta_f_3;
-  DwarfElephantThetaA4EqualMu4TimesMu9 _theta_f_4;
-  DwarfElephantThetaA5EqualMu5TimesMu9 _theta_f_5;
-  DwarfElephantThetaA6EqualMu6TimesMu9 _theta_f_6;
-  DwarfElephantThetaA7EqualMu7TimesMu9 _theta_f_7;
-  DwarfElephantThetaA0EqualMu0TimesMu10 _theta_f_8;
-  DwarfElephantThetaA1EqualMu1TimesMu10 _theta_f_9;
-  DwarfElephantThetaA2EqualMu2TimesMu10 _theta_f_10;
-  DwarfElephantThetaA3EqualMu3TimesMu10 _theta_f_11;
-  DwarfElephantThetaA4EqualMu4TimesMu10 _theta_f_12;
-  DwarfElephantThetaA5EqualMu5TimesMu10 _theta_f_13;
-  DwarfElephantThetaA6EqualMu6TimesMu10 _theta_f_14;
-  DwarfElephantThetaA7EqualMu7TimesMu10 _theta_f_15;
-  DwarfElephantThetaA0EqualMu0TimesMu11 _theta_f_16;
-  DwarfElephantThetaA1EqualMu1TimesMu11 _theta_f_17;
-  DwarfElephantThetaA2EqualMu2TimesMu11 _theta_f_18;
-  DwarfElephantThetaA3EqualMu3TimesMu11 _theta_f_19;
-  DwarfElephantThetaA4EqualMu4TimesMu11 _theta_f_20;
-  DwarfElephantThetaA5EqualMu5TimesMu11 _theta_f_21;
-  DwarfElephantThetaA6EqualMu6TimesMu11 _theta_f_22;
-  DwarfElephantThetaA7EqualMu7TimesMu11 _theta_f_23;
+  DwarfElephantThetaA0EqualMu0TimesMu8 _theta_f_0;
+  DwarfElephantThetaA1EqualMu1TimesMu8 _theta_f_1;
+  DwarfElephantThetaA2EqualMu2TimesMu8 _theta_f_2;
+  DwarfElephantThetaA3EqualMu3TimesMu8 _theta_f_3;
+  DwarfElephantThetaA4EqualMu4TimesMu8 _theta_f_4;
+  DwarfElephantThetaA5EqualMu5TimesMu8 _theta_f_5;
+  DwarfElephantThetaA6EqualMu6TimesMu8 _theta_f_6;
+  DwarfElephantThetaA7EqualMu7TimesMu8 _theta_f_7;
+  DwarfElephantThetaA0EqualMu0TimesMu9 _theta_f_8;
+  DwarfElephantThetaA1EqualMu1TimesMu9 _theta_f_9;
+  DwarfElephantThetaA2EqualMu2TimesMu9 _theta_f_10;
+  DwarfElephantThetaA3EqualMu3TimesMu9 _theta_f_11;
+  DwarfElephantThetaA4EqualMu4TimesMu9 _theta_f_12;
+  DwarfElephantThetaA5EqualMu5TimesMu9 _theta_f_13;
+  DwarfElephantThetaA6EqualMu6TimesMu9 _theta_f_14;
+  DwarfElephantThetaA7EqualMu7TimesMu9 _theta_f_15;
+  DwarfElephantThetaA0EqualMu0TimesMu10 _theta_f_16;
+  DwarfElephantThetaA1EqualMu1TimesMu10 _theta_f_17;
+  DwarfElephantThetaA2EqualMu2TimesMu10 _theta_f_18;
+  DwarfElephantThetaA3EqualMu3TimesMu10 _theta_f_19;
+  DwarfElephantThetaA4EqualMu4TimesMu10 _theta_f_20;
+  DwarfElephantThetaA5EqualMu5TimesMu10 _theta_f_21;
+  DwarfElephantThetaA6EqualMu6TimesMu10 _theta_f_22;
+  DwarfElephantThetaA7EqualMu7TimesMu10 _theta_f_23;
   RBTheta _rb_theta;         // Default RBTheta object, simply returns one.
 };
 
