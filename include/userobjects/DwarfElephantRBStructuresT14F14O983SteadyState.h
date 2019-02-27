@@ -1,7 +1,7 @@
  /**
   * The structures are defined for an elliptic PDE with the following restrictions:
   *  1. The number of thetas is equal to 14 (T14).
-  *  2. The problem contains 15 load vectors (F15) and 983 outputs (O983).
+  *  2. The problem contains 14 load vectors (F14) and 983 outputs (O983).
   *
   * The structures defined are:
   * 1. Theta --> parameter-dependent part of the PDE
@@ -9,8 +9,8 @@
   */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTRBSTRUCTUREST14F15O983STEADYSTATE_H
-#define DWARFELEPHANTRBSTRUCTUREST14F15O983STEADYSTATE_H
+#ifndef DWARFELEPHANTRBSTRUCTUREST14F14O983STEADYSTATE_H
+#define DWARFELEPHANTRBSTRUCTUREST14F14O983STEADYSTATE_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
@@ -61,9 +61,9 @@ namespace libMesh
  *
  */
 
-struct DwarfElephantRBT14F15O983SteadyStateExpansion : RBThetaExpansion
+struct DwarfElephantRBT14F14O983SteadyStateExpansion : RBThetaExpansion
 {
-  DwarfElephantRBT14F15O983SteadyStateExpansion()
+  DwarfElephantRBT14F14O983SteadyStateExpansion()
   {
     // Setting up the RBThetaExpansion object
     attach_A_theta(&_theta_a_0);
@@ -95,7 +95,6 @@ struct DwarfElephantRBT14F15O983SteadyStateExpansion : RBThetaExpansion
     attach_F_theta(&_theta_f_11);
     attach_F_theta(&_theta_f_12);
 
-    attach_output_theta(&_rb_theta);
     attach_output_theta(&_rb_theta);
     attach_output_theta(&_rb_theta);
     attach_output_theta(&_rb_theta);
@@ -1111,4 +1110,4 @@ struct DwarfElephantRBT14F15O983SteadyStateExpansion : RBThetaExpansion
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTRBSTRUCTUREST12F13O984STEADYSTATE_H
+#endif // DWARFELEPHANTRBSTRUCTUREST14F14O983STEADYSTATE_H
