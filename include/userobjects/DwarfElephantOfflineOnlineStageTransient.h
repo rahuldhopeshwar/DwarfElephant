@@ -113,6 +113,7 @@ class DwarfElephantOfflineOnlineStageTransient :
 
     friend class DwarfElephantRBEvaluationTransient;
     friend class DwarfElephantDakotaOutput;
+    friend class DwarfElephantRBOutput;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTOFFLINEONLINESTAGETRANSIENT_H

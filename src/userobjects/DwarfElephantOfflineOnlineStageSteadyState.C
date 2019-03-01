@@ -28,6 +28,7 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     params.addParam<bool>("compliant", false, "Specifies if you have a compliant or non-compliant case.");
     params.addParam<bool>("norm_online_values", false, "Determines wether online parameters are normed.");
     params.addParam<bool>("load_basis_function", false, "Set to true if you want to load a basis function.");
+    params.addParam<bool>("write_output", true, "Stores the offline data.");
     params.addParam<unsigned int>("norm_id", 0, "Defines the id of the parameter that will be used for the normalization.");
     params.addParam<unsigned int>("n_outputs", 1, "Defines the number of outputs.");
     params.addParam<unsigned int>("online_N", 0, "Defines the dimension of the online stage.");
@@ -56,6 +57,7 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     _compliant(getParam<bool>("compliant")),
     _norm_online_values(getParam<bool>("norm_online_values")),
     _load_basis_function(getParam<bool>("load_basis_function")),
+    _write_output(getParam<bool>("write_output")),
     _norm_id(getParam<unsigned int>("norm_id")),
     _n_outputs(getParam<unsigned int>("n_outputs")),
     _online_N(getParam<unsigned int>("online_N")),
@@ -119,14 +121,16 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
 void
 DwarfElephantOfflineOnlineStageSteadyState::offlineStage()
 {
-    _initialize_rb_system._rb_con_ptr->train_reduced_basis();
-    #if defined(LIBMESH_HAVE_CAPNPROTO)
-      RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
-      _rb_eval_writer.write_to_file("rb_eval.bin");
-    #else
-      // Write the offline data to file (xdr format).
-      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files();
-    #endif
+      _initialize_rb_system._rb_con_ptr->train_reduced_basis();
+      if(_write_output){
+        #if defined(LIBMESH_HAVE_CAPNPROTO)
+        RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
+        _rb_eval_writer.write_to_file("rb_eval.bin");
+        #else
+        if(processor_id() == 0)
+          _initialize_rb_system._rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files();
+        #endif
+    }
 
     // If desired, store the basis functions (xdr format).
     if (_store_basis_functions)
@@ -251,7 +255,6 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
          *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
          _fe_problem.getNonlinearSystemBase().update();
-
 //        How to write own Exodus file  // not required anymore
 //        Moose::perf_log.push("write_Exodus()", "Output");
 //

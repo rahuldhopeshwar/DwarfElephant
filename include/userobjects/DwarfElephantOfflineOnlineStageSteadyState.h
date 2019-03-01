@@ -82,6 +82,7 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     bool _compliant;
     bool _norm_online_values;
     bool _load_basis_function;
+    bool _write_output;
 
     unsigned int _norm_id;
     unsigned int _n_outputs;
@@ -113,6 +114,7 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     PerfID _data_transfer_timer;
 
     friend class DwarfElephantDakotaOutput;
+    friend class DwarfElephantRBOutput;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTOFFLINEONLINESTAGESTEADYSTATE_H

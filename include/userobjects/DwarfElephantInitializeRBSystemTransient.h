@@ -138,6 +138,7 @@ class DwarfElephantInitializeRBSystemTransient :
     friend class DwarfElephantOfflineOnlineStageTransient;
     friend class DwarfElephantRBExecutioner;
     friend class DwarfElephantDakotaOutput;
+    friend class DwarfElephantRBOutput;
     friend class DwarfElephantRBInitialCondition;
     friend class DwarfElephantRBProblem;
 };
