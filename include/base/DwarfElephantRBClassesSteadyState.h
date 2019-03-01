@@ -284,8 +284,8 @@ public:
   FEProblemBase & get_fe_problem(){return fe_problem;}
 
   FEProblemBase & fe_problem;
-  DwarfElephantRBT3F1O1SteadyStateExpansion _rb_theta_expansion;
-  // DwarfElephantRBT14F14O983SteadyStateExpansion _rb_theta_expansion;
+  // DwarfElephantRBT8F9O980SteadyStateExpansion _rb_theta_expansion;
+  DwarfElephantRBT14F14O983SteadyStateExpansion _rb_theta_expansion;
 };
 
 ///-------------------------------------------------------------------------
