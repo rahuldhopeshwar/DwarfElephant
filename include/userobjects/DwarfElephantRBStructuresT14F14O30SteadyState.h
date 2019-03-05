@@ -140,7 +140,7 @@ struct DwarfElephantRBT14F14O30SteadyStateExpansion : RBThetaExpansion
   DwarfElephantThetaA9EqualMu9 _theta_a_9;
   DwarfElephantThetaA10EqualMu10 _theta_a_10;
   DwarfElephantThetaA11EqualMu11 _theta_a_11;
-  DwarfElephantThetaA11EqualMu11 _theta_a_12;
+  DwarfElephantThetaA12EqualMu12 _theta_a_12;
   DwarfElephantThetaA0EqualMu0TimesMu13 _theta_f_0;
   DwarfElephantThetaA1EqualMu1TimesMu13 _theta_f_1;
   DwarfElephantThetaA2EqualMu2TimesMu13 _theta_f_2;
