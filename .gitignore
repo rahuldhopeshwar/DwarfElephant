@@ -208,3 +208,4 @@ python/peacock/tests/postprocessor_tab/TestPostprocessorPluginManager_test_scrip
 # ignore mesh and inputfiles folder
 inputfiles/*
 meshs/*
+offline_data/*
