@@ -129,8 +129,7 @@ DwarfElephantOfflineOnlineStageSteadyState::offlineStage()
         RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
         _rb_eval_writer.write_to_file("rb_eval.bin");
         #else
-        if(processor_id() == 0)
-          _initialize_rb_system._rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files();
+        _initialize_rb_system._rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files();
         #endif
     }
 
@@ -142,17 +141,16 @@ DwarfElephantOfflineOnlineStageSteadyState::offlineStage()
 
     if(_store_basis_functions_sorted)
     {
-      if(processor_id() == 0){
-        std::ofstream dakota_file;
-        for(unsigned int i = 0; i < _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions(); i++)
+      DwarfElephantRBEvaluationSteadyState _rb_eval(comm() , _fe_problem);
+      _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
+
+      _n_bfs = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
+      _basis_functions.resize(_n_bfs);
+        for (unsigned int i = 0; i != _n_bfs; i++)
         {
-          dakota_file.open("offline_data/basis_function_"+ std::to_string(i), std::ios::app);
-          dakota_file << _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_basis_function(i) << std::endl;
-          dakota_file.close();
+          *_basis_functions[i] = *_rb_eval.basis_functions[i];
         }
       }
-    }
-
 //    _initialize_rb_system._rb_con_ptr->print_basis_function_orthogonality();
 }
 
@@ -299,6 +297,18 @@ DwarfElephantOfflineOnlineStageSteadyState::finalize()
   _fe_problem.execute(EXEC_CUSTOM);
   _fe_problem.outputStep(EXEC_TIMESTEP_END);
   _fe_problem.outputStep(EXEC_CUSTOM);
+
+  if(_store_basis_functions_sorted)
+  {
+    if(processor_id() == 0){
+      std::ofstream basis_function_file;
+
+      for(unsigned int i = 0; i < _n_bfs; i++){
+        basis_function_file.open("offline_data/basis_function"+std::to_string(i), std::ios::app);
+        basis_function_file << *_basis_functions[i] << std::endl;
+      }
+    }
+  }
 }
 
 //std::string
