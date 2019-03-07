@@ -23,6 +23,7 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     params.addParam<bool>("offline_error_bound", false, "Determines which error bound is used.");
     params.addParam<bool>("output_file", true, "Determines whether an output file is generated or not.");
     params.addParam<bool>("store_basis_functions", true, "Determines whether the basis functions are stored for visualization purposes.");
+    params.addParam<bool>("store_basis_functions_sorted", false, "Determines whether the basis functions are stored for visualization purposes.");
     params.addParam<bool>("output_console", false, "Determines whether an output of interest is computed or not.");
     params.addParam<bool>("output_csv",false, "Determines whether an output of interest is passed to the CSV file.");
     params.addParam<bool>("compliant", false, "Specifies if you have a compliant or non-compliant case.");
@@ -46,6 +47,7 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     GeneralUserObject(params),
     _use_displaced(getParam<bool>("use_displaced")),
     _store_basis_functions(getParam<bool>("store_basis_functions")),
+    _store_basis_functions_sorted(getParam<bool>("store_basis_functions_sorted")),
     _skip_matrix_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
     _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
     _offline_stage(getParam<bool>("offline_stage")),
@@ -136,6 +138,19 @@ DwarfElephantOfflineOnlineStageSteadyState::offlineStage()
     if (_store_basis_functions)
     {
         _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr);
+    }
+
+    if(_store_basis_functions_sorted)
+    {
+      if(processor_id() == 0){
+        std::ofstream dakota_file;
+        for(unsigned int i = 0; i < _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions(); i++)
+        {
+          dakota_file.open("offline_data/basis_function_"+ std::to_string(i), std::ios::app);
+          dakota_file << _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_basis_function(i) << std::endl;
+          dakota_file.close();
+        }
+      }
     }
 
 //    _initialize_rb_system._rb_con_ptr->print_basis_function_orthogonality();

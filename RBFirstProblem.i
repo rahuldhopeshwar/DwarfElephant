@@ -60,7 +60,8 @@
   online_mu = '1.0 2.38 1.0'
   execute_on = 'timestep_end'
   output_file = false
-  write_output = true
+  store_basis_functions = false
+  store_basis_functions_sorted = true
   online_stage = false
 [../]
 []

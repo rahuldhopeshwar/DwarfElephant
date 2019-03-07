@@ -71,6 +71,7 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     /* Attributes */
     bool _use_displaced;
     bool _store_basis_functions;
+    bool _store_basis_functions_sorted;
     bool _skip_matrix_assembly_in_rb_system;
     bool _skip_vector_assembly_in_rb_system;
     bool _offline_stage;

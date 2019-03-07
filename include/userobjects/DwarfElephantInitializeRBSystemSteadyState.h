@@ -120,6 +120,7 @@ class DwarfElephantInitializeRBSystemSteadyState :
     friend class DwarfElephantRBEvaluationSteadyState;
     friend class DwarfElephantDakotaOutput;
     friend class DwarfElephantRBOutput;
+    friend class DwarfElephantRBFilePointValues;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTINITIALIZERBSYSTEMSTEADYSTATE_H
