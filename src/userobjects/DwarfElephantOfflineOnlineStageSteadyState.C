@@ -135,22 +135,20 @@ DwarfElephantOfflineOnlineStageSteadyState::offlineStage()
 
     // If desired, store the basis functions (xdr format).
     if (_store_basis_functions)
-    {
-        _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr);
-    }
+      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr);
+
 
     if(_store_basis_functions_sorted)
     {
-      DwarfElephantRBEvaluationSteadyState _rb_eval(comm() , _fe_problem);
-      _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
-
+      std::ofstream basis_function_file;
       _n_bfs = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
-      _basis_functions.resize(_n_bfs);
-        for (unsigned int i = 0; i != _n_bfs; i++)
-        {
-          *_basis_functions[i] = *_rb_eval.basis_functions[i];
-        }
+      for (unsigned int i = 0; i != _n_bfs; i++)
+      {
+        basis_function_file.open("offline_data/basis_function"+std::to_string(i), std::ios::app);
+        basis_function_file << *_initialize_rb_system._rb_con_ptr->get_rb_evaluation().basis_functions[i].get();
+        basis_function_file.close();
       }
+    }
 //    _initialize_rb_system._rb_con_ptr->print_basis_function_orthogonality();
 }
 
@@ -297,18 +295,6 @@ DwarfElephantOfflineOnlineStageSteadyState::finalize()
   _fe_problem.execute(EXEC_CUSTOM);
   _fe_problem.outputStep(EXEC_TIMESTEP_END);
   _fe_problem.outputStep(EXEC_CUSTOM);
-
-  if(_store_basis_functions_sorted)
-  {
-    if(processor_id() == 0){
-      std::ofstream basis_function_file;
-
-      for(unsigned int i = 0; i < _n_bfs; i++){
-        basis_function_file.open("offline_data/basis_function"+std::to_string(i), std::ios::app);
-        basis_function_file << *_basis_functions[i] << std::endl;
-      }
-    }
-  }
 }
 
 //std::string

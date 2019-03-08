@@ -54,6 +54,7 @@
   parameter_min_values = '1.0 1.0 1.0'
   parameter_max_values = '5.15 7.15 5.15'
   normalize_rb_bound_in_greedy = true
+  training_parameters_random_seed = 200
 [../]
 [./performRBSystem]
   type = DwarfElephantOfflineOnlineStageSteadyState

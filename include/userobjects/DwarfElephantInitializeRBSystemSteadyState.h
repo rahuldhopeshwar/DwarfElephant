@@ -36,6 +36,7 @@ namespace libMesh
 class MooseMesh;
 class DwarfElephantSystem;
 class DwarfElephantRBConstructionSteadyState;
+class DwarfElephantRBEvaluationSteadyState;
 class DwarfElephantInitializeRBSystemSteadyState;
 
 ///----------------------------INPUT PARAMETERS-----------------------------

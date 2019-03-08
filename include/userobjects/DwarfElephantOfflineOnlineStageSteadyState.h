@@ -111,7 +111,7 @@ class DwarfElephantOfflineOnlineStageSteadyState :
 
     Real _norm_factor;
 
-    std::vector<std::unique_ptr<NumericVector< Number >>> _basis_functions;
+    std::vector<std::vector<Real>> _basis_functions;
     Real _n_bfs;
 
     // for MOOSE version that operate on the PerfLog comment out the following two lines
