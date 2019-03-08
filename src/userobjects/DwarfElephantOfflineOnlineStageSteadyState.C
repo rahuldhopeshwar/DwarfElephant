@@ -137,18 +137,6 @@ DwarfElephantOfflineOnlineStageSteadyState::offlineStage()
     if (_store_basis_functions)
       _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr);
 
-
-    if(_store_basis_functions_sorted)
-    {
-      std::ofstream basis_function_file;
-      _n_bfs = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
-      for (unsigned int i = 0; i != _n_bfs; i++)
-      {
-        basis_function_file.open("offline_data/basis_function"+std::to_string(i), std::ios::app);
-        basis_function_file << *_initialize_rb_system._rb_con_ptr->get_rb_evaluation().basis_functions[i].get();
-        basis_function_file.close();
-      }
-    }
 //    _initialize_rb_system._rb_con_ptr->print_basis_function_orthogonality();
 }
 
@@ -179,11 +167,11 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
     // Pass a pointer of the RBEvaluation object to the
     // RBConstruction object
 
-    if(!_offline_stage && _output_file)
+    if(!_offline_stage && (_output_file || _store_basis_functions_sorted))
       _initialize_rb_system._rb_con_ptr->init();
 
 
-    if(_offline_stage || _output_file || _offline_error_bound || _online_N == 0)
+    if(_offline_stage || _output_file || _offline_error_bound || _online_N == 0 || _store_basis_functions_sorted)
       _initialize_rb_system._rb_con_ptr->set_rb_evaluation(_rb_eval);
 
     if (_offline_stage)
@@ -263,7 +251,6 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
           _initialize_rb_system._rb_con_ptr->load_basis_function(_basis_function_number);
         else
         _initialize_rb_system._rb_con_ptr->load_rb_solution();
-
          *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
          _fe_problem.getNonlinearSystemBase().update();
 //        How to write own Exodus file  // not required anymore
@@ -279,6 +266,21 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 ////
 ////      _initialize_rb_system._rb_con_ptr->load_basis_function(0);
 ////      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
+      }
+
+      if(_store_basis_functions_sorted)
+      {
+        if(!_output_file)
+          _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
+
+        std::ofstream basis_function_file;
+        _n_bfs = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
+        for (unsigned int i = 0; i != _n_bfs; i++)
+        {
+          basis_function_file.open("offline_data/basis_function"+std::to_string(i), std::ios::app);
+          basis_function_file << _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_basis_function(i);
+          basis_function_file.close();
+        }
       }
       // for older MOOSE versions that are using the PerfLog
       // Moose::perf_log.pop("DataTransfer()", "Execution");
