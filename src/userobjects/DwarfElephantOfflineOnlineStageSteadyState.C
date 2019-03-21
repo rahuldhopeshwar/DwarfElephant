@@ -277,7 +277,7 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
         _n_bfs = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
         for (unsigned int i = 0; i != _n_bfs; i++)
         {
-          basis_function_file.open("offline_data/basis_function"+std::to_string(i), std::ios::app);
+          basis_function_file.open("offline_data/basis_function"+std::to_string(i), std::ios::app | std::ios::binary);
           basis_function_file << _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_basis_function(i);
           basis_function_file.close();
         }
