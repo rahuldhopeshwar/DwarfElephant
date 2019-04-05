@@ -23,6 +23,7 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageTransient>()
     params.addParam<bool>("offline_error_bound", false, "Determines which error bound is used.");
     params.addParam<bool>("output_file", true, "Determines whether an output file is generated or not.");
     params.addParam<bool>("store_basis_functions", true, "Determines whether the basis functions are stored for visualization purposes.");
+    params.addParam<bool>("store_basis_functions_sorted", false, "Determines whether the basis functions are stored for visualization purposes.");
     params.addParam<bool>("output_console", false, "Determines whether an output of interest is computed or not.");
     params.addParam<bool>("output_csv", false, "Determines whether an output of interest is passed to the CSV file.");
     params.addParam<bool>("compliant", false, "Specifies if you have a compliant or non-compliant case.");
@@ -43,6 +44,7 @@ DwarfElephantOfflineOnlineStageTransient::DwarfElephantOfflineOnlineStageTransie
     GeneralUserObject(params),
     _use_displaced(getParam<bool>("use_displaced")),
     _store_basis_functions(getParam<bool>("store_basis_functions")),
+    _store_basis_functions_sorted(getParam<bool>("store_basis_functions_sorted")),
     _skip_matrix_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
     _skip_vector_assembly_in_rb_system(getParam<bool>("skip_matrix_assembly_in_rb_system")),
     _offline_stage(getParam<bool>("offline_stage")),
@@ -182,10 +184,10 @@ DwarfElephantOfflineOnlineStageTransient::execute()
       _dwarf_elephant_trans_rb_eval.set_parameter_dependent_IC(_initialize_rb_system._parameter_dependent_IC);
     }
 
-    if (!_offline_stage && _output_file)
+    if(!_offline_stage && (_output_file || _store_basis_functions_sorted))
       _initialize_rb_system._rb_con_ptr->init();
 
-    if (_offline_stage || _output_file || _offline_error_bound || _online_N == 0)
+    if(_offline_stage || _output_file || _offline_error_bound || _online_N == 0 || _store_basis_functions_sorted)
     {
       // Pass a pointer of the RBEvaluation object to the
       // RBConstruction object
@@ -295,6 +297,21 @@ DwarfElephantOfflineOnlineStageTransient::execute()
           _fe_problem.getNonlinearSystemBase().update();
           _fe_problem.timeStep()=_time_step;
           endStep(0);
+        }
+
+        if(_store_basis_functions_sorted)
+        {
+          if(!_output_file)
+            _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
+
+          std::ofstream basis_function_file;
+          _n_bfs = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
+          for (unsigned int i = 0; i != _n_bfs; i++)
+          {
+            basis_function_file.open("offline_data/basis_function"+std::to_string(i), std::ios::app | std::ios::binary);
+            basis_function_file << _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_basis_function(i);
+            basis_function_file.close();
+          }
         }
 //        // Plot the solution
 //        Moose::perf_log.push("write_exodus()", "Output");

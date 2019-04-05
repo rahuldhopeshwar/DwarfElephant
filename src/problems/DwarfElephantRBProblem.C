@@ -143,6 +143,7 @@ DwarfElephantRBProblem::setReducedInitialCondition()
   for (auto i : IntRange<unsigned int>(0, _rb_eval.RB_solution.size()))
     _initialize_rb_system._rb_con_ptr->solution->add(_rb_eval.RB_solution(i), _rb_eval.get_basis_function(i));
 
+  *_eq.get_system("RBSystem").solution = *_initialize_rb_system._rb_con_ptr->solution;
   _initialize_rb_system._rb_con_ptr->update();
   *_eq.get_system("rb0").solution = *_eq.get_system("RBSystem").solution;
   this->getNonlinearSystemBase().update();

@@ -119,7 +119,6 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     PerfID _data_transfer_timer;
 
     friend class DwarfElephantDakotaOutput;
-    friend class DwarfElephantRBOutput;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTOFFLINEONLINESTAGESTEADYSTATE_H

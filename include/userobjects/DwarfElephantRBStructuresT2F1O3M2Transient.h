@@ -1,15 +1,15 @@
  /**
   * The structures are defined for an parabolic PDE with the following restrictions:
   *  1. The number of thetas is equal to four (T4).
-  *  2. The problem contains three load vectors (F3) and one output (O1).
+  *  2. The problem contains one load vectors (F1) and three output (O3).
   *
   * The structures defined are:
   * 1. Theta --> parameter-dependent part of the PDE
   * 2. RBThetaExpansion
   */
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTRBSTRUCTUREST2F3O3M2TRANSIENT_H
-#define DWARFELEPHANTRBSTRUCTUREST2F3O3M2TRANSIENT_H
+#ifndef DWARFELEPHANTRBSTRUCTUREST2F1O3M2TRANSIENT_H
+#define DWARFELEPHANTRBSTRUCTUREST2F1O3M2TRANSIENT_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
@@ -42,9 +42,9 @@ namespace libMesh
  *
  */
 
-struct DwarfElephantRBT2F3O3M2TransientExpansion : TransientRBThetaExpansion
+struct DwarfElephantRBT2F1O3M2TransientExpansion : TransientRBThetaExpansion
 {
-  DwarfElephantRBT2F3O3M2TransientExpansion()
+  DwarfElephantRBT2F1O3M2TransientExpansion()
   {
     // Setting up the RBThetaExpansion object
     attach_M_theta(&_theta_a_00);
@@ -54,9 +54,7 @@ struct DwarfElephantRBT2F3O3M2TransientExpansion : TransientRBThetaExpansion
     attach_A_theta(&_rb_theta);
     attach_A_theta(&_theta_a_1);
 
-    attach_F_theta(&_theta_a_0);
     attach_F_theta(&_rb_theta);
-    attach_F_theta(&_theta_a_1);
 
     attach_output_theta(&_rb_theta);
     attach_output_theta(&_rb_theta);
@@ -71,4 +69,4 @@ struct DwarfElephantRBT2F3O3M2TransientExpansion : TransientRBThetaExpansion
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTRBSTRUCTUREST2F3O3M2Transient_H
+#endif // DWARFELEPHANTRBSTRUCTUREST2F1O3M2Transient_H

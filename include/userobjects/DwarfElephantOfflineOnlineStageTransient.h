@@ -72,6 +72,7 @@ class DwarfElephantOfflineOnlineStageTransient :
     /* Attributes */
     bool _use_displaced;
     bool _store_basis_functions;
+    bool _store_basis_functions_sorted;
     bool _skip_matrix_assembly_in_rb_system;
     bool _skip_vector_assembly_in_rb_system;
     bool _offline_stage;
@@ -107,13 +108,15 @@ class DwarfElephantOfflineOnlineStageTransient :
 
     DwarfElephantRBProblem * _rb_problem;
 
+    std::vector<std::vector<Real>> _basis_functions;
+    Real _n_bfs;
+
     // for MOOSE version that operate on the PerfLog comment out the following two lines
     PerfID _online_stage_timer;
     PerfID _data_transfer_timer;
 
     friend class DwarfElephantRBEvaluationTransient;
     friend class DwarfElephantDakotaOutput;
-    friend class DwarfElephantRBOutput;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTOFFLINEONLINESTAGETRANSIENT_H
