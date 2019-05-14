@@ -18,6 +18,7 @@ InputParameters validParams<DwarfElephantRBProblem>()
   params.addParam<unsigned int>("assembly_size", 0 ,"Size of RBAssembly.");
   params.addParam<UserObjectName>("initial_rb_userobject", "","Name of the UserObject for initializing the RB system.");
   params.addParam<std::string>("file", "Name and path of the data file, valid delimiter is new line.");
+  params.addParam<std::string>("offline_data_name","offline_data","Folder where the offline data should be stored.");
 
   return params;
 }
@@ -28,7 +29,8 @@ DwarfElephantRBProblem::DwarfElephantRBProblem(const InputParameters & params):
   _use_reduced_initial_condition(getParam<bool>("use_reduced_initial_condition")),
   _user_defined_assembly_size(getParam<bool>("user_defined_assembly_size")),
   _assembly_size(getParam<unsigned int>("assembly_size")),
-  _initial_rb_userobject(getParam<UserObjectName>("initial_rb_userobject"))
+  _initial_rb_userobject(getParam<UserObjectName>("initial_rb_userobject")),
+  _offline_data_name(getParam<std::string>("offline_data_name"))
 {
     _nl = _nl_sys;
     _aux = std::make_shared<AuxiliarySystem>(*this, "aux0");
@@ -125,10 +127,10 @@ DwarfElephantRBProblem::setReducedInitialCondition()
     RBDataDeserialization::TransientRBEvaluationDeserialization _rb_eval_reader(_rb_eval);
     _rb_eval_reader.read_from_file("trans_rb_eval.bin", /*read_error_bound_data*/ true);
   #else
-    _rb_eval.legacy_read_offline_data_from_files();
+    _rb_eval.legacy_read_offline_data_from_files(_offline_data_name, true);
   #endif
 
-  _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
+  _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr, _offline_data_name, true);
 
   // Read the reduced state from file and set it as RB_solution
   _file = getParam<std::string>("file");
@@ -143,10 +145,11 @@ DwarfElephantRBProblem::setReducedInitialCondition()
   for (auto i : IntRange<unsigned int>(0, _rb_eval.RB_solution.size()))
     _initialize_rb_system._rb_con_ptr->solution->add(_rb_eval.RB_solution(i), _rb_eval.get_basis_function(i));
 
-  *_eq.get_system("RBSystem").solution = *_initialize_rb_system._rb_con_ptr->solution;
-  _initialize_rb_system._rb_con_ptr->update();
   *_eq.get_system("rb0").solution = *_eq.get_system("RBSystem").solution;
   this->getNonlinearSystemBase().update();
+  // ExodusII_IO(mesh()).write_equation_systems ("initial_condition.e", es());
+  // _eq.get_system("rb0").solution->zero();
+  // this->getNonlinearSystemBase().update();
 }
 
 void

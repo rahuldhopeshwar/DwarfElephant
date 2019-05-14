@@ -10,6 +10,7 @@
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
 #include "Steady.h"
+#include "TimeStepper.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
@@ -29,6 +30,7 @@ class DwarfElephantRBExecutioner :
 
     /*Methods*/
     void execute() override;
+    virtual Real computeDT() {return 0.0;};
 
 //--------------------------------PROTECTED---------------------------------
   protected:

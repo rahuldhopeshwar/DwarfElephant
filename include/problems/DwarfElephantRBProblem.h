@@ -75,6 +75,8 @@ class DwarfElephantRBProblem :
     UserObjectName _initial_rb_userobject;
 
     std::string _file;
+    std::string _offline_data_name;
+
 
 };
 ///-------------------------------------------------------------------------

@@ -121,6 +121,9 @@ class DwarfElephantInitializeRBSystemTransient :
     TransientNonlinearImplicitSystem * _sys;
     DwarfElephantRBConstructionTransient * _rb_con_ptr;
 
+    bool _varying_timesteps;
+    Real _growth_rate;
+
     SparseMatrix <Number> * _inner_product_matrix;
     SparseMatrix <Number> * _L2_matrix;
     std::vector<SparseMatrix <Number> *> _jacobian_subdomain;
@@ -142,6 +145,7 @@ class DwarfElephantInitializeRBSystemTransient :
     friend class DwarfElephantRBInitialCondition;
     friend class DwarfElephantRBProblem;
     friend class DwarfElephantRBFilePointValues;
+    friend class DwarfElephantRBIterationAdaptiveDT;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTINITIALIZERBSYSTEMTRANSIENT_H

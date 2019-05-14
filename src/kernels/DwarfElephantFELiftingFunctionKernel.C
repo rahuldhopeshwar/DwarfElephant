@@ -37,7 +37,8 @@ DwarfElephantFELiftingFunctionKernel::DwarfElephantFELiftingFunctionKernel(const
 Real
 DwarfElephantFELiftingFunctionKernel::computeQpResidual()
 {
-  return  (_scale/_norm_value)*(_grad_test[_i][_qp]*(_lifting_function->gradient(_fe_problem.time(),_q_point[_qp])));
+  Real value = (_scale/_norm_value)*(_grad_test[_i][_qp]*(_lifting_function->gradient(_fe_problem.time(),_q_point[_qp])));
+  return value;
 }
 
 Real

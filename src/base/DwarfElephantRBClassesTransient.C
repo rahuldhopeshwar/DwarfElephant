@@ -12,7 +12,9 @@ DwarfElephantRBConstructionTransient::DwarfElephantRBConstructionTransient (Equa
                       const std::string & name_in,
                       const unsigned int number_in)
   : Parent(es, name_in, number_in),
-  parameter_dependent_IC(false)
+  parameter_dependent_IC(false),
+  varying_timesteps(false),
+  growth_rate(1.0)
 {}
 
 void
@@ -401,7 +403,11 @@ DwarfElephantRBConstructionTransient::init_data()
     compute_truth_projection_error = true;
 
     Real value = 0;
-    if (parameter_dependent_IC)
+    // TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(get_rb_evaluation());
+    // DwarfElephantRBEvaluationTransient & _dwarf_elephant_trans_rb_eval = cast_ref<DwarfElephantRBEvaluationTransient &>(trans_rb_eval);
+
+    // adaptive_timestepping = false;
+    if (parameter_dependent_IC || varying_timesteps)
       value = train_reduced_basis_steady(resize_rb_eval_data);
     else
       value = Parent::train_reduced_basis(resize_rb_eval_data);
@@ -417,6 +423,14 @@ DwarfElephantRBConstructionTransient::init_data()
   LOG_SCOPE("train_reduced_basis()", "RBConstruction");
 
   int count = 0;
+  if(varying_timesteps)
+  {
+    delta_t_init = get_delta_t();
+    DwarfElephantRBEvaluationTransient & _dwarf_elephant_trans_rb_eval =
+      cast_ref<DwarfElephantRBEvaluationTransient &>(get_rb_evaluation());
+      _dwarf_elephant_trans_rb_eval.delta_t_init = delta_t_init;
+    _dwarf_elephant_trans_rb_eval.growth_rate = growth_rate;
+  }
 
   // initialize rb_eval's parameters
   get_rb_evaluation().initialize_parameters(*this);
@@ -456,15 +470,15 @@ DwarfElephantRBConstructionTransient::init_data()
       compute_Fq_representor_innerprods();
     }
 
-  libMesh::out << std::endl << "---- Performing Greedy basis enrichment ----" << std::endl;
-  Real initial_greedy_error = 0.;
-  bool initial_greedy_error_initialized = false;
-  while (true)
-    {
-      libMesh::out << std::endl << "---- Basis dimension: "
-                   << get_rb_evaluation().get_n_basis_functions() << " ----" << std::endl;
+    libMesh::out << std::endl << "---- Performing Greedy basis enrichment ----" << std::endl;
+    Real initial_greedy_error = 0.;
+    bool initial_greedy_error_initialized = false;
+    while (true)
+      {
+        libMesh::out << std::endl << "---- Basis dimension: "
+                    << get_rb_evaluation().get_n_basis_functions() << " ----" << std::endl;
 
-      if (count > 0 || (count==0 && use_empty_rb_solve_in_greedy))
+        if (count > 0 || (count==0 && use_empty_rb_solve_in_greedy))
         {
           libMesh::out << "Performing RB solves on training set" << std::endl;
           training_greedy_error = compute_max_error_bound();
@@ -482,7 +496,8 @@ DwarfElephantRBConstructionTransient::init_data()
           // or if the training_tolerance is satisfied.
           if (greedy_termination_test(training_greedy_error, initial_greedy_error, count))
             break;
-        }
+          }
+
 
       libMesh::out << "Performing truth solve at parameter:" << std::endl;
       print_parameters();
@@ -491,7 +506,10 @@ DwarfElephantRBConstructionTransient::init_data()
       this->update_greedy_param_list();
 
       // Perform an Offline truth solve for the current parameter
-      truth_solve(-1);
+      if(varying_timesteps)
+        truth_solve_varying_timesteps(-1);
+      else
+        truth_solve(-1);
 
       // Add orthogonal part of the snapshot to the RB space
       libMesh::out << "Enriching the RB space" << std::endl;
@@ -567,6 +585,108 @@ DwarfElephantRBConstructionTransient::init_data()
     get_rb_evaluation().basis_functions.emplace_back( std::move(new_bf) );
   }
 
+  Real DwarfElephantRBConstructionTransient::truth_solve_varying_timesteps(int write_interval)
+  {
+    LOG_SCOPE("truth_solve()", "TransientRBConstruction");
+
+    const RBParameters & mu = get_parameters();
+    const unsigned int n_time_steps = get_n_time_steps();
+
+    //   // NumericVector for computing true L2 error
+    //   std::unique_ptr<NumericVector<Number>> temp = NumericVector<Number>::build();
+    //   temp->init (this->n_dofs(), this->n_local_dofs(), false, PARALLEL);
+
+    // Apply initial condition again.
+    initialize_truth();
+    set_time_step(0);
+
+    // Now compute the truth outputs
+    for (unsigned int n=0; n<get_rb_theta_expansion().get_n_outputs(); n++)
+      {
+        truth_outputs_all_k[n][0] = 0.;
+        for (unsigned int q_l=0; q_l<get_rb_theta_expansion().get_n_output_terms(n); q_l++)
+          {
+            truth_outputs_all_k[n][0] += get_rb_theta_expansion().eval_output_theta(n,q_l,mu)*
+              get_output_vector(n,q_l)->dot(*solution);
+          }
+      }
+
+    // Load initial projection error into temporal_data dense matrix
+    if (compute_truth_projection_error)
+      set_error_temporal_data();
+
+    Real dt = delta_t_init;
+
+    for (unsigned int time_level=1; time_level<n_time_steps; time_level++)
+      {
+        dt*=growth_rate;
+        set_delta_t(dt);
+        set_time_step(time_level);
+
+        *old_local_solution = *current_local_solution;
+
+        // We assume that the truth assembly has been attached to the system
+        truth_assembly();
+
+        // truth_assembly assembles into matrix and rhs, so use those for the solve
+        solve_for_matrix_and_rhs(*get_linear_solver(), *matrix, *rhs);
+
+        // The matrix doesn't change at each timestep, so we
+        // can set reuse_preconditioner == true
+        linear_solver->reuse_preconditioner(true);
+
+        if (assert_convergence)
+          {
+            check_convergence(*get_linear_solver());
+          }
+
+        // Now compute the truth outputs
+        for (unsigned int n=0; n<get_rb_theta_expansion().get_n_outputs(); n++)
+          {
+            truth_outputs_all_k[n][time_level] = 0.;
+            for (unsigned int q_l=0; q_l<get_rb_theta_expansion().get_n_output_terms(n); q_l++)
+              {
+                truth_outputs_all_k[n][time_level] +=
+                  get_rb_theta_expansion().eval_output_theta(n,q_l,mu)*get_output_vector(n,q_l)->dot(*solution);
+              }
+          }
+
+        // load projection error into column _k of temporal_data matrix
+        if (compute_truth_projection_error)
+          set_error_temporal_data();
+
+        if ((write_interval > 0) && (time_level%write_interval == 0))
+          {
+            libMesh::out << std::endl << "Truth solve, plotting time step " << time_level << std::endl;
+
+            std::ostringstream file_name;
+
+            file_name << "truth.e.";
+            file_name << std::setw(3)
+                      << std::setprecision(0)
+                      << std::setfill('0')
+                      << std::right
+                      << time_level;
+
+  #ifdef LIBMESH_HAVE_EXODUS_API
+            ExodusII_IO(get_mesh()).write_equation_systems (file_name.str(),
+                                                            this->get_equation_systems());
+  #endif
+          }
+      }
+
+    // Set reuse_preconditioner back to false for subsequent solves.
+    linear_solver->reuse_preconditioner(false);
+
+    // Get the L2 norm of the truth solution at time-level _K
+    // Useful for normalizing our true error data
+    L2_matrix->vector_mult(*inner_product_storage_vector, *solution);
+    Real final_truth_L2_norm = libmesh_real(std::sqrt(inner_product_storage_vector->dot(*solution)));
+
+
+    return final_truth_L2_norm;
+  }
+
 
 //------------------------DWARFELEPHANTRBEVALUATION------------------------
 #include "libmesh/xdr_cxx.h"
@@ -574,6 +694,7 @@ DwarfElephantRBConstructionTransient::init_data()
   DwarfElephantRBEvaluationTransient::DwarfElephantRBEvaluationTransient(const libMesh::Parallel::Communicator & comm, FEProblemBase & fe_problem):
     TransientRBEvaluation(comm),
     fe_problem(fe_problem),
+    varying_timesteps(false),
     parameter_dependent_IC(false)
   {
     set_rb_theta_expansion(_rb_theta_expansion);
@@ -633,18 +754,24 @@ DwarfElephantRBConstructionTransient::init_data()
     const unsigned int Q_f = trans_theta_expansion.get_n_F_terms();
 
     const unsigned int n_time_steps = get_n_time_steps();
-    const Real dt                   = get_delta_t();
+    Real dt;
+    if(varying_timesteps)
+      dt = delta_t_init;
+    else
+      dt = get_delta_t();
     const Real euler_theta          = get_euler_theta();
 
     // Resize the RB and error bound vectors
-    error_bound_all_k.resize(n_time_steps+1);
+    // if(!adaptive_timestepping)
+      error_bound_all_k.resize(n_time_steps+1);
     RB_outputs_all_k.resize(trans_theta_expansion.get_n_outputs());
     RB_output_error_bounds_all_k.resize(trans_theta_expansion.get_n_outputs());
-    for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
-      {
-        RB_outputs_all_k[n].resize(n_time_steps+1, 0.);
-        RB_output_error_bounds_all_k[n].resize(n_time_steps+1, 0.);
-      }
+    // if(!adaptive_timestepping)
+      for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
+        {
+          RB_outputs_all_k[n].resize(n_time_steps+1, 0.);
+          RB_output_error_bounds_all_k[n].resize(n_time_steps+1, 0.);
+        }
 
     // First assemble the mass matrix
     DenseMatrix<Number> RB_mass_matrix_N(N,N);
@@ -741,7 +868,7 @@ DwarfElephantRBConstructionTransient::init_data()
       DenseVector<Number> RB_output_vector_N;
       for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
         {
-          RB_outputs_all_k[n][0] = 0.;
+            RB_outputs_all_k[n][0] = 0.;
           for (unsigned int q_l=0; q_l<trans_theta_expansion.get_n_output_terms(n); q_l++)
             {
               RB_output_vectors[n][q_l].get_principal_subvector(N, RB_output_vector_N);
@@ -760,20 +887,17 @@ DwarfElephantRBConstructionTransient::init_data()
           }
 
         // Set error bound at the initial time
-        error_bound_all_k[get_time_step()] = std::sqrt(error_bound_sum);
-
-        // Compute the outputs and associated error bounds at the initial time
+          error_bound_all_k[get_time_step()] = std::sqrt(error_bound_sum);
         DenseVector<Number> RB_output_vector_N;
         for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
           {
-            RB_outputs_all_k[n][0] = 0.;
+              RB_outputs_all_k[n][0] = 0.;
             for (unsigned int q_l=0; q_l<trans_theta_expansion.get_n_output_terms(n); q_l++)
               {
                 RB_output_vectors[n][q_l].get_principal_subvector(N, RB_output_vector_N);
                 RB_outputs_all_k[n][0] += trans_theta_expansion.eval_output_theta(n,q_l,mu)*RB_output_vector_N.dot(RB_solution);
               }
-
-            RB_output_error_bounds_all_k[n][0] = error_bound_all_k[0] * eval_output_dual_norm(n,mu);
+              RB_output_error_bounds_all_k[n][0] = error_bound_all_k[0] * eval_output_dual_norm(n,mu);
           }
 
         alpha_LB = get_stability_lower_bound();
@@ -784,6 +908,28 @@ DwarfElephantRBConstructionTransient::init_data()
 
     for (unsigned int time_level=1; time_level<=n_time_steps; time_level++)
       {
+        if(varying_timesteps)
+        {
+          dt *= growth_rate;
+          // RB_LHS_matrix.resize(N,N);
+          RB_LHS_matrix.zero();
+
+          // RB_RHS_matrix.resize(N,N);
+          RB_RHS_matrix.zero();
+
+          RB_LHS_matrix.add(1./dt, RB_mass_matrix_N);
+          RB_RHS_matrix.add(1./dt, RB_mass_matrix_N);
+
+          // DenseMatrix<Number> RB_Aq_a;
+          for (unsigned int q_a=0; q_a<Q_a; q_a++)
+            {
+              // RB_Aq_vector[q_a].get_principal_submatrix(N, RB_Aq_a);
+
+              RB_LHS_matrix.add(       euler_theta*trans_theta_expansion.eval_A_theta(q_a,mu), RB_Aq_a);
+              RB_RHS_matrix.add( -(1.-euler_theta)*trans_theta_expansion.eval_A_theta(q_a,mu), RB_Aq_a);
+            }
+
+        }
         set_time_step(time_level);
         old_RB_solution = RB_solution;
 
@@ -805,7 +951,7 @@ DwarfElephantRBConstructionTransient::init_data()
         DenseVector<Number> RB_output_vector_N;
         for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
           {
-            RB_outputs_all_k[n][time_level] = 0.;
+              RB_outputs_all_k[n][time_level] = 0.;
             for (unsigned int q_l=0; q_l<trans_theta_expansion.get_n_output_terms(n); q_l++)
               {
                 RB_output_vectors[n][q_l].get_principal_subvector(N, RB_output_vector_N);
@@ -824,12 +970,11 @@ DwarfElephantRBConstructionTransient::init_data()
             error_bound_sum += residual_scaling_numer(alpha_LB) * pow(epsilon_N, 2.);
 
             // store error bound at time-level _k
-            error_bound_all_k[time_level] = std::sqrt(error_bound_sum/residual_scaling_denom(alpha_LB));
-
+              error_bound_all_k[time_level] = std::sqrt(error_bound_sum/residual_scaling_denom(alpha_LB));
             // Now evaluated output error bounds
             for (unsigned int n=0; n<trans_theta_expansion.get_n_outputs(); n++)
               {
-                RB_output_error_bounds_all_k[n][time_level] = error_bound_all_k[time_level] *
+                  RB_output_error_bounds_all_k[n][time_level] = error_bound_all_k[time_level] *
                   eval_output_dual_norm(n,mu);
               }
           }
@@ -911,6 +1056,28 @@ DwarfElephantRBEvaluationTransient::legacy_write_offline_data_to_files(const std
           RB_IC_q_f_out.close();
         }
     }
+  }
+  if(varying_timesteps)
+  {
+    // // The writing mode: ENCODE for binary, WRITE for ASCII
+    // XdrMODE mode = write_binary_data ? ENCODE : WRITE;
+    //
+    // // The suffix to use for all the files that are written out
+    // const std::string suffix = write_binary_data ? ".xdr" : ".dat";
+    //
+    // if (this->processor_id() == 0)
+    // {
+    //   // Next write out the IC_q vectors
+    //   std::ostringstream file_name;
+    //
+    //   file_name.str("");
+    //   file_name << directory_name << "/dt_steps";
+    //   file_name << suffix;
+    //
+    //   Xdr dt_steps_out(file_name.str(), mode);
+    //   dt_steps_out << dt_steps;
+    //   dt_steps_out.close();
+    // }
   }
 }
 

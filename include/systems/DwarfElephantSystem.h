@@ -44,6 +44,7 @@ public:
 
   /* Methods */
   // Initialize data structure
+  // virtual void initialSetup() override;
   virtual void 	solve () override;
 };
 

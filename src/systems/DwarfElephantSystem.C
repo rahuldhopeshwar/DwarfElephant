@@ -13,6 +13,12 @@ DwarfElephantSystem::~DwarfElephantSystem()
 {
 }
 
+// void
+// DwarfElephantSystem::initialSetup()
+// {
+//   // Initialize the solution vector
+// }
+
 void
 DwarfElephantSystem::solve()
 {

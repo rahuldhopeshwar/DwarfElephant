@@ -36,6 +36,8 @@ InputParameters validParams<DwarfElephantInitializeRBSystemTransient>()
   params.addParam<std::vector<Real>>("parameter_min_values", "Defines the lower bound of the parameter range.");
   params.addParam<std::vector<Real>>("parameter_max_values", "Defines the upper bound of the parameter range.");
   params.addParam<std::vector<Real>>("discrete_parameter_values", "Defines the list of parameters.");
+  params.addParam<bool>("varying_timesteps", false, "Determines whether the time steps vary.");
+  params.addParam<Real>("growth_rate","The growth rate for the timesteps.");
 
   return params;
 }
@@ -72,7 +74,9 @@ DwarfElephantInitializeRBSystemTransient::DwarfElephantInitializeRBSystemTransie
   _discrete_parameters(getParam<std::vector<std::string>>("discrete_parameter_names")),
   _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
   _mesh_ptr(&_fe_problem.mesh()),
-  _sys(&_es.get_system<TransientNonlinearImplicitSystem>(_system_name))
+  _sys(&_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
+  _varying_timesteps(getParam<bool>("varying_timesteps")),
+  _growth_rate(getParam<Real>("growth_rate"))
 {
 }
 
@@ -143,6 +147,13 @@ DwarfElephantInitializeRBSystemTransient::processParameters()
 
   TransientRBEvaluation & trans_rb_eval = cast_ref<TransientRBEvaluation &>(_rb_con_ptr->get_rb_evaluation());
   trans_rb_eval.pull_temporal_discretization_data(*_rb_con_ptr);
+
+  if(_varying_timesteps)
+  {
+    DwarfElephantRBConstructionTransient * _dwarf_elephant_rb_con_ptr = dynamic_cast<DwarfElephantRBConstructionTransient * > (_rb_con_ptr);
+    _dwarf_elephant_rb_con_ptr->varying_timesteps = _varying_timesteps;
+    _dwarf_elephant_rb_con_ptr->growth_rate = _growth_rate;
+  }
 
   if(_parameter_dependent_IC)
   {

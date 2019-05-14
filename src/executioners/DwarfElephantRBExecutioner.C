@@ -54,7 +54,9 @@ DwarfElephantRBExecutioner::execute()
     postSolve();
 
     _problem.onTimestepEnd();
+    // _problem.execute(EXEC_CUSTOM);
     _problem.execute(EXEC_TIMESTEP_END);
+    // _problem.outputStep(EXEC_CUSTOM);
 
     // if(_simulation_type == "steady")
     // {

@@ -5,27 +5,27 @@
  */
 
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTFEDARCY_H
-#define DWARFELEPHANTFEDARCY_H
+#ifndef DWARFELEPHANTRBDARCY_H
+#define DWARFELEPHANTRBDARCY_H
 
 ///---------------------------------INCLUDES--------------------------------
 // MOOSE includes
-#include "Kernel.h"
+#include "DwarfElephantRBKernel.h"
 
 ///-------------------------------------------------------------------------
 // Forward Declarations
-class DwarfElephantFEDarcy;
+class DwarfElephantRBDarcy;
 
 ///----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<DwarfElephantFEDarcy>();
+InputParameters validParams<DwarfElephantRBDarcy>();
 
 ///This Kernel is implements a darcy flow problem using the full Finite Element solution. It is included in this package for validation purposes.
-class DwarfElephantFEDarcy : public Kernel
+class DwarfElephantRBDarcy : public DwarfElephantRBKernel
 {
 //----------------------------------PUBLIC----------------------------------
 public:
-  DwarfElephantFEDarcy(const InputParameters & parameters);
+  DwarfElephantRBDarcy(const InputParameters & parameters);
 
 //--------------------------------PROTECTED---------------------------------
 protected:
@@ -45,4 +45,4 @@ protected:
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTFEDARCY_H
+#endif // DWARFELEPHANTRBDARCY_H

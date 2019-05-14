@@ -89,6 +89,7 @@ class DwarfElephantOfflineOnlineStageTransient :
     unsigned int _n_time_steps;
 
     std::string _system_name;
+    std::string _offline_data_name;
 //    std::string _exodus_file_name;
 
     EquationSystems & _es;

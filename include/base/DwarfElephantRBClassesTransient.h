@@ -22,6 +22,8 @@
 
 ///-------------------------------------------------------------------------
 #include "FEProblemBase.h"
+#include "Executioner.h"
+#include "DwarfElephantRBExecutioner.h"
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantInitializeRBSystemTransient.h"
 #include "DwarfElephantOfflineOnlineStageTransient.h"
@@ -30,6 +32,8 @@
 #include "DwarfElephantRBStructuresT2F1O1M1Transient.h"
 #include "DwarfElephantRBStructuresT2F1O3M2Transient.h"
 #include "DwarfElephantRBStructuresT2F2O1M2Transient.h"
+#include "DwarfElephantRBStructuresT2F2O12M1Transient.h"
+#include "DwarfElephantRBStructuresT2F2O16M1Transient.h"
 #include "DwarfElephantRBStructuresT2F3O1M2Transient.h"
 #include "DwarfElephantRBStructuresT2F3O3M2Transient.h"
 #include "DwarfElephantRBStructuresT3F1O1M1Transient.h"
@@ -42,6 +46,7 @@
 #include "DwarfElephantRBStructuresT4F1O1M1Transient.h"
 #include "DwarfElephantRBStructuresT4F1O1M1IC1Transient.h"
 #include "DwarfElephantRBStructuresT5F1O1M1Transient.h"
+#include "DwarfElephantRBStructuresT5F5O1M1Transient.h"
 #include "DwarfElephantRBStructuresT5F4O1M2Transient.h"
 #include "DwarfElephantRBStructuresT6F1O1M1IC3Transient.h"
 
@@ -90,6 +95,8 @@ public:
 
   virtual Real get_RB_error_bound() override;
 
+  virtual Real truth_solve_varying_timesteps(int write_interval);
+
   NumericVector<Number> * get_IC_q(unsigned int q);
 
   NumericVector<Number> * get_non_dirichlet_IC_q(unsigned int q);
@@ -112,9 +119,15 @@ public:
 
   void enrich_RB_space_for_initial_conditions();
 
+  void greedy_step();
+
   unsigned int u_var;
 
   bool parameter_dependent_IC;
+  bool varying_timesteps;
+
+  Real growth_rate;
+  Real delta_t_init;
 
 private:
   /**
@@ -156,10 +169,14 @@ public:
                                                    const bool read_binary_data=true) override;
 
   FEProblemBase & fe_problem;
+  bool varying_timesteps;
 
   bool parameter_dependent_IC;
+  Real delta_t_init;
+  Real growth_rate;
 
-  DwarfElephantRBT2F3O3M2TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT5F5O1M1TransientExpansion _rb_theta_expansion;
+  // DwarfElephantRBT2F2O12M1TransientExpansion _rb_theta_expansion;
 
   std::vector<DenseVector<Number>> RB_IC_q_vector;
 };

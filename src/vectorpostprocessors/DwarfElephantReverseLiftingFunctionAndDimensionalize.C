@@ -76,23 +76,24 @@ DwarfElephantReverseLiftingFunctionAndDimensionalize::execute()
   {
     // Define a point for the lifting function
     Point _point(_current_node->operator()(0), _current_node->operator()(1), _current_node->operator()(2));
-
-    if(!_kriging)
-    {
-      // _value += _nodal_solution->el(_current_node->id()) + _lifting_function.value(_t, _point);
-      _value += _scale_lifting_function * _lifting_function_1->value(_t, _point);
-    } else {
-      Real h = sqrt(pow(_current_node->operator()(0),2)+
-               pow(_current_node->operator()(1),2)+
-               pow(_current_node->operator()(2),2));
-
-      if(h>0 && h<_range)
+    //
+    // if(_t>0)
+    // {
+      if(!_kriging)
+      {
+        // _value += _nodal_solution->el(_current_node->id()) + _lifting_function.value(_t, _point);
         _value += _scale_lifting_function * _lifting_function_1->value(_t, _point);
-      else
-        _value += _scale_lifting_function * _lifting_function_2->value(_t, _point);
-    }
-  }
+      } else {
+        Real h = sqrt(pow(_current_node->operator()(0),2)+
+                pow(_current_node->operator()(1),2)+
+                pow(_current_node->operator()(2),2));
 
+        if(h>0 && h<_range)
+          _value += _scale_lifting_function * _lifting_function_1->value(_t, _point);
+        else
+          _value += _scale_lifting_function * _lifting_function_2->value(_t, _point);
+        }
+      }
   // dimensionalize the variable
   if(_dimensionalize)
   {
@@ -100,7 +101,7 @@ DwarfElephantReverseLiftingFunctionAndDimensionalize::execute()
     if(_scale_and_add)
       _value += _reference_value_variable;
   }
-
+ // }
   // set the value
   _nodal_solution->set(_current_node->id(), _value);
 }

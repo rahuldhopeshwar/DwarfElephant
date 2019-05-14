@@ -6,15 +6,15 @@
 
  //---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
-#include "DwarfElephantFEDarcy.h"
+#include "DwarfElephantRBDarcy.h"
 
-registerMooseObject("DwarfElephantApp", DwarfElephantFEDarcy);
+registerMooseObject("DwarfElephantApp", DwarfElephantRBDarcy);
 
 //----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<DwarfElephantFEDarcy>()
+InputParameters validParams<DwarfElephantRBDarcy>()
 {
-  InputParameters params = validParams<Kernel>();
+  InputParameters params = validParams<DwarfElephantRBKernel>();
 
   params.addClassDescription("The class implements a darcy flow problem.");
   params.addRequiredParam<Real>("permeability", "Defines the rock permeability.");
@@ -29,8 +29,8 @@ InputParameters validParams<DwarfElephantFEDarcy>()
 }
 
 //-------------------------------CONSTRUCTOR-------------------------------
-DwarfElephantFEDarcy::DwarfElephantFEDarcy(const InputParameters & parameters) :
-  Kernel(parameters),
+DwarfElephantRBDarcy::DwarfElephantRBDarcy(const InputParameters & parameters) :
+  DwarfElephantRBKernel(parameters),
   _permeability(getParam<Real>("permeability")),
   _norm_value_perm(getParam<Real>("norm_value_permeability")),
   _viscosity(getParam<Real>("fluid_viscosity")),
@@ -46,7 +46,7 @@ DwarfElephantFEDarcy::DwarfElephantFEDarcy(const InputParameters & parameters) :
 //----------------------------------PDEs-----------------------------------
 // Definition of the necessary PDE in the weak formulation
 Real
-DwarfElephantFEDarcy::computeQpResidual()
+DwarfElephantRBDarcy::computeQpResidual()
 {
   if(!_gravity_term)
     return (_permeability/_norm_value_perm) * (_norm_value_visc/_viscosity) * _grad_u[_qp] * _grad_test[_i][_qp];
@@ -55,7 +55,7 @@ DwarfElephantFEDarcy::computeQpResidual()
 }
 
 Real
-DwarfElephantFEDarcy::computeQpJacobian()
+DwarfElephantRBDarcy::computeQpJacobian()
 {
   return (_permeability/_norm_value_perm) * (_norm_value_visc/_viscosity) * _grad_phi[_j][_qp] * _grad_test[_i][_qp];
 }
