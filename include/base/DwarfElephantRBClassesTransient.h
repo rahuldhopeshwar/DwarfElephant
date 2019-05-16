@@ -23,7 +23,7 @@
 ///-------------------------------------------------------------------------
 #include "FEProblemBase.h"
 #include "Executioner.h"
-#include "DwarfElephantRBExecutioner.h"
+#include "DwarfElephantRBProblem.h"
 // MOOSE includes (DwarfElephant package)
 #include "DwarfElephantInitializeRBSystemTransient.h"
 #include "DwarfElephantOfflineOnlineStageTransient.h"
@@ -95,7 +95,7 @@ public:
 
   virtual Real get_RB_error_bound() override;
 
-  virtual Real truth_solve_varying_timesteps(int write_interval);
+  virtual Real truth_solve_mod(int write_interval);
 
   NumericVector<Number> * get_IC_q(unsigned int q);
 
@@ -121,6 +121,8 @@ public:
 
   void greedy_step();
 
+  virtual RBParameters & calculate_time_dependent_mu(const RBParameters mu, Real time, std::vector<unsigned int> ID_param);
+
   unsigned int u_var;
 
   bool parameter_dependent_IC;
@@ -128,6 +130,14 @@ public:
 
   Real growth_rate;
   Real delta_t_init;
+
+  Real start_time;
+  Real end_time;
+
+  bool time_dependent_parameter;
+
+  Real time;
+  std::vector<unsigned int> ID_param;
 
 private:
   /**
@@ -175,10 +185,13 @@ public:
   Real delta_t_init;
   Real growth_rate;
 
-  DwarfElephantRBT5F5O1M1TransientExpansion _rb_theta_expansion;
-  // DwarfElephantRBT2F2O12M1TransientExpansion _rb_theta_expansion;
-
   std::vector<DenseVector<Number>> RB_IC_q_vector;
+
+  Real time;
+  std::vector<unsigned int> ID_param;
+
+  // DwarfElephantRBT5F5O1M1TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT2F2O12M1TransientExpansion _rb_theta_expansion;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBCLASSESTRANSIENT_H

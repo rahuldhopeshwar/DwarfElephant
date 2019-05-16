@@ -19,7 +19,6 @@ InputParameters validParams<DwarfElephantRBProblem>()
   params.addParam<UserObjectName>("initial_rb_userobject", "","Name of the UserObject for initializing the RB system.");
   params.addParam<std::string>("file", "Name and path of the data file, valid delimiter is new line.");
   params.addParam<std::string>("offline_data_name","offline_data","Folder where the offline data should be stored.");
-
   return params;
 }
 
@@ -56,7 +55,7 @@ DwarfElephantRBProblem::setInputParametersFEProblem(InputParameters & parameters
   // set _fe_problem
   FEProblemBase::setInputParametersFEProblem(parameters);
   // set _fe_problem
-  // parameters.set<DwarfElephantRBProblem *>("_fe_problem") = this;
+  parameters.set<DwarfElephantRBProblem *>("_dwarf_fe_problem") = this;
 }
 
 void

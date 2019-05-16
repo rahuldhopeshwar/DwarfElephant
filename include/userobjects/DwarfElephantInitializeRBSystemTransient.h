@@ -36,6 +36,7 @@ namespace libMesh
 class MooseMesh;
 class DwarfElephantSystem;
 class DwarfElephantRBConstructionTransient;
+class DwarfElephantRBEvaluationTransient;
 class DwarfElephantRBConstructionSteadyState;
 class DwarfElephantInitializeRBSystemTransient;
 
@@ -146,6 +147,7 @@ class DwarfElephantInitializeRBSystemTransient :
     friend class DwarfElephantRBProblem;
     friend class DwarfElephantRBFilePointValues;
     friend class DwarfElephantRBIterationAdaptiveDT;
+    friend class DwarfElephantRBEvaluationTransient;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTINITIALIZERBSYSTEMTRANSIENT_H

@@ -77,6 +77,8 @@ class DwarfElephantRBProblem :
     std::string _file;
     std::string _offline_data_name;
 
+    friend class DwarfElephantRBEvaluationTransient;
+
 
 };
 ///-------------------------------------------------------------------------

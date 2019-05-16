@@ -37,7 +37,7 @@ InputParameters validParams<DwarfElephantInitializeRBSystemTransient>()
   params.addParam<std::vector<Real>>("parameter_max_values", "Defines the upper bound of the parameter range.");
   params.addParam<std::vector<Real>>("discrete_parameter_values", "Defines the list of parameters.");
   params.addParam<bool>("varying_timesteps", false, "Determines whether the time steps vary.");
-  params.addParam<Real>("growth_rate","The growth rate for the timesteps.");
+  params.addParam<Real>("growth_rate", 1.0,"The growth rate for the timesteps.");
 
   return params;
 }
