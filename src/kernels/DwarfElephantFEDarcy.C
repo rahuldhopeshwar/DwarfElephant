@@ -51,7 +51,7 @@ DwarfElephantFEDarcy::computeQpResidual()
   if(!_gravity_term)
     return (_permeability/_norm_value_perm) * (_norm_value_visc/_viscosity) * _grad_u[_qp] * _grad_test[_i][_qp];
   else
-    return (_permeability/_norm_value_perm) * (_norm_value_visc/_viscosity) * (_grad_u[_qp]-(_fluid_density*_gravity)) * _grad_test[_i][_qp];
+    return ((_permeability/_norm_value_perm) * (_norm_value_visc/_viscosity) * (_grad_u[_qp]+(_fluid_density*_gravity))) * _grad_test[_i][_qp];
 }
 
 Real
