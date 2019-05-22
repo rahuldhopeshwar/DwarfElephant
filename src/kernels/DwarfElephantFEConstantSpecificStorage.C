@@ -36,13 +36,13 @@ DwarfElephantFEConstantSpecificStorage::DwarfElephantFEConstantSpecificStorage(c
 Real
 DwarfElephantFEConstantSpecificStorage::computeQpResidual()
 {
-  return 0.0;
-  // return (_specific_storage/_norm_value) * _u_dot[_qp] * _test[_i][_qp];
+  // return 0.0;
+  return (_specific_storage/_norm_value) * _u_dot[_qp] * _test[_i][_qp];
 }
 
 Real
 DwarfElephantFEConstantSpecificStorage::computeQpJacobian()
 {
-  return (_specific_storage/_norm_value) * _phi[_j][_qp] * _test[_i][_qp];
-  // return (_specific_storage/_norm_value) * _du_dot_du[_qp] * _phi[_j][_qp] * _test[_i][_qp];
+  // return (_specific_storage/_norm_value) * _phi[_j][_qp] * _test[_i][_qp];
+  return (_specific_storage/_norm_value) * _du_dot_du[_qp] * _phi[_j][_qp] * _test[_i][_qp];
 }
