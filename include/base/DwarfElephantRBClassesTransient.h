@@ -48,6 +48,7 @@
 #include "DwarfElephantRBStructuresT5F1O1M1Transient.h"
 #include "DwarfElephantRBStructuresT5F5O1M1Transient.h"
 #include "DwarfElephantRBStructuresT5F4O1M2Transient.h"
+#include "DwarfElephantRBStructuresT6F1O1M3Transient.h"
 #include "DwarfElephantRBStructuresT6F1O1M1IC3Transient.h"
 
 // Forward Declarations
@@ -191,7 +192,7 @@ public:
   std::vector<unsigned int> ID_param;
 
   // DwarfElephantRBT5F5O1M1TransientExpansion _rb_theta_expansion;
-  DwarfElephantRBT2F2O12M1TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT6F1O1M3TransientExpansion _rb_theta_expansion;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBCLASSESTRANSIENT_H

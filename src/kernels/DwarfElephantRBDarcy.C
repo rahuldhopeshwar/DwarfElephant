@@ -48,10 +48,15 @@ DwarfElephantRBDarcy::DwarfElephantRBDarcy(const InputParameters & parameters) :
 Real
 DwarfElephantRBDarcy::computeQpResidual()
 {
+  Real scale_factor = (_permeability/_norm_value_perm) * (_norm_value_visc/_viscosity);
+
   if(!_gravity_term)
-    return (_permeability/_norm_value_perm) * (_norm_value_visc/_viscosity) * _grad_u[_qp] * _grad_test[_i][_qp];
+    return scale_factor * _grad_u[_qp] * _grad_test[_i][_qp];
   else
-    return (_permeability/_norm_value_perm) * (_norm_value_visc/_viscosity) * (_grad_u[_qp]-(_fluid_density*_gravity)) * _grad_test[_i][_qp];
+  {
+    RealVectorValue grav_term = -_fluid_density*(-_gravity);
+    return  (scale_factor * (_grad_u[_qp]-grav_term)) * _grad_test[_i][_qp];
+  }
 }
 
 Real

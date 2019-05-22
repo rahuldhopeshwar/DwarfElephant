@@ -16,6 +16,7 @@ public:
   // virtual void init() override;
 
   virtual void execute() override;
+  // virtual void init() override;
 };
 
 #endif // DWARFELEPHANTRBTRANSIENT_H

@@ -23,6 +23,7 @@ protected:
 
   std::vector<Real> _point_param;
   Point _p;
+  bool _sink;
 };
 
 #endif // DWARFELEPHANTRBPOINTSOURCE_H
