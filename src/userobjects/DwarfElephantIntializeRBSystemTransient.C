@@ -37,7 +37,9 @@ InputParameters validParams<DwarfElephantInitializeRBSystemTransient>()
   params.addParam<std::vector<Real>>("parameter_max_values", "Defines the upper bound of the parameter range.");
   params.addParam<std::vector<Real>>("discrete_parameter_values", "Defines the list of parameters.");
   params.addParam<bool>("varying_timesteps", false, "Determines whether the time steps vary.");
+  params.addParam<bool>("time_dependent_parameter", false, "Determines whether some training parameters are time depedent.");
   params.addParam<Real>("growth_rate", 1.0,"The growth rate for the timesteps.");
+  params.addParam<std::vector<unsigned int>>("ID_time_dependent_param", std::vector<unsigned int> {0}, "The IDs of the time dependent paramters.");
 
   return params;
 }
@@ -76,7 +78,9 @@ DwarfElephantInitializeRBSystemTransient::DwarfElephantInitializeRBSystemTransie
   _mesh_ptr(&_fe_problem.mesh()),
   _sys(&_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
   _varying_timesteps(getParam<bool>("varying_timesteps")),
-  _growth_rate(getParam<Real>("growth_rate"))
+  _time_dependent_parameter(getParam<bool>("time_dependent_parameter")),
+  _growth_rate(getParam<Real>("growth_rate")),
+  _ID_time_dependent_param(getParam<std::vector<unsigned int>>("ID_time_dependent_param"))
 {
 }
 
@@ -159,6 +163,13 @@ DwarfElephantInitializeRBSystemTransient::processParameters()
   {
     DwarfElephantRBConstructionTransient * _dwarf_elephant_rb_con_ptr = dynamic_cast<DwarfElephantRBConstructionTransient * > (_rb_con_ptr);
     _dwarf_elephant_rb_con_ptr->set_parameter_dependent_IC(_parameter_dependent_IC);
+  }
+
+  if(_time_dependent_parameter)
+  {
+    DwarfElephantRBConstructionTransient * _dwarf_elephant_rb_con_ptr = dynamic_cast<DwarfElephantRBConstructionTransient * > (_rb_con_ptr);
+    _dwarf_elephant_rb_con_ptr->time_dependent_parameter = _time_dependent_parameter;
+    _dwarf_elephant_rb_con_ptr->ID_param = _ID_time_dependent_param;
   }
 }
 

@@ -28,7 +28,7 @@ DwarfElephantRBVariableTimeDerivative::DwarfElephantRBVariableTimeDerivative(con
 Real
 DwarfElephantRBVariableTimeDerivative::computeQpResidual()
 {
-  return  _u_dot[_qp] * _test[_i][_qp];
+  return  -_u_dot[_qp] * _test[_i][_qp];
 }
 
 Real

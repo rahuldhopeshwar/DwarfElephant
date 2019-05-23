@@ -123,7 +123,9 @@ class DwarfElephantInitializeRBSystemTransient :
     DwarfElephantRBConstructionTransient * _rb_con_ptr;
 
     bool _varying_timesteps;
+    bool _time_dependent_parameter;
     Real _growth_rate;
+    std::vector<unsigned int> _ID_time_dependent_param;
 
     SparseMatrix <Number> * _inner_product_matrix;
     SparseMatrix <Number> * _L2_matrix;
