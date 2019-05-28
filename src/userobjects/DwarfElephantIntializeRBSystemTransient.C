@@ -40,6 +40,8 @@ InputParameters validParams<DwarfElephantInitializeRBSystemTransient>()
   params.addParam<bool>("time_dependent_parameter", false, "Determines whether some training parameters are time depedent.");
   params.addParam<Real>("growth_rate", 1.0,"The growth rate for the timesteps.");
   params.addParam<std::vector<unsigned int>>("ID_time_dependent_param", std::vector<unsigned int> {0}, "The IDs of the time dependent paramters.");
+  params.addParam<Real>("start_time", 0.0,"The start time for the time dependent parameter.");
+  params.addParam<Real>("end_time", 0.0,"The end time for the time dependent parameter.");
 
   return params;
 }
@@ -80,7 +82,9 @@ DwarfElephantInitializeRBSystemTransient::DwarfElephantInitializeRBSystemTransie
   _varying_timesteps(getParam<bool>("varying_timesteps")),
   _time_dependent_parameter(getParam<bool>("time_dependent_parameter")),
   _growth_rate(getParam<Real>("growth_rate")),
-  _ID_time_dependent_param(getParam<std::vector<unsigned int>>("ID_time_dependent_param"))
+  _ID_time_dependent_param(getParam<std::vector<unsigned int>>("ID_time_dependent_param")),
+  _start_time(getParam<Real>("start_time")),
+  _end_time(getParam<Real>("end_time"))
 {
 }
 
@@ -170,6 +174,8 @@ DwarfElephantInitializeRBSystemTransient::processParameters()
     DwarfElephantRBConstructionTransient * _dwarf_elephant_rb_con_ptr = dynamic_cast<DwarfElephantRBConstructionTransient * > (_rb_con_ptr);
     _dwarf_elephant_rb_con_ptr->time_dependent_parameter = _time_dependent_parameter;
     _dwarf_elephant_rb_con_ptr->ID_param = _ID_time_dependent_param;
+    _dwarf_elephant_rb_con_ptr->start_time = _start_time;
+    _dwarf_elephant_rb_con_ptr->end_time = _end_time;
   }
 }
 

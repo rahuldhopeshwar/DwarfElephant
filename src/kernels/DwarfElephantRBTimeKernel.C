@@ -17,9 +17,9 @@ validParams<DwarfElephantRBTimeKernel>()
 }
 
 DwarfElephantRBTimeKernel::DwarfElephantRBTimeKernel(const InputParameters & parameters) :
-DwarfElephantRBKernel(parameters),
-_u_dot(_var.uDot()),
-_du_dot_du(_var.duDotDu())
+DwarfElephantRBKernel(parameters)//,
+// _u_dot(_var.uDot()),
+// _du_dot_du(_var.duDotDu())
 {}
 
 void

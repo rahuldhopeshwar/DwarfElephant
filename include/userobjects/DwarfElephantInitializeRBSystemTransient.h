@@ -126,6 +126,8 @@ class DwarfElephantInitializeRBSystemTransient :
     bool _time_dependent_parameter;
     Real _growth_rate;
     std::vector<unsigned int> _ID_time_dependent_param;
+    Real _start_time;
+    Real _end_time;
 
     SparseMatrix <Number> * _inner_product_matrix;
     SparseMatrix <Number> * _L2_matrix;

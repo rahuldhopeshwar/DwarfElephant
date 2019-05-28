@@ -122,7 +122,11 @@ public:
 
   void greedy_step();
 
-  virtual RBParameters & calculate_time_dependent_mu(const RBParameters mu, Real time, std::vector<unsigned int> ID_param);
+  virtual void truth_assembly() override;
+
+  void add_scaled_mass_matrix(Number scalar, SparseMatrix<Number> * input_matrix);
+
+  RBParameters calculate_time_dependent_mu(const RBParameters mu, Real time, std::vector<unsigned int> ID_param);
 
   unsigned int u_var;
 
@@ -179,6 +183,12 @@ public:
                                                    bool read_error_bound_data=true,
                                                    const bool read_binary_data=true) override;
 
+  RBParameters calculate_time_dependent_mu(const RBParameters mu, Real time, std::vector<unsigned int> ID_param) const;
+
+  virtual Real compute_residual_dual_norm(const unsigned int N) override;
+
+  virtual void cache_online_residual_terms(const unsigned int N);
+
   FEProblemBase & fe_problem;
   bool varying_timesteps;
 
@@ -191,8 +201,8 @@ public:
   Real time;
   std::vector<unsigned int> ID_param;
 
-  // DwarfElephantRBT5F5O1M1TransientExpansion _rb_theta_expansion;
-  DwarfElephantRBT6F1O1M3TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT5F5O1M1TransientExpansion _rb_theta_expansion;
+  // DwarfElephantRBT6F1O1M3TransientExpansion _rb_theta_expansion;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBCLASSESTRANSIENT_H

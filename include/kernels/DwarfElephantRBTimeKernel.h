@@ -32,11 +32,11 @@ public:
   virtual void computeResidual() override;
   virtual void computeJacobian() override;
 
-protected:
+// protected:
   /// Time derivative of u
-  const VariableValue & _u_dot;
+  // const VariableValue & _u_dot;
   /// Derivative of u_dot with respect to u
-  const VariableValue & _du_dot_du;
+  // const VariableValue & _du_dot_du;
 };
 
 ///-------------------------------------------------------------------------
