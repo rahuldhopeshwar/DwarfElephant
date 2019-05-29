@@ -120,13 +120,9 @@ public:
 
   void enrich_RB_space_for_initial_conditions();
 
-  void greedy_step();
-
-  virtual void truth_assembly() override;
-
-  void add_scaled_mass_matrix(Number scalar, SparseMatrix<Number> * input_matrix);
-
   RBParameters calculate_time_dependent_mu(const RBParameters mu, Real time, std::vector<unsigned int> ID_param);
+
+  Real uncached_compute_residual_dual_norm(const unsigned int N);
 
   unsigned int u_var;
 
@@ -185,10 +181,6 @@ public:
 
   RBParameters calculate_time_dependent_mu(const RBParameters mu, Real time, std::vector<unsigned int> ID_param) const;
 
-  virtual Real compute_residual_dual_norm(const unsigned int N) override;
-
-  virtual void cache_online_residual_terms(const unsigned int N);
-
   FEProblemBase & fe_problem;
   bool varying_timesteps;
 
@@ -201,7 +193,7 @@ public:
   Real time;
   std::vector<unsigned int> ID_param;
 
-  DwarfElephantRBT5F5O1M1TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT2F2O12M1TransientExpansion _rb_theta_expansion;
   // DwarfElephantRBT6F1O1M3TransientExpansion _rb_theta_expansion;
 };
 ///-------------------------------------------------------------------------
