@@ -87,6 +87,7 @@ class DwarfElephantInitializeRBSystemTransient :
     bool _normalize_rb_bound_in_greedy;
     bool _nonzero_initialization;
     bool _parameter_dependent_IC;
+    bool _initialized;
 
     int _max_truth_solves;
     unsigned int _n_training_samples;
@@ -125,6 +126,7 @@ class DwarfElephantInitializeRBSystemTransient :
     bool _varying_timesteps;
     bool _time_dependent_parameter;
     Real _growth_rate;
+    Real _threshold;
     std::vector<unsigned int> _ID_time_dependent_param;
     Real _start_time;
     Real _end_time;

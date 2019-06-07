@@ -39,6 +39,7 @@ InputParameters validParams<DwarfElephantInitializeRBSystemTransient>()
   params.addParam<bool>("varying_timesteps", false, "Determines whether the time steps vary.");
   params.addParam<bool>("time_dependent_parameter", false, "Determines whether some training parameters are time depedent.");
   params.addParam<Real>("growth_rate", 1.0,"The growth rate for the timesteps.");
+  params.addParam<Real>("threshold", 1.0e30,"Threshold for the growth of dt.");
   params.addParam<std::vector<unsigned int>>("ID_time_dependent_param", std::vector<unsigned int> {0}, "The IDs of the time dependent paramters.");
   params.addParam<Real>("start_time", 0.0,"The start time for the time dependent parameter.");
   params.addParam<Real>("end_time", 0.0,"The end time for the time dependent parameter.");
@@ -57,6 +58,7 @@ DwarfElephantInitializeRBSystemTransient::DwarfElephantInitializeRBSystemTransie
   _normalize_rb_bound_in_greedy(getParam<bool>("normalize_rb_bound_in_greedy")),
   _nonzero_initialization(getParam<bool>("nonzero_initialization")),
   _parameter_dependent_IC(getParam<bool>("parameter_dependent_IC")),
+  _initialized(false),
   _max_truth_solves(getParam<int>("max_truth_solves")),
   _n_training_samples(getParam<unsigned int>("n_training_samples")),
   _training_parameters_random_seed(getParam<unsigned int>("training_parameters_random_seed")),
@@ -82,6 +84,7 @@ DwarfElephantInitializeRBSystemTransient::DwarfElephantInitializeRBSystemTransie
   _varying_timesteps(getParam<bool>("varying_timesteps")),
   _time_dependent_parameter(getParam<bool>("time_dependent_parameter")),
   _growth_rate(getParam<Real>("growth_rate")),
+  _threshold(getParam<Real>("threshold")),
   _ID_time_dependent_param(getParam<std::vector<unsigned int>>("ID_time_dependent_param")),
   _start_time(getParam<Real>("start_time")),
   _end_time(getParam<Real>("end_time"))
@@ -161,6 +164,7 @@ DwarfElephantInitializeRBSystemTransient::processParameters()
     DwarfElephantRBConstructionTransient * _dwarf_elephant_rb_con_ptr = dynamic_cast<DwarfElephantRBConstructionTransient * > (_rb_con_ptr);
     _dwarf_elephant_rb_con_ptr->varying_timesteps = _varying_timesteps;
     _dwarf_elephant_rb_con_ptr->growth_rate = _growth_rate;
+    _dwarf_elephant_rb_con_ptr->threshold = _threshold;
   }
 
   if(_parameter_dependent_IC)
@@ -271,6 +275,7 @@ DwarfElephantInitializeRBSystemTransient::initialize()
 void
 DwarfElephantInitializeRBSystemTransient::execute()
 {
+  if(!_initialized){
   // Define the parameter file for the libMesh functions.
   // GetPot infile (_parameters_filename);
 
@@ -309,6 +314,8 @@ DwarfElephantInitializeRBSystemTransient::execute()
 
     // Initialize required matrices and vectors.
       initializeOfflineStage();
+  }
+   _initialized = true;
   }
 }
 

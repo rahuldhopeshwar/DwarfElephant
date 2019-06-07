@@ -22,8 +22,8 @@ protected:
 
   /// The function being used for evaluation
   Real _range;
-  Function & _func_1;
-  Function & _func_2;
+  const Function & _func_1;
+  const Function & _func_2;
 };
 
 #endif // DWARFELEPHANTFEKRIGINGFUNCTIONDIRICHLETBC_H

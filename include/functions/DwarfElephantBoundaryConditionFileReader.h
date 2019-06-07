@@ -14,8 +14,8 @@ class DwarfElephantBoundaryConditionFileReader : public Function
 public:
   DwarfElephantBoundaryConditionFileReader(const InputParameters & parameters);
 
-  virtual Real value(Real t, const Point & p) override;
-  virtual RealGradient gradient(Real t, const Point & p) override;
+  virtual Real value(Real t, const Point & p) const override;
+  virtual RealGradient gradient(Real t, const Point & p) const override;
 
 protected:
   std::string _file;
@@ -44,9 +44,9 @@ protected:
 private:
   void fileParser();
   std::vector<Real>  fileParserGradients(std::string & file);
-  Real findValue(Real _x_coord, Real _y_coord);
-  Real interpolateValue(Real _x_coord, Real _y_coord);
-  std::vector<Real> findGradient(Real _x_coord, Real _y_coord);
+  Real findValue(Real _x_coord, Real _y_coord) const;
+  Real interpolateValue(Real _x_coord, Real _y_coord) const;
+  std::vector<Real> findGradient(Real _x_coord, Real _y_coord) const;
 };
 
 #endif // DWARFELEPHANTBOUNDARYCONDITIONFILEREADER_H

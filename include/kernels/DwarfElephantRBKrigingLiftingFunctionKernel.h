@@ -36,8 +36,8 @@ protected:
 
   /* Attributes */
   Real _range;
-  Function * _lifting_function_1;
-  Function * _lifting_function_2;
+  const Function * _lifting_function_1;
+  const Function * _lifting_function_2;
 };
 
 ///-------------------------------------------------------------------------

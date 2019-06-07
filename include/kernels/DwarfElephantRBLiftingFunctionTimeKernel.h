@@ -35,7 +35,7 @@ protected:
   virtual Real computeQpJacobian() override;
 
   /* Attributes */
-  Function * _lifting_function;
+  const Function * _lifting_function;
 };
 
 ///-------------------------------------------------------------------------

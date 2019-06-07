@@ -96,7 +96,7 @@ DwarfElephantBoundaryConditionFileReader::DwarfElephantBoundaryConditionFileRead
 }
 
 Real
-DwarfElephantBoundaryConditionFileReader::value(Real /*t*/, const Point & p)
+DwarfElephantBoundaryConditionFileReader::value(Real /*t*/, const Point & p) const
 {
   if(!_interpolate && !_access_multiple_times)
     return findValue(p(0), p(1));
@@ -107,7 +107,7 @@ DwarfElephantBoundaryConditionFileReader::value(Real /*t*/, const Point & p)
 }
 
 RealGradient
-DwarfElephantBoundaryConditionFileReader::gradient(Real /*t*/, const Point & p)
+DwarfElephantBoundaryConditionFileReader::gradient(Real /*t*/, const Point & p) const
 {
   Real _x = std::round(p(0)/_step_sizes[0]);
   Real _y = std::round(p(1)/_step_sizes[1]);
@@ -189,7 +189,7 @@ DwarfElephantBoundaryConditionFileReader::fileParserGradients(std::string & file
 }
 
 Real
-DwarfElephantBoundaryConditionFileReader::findValue(Real _x_coord, Real _y_coord)
+DwarfElephantBoundaryConditionFileReader::findValue(Real _x_coord, Real _y_coord) const
 {
   for (unsigned int i=0; i < _num_points; ++i)
   {
@@ -202,7 +202,7 @@ DwarfElephantBoundaryConditionFileReader::findValue(Real _x_coord, Real _y_coord
 }
 
 std::vector<Real>
-DwarfElephantBoundaryConditionFileReader::findGradient(Real _x_coord, Real _y_coord)
+DwarfElephantBoundaryConditionFileReader::findGradient(Real _x_coord, Real _y_coord) const
 {
   std::vector<Real> _gradient;
   _gradient.resize(2);
@@ -221,7 +221,7 @@ DwarfElephantBoundaryConditionFileReader::findGradient(Real _x_coord, Real _y_co
 }
 
 Real
-DwarfElephantBoundaryConditionFileReader::interpolateValue(Real _x_coord, Real _y_coord)
+DwarfElephantBoundaryConditionFileReader::interpolateValue(Real _x_coord, Real _y_coord) const
 {
   Real sum = 0.0;
   Real values = 0.0;

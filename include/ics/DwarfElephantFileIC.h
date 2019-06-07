@@ -23,6 +23,7 @@ public:
 protected:
   Real f();
   virtual Real value(const Point & p) override;
+  virtual RealGradient gradient(const Point & p) override;
 };
 
 #endif // DWARFELEPHANTFILEIC_H

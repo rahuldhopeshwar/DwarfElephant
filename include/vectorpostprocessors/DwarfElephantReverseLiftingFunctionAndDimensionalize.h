@@ -34,8 +34,8 @@ protected:
   bool _scale_and_add;
   bool _kriging;
   bool _reverse_lifting_function;
-  Function * _lifting_function_1;
-  Function * _lifting_function_2;
+  const Function * _lifting_function_1;
+  const Function * _lifting_function_2;
 };
 
 #endif

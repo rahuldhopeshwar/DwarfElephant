@@ -22,17 +22,16 @@ DwarfElephantInitialConditionFileReader::DwarfElephantInitialConditionFileReader
 }
 
 Real
-DwarfElephantInitialConditionFileReader::value(Real /*t*/, const Point & /*p*/)
+DwarfElephantInitialConditionFileReader::value(Real /*t*/, const Point & /*p*/) const
 {
-  Real value = 0.0;   // default value to return
+  const Real value = 0.0;   // default value to return
   return value;
 }
 
 Real
-DwarfElephantInitialConditionFileReader::value(const Node & n)
+DwarfElephantInitialConditionFileReader::value(const Node & n) const
 {
-  Real value = 0.0;   // default value to return
-  value = _values[4][n.id()];
+  const Real value = _values[4][n.id()];
   return value;
 }
 

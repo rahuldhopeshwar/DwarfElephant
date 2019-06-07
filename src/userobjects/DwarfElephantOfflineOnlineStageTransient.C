@@ -94,6 +94,7 @@ DwarfElephantOfflineOnlineStageTransient::setAffineMatrices()
       _initialize_rb_system._mass_matrix_subdomain[_q] ->close();
       _initialize_rb_system._L2_matrix->add(_mu_bar, *_initialize_rb_system._mass_matrix_subdomain[_q]);
     }
+
 }
 
 void
@@ -112,6 +113,7 @@ if(_initialize_rb_system._parameter_dependent_IC)
   for(unsigned int _q=0; _q<_initialize_rb_system._q_ic; _q++)
   {
     _initialize_rb_system._inital_conditions[_q]->close();
+    // _rb_problem->rbAssembly(_q).setCachedResidual(*_initialize_rb_system._inital_conditions[_q]);
     // *_initialize_rb_system._inital_conditions[_q] = *_fe_problem.es().get_system("rb0").solution;
   }
 }
@@ -293,10 +295,13 @@ DwarfElephantOfflineOnlineStageTransient::execute()
           _RB_outputs_all_timesteps[_t].resize(_n_outputs);
 
           for (unsigned int i = 0; i != _n_outputs; i++)
+          {
             _RB_outputs_all_timesteps[_t][i] = trans_rb_eval.RB_outputs_all_k[i][_t];
+          }
         }
 
           _fe_problem.outputStep(EXEC_TIMESTEP_END);
+          _fe_problem.outputStep(EXEC_CUSTOM);
       }
 
       if(_output_file)
@@ -382,7 +387,7 @@ DwarfElephantOfflineOnlineStageTransient::endStep(Real input_time)
 
     // Perform the output of the current time step
     _fe_problem.outputStep(EXEC_TIMESTEP_END);
-    _fe_problem.outputStep(EXEC_CUSTOM);
+    // _fe_problem.outputStep(EXEC_CUSTOM);
 
     // output
    // if (_time_interval && (_time + _timestep_tolerance >= _next_interval_output_time))

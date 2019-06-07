@@ -437,6 +437,7 @@ DwarfElephantRBConstructionTransient::init_data()
     _dwarf_elephant_trans_rb_eval.varying_timesteps = varying_timesteps;
     _dwarf_elephant_trans_rb_eval.delta_t_init = delta_t_init;
     _dwarf_elephant_trans_rb_eval.growth_rate = growth_rate;
+    _dwarf_elephant_trans_rb_eval.threshold = threshold;
   }
 
   // initialize rb_eval's parameters
@@ -739,8 +740,10 @@ DwarfElephantRBConstructionTransient::init_data()
 
           if(varying_timesteps)
           {
-            dt*=growth_rate;
-            set_delta_t(dt);
+            if(dt < threshold){
+              dt*=growth_rate;
+              set_delta_t(dt);
+            }
           }
 
           if(time_dependent_parameter)
@@ -748,7 +751,8 @@ DwarfElephantRBConstructionTransient::init_data()
       }
 
     // Set reuse_preconditioner back to false for subsequent solves.
-    linear_solver->reuse_preconditioner(true);
+    if(!varying_timesteps || !time_dependent_parameter)
+      linear_solver->reuse_preconditioner(true);
 
     // Get the L2 norm of the truth solution at time-level _K
     // Useful for normalizing our true error data
@@ -778,8 +782,8 @@ DwarfElephantRBConstructionTransient::init_data()
     else if (time > end_time)
       pre_factor *= (end_time - (time - dt)) / dt;
 
-    if(pre_factor == 0.0)
-      pre_factor = 1.0e-16;
+    // if(pre_factor == 0.0)
+    //   pre_factor = 1.0e-16;
 
     for(unsigned int i = 0; i < ID_param.size(); i++)
     {
@@ -886,32 +890,64 @@ DwarfElephantRBConstructionTransient::init_data()
   Real
   DwarfElephantRBEvaluationTransient::get_stability_lower_bound()
   {
+    // const RBParameters & mu = get_parameters();
+
+    // bool norm_values = fe_problem.getUserObject<DwarfElephantOfflineOnlineStageTransient>("performRBSystem")._norm_online_values;
+    // unsigned int norm_id = fe_problem.getUserObject<DwarfElephantOfflineOnlineStageTransient>("performRBSystem")._norm_id;
+    //
+    // Real min_mu;
+    // Real min_mu_i;
+    //
+    // min_mu = mu.get_value("mu_0");
+    //
+    // if(norm_values)
+    //   min_mu = min_mu/mu.get_value("mu_"+ std::to_string(norm_id));
+    //
+    // for (unsigned int  i = 1; i != mu.n_parameters(); i++)
+    // {
+    //   const std::string mu_name = "mu_" + std::to_string(i);
+    //   if(norm_values)
+    //     min_mu_i = std::min(min_mu, mu.get_value(mu_name)/mu.get_value(mu_name));
+    //   else
+    //     min_mu_i = std::min(min_mu, mu.get_value(mu_name));
+    //
+    //   if (min_mu_i < min_mu)
+    //     min_mu = min_mu_i;
+    // }
+
+    // return min_mu;
+
     const RBParameters & mu = get_parameters();
+    TransientRBThetaExpansion & trans_theta_expansion =
+      cast_ref<TransientRBThetaExpansion &>(get_rb_theta_expansion());
 
-    bool norm_values = fe_problem.getUserObject<DwarfElephantOfflineOnlineStageTransient>("performRBSystem")._norm_online_values;
-    unsigned int norm_id = fe_problem.getUserObject<DwarfElephantOfflineOnlineStageTransient>("performRBSystem")._norm_id;
+    // Real min_mu;
+    Real min_mu_a;
+    // Real min_mu_m;
+    Real min_mu_a_i;
+    // Real min_mu_m_i;
 
-    Real min_mu;
-    Real min_mu_i;
+    // const unsigned int Q_m = trans_theta_expansion.get_n_M_terms();
+    const unsigned int Q_a = trans_theta_expansion.get_n_A_terms();
 
-    min_mu = mu.get_value("mu_0");
+    min_mu_a = trans_theta_expansion.eval_A_theta(0,mu);
+    for (unsigned int q_a=1; q_a<Q_a; q_a++){
+      min_mu_a_i = trans_theta_expansion.eval_A_theta(q_a,mu);
 
-    if(norm_values)
-      min_mu = min_mu/mu.get_value("mu_"+ std::to_string(norm_id));
-
-    for (unsigned int  i = 1; i != mu.n_parameters(); i++)
-    {
-      const std::string mu_name = "mu_" + std::to_string(i);
-      if(norm_values)
-        min_mu_i = std::min(min_mu, mu.get_value(mu_name)/mu.get_value(mu_name));
-      else
-        min_mu_i = std::min(min_mu, mu.get_value(mu_name));
-
-      if (min_mu_i < min_mu)
-        min_mu = min_mu_i;
+      if(min_mu_a_i < min_mu_a)
+        min_mu_a = min_mu_a_i;
     }
+    //
+    // min_mu_m = trans_theta_expansion.eval_M_theta(0,mu);
+    // for (unsigned int q_m=1; q_m<Q_m; q_m++){
+    //   min_mu_m_i = trans_theta_expansion.eval_M_theta(q_m,mu);
+    //
+    //   if(min_mu_m_i < min_mu_m)
+    //     min_mu_m = min_mu_m_i;
+    // }
 
-    return min_mu;
+    // min_mu = std::min(min_mu_a, min_mu_m);
+    return min_mu_a;
   }
 
   void
@@ -1322,8 +1358,10 @@ DwarfElephantRBConstructionTransient::init_data()
 
           if(varying_timesteps)
           {
-            dt *= growth_rate;
-            set_delta_t(dt);
+            if(dt < threshold){
+              dt*=growth_rate;
+              set_delta_t(dt);
+            }
           }
 
           if(initialize_rb_system._rb_con_ptr->time_dependent_parameter)
@@ -1509,8 +1547,8 @@ DwarfElephantRBEvaluationTransient::calculate_time_dependent_mu(const RBParamete
   else if (time > end_time)
     pre_factor *= (end_time - (time - dt)) / dt;
 
-  if(pre_factor == 0.0)
-    pre_factor = 1.0e-16;
+  // if(pre_factor == 0.0)
+  //   pre_factor = 1.0e-16;
 
   for(unsigned int i = 0; i < ID_param.size(); i++)
   {

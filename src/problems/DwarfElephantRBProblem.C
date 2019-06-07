@@ -55,13 +55,13 @@ DwarfElephantRBProblem::setInputParametersFEProblem(InputParameters & parameters
   // set _fe_problem
   FEProblemBase::setInputParametersFEProblem(parameters);
   // set _fe_problem
-  parameters.set<DwarfElephantRBProblem *>("_dwarf_fe_problem") = this;
+  // parameters.set<DwarfElephantRBProblem *>("_dwarf_fe_problem") = this;
 }
 
 void
 DwarfElephantRBProblem::solve()
 {
-  Moose::perf_log.push("constructRB()", "Execution");
+  // Moose::perf_log.push("constructRB()", "Execution");
 
 #ifdef LIBMESH_HAVE_PETSC
   Moose::PetscSupport::petscSetOptions(*this); // Make sure the PETSc options are setup for this app
@@ -73,7 +73,7 @@ DwarfElephantRBProblem::solve()
   if (_solve)
     _nl_sys->update();
 
-  Moose::perf_log.pop("constructRB()", "Execution");
+  // Moose::perf_log.pop("constructRB()", "Execution");
 }
 
 void

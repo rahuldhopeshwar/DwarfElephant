@@ -47,9 +47,11 @@
 #include "DwarfElephantRBStructuresT4F1O1M1IC1Transient.h"
 #include "DwarfElephantRBStructuresT5F1O1M1Transient.h"
 #include "DwarfElephantRBStructuresT5F5O1M1Transient.h"
+#include "DwarfElephantRBStructuresT5F5O3M1Transient.h"
 #include "DwarfElephantRBStructuresT5F4O1M2Transient.h"
-#include "DwarfElephantRBStructuresT6F1O1M3Transient.h"
+#include "DwarfElephantRBStructuresT6F4O1M3Transient.h"
 #include "DwarfElephantRBStructuresT6F1O1M1IC3Transient.h"
+#include "DwarfElephantRBStructuresT7F5O1M1IC1Transient.h"
 
 // Forward Declarations
 namespace libMesh
@@ -130,6 +132,7 @@ public:
   bool varying_timesteps;
 
   Real growth_rate;
+  Real threshold;
   Real delta_t_init;
 
   Real start_time;
@@ -187,14 +190,16 @@ public:
   bool parameter_dependent_IC;
   Real delta_t_init;
   Real growth_rate;
+  Real threshold;
 
   std::vector<DenseVector<Number>> RB_IC_q_vector;
 
   Real time;
   std::vector<unsigned int> ID_param;
 
-  DwarfElephantRBT2F2O12M1TransientExpansion _rb_theta_expansion;
-  // DwarfElephantRBT6F1O1M3TransientExpansion _rb_theta_expansion;
+  // DwarfElephantRBT5F5O1M1TransientExpansion _rb_theta_expansion;
+  // DwarfElephantRBT5F5O3M1TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT7F5O1M1IC1TransientExpansion _rb_theta_expansion;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBCLASSESTRANSIENT_H

@@ -28,8 +28,8 @@ InputParameters validParams<DwarfElephantFEKrigingLiftingFunctionKernel>()
 DwarfElephantFEKrigingLiftingFunctionKernel::DwarfElephantFEKrigingLiftingFunctionKernel(const InputParameters & parameters) :
   Diffusion(parameters),
   _range(getParam<Real>("range")),
-  _lifting_function_1(&getFunction("lifting_function_1")),
-  _lifting_function_2(&getFunction("lifting_function_2")),
+  _lifting_function_1(getFunction("lifting_function_1")),
+  _lifting_function_2(getFunction("lifting_function_2")),
   _scale(getParam<Real>("scale")),
   _norm_value(getParam<Real>("norm_value"))
 {
@@ -47,9 +47,9 @@ DwarfElephantFEKrigingLiftingFunctionKernel::computeQpResidual()
   Real value;
 
   if(h>0 && h<_range)
-    value = (_scale/_norm_value)*(_grad_test[_i][_qp]*(_lifting_function_1->gradient(_fe_problem.time(),_q_point[_qp])));
+    value = (_scale/_norm_value)*(_grad_test[_i][_qp]*(_lifting_function_1.gradient(_fe_problem.time(),_q_point[_qp])));
   else
-    value = (_scale/_norm_value)*(_grad_test[_i][_qp]*(_lifting_function_2->gradient(_fe_problem.time(),_q_point[_qp])));
+    value = (_scale/_norm_value)*(_grad_test[_i][_qp]*(_lifting_function_2.gradient(_fe_problem.time(),_q_point[_qp])));
   return value;
 }
 
