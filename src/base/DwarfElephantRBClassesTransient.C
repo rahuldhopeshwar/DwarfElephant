@@ -969,8 +969,8 @@ DwarfElephantRBConstructionTransient::init_data()
     // Allow time dependent parameters
     DwarfElephantRBProblem & problem = cast_ref<DwarfElephantRBProblem &>(fe_problem);
 
-    const DwarfElephantInitializeRBSystemTransient & initialize_rb_system =
-      problem.getUserObject<DwarfElephantInitializeRBSystemTransient>(problem._initial_rb_userobject);
+    DwarfElephantInitializeRBSystemTransient & initialize_rb_system =
+      problem.getUserObjectTempl<DwarfElephantInitializeRBSystemTransient>(problem._initial_rb_userobject);
 
 
     // Calculate the time dependency of the parameters
@@ -1526,8 +1526,8 @@ DwarfElephantRBEvaluationTransient::calculate_time_dependent_mu(const RBParamete
 {
   RBParameters & mu_time = const_cast<RBParameters&>(mu);
   DwarfElephantRBProblem & problem = cast_ref<DwarfElephantRBProblem &>(fe_problem);
-  const DwarfElephantInitializeRBSystemTransient & initialize_rb_system =
-    problem.getUserObject<DwarfElephantInitializeRBSystemTransient>(problem._initial_rb_userobject);
+  DwarfElephantInitializeRBSystemTransient & initialize_rb_system =
+    problem.getUserObjectTempl<DwarfElephantInitializeRBSystemTransient>(problem._initial_rb_userobject);
 
   Real dt = get_delta_t();
   Real start_time = initialize_rb_system._rb_con_ptr->start_time;

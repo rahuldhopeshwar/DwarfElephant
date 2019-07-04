@@ -51,6 +51,7 @@
 #include "DwarfElephantRBStructuresT5F4O1M2Transient.h"
 #include "DwarfElephantRBStructuresT6F4O1M3Transient.h"
 #include "DwarfElephantRBStructuresT6F1O1M1IC3Transient.h"
+#include "DwarfElephantRBStructuresT6F5O27M1IC1Transient.h"
 #include "DwarfElephantRBStructuresT7F5O1M1IC1Transient.h"
 
 // Forward Declarations
@@ -199,7 +200,7 @@ public:
 
   // DwarfElephantRBT5F5O1M1TransientExpansion _rb_theta_expansion;
   // DwarfElephantRBT5F5O3M1TransientExpansion _rb_theta_expansion;
-  DwarfElephantRBT7F5O1M1IC1TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT6F5O27M1IC1TransientExpansion _rb_theta_expansion;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBCLASSESTRANSIENT_H
