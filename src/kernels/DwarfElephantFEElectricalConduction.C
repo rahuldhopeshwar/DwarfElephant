@@ -19,13 +19,15 @@ InputParameters validParams<DwarfElephantFEElectricalConduction>()
   params.addClassDescription("The class implements an electrical conduction \
                               problem.");
   params.addRequiredParam<Real>("resistivity", "The electrical resistivity of the layer.");
+  params.addParam<Real>("norm_value", 1.0, "Defines the normalization value.");
   return params;
 }
 
 //-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantFEElectricalConduction::DwarfElephantFEElectricalConduction(const InputParameters & parameters) :
   Diffusion(parameters),
-  _resistivity(getParam<Real>("resistivity"))
+  _resistivity(getParam<Real>("resistivity")),
+  _norm_value(getParam<Real>("norm_value"))
 {
 }
 
@@ -34,11 +36,11 @@ DwarfElephantFEElectricalConduction::DwarfElephantFEElectricalConduction(const I
 Real
 DwarfElephantFEElectricalConduction::computeQpResidual()
 {
-  return (1./_resistivity) * Diffusion::computeQpResidual();
+  return (_norm_value/_resistivity) * Diffusion::computeQpResidual();
 }
 
 Real
 DwarfElephantFEElectricalConduction::computeQpJacobian()
 {
-  return (1./_resistivity) * Diffusion::computeQpJacobian();
+  return (_norm_value/_resistivity) * Diffusion::computeQpJacobian();
 }

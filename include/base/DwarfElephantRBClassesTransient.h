@@ -200,7 +200,7 @@ public:
 
   // DwarfElephantRBT5F5O1M1TransientExpansion _rb_theta_expansion;
   // DwarfElephantRBT5F5O3M1TransientExpansion _rb_theta_expansion;
-  DwarfElephantRBT6F5O27M1IC1TransientExpansion _rb_theta_expansion;
+  DwarfElephantRBT6F4O1M3TransientExpansion _rb_theta_expansion;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTRBCLASSESTRANSIENT_H

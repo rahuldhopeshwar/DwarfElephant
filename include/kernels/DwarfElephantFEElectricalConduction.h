@@ -36,6 +36,7 @@ protected:
 
   /* Attributes */
   Real _resistivity;
+  Real _norm_value;
 };
 
 ///-------------------------------------------------------------------------

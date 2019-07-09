@@ -92,6 +92,7 @@ class DwarfElephantOfflineOnlineStageSteadyState :
     unsigned int _basis_function_number;
 
     std::string _system_name;
+    std::string _offline_data_name;
 
     EquationSystems & _es;
     TransientNonlinearImplicitSystem & _sys;

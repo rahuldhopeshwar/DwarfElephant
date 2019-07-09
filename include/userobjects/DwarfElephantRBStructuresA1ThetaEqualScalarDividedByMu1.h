@@ -1,6 +1,6 @@
 ///-------------------------------------------------------------------------
-#ifndef DWARFELEPHANTRBSTRUCTURESA0THETAEQUALSCALARDIVIDEDBYMU0_H
-#define DWARFELEPHANTRBSTRUCTURESA0THETAEQUALSCALARDIVIDEDBYMU0_H
+#ifndef DWARFELEPHANTRBSTRUCTURESA1THETAEQUALSCALARDIVIDEDBYMU1_H
+#define DWARFELEPHANTRBSTRUCTURESA1THETAEQUALSCALARDIVIDEDBYMU1_H
 
 ///---------------------------------INCLUDES--------------------------------
 // libMesh includes (RB package)
@@ -20,13 +20,13 @@ namespace libMesh
  * account to ensure a gernal useability of your class.
  */
 
-struct DwarfElephantThetaA0EqualScalarDividedByMu0 : RBTheta
+struct DwarfElephantThetaA1EqualScalarDividedByMu1 : RBTheta
 {
   virtual Number evaluate (const RBParameters & _mu)
   {
-    return (1.0/_mu.get_value("mu_0"));
+    return (1.0/_mu.get_value("mu_1"));
   }
 };
 
 ///-------------------------------------------------------------------------
-#endif // DWARFELEPHANTRBSTRUCTURESA0THETAEQUALSCALARDIVIDEDBYMU0_H
+#endif // DWARFELEPHANTRBSTRUCTURESA1THETAEQUALSCALARDIVIDEDBYMU1_H

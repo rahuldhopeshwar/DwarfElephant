@@ -35,6 +35,7 @@ InputParameters validParams<DwarfElephantOfflineOnlineStageSteadyState>()
     params.addParam<unsigned int>("online_N", 0, "Defines the dimension of the online stage.");
     params.addParam<unsigned int>("basis_function_number", 0, "The number of the basis function to retrieve.");
     params.addParam<std::string>("system","rb0","The name of the system that should be read in.");
+    params.addParam<std::string>("offline_data_name","offline_data","Folder where the offline data should be stored.");
     params.addRequiredParam<UserObjectName>("initial_rb_userobject", "Name of the UserObject for initializing the RB system.");
     params.addParam<Real>("mu_bar", 1., "Value for mu-bar");
     params.addParam<std::vector<Real>>("online_mu", "Current values of the different layers for which the RB Method is solved.");
@@ -65,6 +66,7 @@ DwarfElephantOfflineOnlineStageSteadyState::DwarfElephantOfflineOnlineStageStead
     _online_N(getParam<unsigned int>("online_N")),
     _basis_function_number(getParam<unsigned int>("basis_function_number")),
     _system_name(getParam<std::string>("system")),
+    _offline_data_name(getParam<std::string>("offline_data_name")),
     _es(_use_displaced ? _fe_problem.getDisplacedProblem()->es() : _fe_problem.es()),
     _sys(_es.get_system<TransientNonlinearImplicitSystem>(_system_name)),
     _initialize_rb_system(getUserObject<DwarfElephantInitializeRBSystemSteadyState>("initial_rb_userobject")),
@@ -129,13 +131,13 @@ DwarfElephantOfflineOnlineStageSteadyState::offlineStage()
         RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
         _rb_eval_writer.write_to_file("rb_eval.bin");
         #else
-        _initialize_rb_system._rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files();
+        _initialize_rb_system._rb_con_ptr->get_rb_evaluation().legacy_write_offline_data_to_files(_offline_data_name, true);
         #endif
     }
 
     // If desired, store the basis functions (xdr format).
     if (_store_basis_functions)
-      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr);
+      _initialize_rb_system._rb_con_ptr->get_rb_evaluation().write_out_basis_functions(*_initialize_rb_system._rb_con_ptr, _offline_data_name, true);
 
 //    _initialize_rb_system._rb_con_ptr->print_basis_function_orthogonality();
 }
@@ -200,7 +202,7 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       #if defined(LIBMESH_HAVE_CAPNPROTO)
         RBDataDeserialization::RBEvaluationDeserialization _rb_eval_reader(_rb_eval);
       #else
-        _rb_eval.legacy_read_offline_data_from_files();
+        _rb_eval.legacy_read_offline_data_from_files(_offline_data_name, true, true);
       #endif
 
       // _norm_factor = 1.0;//_rb_eval.get_error_bound_normalization();
@@ -246,7 +248,7 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 
       if(_output_file)
       {
-        _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
+        _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr, _offline_data_name, true);
         if(_load_basis_function)
           _initialize_rb_system._rb_con_ptr->load_basis_function(_basis_function_number);
         else
@@ -271,13 +273,13 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
       if(_store_basis_functions_sorted)
       {
         if(!_output_file)
-          _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr);
+          _rb_eval.read_in_basis_functions(*_initialize_rb_system._rb_con_ptr, _offline_data_name, true);
 
         std::ofstream basis_function_file;
         _n_bfs = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
         for (unsigned int i = 0; i != _n_bfs; i++)
         {
-          basis_function_file.open("offline_data/basis_function"+std::to_string(i), std::ios::app | std::ios::binary);
+          basis_function_file.open(_offline_data_name+"/basis_function"+std::to_string(i), std::ios::app | std::ios::binary);
           basis_function_file << _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_basis_function(i);
           basis_function_file.close();
         }
