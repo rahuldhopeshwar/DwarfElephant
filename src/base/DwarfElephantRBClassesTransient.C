@@ -771,7 +771,7 @@ DwarfElephantRBConstructionTransient::init_data()
     Real pre_factor = 1.0;
 
     if (time < start_time || time - dt >= end_time)
-      pre_factor = 0.0; // correct at later stage to zero, use SCM
+      pre_factor = 0.0;
     else if (time - dt < start_time)
     {
       if (time <= end_time)
@@ -781,9 +781,6 @@ DwarfElephantRBConstructionTransient::init_data()
     }
     else if (time > end_time)
       pre_factor *= (end_time - (time - dt)) / dt;
-
-    // if(pre_factor == 0.0)
-    //   pre_factor = 1.0e-16;
 
     for(unsigned int i = 0; i < ID_param.size(); i++)
     {
@@ -1546,9 +1543,6 @@ DwarfElephantRBEvaluationTransient::calculate_time_dependent_mu(const RBParamete
   }
   else if (time > end_time)
     pre_factor *= (end_time - (time - dt)) / dt;
-
-  // if(pre_factor == 0.0)
-  //   pre_factor = 1.0e-16;
 
   for(unsigned int i = 0; i < ID_param.size(); i++)
   {

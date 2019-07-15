@@ -23,15 +23,13 @@ InputParameters validParams<DwarfElephantRBFunctionDiffusion>()
   params.addClassDescription("Implements a Diffusion problem using \
                              the RBKernel.");
   params.addRequiredParam<FunctionName>("function", "Name of the function that describes the parameter dependence.");
-  params.addParam<unsigned int>("evaluation_component", 0, "Evaluation component for the function.");
   return params;
 }
 
 //-------------------------------CONSTRUCTOR-------------------------------
 DwarfElephantRBFunctionDiffusion::DwarfElephantRBFunctionDiffusion(const InputParameters & parameters) :
   DwarfElephantRBKernel(parameters),
-  _func(getFunction("function")),
-  _evaluation_component(getParam<unsigned int>("evaluation_component"))
+  _func(getFunction("function"))
 {
 }
 

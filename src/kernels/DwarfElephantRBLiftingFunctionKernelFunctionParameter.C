@@ -5,27 +5,25 @@
 
  //---------------------------------INCLUDES-------------------------------
 // MOOSE includes (DwarfElephant package)
-#include "DwarfElephantRBLiftingFunctionKernelFunctionParameter.h"
+#include "DwarfElephantRBLiftingFunctionKernel.h"
 
-registerMooseObject("DwarfElephantApp", DwarfElephantRBLiftingFunctionKernelFunctionParameter);
+registerMooseObject("DwarfElephantApp", DwarfElephantRBLiftingFunctionKernel);
 
 //----------------------------INPUT PARAMETERS-----------------------------
 template<>
-InputParameters validParams<DwarfElephantRBLiftingFunctionKernelFunctionParameter>()
+InputParameters validParams<DwarfElephantRBLiftingFunctionKernel>()
 {
   InputParameters params = validParams<DwarfElephantRBKernel>();
   params.addClassDescription("The class implements a lifting function.");
   params.addRequiredParam<FunctionName>("lifting_function", "Name of the lifting function two account for the inhomogeneous Dirichlet boundary conditions.");
-  params.addRequiredParam<FunctionName>("function", "Name of the function that describes the parameter dependence.");
 
   return params;
 }
 
 //-------------------------------CONSTRUCTOR-------------------------------
-DwarfElephantRBLiftingFunctionKernelFunctionParameter::DwarfElephantRBLiftingFunctionKernelFunctionParameter(const InputParameters & parameters) :
+DwarfElephantRBLiftingFunctionKernel::DwarfElephantRBLiftingFunctionKernel(const InputParameters & parameters) :
   DwarfElephantRBKernel(parameters),
-  _lifting_function(&getFunction("lifting_function")),
-  _func(getFunction("function"))
+  _lifting_function(&getFunction("lifting_function"))
 {
 }
 
@@ -33,14 +31,13 @@ DwarfElephantRBLiftingFunctionKernelFunctionParameter::DwarfElephantRBLiftingFun
 // Definition of the necessary PDE in the weak formulation
 
 Real
-DwarfElephantRBLiftingFunctionKernelFunctionParameter::computeQpResidual()
+DwarfElephantRBLiftingFunctionKernel::computeQpResidual()
 {
-  Real dependency = _func.value(_fe_problem.time(),_q_point[_qp]);
-  return  -(_grad_test[_i][_qp]* dependency * (_lifting_function->gradient(_fe_problem.time(),_q_point[_qp])));
+  return  -(_grad_test[_i][_qp]*(_lifting_function->gradient(_fe_problem.time(),_q_point[_qp])));
 }
 
 Real
-DwarfElephantRBLiftingFunctionKernelFunctionParameter::computeQpJacobian()
+DwarfElephantRBLiftingFunctionKernel::computeQpJacobian()
 {
    return 0.0;
 }

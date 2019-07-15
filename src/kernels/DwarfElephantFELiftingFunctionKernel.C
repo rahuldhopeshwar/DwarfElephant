@@ -18,7 +18,6 @@ InputParameters validParams<DwarfElephantFELiftingFunctionKernel>()
   params.addRequiredParam<FunctionName>("lifting_function", "Name of the lifting function two account for the inhomogeneous Dirichlet boundary conditions.");
   params.addRequiredParam<Real>("scale", "Defines the value of the scaling parameter.");
   params.addParam<Real>("norm_value", 1.0, "Defines the normalization value.");
-
   return params;
 }
 

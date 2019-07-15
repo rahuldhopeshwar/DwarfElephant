@@ -21,6 +21,8 @@ InputParameters validParams<DwarfElephantFEEntropyProduction>()
   params.addParam<Real>("cf", "Heat capacity of the fluid");
   params.addParam<Real>("thermal_conductivity", 0.0, "Thermal conductivity of the unit.");
   params.addParam<bool>("entropy_generation_number", true, "If true the entropy generation number is calculated else the entropy production.");
+  params.addParam<bool>("thermal_part", true, "If set to true the thermal part of the entropy is returned.");
+  params.addParam<bool>("visc_part", true, "If set to true the viscosity part of the entropy is returned.");
   params.addRequiredCoupledVar("temp", "Entropy Production AuxKernel requires temperature");
   params.addRequiredCoupledVar("velocity_x", "Entropy Production AuxKernel requires velocity_x");
   params.addCoupledVar("velocity_y", "Entropy Production AuxKernel: velocity_y");
@@ -39,6 +41,8 @@ DwarfElephantFEEntropyProduction::DwarfElephantFEEntropyProduction(const InputPa
     _cf(getParam<Real>("cf")),
     _lambda(getParam<Real>("thermal_conductivity")),
     _entropy_generation_number(getParam<bool>("entropy_generation_number")),
+    _thermal_part(getParam<bool>("thermal_part")),
+    _visc_part(getParam<bool>("visc_part")),
     _grad_temp(coupledGradient("temp")),
     _temp(coupledValue("temp")),
     _vel_x(coupledValue("velocity_x")),
@@ -71,7 +75,20 @@ DwarfElephantFEEntropyProduction::computeValue()
                          (_distance*_distance*_T_bar*_T_bar);
 
   if(_entropy_generation_number)
-    return _entropy_therm_gen_num + _entropy_visc_gen_num;
-  else
-    return _entropy_factor*(_entropy_therm_gen_num + _entropy_visc_gen_num);
+  {
+    if(_thermal_part && !_visc_part)
+      return  _entropy_therm_gen_num;
+    else if(!_thermal_part && _visc_part)
+      return _entropy_visc_gen_num;
+    else
+      return _entropy_therm_gen_num + _entropy_visc_gen_num;
+  }
+  else{
+    if(_thermal_part && !_visc_part)
+      return _entropy_factor*_entropy_therm_gen_num;
+    else if(!_thermal_part && _visc_part)
+      return _entropy_factor*_entropy_visc_gen_num;
+    else
+      return _entropy_factor*(_entropy_therm_gen_num + _entropy_visc_gen_num);
+  }
 }

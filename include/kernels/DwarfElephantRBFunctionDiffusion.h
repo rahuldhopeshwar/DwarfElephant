@@ -42,7 +42,6 @@ protected:
   virtual Real computeQpOutput() override;
 
   const Function & _func;
-  unsigned int _evaluation_component;
 };
 
 ///-------------------------------------------------------------------------

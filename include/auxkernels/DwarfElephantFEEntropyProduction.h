@@ -36,6 +36,8 @@ protected:
   Real _lambda;
 
   bool _entropy_generation_number;
+  bool _thermal_part;
+  bool _visc_part;
 
   const VariableGradient & _grad_temp;
   const VariableValue & _temp;
