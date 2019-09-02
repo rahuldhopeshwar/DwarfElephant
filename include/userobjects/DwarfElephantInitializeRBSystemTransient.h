@@ -154,6 +154,7 @@ class DwarfElephantInitializeRBSystemTransient :
     friend class DwarfElephantRBFilePointValues;
     friend class DwarfElephantRBIterationAdaptiveDT;
     friend class DwarfElephantRBEvaluationTransient;
+    friend class DwarfElephantRBMortarConstraint;
 };
 ///-------------------------------------------------------------------------
 #endif // DWARFELEPHANTINITIALIZERBSYSTEMTRANSIENT_H

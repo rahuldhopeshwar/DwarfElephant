@@ -38,9 +38,9 @@ namespace libMesh
  *
  */
 
-struct DwarfElephantRBT2F1O1SteadyStateExpansion : RBThetaExpansion
+struct DwarfElephantRBStructuresT2F1O1SteadyStateExpansion : RBThetaExpansion
 {
-  DwarfElephantRBT2F1O1SteadyStateExpansion()
+  DwarfElephantRBStructuresT2F1O1SteadyStateExpansion()
   {
     // Setting up the RBThetaExpansion object
     attach_A_theta(&_theta_a_0);

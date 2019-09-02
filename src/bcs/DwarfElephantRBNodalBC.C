@@ -47,6 +47,9 @@ DwarfElephantRBNodalBC::DwarfElephantRBNodalBC(const InputParameters & parameter
 
     if(_ID_Aq.size()==0)
       _ID_Aq = {0};
+
+//    if(_ID_Mq.size()==0)
+//        _ID_Mq = {0};
 }
 
 ///-------------------------------------------------------------------------
