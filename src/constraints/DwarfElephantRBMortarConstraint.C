@@ -272,6 +272,67 @@ DwarfElephantRBMortarConstraint::computeJacobian(Moose::MortarType mortar_type)
             _local_ke(_i, _j) +=
                 _JxW_msm[_qp] * _coord[_qp] * computeQpJacobian(jacobian_types[type_index], jvar);
       accumulateTaggedLocalMatrix();
+
+
+    if(_simulation_type == "steady")  // Steady State
+    {
+      if (_ID_Aq >= _initialize_rb_system->_qa)
+        mooseError("The number of stiffness matrices you defined here is not matching the number of stiffness matrices you specified in the RBClasses Class.");
+
+      if(_initialize_rb_system->_offline_stage)
+      {
+        // Add the calculated matrices to the Aq matrices from the RB system.
+        if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
+        {
+          switch (mortar_type) {
+            case Moose::MortarType::Slave:
+              _initialize_rb_system->_jacobian_subdomain[_ID_Aq]-> add_matrix(_local_ke, _slave_var.dofIndices());
+            break;
+            case Moose::MortarType::Master:
+              _initialize_rb_system->_jacobian_subdomain[_ID_Aq]-> add_matrix(_local_ke, _master_var.dofIndicesNeighbor());
+            break;
+            case Moose::MortarType::Lower:
+                _initialize_rb_system->_jacobian_subdomain[_ID_Aq]-> add_matrix(_local_ke, _var->dofIndicesLower());
+            break;
+          }
+        }
+      }
+     }
+    else if(_simulation_type == "transient") // Transient
+    {
+      if (_ID_Aq >= _initialize_rb_system_transient->_qa)
+        mooseError("The number of stiffness matrices you defined here is not matching the number of stiffness matrices you specified in the RBClasses Class.");
+
+      if(_initialize_rb_system_transient->_offline_stage)
+      {
+        // Add the calculated matrices to the Aq matrices from the RB system.
+        if (_fe_problem.getNonlinearSystemBase().getCurrentNonlinearIterationNumber() == 0)
+        {
+          switch (mortar_type) {
+            case Moose::MortarType::Slave:
+              _initialize_rb_system_transient->_jacobian_subdomain[_ID_Aq]-> add_matrix(_local_ke, _slave_var.dofIndices());
+            break;
+            case Moose::MortarType::Master:
+              _initialize_rb_system_transient->_jacobian_subdomain[_ID_Aq]-> add_matrix(_local_ke, _master_var.dofIndicesNeighbor());
+            break;
+            case Moose::MortarType::Lower:
+                _initialize_rb_system_transient->_jacobian_subdomain[_ID_Aq]-> add_matrix(_local_ke, _var->dofIndicesLower());
+            break;
+          }
+        }
+      }
     }
+  }
+   // if (_has_diag_save_in)
+   //  {
+   //    unsigned int rows = ke.m();
+   //    DenseVector<Number> diag(rows);
+   //    for (unsigned int i=0; i<rows; i++)
+   //      diag(i) = _local_ke(i,i);
+   //
+   //    Threads::spin_mutex::scoped_lock lock(Threads::spin_mtx);
+   //    for (const auto & var : _diag_save_in)
+   //      var->sys().solution().add_vector(diag, var->dofIndices());
+   //  }
   }
 }
