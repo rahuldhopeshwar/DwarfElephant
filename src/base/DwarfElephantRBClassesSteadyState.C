@@ -18,12 +18,11 @@ void
 DwarfElephantRBConstructionSteadyState::init_data()
 {
 
-
+  const std::set<subdomain_id_type> lm_subdomains {11};
   u_var = this->add_variable(get_equation_systems().get_system(0).variable_name(0) + "(RB)");
-  lm_var = this->add_variable(get_equation_systems().get_system(0).variable_name(1) + "(RB)");
+  lm_var = this->add_variable(get_equation_systems().get_system(0).variable_name(1) + "(RB)", FIRST, LAGRANGE, &lm_subdomains);
 
-  //lm_var = this->add_variable(get_equation_systems().get_system(0).variable_name(1) + "(RB)");
-  get_equation_systems().update()
+  //get_equation_systems().update();
   Parent::init_data();
   get_equation_systems().print_info();
 }
@@ -148,6 +147,7 @@ DwarfElephantRBConstructionSteadyState::custom_train_reduced_basis(const bool re
  // Compute the dual norms of the outputs if we haven't already done so
  compute_output_dual_innerprods();
 
+inner_product_matrix->print_matlab();
  // Compute the Fq Riesz representor dual norms if we haven't already done so
  compute_Fq_representor_innerprods();
 
