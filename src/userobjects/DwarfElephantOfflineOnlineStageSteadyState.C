@@ -125,7 +125,7 @@ DwarfElephantOfflineOnlineStageSteadyState::transferAffineVectors()
 void
 DwarfElephantOfflineOnlineStageSteadyState::offlineStage()
 {
-      _initialize_rb_system._rb_con_ptr->train_reduced_basis();
+      _initialize_rb_system._rb_con_ptr->custom_train_reduced_basis();
       if(_write_output){
         #if defined(LIBMESH_HAVE_CAPNPROTO)
         RBDataSerialization::RBEvaluationSerialization _rb_eval_writer(_initialize_rb_system._rb_con_ptr->get_rb_evaluation());
@@ -253,9 +253,23 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
           _initialize_rb_system._rb_con_ptr->load_basis_function(_basis_function_number);
         else
         _initialize_rb_system._rb_con_ptr->load_rb_solution();
-         *_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
-         _fe_problem.getNonlinearSystemBase().update();
-//        How to write own Exodus file  // not required anymore
+        //*_es.get_system(_system_name).solution = *_es.get_system("RBSystem").solution;
+        //*_es.print_info();
+
+
+        _fe_problem.getNonlinearSystemBase().update();
+        std::string _systems_for_print[] = {"rb0"};
+        const std::set<std::string>  _system_names_for_print (_systems_for_print, _systems_for_print+sizeof(_systems_for_print)/sizeof(_systems_for_print[0]));
+
+        ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf"+std::to_string(1000)+".e", _es, &_system_names_for_print);
+        std::filebuf _buffer;
+        _buffer.open("solution.dat", std::ios::app);
+        std::ostream state_file(&_buffer);
+        _es.get_system(_system_name).solution->print(state_file);
+
+        _buffer.close();
+
+//      How to write own Exodus file  // not required anymore
 //        Moose::perf_log.push("write_Exodus()", "Output");
 //
 //        std::string _systems_for_print[] = {"RBSystem"};
@@ -268,6 +282,14 @@ DwarfElephantOfflineOnlineStageSteadyState::execute()
 ////
 ////      _initialize_rb_system._rb_con_ptr->load_basis_function(0);
 ////      ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf0.e", _es);
+
+          _n_bfs = _initialize_rb_system._rb_con_ptr->get_rb_evaluation().get_n_basis_functions();
+          for (unsigned int i = 0; i != _n_bfs; i++)
+          {
+            _initialize_rb_system._rb_con_ptr->load_basis_function(i);
+            ExodusII_IO(_mesh_ptr->getMesh()).write_equation_systems("bf"+std::to_string(i)+".e", _es);
+          }
+
       }
 
       if(_store_basis_functions_sorted)

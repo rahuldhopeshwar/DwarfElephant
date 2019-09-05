@@ -27,8 +27,8 @@ struct DwarfElephantRBT2F2O0SteadyStateExpansion : RBThetaExpansion
     // Setting up the RBThetaExpansion object
     attach_A_theta(&_theta_a_0);
     attach_A_theta(&_theta_a_1);
-    // attach_A_theta(&_theta_a_lm1);
-    // attach_A_theta(&_theta_a_lm2);
+    attach_A_theta(&_theta_a_lm1);
+    //attach_A_theta(&_theta_a_lm2);
 
     attach_F_theta(&_rb_theta);
     // attach_F_theta(&_rb_theta);
